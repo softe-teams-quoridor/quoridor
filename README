@@ -1,0 +1,18 @@
+if you have never run gradle, you might have to install it. run:
+
+./gradlew
+
+it should say downloading gradle..................
+afterward you can run 
+
+./gradlew build 
+./gradlew clean
+
+the first builds the whole project (including running any tests)
+the second removes the build.
+
+after you have built the code, run the following:
+
+java -cp build/libs/quoridorschmoridor.jar Main
+
+for an example of running a program.
