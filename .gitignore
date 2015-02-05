@@ -1,5 +1,5 @@
 !**/gradle/wrapper/*.jar
 !gradle/wrapper/*.jar
-# .gradle
+.gradle
 build/
 *.class
