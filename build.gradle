@@ -1,0 +1,16 @@
+// Building a java program means using the java plugin
+// Note: gradle uses convention over configuration meaning
+// it makes simplifying assumptions about where source and
+// build files live.
+
+apply plugin: 'java'
+
+// Where to find jar files for external library dependencies
+repositories {
+    mavenCentral()
+}
+
+// Name the libraries different phases of the build depend on
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
