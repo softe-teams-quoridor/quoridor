@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /** Wall.java - CIS405 - teams
   * Last Edit: February 16, 2014
   * a wall that is placed on a gameboard square
@@ -8,22 +9,19 @@
   *    true in order to maintain the 1x2 size of a Quoridor
   *    wall
   * ---------- METHODS ----------
-  * Wall(start) ---> constructor
+  * Wall(isStart) ---> constructor
   */
 
-public class Wall { 
+public class Wall{
 
-    // Members
-    private boolean start;
-
+    private boolean isStart;
+    
     /** Constructor
       * instantiates a Wall object
       * @param start = indicates if this wall begins at the 
       *                top or left (true), or bottom or right (false)
       */                 
-    public Wall(boolean start) {
-        this.start = start;
+    public Wall(boolean start){
+	    isStart = start;
     }
-
 }
-

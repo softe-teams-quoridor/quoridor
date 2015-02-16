@@ -35,7 +35,11 @@ public class GameBoard {
 	else
 	    return false; //Exception
     }
-
+      
+    public Pawn getPawnatLoc (int x, int y){
+	return squares[x][y].getPawn();
+    }
+    
     public boolean validLoc(int x, int y) {
 	if(x >= 0 && x < 9)
 	    if(y >= 0 && y < 9)

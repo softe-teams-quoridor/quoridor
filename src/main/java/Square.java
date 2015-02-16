@@ -14,8 +14,6 @@ public class Square {
     private Wall vert;        // vertical wall
     private Wall horz;        // horizontal wall
 
-
-
     /** Constructor
       * instantiates a square object
       */
