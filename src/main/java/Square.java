@@ -32,7 +32,7 @@ public class Square {
       * @param start = indicates if this is the top (true) or bottom (false)
       *                of a wall
       */
-    public placeWallVert(boolean start) {
+    public void placeWallVert(boolean start) {
         vert = new Wall(start);
     }
 
@@ -43,7 +43,7 @@ public class Square {
       * @param start = indicates if this is the left (true) or right (false)
       *                of a wall
       */
-    public placeWallHorz(boolean start) {
+    public void placeWallHorz(boolean start) {
         horz = new Wall(start);
     }
 }

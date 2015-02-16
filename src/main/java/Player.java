@@ -44,7 +44,7 @@ class Player {
     /** getNumWalls
       * returns the number of walls
       */
-    public getNumWalls() {
+    public byte getNumWalls() {
         return numWalls;
     }
 
@@ -53,13 +53,13 @@ class Player {
     /** placeWalls
       * decrements the number of walls this player has if player has more than 0 walls
       */    
-    public placeWall() {
+    public void placeWall() {
         if (numWalls > 0)
             numWalls--;
         else
             // Depending on what we want the object that implements the game rules to
             // do, we may want this method to be a boolean method and return false
             // if the player cannot place any more walls. - Walling (2/16)
-            throw new RunTimeException("Cannot place wall; player is out of walls!");
+            throw new RuntimeException("Cannot place wall; player is out of walls!");
     }
 }

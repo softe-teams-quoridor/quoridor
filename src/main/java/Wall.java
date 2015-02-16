@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /** Wall.java - CIS405 - teams
   * Last Edit: February 16, 2014
   * a wall that is placed on a gameboard square
