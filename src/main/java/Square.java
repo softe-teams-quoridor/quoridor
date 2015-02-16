@@ -23,7 +23,9 @@ public class Square {
         horz = null;
     }
 
-
+    public Player getPlayer(){
+	return occupying;
+    }
 
     /** placeWallVert
       * places a vertical wall on this square
