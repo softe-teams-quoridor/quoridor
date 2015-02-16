@@ -11,4 +11,8 @@ public class Square {
         this.rank = rank;
         pawn = null;
     }
+
+    public Pawn getPawn() {
+	return this.pawn;
+    }
 }
