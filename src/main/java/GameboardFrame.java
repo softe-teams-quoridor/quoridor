@@ -15,7 +15,7 @@ public class GameboardFrame extends JFrame{
         menuBar.setPreferredSize(new Dimension(1000, 20));
 	gameboard.setJMenuBar(menuBar);
 	
-	GridLayout game = new GridLayout(10,9);
+	GridLayout game = new GridLayout(9,9);
 	gameboard.setLayout(game);
 	
 	for (int i = 0; i < 40; i++){
@@ -38,28 +38,7 @@ public class GameboardFrame extends JFrame{
 	label.setBackground(new Color(0, 0, 0));
 	label.setPreferredSize(new Dimension(100, 70));
 	gameboard.getContentPane().add(label, BorderLayout.CENTER);
-	
-	for (int i = 0; i < 2; i++){
-	    JLabel label2 = new JLabel();
-	    label2.setOpaque(true);
-	    label2.setBackground(new Color(0, 0, 20));
-	    label2.setPreferredSize(new Dimension(100, 70));
-	    gameboard.getContentPane().add(label2, BorderLayout.CENTER);
-	}
-	
-	gameboard.add(new JButton("Move Down"));
-	gameboard.add(new JButton("Move Left"));
-	gameboard.add(new JButton("Move Right"));
-	gameboard.add(new JButton("Move Up"));
-	gameboard.add(new JButton("Place a Wall"));
-	
-	for (int i = 0; i < 2; i++){
-	    JLabel label2 = new JLabel();
-	    label2.setOpaque(true);
-	    label2.setBackground(new Color(0, 0, 20));
-	    label2.setPreferredSize(new Dimension(100, 70));
-	    gameboard.getContentPane().add(label2, BorderLayout.CENTER);
-	}
+	 
 	
 	gameboard.setSize(1000,700);
 	gameboard.setLocationRelativeTo(null);
