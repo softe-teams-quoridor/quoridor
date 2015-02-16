@@ -37,7 +37,9 @@ class Player {
         this.numWalls   = numWalls;
     } 
 
-
+    public Square getLoc(){
+	return pawnLoc;
+    }
 
     // === Consider if this is needed if we're checking for the number of walls
     // === within method placeWall() - Cavanagh, Walling (2/16)
