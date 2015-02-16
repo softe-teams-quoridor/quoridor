@@ -2,7 +2,11 @@ Please leave your name in this list to confirm you have successfully cloned and 
 my name is dan
 hello, my name is collin walling and i am checking in
 Montana
+<<<<<<< HEAD
+Je m'appelle Eric
+=======
 
 Tylor :)
 
 Scott ^_^
+>>>>>>> df7fc3a2f21e9a1ddff258e1733dea4e974354b9
