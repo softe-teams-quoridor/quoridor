@@ -35,7 +35,15 @@ public class GameBoard {
 	else
 	    return false; //Exception
     }
-      
+    
+    public Square getSquare(int x, int y){
+	return squares[x][y];
+    }
+    
+    public void addPlayer(Player p){
+	
+    }
+    
     public Player getPlayeratLoc (int x, int y){
 	return squares[x][y].getPlayer();
     }
