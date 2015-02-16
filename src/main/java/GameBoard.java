@@ -27,7 +27,7 @@ public class GameBoard {
 	if(validLoc(x,y)) {
 
 	    // Check to see if a player is there
-	    if(squares[x][y].getPawn() == null)
+	    if(squares[x][y].getPlayer() == null)
 		return false;
 
 	    return true;
@@ -36,8 +36,8 @@ public class GameBoard {
 	    return false; //Exception
     }
       
-    public Pawn getPawnatLoc (int x, int y){
-	return squares[x][y].getPawn();
+    public Pawn getPlayeratLoc (int x, int y){
+	return squares[x][y].getPlayer();
     }
     
     public boolean validLoc(int x, int y) {
