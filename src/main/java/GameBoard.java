@@ -36,7 +36,7 @@ public class GameBoard {
 	    return false; //Exception
     }
       
-    public Pawn getPlayeratLoc (int x, int y){
+    public Player getPlayeratLoc (int x, int y){
 	return squares[x][y].getPlayer();
     }
     
