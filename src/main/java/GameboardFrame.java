@@ -56,7 +56,7 @@ public class GameboardFrame extends JFrame{
 	gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
 	
 	for (int i = 1; i < 10; i++){
-	    if (!board.IsOccupied(i,rownum)){
+	    if (!board.isOccupied(i,rownum)){
 		JLabel labelblue = new JLabel();
 		labelblue.setOpaque(true);
 		labelblue.setBackground(new Color(0, 0, 150));
@@ -64,7 +64,7 @@ public class GameboardFrame extends JFrame{
 		labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
 		gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
 	    } else {
-		printPlayerLabel(board.getPlayeratLoc(i,rownum), gameboard);
+		printPlayerLabel(board.getPlayer(i,rownum), gameboard);
 	    }
 	}
     }

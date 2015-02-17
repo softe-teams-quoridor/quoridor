@@ -3,30 +3,56 @@
   * GameBoard object to represent a 9x9 grid for the 
   * quoridor game
   *
+  * X == COLUMN
+  * Y == ROW
+  *
   * ----------------------- METHODS -----------------------
   *
+  * GameBoard()              -- Default Constructor (initializes the squares of the board)
+  * isOccupied(int x, int y) -- returns true if player is at location, false otherwise. 
+  * getSquare(int x, int y)  -- returns the squares field
+  * addPlayer(int x, int y)  -- adds a player to a given location
+  * getPlayer(int x, int y)  -- returns a player at the given cell, return null if unoccupied
+  * validLoc(int x, int y)   -- returns true if coordiantes are in the board 
+  * getBoard()               -- returns the sqaures of the gameboard 
+  * 
   *
   * Considerations
   *     Saturday (2/14) 
   *     if this object is only going to represent an array,
   *     then why not just have a Square array called 
-  *     gameBoard within the Game class? - Walling
+  *     GameBoard within the Game class? - Walling
   */
 
 public class GameBoard {
 
+    // The cells of the GameBoard
     private Square [][] squares;
+    private static final int  COLOUMNS = 9;
+    private static final int ROWS = 9;
 
+
+    /** Constructor
+      * The constructor builds the cells of the board
+      */
     public GameBoard() {
-	squares = new Square[9][9];
-	for(int i = 0; i < 9; i++){
-	    for (int j = 0; j < 9; j++){
+	squares = new Square[COLOUMNS][ROWS];
+	for(int i = 0; i < COLOUMNS; i++){
+	    for (int j = 0; j < ROWS; j++){
 		squares[i][j] = new Square();
-	    }
+                // Should also set the bottom and right cells to have walls
+ 	    }
 	}
     }
 
-    public boolean IsOccupied(int x, int y) {
+    //******************************************************************************
+    /**
+      * Checks to see if a cell/square is occupied
+      * @param x = the column of the board
+      * @param y = the row of the gameboard
+      * @return true if the cell is occupied, false otherwise
+      */
+    public boolean isOccupied(int x, int y) {
 
 	// Check for valid location
 	if(validLoc(x,y)) {
@@ -34,30 +60,74 @@ public class GameBoard {
 	    // Check to see if a player is there
 	    if(squares[x][y].getPlayer() == null)
 		return false;
-
+            // 
 	    return true;
 	}
 	else
-	    return false; //Exception
+	    throw new RuntimeException("Invaild Location");
     }
-    
+
+    //******************************************************************************
+    /**
+      * gets the sqaure specified
+      * @param x = the column of the board
+      * @param y = the row of the gameboard
+      * @return the sqaure object
+      */
     public Square getSquare(int x, int y){
 	return squares[x][y];
     }
+
+     //******************************************************************************
     
+    /**
+      * adds a player to the given location
+      * @param player = the player object
+      * @param x = the column of the board
+      * @param y = the row of the gameboard
+      */
     public void addPlayer(Player p, int x, int y){
 	squares[x][y].addplayer(p);
     }
     
-    public Player getPlayeratLoc (int x, int y){
-	return squares[x][y].getPlayer();
+     //******************************************************************************
+
+    /**
+      * gets a player at a given location
+      * @param x = the column of the board
+      * @param y = the row of the gameboard
+      * @return the player at the location, null if unoccupied
+      */
+    public Player getPlayer (int x, int y){
+        if(validLoc(x,y))
+            return squares[x][y].getPlayer();
+        else 
+            return null; // Exception
     }
+
+    //*******************************************************************************
     
+    /**
+      * Checks the location to see if it is acutally on the board
+      * @param player = the player object
+      * @param x = the column of the board
+      * @param y = the row of the gameboard
+      * @return true if location is on board, false otherwise
+      */
     public boolean validLoc(int x, int y) {
-	if(x >= 0 && x < 9)
-	    if(y >= 0 && y < 9)
+	if(x >= 0 && x < COLOUMNS)
+	    if(y >= 0 && y < ROWS)
 		return true;
 	return false;
     }
+
+    //*******************************************************************************
+
+    // public Square getBoard() {
+    //     return squares;
+    // }
+
+    //*******************************************************************************
    
 }
+
