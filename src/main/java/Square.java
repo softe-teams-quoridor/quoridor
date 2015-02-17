@@ -36,7 +36,9 @@ public class Square {
         vert = new Wall(start);
     }
 
-
+    public void addplayer(Player p){
+	occupying = p;
+    }
     
     /** placeWallHorz
       * places a horizontal wall on this square
