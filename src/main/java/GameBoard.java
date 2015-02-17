@@ -19,6 +19,11 @@ public class GameBoard {
 
     public GameBoard() {
 	squares = new Square[9][9];
+	for(int i = 0; i < 9; i++){
+	    for (int j = 0; j < 9; j++){
+		squares[i][j] = new Square();
+	    }
+	}
     }
 
     public boolean IsOccupied(int x, int y) {
@@ -40,8 +45,8 @@ public class GameBoard {
 	return squares[x][y];
     }
     
-    public void addPlayer(Player p){
-	
+    public void addPlayer(Player p, int x, int y){
+	squares[x][y].addplayer(p);
     }
     
     public Player getPlayeratLoc (int x, int y){
