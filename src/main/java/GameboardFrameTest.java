@@ -10,7 +10,7 @@ public class GameboardFrameTest{
 	
 	Player p = new Player ("test", s, b);
 	
-	board.addPlayer(p);
+	board.addPlayer(p, 2, 3);
 	
 	GameboardFrame test = new GameboardFrame(board);
 	
