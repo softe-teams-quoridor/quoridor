@@ -1,10 +1,17 @@
 /** Square.java - CIS 405 - teams 
-  * Last Edit: February 16, 2015
-  * a cell on the gameboard grid
-  * ---------- METHODS ----------
-  * Square()             --> constructor
-  * placeWallVert(start) --> places a vertical wall
-  * placeWallHorz(start) --> places a horizontal wall
+  * Last Edit: February 17, 2015
+  * _______________________________________________________
+  *
+  * represents a single cell on a GameBoard grid
+  *
+  * --------------------- METHODS -------------------------
+  *
+  * Square()            --> constructor
+  * getPlayer()         --> returns player on square
+  * addPlayer(Player)   --> assigns a Player obj to this square
+  * removePlayer()      --> removes a Player obj from this square
+  * placeWallVert(bool) --> places a vertical wall
+  * placeWallHorz(bool) --> places a horizontal wall
   */
 
 public class Square {
@@ -13,6 +20,8 @@ public class Square {
     private Player occupying; // Indicates which player occupies this square
     private Wall vert;        // vertical wall
     private Wall horz;        // horizontal wall
+
+
 
     /** Constructor
       * instantiates a square object
@@ -23,9 +32,35 @@ public class Square {
         horz = null;
     }
 
+    
+    
+    /** getPlayer
+      * returns the player object occupying this square
+      * @return = player object occupying this square
+      */
     public Player getPlayer(){
-	return occupying;
+	    return occupying;
     }
+
+
+
+    /** addPlayer
+      * adds a player to the square
+      */
+    public void addplayer(Player p){
+	    occupying = p;
+    }
+
+
+
+    /** removePlayer
+      * removes a player from the square
+      */
+    public void removePlayer() {
+        occupying = null;
+    }
+
+
 
     /** placeWallVert
       * places a vertical wall on this square
@@ -36,10 +71,8 @@ public class Square {
         vert = new Wall(start);
     }
 
-    public void addplayer(Player p){
-	occupying = p;
-    }
-    
+
+
     /** placeWallHorz
       * places a horizontal wall on this square
       * @param start = indicates if this is the left (true) or right (false)
@@ -48,4 +81,5 @@ public class Square {
     public void placeWallHorz(boolean start) {
         horz = new Wall(start);
     }
+ 
 }
