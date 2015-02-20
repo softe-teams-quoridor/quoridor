@@ -72,7 +72,8 @@ public class GameBoard {
 	        return true;
 	    }
 	    else
-	        throw new RuntimeException("Invaild Location");
+			return false;
+	        //throw new RuntimeException("Invaild Location");
     }
 
     //******************************************************************************
