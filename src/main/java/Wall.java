@@ -1,5 +1,5 @@
 /** Wall.java - CIS405 - teams
-  * Last Edit: February 16, 2014
+  * Last Edit: February 19, 2014
   * _______________________________________________________
   *
   * a wall that is placed on a gameboard square
@@ -10,8 +10,11 @@
   *    other wall on an adjacent square should be set to
   *    true in order to maintain the 1x2 size of a Quoridor
   *    wall
+  *
   * ----------------------- METHODS -----------------------
-  * Wall(bool) ---> constructor
+  *
+  * Wall(bool)   --> constructor
+  * getIsStart() --> returns if this wall is a start or end piece
   */
 
 public class Wall{
@@ -28,6 +31,16 @@ public class Wall{
       */                 
     public Wall(boolean start){
 	    isStart = start;
+    }
+
+
+    
+    /**
+      * returns whether this wall is the start or end point
+      * @return returns boolean
+      */
+    public boolean getIsStart() {
+        return isStart;
     }
 
 }

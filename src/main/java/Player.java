@@ -27,15 +27,15 @@
 class Player {
     
     // Constants
-    private static final byte TWO_PLAYER_WALLS = 10; 
-    private static final byte FOR_PLAYER_WALLS = 5; 
+    private static final int TWO_PLAYER_WALLS = 10; 
+    private static final int FOR_PLAYER_WALLS = 5; 
 
 
 
     // Data Members
     private String playerName = ""; // player's name
     private Square pawnLoc;         // player's pawn location
-    private byte numWalls;          // number of walls
+    private int numWalls;          // number of walls
 
 
 
@@ -45,7 +45,7 @@ class Player {
       * @param startLoc   = starting square on the gameboard
       * @param numWalls   = number of walls this player has to start with
       */
-    public Player(String playerName, Square startLoc, byte numWalls) {
+    public Player(String playerName, Square startLoc, int numWalls) {
         this.playerName = playerName;
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
@@ -66,7 +66,7 @@ class Player {
     /** getNumWalls
       * returns the number of walls
       */
-    public byte getNumWalls() {
+    public int getNumWalls() {
         return numWalls;
     }
 

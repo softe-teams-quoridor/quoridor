@@ -1,5 +1,5 @@
 /** Square.java - CIS 405 - teams 
-  * Last Edit: February 17, 2015
+  * Last Edit: February 19, 2015
   * _______________________________________________________
   *
   * represents a single cell on a GameBoard grid
@@ -12,6 +12,8 @@
   * removePlayer()      --> removes a Player obj from this square
   * placeWallVert(bool) --> places a vertical wall
   * placeWallHorz(bool) --> places a horizontal wall
+  * getVertWallStatus() --> returns if a vert wall starts or ends
+  * getHorzWallStatus() --> returns if a horz wall starts or ends
   */
 
 public class Square {
@@ -81,5 +83,34 @@ public class Square {
     public void placeWallHorz(boolean start) {
         horz = new Wall(start);
     }
- 
+
+
+
+    /**
+      * returns if the vertical wall starts or ends
+      * throws a RuntimeException if there is no vertical
+      * wall on this square
+      * @return returns if wall starts or ends
+      */
+    public boolean getVertWallStatus() {
+        if (vert != null)
+            return vert.getIsStart();
+        else
+            throw new RuntimeException("There is no vertical wall on this square");
+    }
+
+
+
+    /**
+      * returns if the horizontal wall starts or ends
+      * throws a RuntimeException if there is no horizontal
+      * wall on this square
+      * @return returns if wall starts or ends
+      */
+    public boolean getHorzWallStatus() {
+        if (horz != null)
+            return horz.getIsStart();
+        else
+            throw new RuntimeException("There is no horizontal wall on this square");
+    }
 }
