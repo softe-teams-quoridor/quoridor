@@ -77,9 +77,17 @@ public class GameboardFrame extends JFrame{
     private void printPlayerLabel(Player p){
 	JLabel label = new JLabel();
 	label.setOpaque(true);
-	label.setBackground(new Color(150, 0, 0));
+	if(p.getColor() == 1)
+	    label.setBackground(new Color(150, 0, 0));
+	else if(p.getColor() == 2)
+	    label.setBackground(new Color(0, 150, 0));
+	else if(p.getColor() == 3)
+	    label.setBackground(new Color(150, 0, 150));
+	else
+	    label.setBackground(new Color(0, 150, 150));
 	label.setPreferredSize(new Dimension(100, 70));
 	label.setBorder(BorderFactory.createLineBorder(Color.black));
+	label.setText("    " + p.getName());
 	gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
     
