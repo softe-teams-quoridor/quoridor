@@ -7,8 +7,19 @@
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 public class SquareTest {
+    @Before
+    public void empty() throws Exception {
+        // do whatever you want here
+    }
+
+    @Test
+    public void testSquareConstructor() throws Exception {
+        Square square = new Square();
+        assertNotNull("Square() returned null", square);
+    }
 
     @Test
     public void testSquareGetPlayer() {
