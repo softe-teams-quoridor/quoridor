@@ -41,7 +41,7 @@ public class Square {
       * @return = player object occupying this square
       */
     public Player getPlayer(){
-	    return occupying;
+        return occupying;
     }
 
 
@@ -50,7 +50,7 @@ public class Square {
       * adds a player to the square
       */
     public void addplayer(Player p){
-	    occupying = p;
+        occupying = p;
     }
 
 

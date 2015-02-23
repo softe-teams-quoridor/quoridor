@@ -58,7 +58,7 @@ class Player {
       * @return = returns a square
       */
     public Square getLoc(){
-	    return pawnLoc; 
+        return pawnLoc; 
     }
 
 

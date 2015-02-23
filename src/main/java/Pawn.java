@@ -6,7 +6,7 @@ public class Pawn {
     public int color;
     // and maybe a picture, anybody know how to do this? 
     public Pawn(int identifier, int color){
-	this.identifier = identifier;
-	this.color = color;
+        this.identifier = identifier;
+        this.color = color;
     }
 } 

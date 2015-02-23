@@ -43,13 +43,13 @@ public class GameBoard {
       * The constructor builds the cells of the board
       */
     public GameBoard() {
-	squares = new Square[COLOUMNS][ROWS];
-	    for(int i = 0; i < COLOUMNS; i++){
-	        for (int j = 0; j < ROWS; j++){
-		        squares[i][j] = new Square();
-                // Should also set the bottom and right cells to have walls
- 	        }
-    	}
+        squares = new Square[COLOUMNS][ROWS];
+        for(int i = 0; i < COLOUMNS; i++){
+            for (int j = 0; j < ROWS; j++){
+                squares[i][j] = new Square();
+            // Should also set the bottom and right cells to have walls
+            }
+        }
     }
 
     //******************************************************************************
@@ -62,18 +62,18 @@ public class GameBoard {
       */
     public boolean isOccupied(int x, int y) {
 
-	    // Check for valid location
-	    if(validLoc(x,y)) {
+    // Check for valid location
+    if(validLoc(x,y)) {
 
-	        // Check to see if a player is there
-	        if(squares[x][y].getPlayer() == null)
-		        return false;
+        // Check to see if a player is there
+        if(squares[x][y].getPlayer() == null)
+            return false;
             // A player is there 
-	        return true;
-	    }
-	    else
-			return false;
-	        //throw new RuntimeException("Invaild Location");
+            return true;
+        }
+        else
+            return false;
+            //throw new RuntimeException("Invaild Location");
     }
 
     //******************************************************************************
@@ -85,7 +85,7 @@ public class GameBoard {
       * @return the square object
       */
     public Square getSquare(int x, int y){
-	    return squares[x][y];
+        return squares[x][y];
     }
 
     //******************************************************************************
@@ -97,7 +97,7 @@ public class GameBoard {
       * @param y = the row of the gameboard
       */
     public void addPlayer(Player p, int x, int y){
-	    squares[x][y].addplayer(p);
+        squares[x][y].addplayer(p);
     }
     
     //******************************************************************************
@@ -136,10 +136,10 @@ public class GameBoard {
       * @return true if location is on board, false otherwise
       */
     public boolean validLoc(int x, int y) {
-	    if(x >= 0 && x < COLOUMNS)
-	        if(y >= 0 && y < ROWS)
-		        return true;
-	    return false;
+        if(x >= 0 && x < COLOUMNS)
+            if(y >= 0 && y < ROWS)
+                return true;
+        return false;
     }
 
     //*******************************************************************************

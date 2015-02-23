@@ -30,7 +30,7 @@ public class Wall{
       *                top or left (true), or bottom or right (false)
       */                 
     public Wall(boolean start){
-	    isStart = start;
+        isStart = start;
     }
 
 
