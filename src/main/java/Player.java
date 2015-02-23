@@ -28,15 +28,15 @@ class Player {
     
     // Constants
     private static final int TWO_PLAYER_WALLS = 10; 
-    private static final int FOR_PLAYER_WALLS = 5; 
-
+    private static final int FOUR_PLAYER_WALLS = 5; 
 
 
     // Data Members
     private String playerName = ""; // player's name
     private Square pawnLoc;         // player's pawn location
     private int numWalls;          // number of walls
-
+    private int numDraw;
+    private static int numAssign = 1;
 
 
     /** Constructor
@@ -49,8 +49,13 @@ class Player {
         this.playerName = playerName;
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
+        this.numDraw = numAssign;
+        numAssign++;
     } 
 
+    public int getColor(){
+	return numDraw;
+    }
 
 
     /** getLoc
@@ -61,7 +66,9 @@ class Player {
         return pawnLoc; 
     }
 
-
+    public String getName(){
+	return playerName;
+    }
 
     /** getNumWalls
       * returns the number of walls
