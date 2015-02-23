@@ -57,11 +57,11 @@ public class SquareTest {
 
     @Test
     public void testSquarePlaceHorzWall() {
+        // if you try to place a wall on the same place twice, then explosions
         Square s = new Square();
         s.placeWallHorz(true);
         assertEquals(s.getHorzWallStatus(), true);
         s.placeWallHorz(false);
         assertEquals(s.getHorzWallStatus(), false);
     }
-
 }
