@@ -10,6 +10,7 @@
   * getPlayer()         --> returns player on square
   * addPlayer(Player)   --> assigns a Player obj to this square
   * removePlayer()      --> removes a Player obj from this square
+  * vacant()            --> returns true if no player on this square
   * placeWallVert(bool) --> places a vertical wall
   * placeWallHorz(bool) --> places a horizontal wall
   * getVertWallStatus() --> returns if a vert wall starts or ends
@@ -59,6 +60,13 @@ public class Square {
       */
     public void removePlayer() {
         occupying = null;
+    }
+
+    /** vacant
+      * returns false if this square is occupied by a player
+      */
+    public boolean vacant() {
+        return (this.occupying == null);
     }
 
 
