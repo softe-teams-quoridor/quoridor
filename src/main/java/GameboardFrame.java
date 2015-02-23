@@ -4,49 +4,54 @@ import java.awt.event.*;
 import java.util.*;
 
 public class GameboardFrame extends JFrame{
+    
+    private JFrame gameboard;
+    
+    //constructs JFrame
     public GameboardFrame(GameBoard board){
-	//oracle.com
-	JFrame gameboard = new JFrame("Quoridor");
-	gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
-	//menu bar?
-	JMenuBar menuBar = new JMenuBar();
-	menuBar.setOpaque(true);
-        menuBar.setBackground(new Color(0, 0, 20));
-        menuBar.setPreferredSize(new Dimension(1000, 20));
-	gameboard.setJMenuBar(menuBar);
+	//initialize JFrame
+	gameboard = new JFrame("Quoridor");
+	gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	gameboard.setSize(1000,700);
+	gameboard.setLocationRelativeTo(null);
 	
 	//creates the grid
 	GridLayout game = new GridLayout(10,10);
 	gameboard.setLayout(game);
 	
-	toplayer(gameboard);
+	//draw the origional board
+	draw(board);	
+    }
+    
+    public void update(GameBoard board){
+	gameboard.getContentPane().removeAll();	
+	draw(board);
 	
-	rows(gameboard, board);
-	
-	gameboard.setSize(1000,700);
-	gameboard.setLocationRelativeTo(null);
-	
-	//makes gameboard
+    }
+    
+    private void draw(GameBoard board){
+	toplayer();	
+	rows(board);
 	gameboard.pack();
 	gameboard.setVisible(true);
     }
     
     //creates rows A-I
-    private void rows(JFrame gameboard, GameBoard board){
-	row("A", 1, gameboard, board);
-	row("B", 2, gameboard, board);
-	row("C", 3, gameboard, board);
-	row("D", 4, gameboard, board);
-	row("E", 5, gameboard, board);
-	row("F", 6, gameboard, board);
-	row("G", 7, gameboard, board);
-	row("H", 8, gameboard, board);
-	row("I", 9, gameboard, board);
+    private void rows(GameBoard board){
+	row("A", 1, board);
+	row("B", 2, board);
+	row("C", 3, board);
+	row("D", 4, board);
+	row("E", 5, board);
+	row("F", 6, board);
+	row("G", 7, board);
+	row("H", 8, board);
+	row("I", 9, board);
     }
     
     //creates a row
-    private void row(String row, int rownum, JFrame gameboard, GameBoard board){
+    private void row(String row, int rownum, GameBoard board){
 	
 	JLabel labelblank = new JLabel();
  	labelblank.setOpaque(true);
@@ -64,12 +69,12 @@ public class GameboardFrame extends JFrame{
 		labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
 		gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
 	    } else {
-		printPlayerLabel(board.getPlayer(i,rownum), gameboard);
+		printPlayerLabel(board.getPlayer(i,rownum));
 	    }
 	}
     }
     
-    private void printPlayerLabel(Player p, JFrame gameboard){
+    private void printPlayerLabel(Player p){
 	JLabel label = new JLabel();
 	label.setOpaque(true);
 	label.setBackground(new Color(150, 0, 0));
@@ -79,7 +84,7 @@ public class GameboardFrame extends JFrame{
     }
     
     //prints out I-IX
-    private void toplayer(JFrame gameboard){
+    private void toplayer(){
 	JLabel labelblank = new JLabel();
  	labelblank.setOpaque(true);
  	labelblank.setBackground(new Color(0, 0, 0));
