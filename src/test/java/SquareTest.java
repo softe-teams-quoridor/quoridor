@@ -1,0 +1,54 @@
+/** SquareTest.java - CIS405 - teams
+  * Last Edit: February 19, 2014
+  * ___________________________________________________
+  *
+  * tests the Square object's methods
+  */
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class SquareTest {
+
+    @Test
+    public void testSquareGetPlayer() {
+       Square s = new Square();
+       assertEquals(s.getPlayer(),null);
+    }
+
+    @Test
+    public void testSquareAddPlayer() {
+       Square s = new Square();
+       Player p = new Player("name", s,0);
+       s.addplayer(p);
+        assertEquals(s.getPlayer(),p);
+    }
+
+    @Test
+    public void testSquareRemovePlayer() {
+        Square s = new Square();
+        Player p = new Player("name",s,0);
+        s.addplayer(p);
+        s.removePlayer();
+        assertEquals(s.getPlayer(),null);
+    }
+
+    @Test
+    public void testSquarePlaceVertWall() {
+        Square s = new Square();
+        s.placeWallVert(true);
+        assertEquals(s.getVertWallStatus(), true);
+        s.placeWallVert(false);
+        assertEquals(s.getVertWallStatus(), false);
+    }
+
+    @Test
+    public void testSquarePlaceHorzWall() {
+        Square s = new Square();
+        s.placeWallHorz(true);
+        assertEquals(s.getHorzWallStatus(), true);
+        s.placeWallHorz(false);
+        assertEquals(s.getHorzWallStatus(), false);
+    }
+
+}
