@@ -16,5 +16,15 @@ public class GameboardFrameTest{
 	
 	//draws panel (visual test)
 	//exits on close (visual test)
+	
+	Square s2 = board.getSquare(5,8);
+	
+	byte b2 = 10;
+	
+	Player p2 = new Player ("test2", s2, b);
+	
+	board.addPlayer(p2, 5, 8);
+	
+	test.update(board);
     }
 }
