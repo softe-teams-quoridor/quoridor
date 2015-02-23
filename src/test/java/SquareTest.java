@@ -24,7 +24,7 @@ public class SquareTest {
     @Test
     public void testSquareGetPlayer() {
        Square s = new Square();
-       assertEquals(s.getPlayer(),null);
+       assertNull(s.getPlayer());
     }
 
     @Test
@@ -32,7 +32,7 @@ public class SquareTest {
        Square s = new Square();
        Player p = new Player("name", s,0);
        s.addplayer(p);
-        assertEquals(s.getPlayer(),p);
+       assertEquals(s.getPlayer(),p);
     }
 
     @Test
@@ -40,8 +40,10 @@ public class SquareTest {
         Square s = new Square();
         Player p = new Player("name",s,0);
         s.addplayer(p);
+        assertFalse(s.vacant());
         s.removePlayer();
         assertEquals(s.getPlayer(),null);
+        assertTrue(s.vacant());
     }
 
     @Test
