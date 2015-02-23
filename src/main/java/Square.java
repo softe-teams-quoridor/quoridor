@@ -75,6 +75,8 @@ public class Square {
       * places a vertical wall on this square
       * @param start = indicates if this is the top (true) or bottom (false)
       *                of a wall
+      * TODO: this should not be allowed to be called if there is already 
+      * a wall on this square
       */
     public void placeWallVert(boolean start) {
         vert = new Wall(start);
@@ -86,6 +88,8 @@ public class Square {
       * places a horizontal wall on this square
       * @param start = indicates if this is the left (true) or right (false)
       *                of a wall
+      * TODO: this should not be allowed to be called if there is already 
+      * a wall on this square
       */
     public void placeWallHorz(boolean start) {
         horz = new Wall(start);
