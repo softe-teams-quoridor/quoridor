@@ -49,6 +49,15 @@ public class Square {
     public Player getPlayer(){
         return occupying;
     }
+    
+    
+    public int getRow(){
+    	return row;
+    }
+    
+    public int getCol(){
+    	return col;
+    }
 
 
 
