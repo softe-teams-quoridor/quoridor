@@ -46,7 +46,7 @@ public class GameBoard {
         squares = new Square[COLOUMNS][ROWS];
         for(int i = 0; i < COLOUMNS; i++){
             for (int j = 0; j < ROWS; j++){
-                squares[i][j] = new Square();
+                squares[i][j] = new Square(i, j);
             // Should also set the bottom and right cells to have walls
             }
         }
