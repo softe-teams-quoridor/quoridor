@@ -108,7 +108,7 @@ public class GameBoard {
       * @param y = the row of the board
       */
     public void removePlayer(int x, int y) {
-        //squares[x][y].removePlayer();
+        squares[x][y].removePlayer();
     }
 
     //******************************************************************************
