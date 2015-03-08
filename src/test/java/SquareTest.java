@@ -17,19 +17,19 @@ public class SquareTest {
 
     @Test
     public void testSquareConstructor() throws Exception {
-        Square square = new Square();
+        Square square = new Square(3, 5);
         assertNotNull("Square() returned null", square);
     }
 
     @Test
     public void testSquareGetPlayer() {
-       Square s = new Square();
+       Square s = new Square(3, 5);
        assertNull(s.getPlayer());
     }
 
     @Test
     public void testSquareAddPlayer() {
-       Square s = new Square();
+       Square s = new Square(3, 5);
        Player p = new Player("name", s,0);
        s.addplayer(p);
        assertEquals(s.getPlayer(),p);
@@ -37,7 +37,7 @@ public class SquareTest {
 
     @Test
     public void testSquareRemovePlayer() {
-        Square s = new Square();
+        Square s = new Square(3, 5);
         Player p = new Player("name",s,0);
         s.addplayer(p);
         assertFalse(s.vacant());
@@ -48,7 +48,7 @@ public class SquareTest {
 
     @Test
     public void testSquarePlaceVertWall() {
-        Square s = new Square();
+        Square s = new Square(3, 5);
         s.placeWallVert(true);
         assertEquals(s.getVertWallStatus(), true);
         s.placeWallVert(false);
@@ -58,7 +58,7 @@ public class SquareTest {
     @Test
     public void testSquarePlaceHorzWall() {
         // if you try to place a wall on the same place twice, then explosions
-        Square s = new Square();
+        Square s = new Square(3, 5);
         s.placeWallHorz(true);
         assertEquals(s.getHorzWallStatus(), true);
         s.placeWallHorz(false);
