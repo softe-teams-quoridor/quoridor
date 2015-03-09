@@ -99,7 +99,7 @@ public class GameboardFrame extends JFrame{
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(0, 0, 30));
             labels[i].setPreferredSize(new Dimension(100, 70));
-            labels[i].setText("    " + GameEngine.numerals(i));
+            labels[i].setText("    " + GameEngine.toNumerals(i));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
     }
