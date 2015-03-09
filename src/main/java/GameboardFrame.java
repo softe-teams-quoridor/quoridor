@@ -91,24 +91,6 @@ public class GameboardFrame extends JFrame{
 	gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
 
-    // converts an int to a string of numerals
-    private String numerals(int x) {
-        switch (x) {
-            case 0: return ""; // empty string
-            case 1: return "I";
-            case 2: return "II";
-            case 3: return "III";
-            case 4: return "IV";
-            case 5: return "V";
-            case 6: return "VI";
-            case 7: return "VII";
-            case 8: return "VIII";
-            case 9: return "IX";
-            case 10: return "X";
-            default: return "@@@@@@@"; // this should never happen
-        }
-    }
-
     // prints out I-IX
     private void topLayer() {
         JLabel [] labels = new JLabel[10];
@@ -117,7 +99,7 @@ public class GameboardFrame extends JFrame{
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(0, 0, 30));
             labels[i].setPreferredSize(new Dimension(100, 70));
-            labels[i].setText("    " + numerals(i));
+            labels[i].setText("    " + GameEngine.numerals(i));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
     }

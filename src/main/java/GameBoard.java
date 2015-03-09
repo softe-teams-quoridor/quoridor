@@ -52,6 +52,18 @@ public class GameBoard {
         }
     }
 
+
+    /** Constructor FOR TESTING ONLY
+      * does all the stuff of the other constructor, but also puts a player
+      * on the board. 
+      */
+    public GameBoard(int x, int y) {
+        this();
+        Player p = new Player("tylur", getSquare(x, y), 0);
+//         getSquare(x, y).addPlayer(p);
+        addPlayer(p, x, y);
+    }
+
     //******************************************************************************
 
     /**
