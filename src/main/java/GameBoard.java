@@ -14,7 +14,7 @@
   * addPlayer(int x, int y)    -- adds a player to a given location
   * getPlayer(int x, int y)    -- returns a player at the given cell, return null if unoccupied
   * removePlayer(int x, int y) -- removes a player at the given cell
-  * validLoc(int x, int y)     -- returns true if coordiantes are in the board 
+  * validLoc(int x, int y)     -- returns true if coordinates are in the board 
   * getBoard() IS THIS NEEDED? -- returns the Square array 
   * 
   *
@@ -29,7 +29,7 @@
 public class GameBoard {
 
     // Constants
-    private static final int  COLOUMNS = 9;
+    private static final int  COLUMNS = 9;
     private static final int ROWS = 9;
     
 
@@ -43,8 +43,8 @@ public class GameBoard {
       * The constructor builds the cells of the board
       */
     public GameBoard() {
-        squares = new Square[COLOUMNS][ROWS];
-        for(int i = 0; i < COLOUMNS; i++){
+        squares = new Square[COLUMNS][ROWS];
+        for(int i = 0; i < COLUMNS; i++){
             for (int j = 0; j < ROWS; j++){
                 squares[i][j] = new Square(i, j);
             // Should also set the bottom and right cells to have walls
@@ -85,13 +85,13 @@ public class GameBoard {
         }
         else
             return false;
-            //throw new RuntimeException("Invaild Location");
+            //throw new RuntimeException("Invalid Location");
     }
 
     //******************************************************************************
 
     /**
-      * gets the sqaure specified
+      * gets the square specified
       * @param x = the column of the board
       * @param y = the row of the gameboard
       * @return the square object
@@ -141,14 +141,14 @@ public class GameBoard {
     //*******************************************************************************
     
     /**
-      * Checks the location to see if it is acutally on the board
+      * Checks the location to see if it is actually on the board
       * @param player = the player object
       * @param x = the column of the board
       * @param y = the row of the gameboard
       * @return true if location is on board, false otherwise
       */
     public boolean validLoc(int x, int y) {
-        if(x >= 0 && x < COLOUMNS)
+        if(x >= 0 && x < COLUMNS)
             if(y >= 0 && y < ROWS)
                 return true;
         return false;
