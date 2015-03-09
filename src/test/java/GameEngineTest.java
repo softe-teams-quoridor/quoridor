@@ -18,13 +18,17 @@ public class GameEngineTest {
     }
 
     @Test
-    public void testNumerals() throws Exception {
+    public void testToNumerals() throws Exception {
         assertEquals("", GameEngine.toNumerals(0));
         assertEquals("I", GameEngine.toNumerals(1));
         assertEquals("V", GameEngine.toNumerals(5));
         assertEquals("IX", GameEngine.toNumerals(9));
         assertEquals("X", GameEngine.toNumerals(10));
         assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
+    }
+
+    @Test
+    public void testFromNumerals() throws Exception {
         assertEquals(0, GameEngine.fromNumerals(""));
         assertEquals(1, GameEngine.fromNumerals("I"));
         assertEquals(5, GameEngine.fromNumerals("V"));
@@ -43,8 +47,11 @@ public class GameEngineTest {
     }
 
     @Test
-    public void testParseString() throws Exception {
-        // start here
+    public void testParseMove() throws Exception {
+        board = new GameBoard();
+        p1 = new Player("tylUr", board.getSquare(3, 6), 10);
+        Square sq = ge.parseMove(board, "III-G");
+        assertEquals(sq, board.getSquare(3, 7));
 
     }
 }

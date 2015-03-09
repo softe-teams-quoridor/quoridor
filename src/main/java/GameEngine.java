@@ -12,6 +12,7 @@
 
 public class GameEngine {
     private static final String [] numerals = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+    private static final char [] letters = {'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
 
     // converts an int to a string of fromNumerals
     public static String toNumerals(int x) {
@@ -31,17 +32,39 @@ public class GameEngine {
         return -1; // this should never happen
     }
 
+    // converts an int to a string of fromLetters
+    public static char toLetters(int x) {
+        if (x < 0 || 10 < x) {
+            return 'Z'; // this should never happen
+        }
+        return letters[x];
+    }
+
+    // does the opposite of toLetters
+    public static int fromLetters(char ch) {
+        for (int i = 0; i < 11; i++) {
+            if (letters[i] == ch) {
+                return i;
+            }
+        }
+        return -1; // this should never happen
+    }
+
+
 
     /**
       * returns true if the string represents a legal move on that gameboard
       */
-    public boolean validate(GameBoard board, String move) {
+    public boolean validate(GameBoard board, Player p, String move) {
         // FIXME 
         return false; // no moves are legal
     }
 
-    private int parseMove(String move) {
-        // FIXME 
-        return 0; // not implemented yet
+    public Square parseMove(GameBoard board, String move) {
+        // TESTME 
+        String [] strs = move.split("-");
+        int x = fromNumerals(strs[0]);
+        int y = fromLetters(strs[1].charAt(0));
+        return board.getSquare(x, y);
     }
 }

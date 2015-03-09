@@ -36,13 +36,18 @@ public class GameBoard {
 
     // Members
     private Square [][] squares; // The cells of the GameBoard
+    private final int players;   // the number of players in the game
+    private Square [] playerLocs; // locations of the players
 
 
-
-    /** Constructor
+    /** Constructor -- DEPRECATE THIS -- 
+     * this constructor is only to be kept until the rest of the codebase 
+     * is adjusted to the new one!!!
      * The constructor builds the cells of the board
      */
     public GameBoard() {
+        players = 0;
+        playerLocs = null;
         squares = new Square[COLUMNS][ROWS];
         for(int i = 0; i < COLUMNS; i++){
             for (int j = 0; j < ROWS; j++){
@@ -53,7 +58,24 @@ public class GameBoard {
     }
 
 
-    /** Constructor FOR TESTING ONLY
+    /** Constructor
+     * The constructor builds the cells of the board
+     * @param: the number of players in the game
+     */
+    public GameBoard(int players) {
+        this.players = players;
+        playerLocs = new Square[players];
+        squares = new Square[COLUMNS][ROWS];
+        for(int i = 0; i < COLUMNS; i++){
+            for (int j = 0; j < ROWS; j++){
+                squares[i][j] = new Square(i, j);
+                // Should also set the bottom and right cells to have walls
+            }
+        }
+    }
+
+
+    /** Constructor FOR TESTING ONLY, DON'T USE THIS!
      * does all the stuff of the other constructor, but also puts a player
      * on the board. 
      */
@@ -99,8 +121,24 @@ public class GameBoard {
     public Square getSquare(int x, int y){
         return squares[x][y];
     }
+//******************************************************************************
+    /**
+     * moves a player to the given location
+     * @param player = the player object
+     * @param x = the column of the board
+     * @param y = the row of the gameboard
+     */
+    /*
+    public void movePlayer(Player p, String move) {
+        GameEngine.validate(this, move);
+        removePlayer();
+        squares[x][y].addplayer(p);
+
+    }
+    */
 
     //******************************************************************************
+
 
     /**
      * adds a player to the given location
@@ -132,10 +170,8 @@ public class GameBoard {
      * @return the player at the location, null if unoccupied
      */
     public Player getPlayer (int x, int y){
-        if(validLoc(x,y))
-            return squares[x][y].getPlayer();
-        else 
-            return null; // Exception
+        assert (validLoc(x,y));
+        return squares[x][y].getPlayer();
     }
 
     //*******************************************************************************
@@ -153,18 +189,5 @@ public class GameBoard {
                 return true;
         return false;
     }
-
-    //*******************************************************************************
-
-    /** --- CONSIDER IF NEEDED ---
-     * returns the squares array that represents the game board
-     * @return = returns the array of squares
-     */
-    public Square[][] getBoard() {
-        return squares;
-    }
-
-    //*******************************************************************************
-
 }
 
