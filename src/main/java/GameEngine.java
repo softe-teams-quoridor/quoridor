@@ -15,13 +15,15 @@ public class GameEngine {
 
     // converts an int to a string of fromNumerals
     public static String toNumerals(int x) {
-        assert (0 < x && x <= 10);
+        if (x < 0 || 10 < x) {
+            return "@@@@@@@@@@@@@@"; // this should never happen
+        }
         return numerals[x];
     }
 
     // does the opposite of toNumerals
     public static int fromNumerals(String str) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             if (str.equals(numerals[i])) {
                 return i;
             }
