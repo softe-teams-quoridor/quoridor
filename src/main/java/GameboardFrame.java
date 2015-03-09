@@ -20,7 +20,7 @@ public class GameboardFrame extends JFrame{
 	GridLayout game = new GridLayout(10,10);
 	gameboard.setLayout(game);
 	
-	//draw the origional board
+	//draw the original board
 	draw(board);	
     }
     
@@ -61,7 +61,7 @@ public class GameboardFrame extends JFrame{
 	gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
 	
 	for (int i = 1; i < 10; i++){
-	    if (!board.isOccupied(i,rownum)){
+	    if (!board.isOccupied(i-1,rownum-1)){				//Tylor Changed this
 		JLabel labelblue = new JLabel();
 		labelblue.setOpaque(true);
 		labelblue.setBackground(new Color(0, 0, 150));
@@ -69,7 +69,7 @@ public class GameboardFrame extends JFrame{
 		labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
 		gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
 	    } else {
-		printPlayerLabel(board.getPlayer(i,rownum));
+		printPlayerLabel(board.getPlayer(i-1,rownum-1));	//And this.
 	    }
 	}
     }
