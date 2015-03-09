@@ -1,5 +1,4 @@
 /** GameEngine.java - CIS405 - teams
-  * Last Edit: February 23, 2014
   * _______________________________________________________
   *
   * this class is used by both the client and the server!
@@ -14,15 +13,14 @@
 public class GameEngine {
     private static final String [] numerals = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
 
-    // converts an int to a string of numerals
-    public static String numerals(int x) {
+    // converts an int to a string of fromNumerals
+    public static String toNumerals(int x) {
         assert (0 < x && x <= 10);
         return numerals[x];
     }
 
-    // does the opposite of numerals
-    // FIXME
-    public static int antiNumerals(String str) {
+    // does the opposite of toNumerals
+    public static int fromNumerals(String str) {
         for (int i = 0; i < 10; i++) {
             if (str.equals(numerals[i])) {
                 return i;
