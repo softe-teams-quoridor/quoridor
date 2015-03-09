@@ -1,26 +1,26 @@
 /** Square.java - CIS 405 - teams 
-  * Last Edit: February 19, 2015
-  * _______________________________________________________
-  *
-  * represents a single cell on a GameBoard grid
-  *
-  * --------------------- METHODS -------------------------
-  *
-  * Square()            --> constructor
-  * getPlayer()         --> returns player on square
-  * addPlayer(Player)   --> assigns a Player obj to this square
-  * removePlayer()      --> removes a Player obj from this square
-  * vacant()            --> returns true if no player on this square
-  * placeWallVert(bool) --> places a vertical wall
-  * placeWallHorz(bool) --> places a horizontal wall
-  * getVertWallStatus() --> returns if a vert wall starts or ends
-  * getHorzWallStatus() --> returns if a horz wall starts or ends
-  */
+ * Last Edit: February 19, 2015
+ * _______________________________________________________
+ *
+ * represents a single cell on a GameBoard grid
+ *
+ * --------------------- METHODS -------------------------
+ *
+ * Square()            --> constructor
+ * getPlayer()         --> returns player on square
+ * addPlayer(Player)   --> assigns a Player obj to this square
+ * removePlayer()      --> removes a Player obj from this square
+ * vacant()            --> returns true if no player on this square
+ * placeWallVert(bool) --> places a vertical wall
+ * placeWallHorz(bool) --> places a horizontal wall
+ * getVertWallStatus() --> returns if a vert wall starts or ends
+ * getHorzWallStatus() --> returns if a horz wall starts or ends
+ */
 
 public class Square {
     // Data members
     private Player occupying; // Indicates which player occupies this square
-//     private Point coordinates; // the location in the board of this square
+    //     private Point coordinates; // the location in the board of this square
     private int row;              // the location in the board of this square
     private int col;              // the location in the board of this square
     private Wall vert;        // vertical wall
@@ -29,41 +29,41 @@ public class Square {
 
 
     /** Constructor
-      * instantiates a square object
-      */
+     * instantiates a square object
+     */
     public Square(int x, int y) {
         occupying = null;
         vert = null;
         horz = null;
-//         coordinates = new Point(x, y);
+        //         coordinates = new Point(x, y);
         col = x;
         row = y;
     }
 
-    
-    
+
+
     /** getPlayer
-      * returns the player object occupying this square
-      * @return = player object occupying this square
-      */
+     * returns the player object occupying this square
+     * @return = player object occupying this square
+     */
     public Player getPlayer(){
         return occupying;
     }
-    
-    
+
+
     public int getRow(){
-    	return row;
+        return row;
     }
-    
+
     public int getCol(){
-    	return col;
+        return col;
     }
 
 
 
     /** addPlayer
-      * adds a player to the square
-      */
+     * adds a player to the square
+     */
     public void addplayer(Player p){
         occupying = p;
     }
@@ -71,15 +71,15 @@ public class Square {
 
 
     /** removePlayer
-      * removes a player from the square
-      */
+     * removes a player from the square
+     */
     public void removePlayer() {
         occupying = null;
     }
 
     /** vacant
-      * returns false if this square is occupied by a player
-      */
+     * returns false if this square is occupied by a player
+     */
     public boolean vacant() {
         return (this.occupying == null);
     }
@@ -87,12 +87,12 @@ public class Square {
 
 
     /** placeWallVert
-      * places a vertical wall on this square
-      * @param start = indicates if this is the top (true) or bottom (false)
-      *                of a wall
-      * TODO: this should not be allowed to be called if there is already 
-      * a wall on this square
-      */
+     * places a vertical wall on this square
+     * @param start = indicates if this is the top (true) or bottom (false)
+     *                of a wall
+     * TODO: this should not be allowed to be called if there is already 
+     * a wall on this square
+     */
     public void placeWallVert(boolean start) {
         vert = new Wall(start);
     }
@@ -100,12 +100,12 @@ public class Square {
 
 
     /** placeWallHorz
-      * places a horizontal wall on this square
-      * @param start = indicates if this is the left (true) or right (false)
-      *                of a wall
-      * TODO: this should not be allowed to be called if there is already 
-      * a wall on this square
-      */
+     * places a horizontal wall on this square
+     * @param start = indicates if this is the left (true) or right (false)
+     *                of a wall
+     * TODO: this should not be allowed to be called if there is already 
+     * a wall on this square
+     */
     public void placeWallHorz(boolean start) {
         horz = new Wall(start);
     }
@@ -113,11 +113,11 @@ public class Square {
 
 
     /**
-      * returns if the vertical wall starts or ends
-      * throws a RuntimeException if there is no vertical
-      * wall on this square
-      * @return returns if wall starts or ends
-      */
+     * returns if the vertical wall starts or ends
+     * throws a RuntimeException if there is no vertical
+     * wall on this square
+     * @return returns if wall starts or ends
+     */
     public boolean getVertWallStatus() {
         if (vert != null)
             return vert.getIsStart();
@@ -127,11 +127,11 @@ public class Square {
 
 
     /**
-      * returns if the horizontal wall starts or ends
-      * throws a RuntimeException if there is no horizontal
-      * wall on this square
-      * @return returns if wall starts or ends
-      */
+     * returns if the horizontal wall starts or ends
+     * throws a RuntimeException if there is no horizontal
+     * wall on this square
+     * @return returns if wall starts or ends
+     */
     public boolean getHorzWallStatus() {
         if (horz != null)
             return horz.getIsStart();
