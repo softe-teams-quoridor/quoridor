@@ -20,7 +20,6 @@
 public class Square {
     // Data members
     private Player occupying; // Indicates which player occupies this square
-    //     private Point coordinates; // the location in the board of this square
     private int row;              // the location in the board of this square
     private int col;              // the location in the board of this square
     private Wall vert;        // vertical wall
@@ -35,7 +34,6 @@ public class Square {
         occupying = null;
         vert = null;
         horz = null;
-        //         coordinates = new Point(x, y);
         col = x;
         row = y;
     }
