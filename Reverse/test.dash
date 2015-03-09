@@ -1,0 +1,10 @@
+#!/bin/dash
+
+# warning: this is crude but it demos what i want
+
+javac ReverseServer.java &
+java ReverseServer 9393 
+
+echo "now type here:" 
+
+netcat localhost 9393
