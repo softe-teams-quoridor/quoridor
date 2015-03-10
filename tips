@@ -3,8 +3,9 @@ add this to your .bashrc or .zshrc :
 function gb() {
     pushd . > /dev/null
     cd "$HOME/405/teams/" > /dev/null # you might have to adjust this line
-    ./gradlew build
+    ./gradlew build "$@"
     popd > /dev/null
 }
 
 you can now type gb from any directory to build the project!
+also you can pass arguments to gb like this: gb clean
