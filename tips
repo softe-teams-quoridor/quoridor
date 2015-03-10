@@ -2,7 +2,7 @@ add this to your .bashrc or .zshrc :
 
 function gb() {
     pushd . > /dev/null
-    cd $HOME/405/teams/ > /dev/null
+    cd "$HOME/405/teams/" > /dev/null # you might have to adjust this line
     ./gradlew build
     popd > /dev/null
 }
