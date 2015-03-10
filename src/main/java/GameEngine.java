@@ -11,10 +11,13 @@
   */
 
 public class GameEngine {
-    private static final String [] numerals = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
-    private static final char [] letters = {'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
+    private static final String [] numerals = {"", "I", "II", "III", 
+                                               "IV", "V", "VI", "VII",
+                                               "VIII", "IX", "X"};
+    private static final char [] letters = {'Z', 'A', 'B', 'C', 'D',
+                                            'E', 'F', 'G', 'H', 'I'};
 
-    // converts an int to a string of fromNumerals
+    // converts an int to a string of roman numerals
     public static String toNumerals(int x) {
         if (x < 0 || 10 < x) {
             return "@@@@@@@@@@@@@@"; // this should never happen
@@ -32,7 +35,7 @@ public class GameEngine {
         return -1; // this should never happen
     }
 
-    // converts an int to a string of fromLetters
+    // converts an int to a char A-I
     public static char toLetters(int x) {
         if (x < 0 || 10 < x) {
             return 'Z'; // this should never happen
@@ -60,6 +63,11 @@ public class GameEngine {
         return false; // no moves are legal
     }
 
+    /* currently this returns a square on the board
+     *   FIXME: this currently breaks if you input a wall-placing move
+     * @param board
+     * @param move: a string representing a move
+     */
     public Square parseMove(GameBoard board, String move) {
         // TESTME 
         String [] strs = move.split("-");
