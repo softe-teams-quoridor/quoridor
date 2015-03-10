@@ -1,0 +1,10 @@
+add this to your .bashrc or .zshrc :
+
+function gb() {
+    pushd . > /dev/null
+    cd $HOME/405/teams/ > /dev/null
+    ./gradlew build
+    popd > /dev/null
+}
+
+you can now type gb from any directory to build the project!
