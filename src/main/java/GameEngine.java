@@ -7,6 +7,10 @@
   *
   * validate(GameBoard, String) --> returns true if the string represents
   *                                 a legal move on that gameboard
+  * toNumerals(int), 
+  * fromNumerals(String),
+  * toLetters(int),
+  * fromLetters(char) --> conversions between ints and numerals/letters
   * 
   */
 
