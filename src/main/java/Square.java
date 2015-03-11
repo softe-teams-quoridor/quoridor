@@ -49,11 +49,11 @@ public class Square {
     }
 
 
-    public int getRow(){
+    public int getX(){
         return row;
     }
 
-    public int getCol(){
+    public int getY(){
         return col;
     }
 

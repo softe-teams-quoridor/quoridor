@@ -17,6 +17,8 @@ public class GameEngine {
     private static final char [] letters = {'Z', 'A', 'B', 'C', 'D',
                                             'E', 'F', 'G', 'H', 'I'};
 
+    public GameEngine() {}
+
     // converts an int to a string of roman numerals
     public static String toNumerals(int x) {
         if (x < 0 || 10 < x) {
@@ -71,8 +73,8 @@ public class GameEngine {
     public Square parseMove(GameBoard board, String move) {
         // TESTME 
         String [] strs = move.split("-");
-        int x = fromNumerals(strs[0]);
-        int y = fromLetters(strs[1].charAt(0));
+        int y = fromNumerals(strs[0]) - 1;
+        int x = fromLetters(strs[1].charAt(0)) - 1;
         return board.getSquare(x, y);
     }
 }

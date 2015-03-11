@@ -26,9 +26,7 @@
 
 class Player {
 
-    // Constants
-    private static final int TWO_PLAYER_WALLS = 10; 
-    private static final int FOUR_PLAYER_WALLS = 5; 
+
 
 
     // Data Members
@@ -57,7 +55,7 @@ class Player {
         return numDraw;
     }
 
-
+    // NEED?
     /** getLoc
      * returns the square that the player's pawn is occupying
      * @return = returns a square
@@ -65,6 +63,16 @@ class Player {
     public Square getLoc(){
         return pawnLoc; 
     }
+
+    public int getX() {
+        return pawnLoc.getX();
+    }
+    
+    public int getY() {
+        return pawnLoc.getY();
+    }
+
+
 
     public String getName(){
         return playerName;
@@ -87,6 +95,10 @@ class Player {
             numWalls--;
         else
             throw new RuntimeException("Cannot place wall; player is out of walls!");
+    }
+
+    public void setLocation(Square sqr) {
+        pawnLoc = sqr;
     }
 
 }

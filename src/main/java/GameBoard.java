@@ -189,5 +189,15 @@ public class GameBoard {
                 return true;
         return false;
     }
+
+    public void move(Player player, Square newSqr) {
+    
+        removePlayer(player.getX(),player.getY());
+        addPlayer(player, newSqr.getX(),newSqr.getY());
+        player.setLocation(newSqr);
+
+    }
 }
+
+
 
