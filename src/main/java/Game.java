@@ -19,36 +19,43 @@ public class Game {
     private int turn;         // whose turn is it; used to index players array
     private GameBoard board;  // board used to keep track of game progress
     private Player[] players; // array of players
+    private static PrintStream [] outStreams; // these should both have the
+    private static Scanner     [] inStreams;  // same length as players
 
     /*
      * prints a friendly message and exits
      * @param an int to return to the OS
      */
     private static void usage(int error) {
-        System.err.println("usage: java Game <port> <port>");
+        System.err.println("usage: java Game <host> <port> [<host> <port>]");
         System.exit(error);
     }
 
-    public static void main ( String[] args ) {
+    /*
+     * parses command-line arguments
+     * populates the inStreams and outStreams arrays
+     */
+    public static void parseArgs (String[] args) {
         if (args.length < 2) {
             usage(1);
         }
 
-        int [] ports = new int[args.length];
+        int [] ports = new int[args.length/2];
+        String [] hosts = new String[args.length/2];
         for (int i = 0; i < args.length; i++) { 
+            hosts[i/2] = args[i];
+            i++;
             try {
-                ports[i] = Integer.parseInt(args[i]);
+                ports[i/2] = Integer.parseInt(args[i]);
             } catch (Exception e) {
                 usage(2);
             }
         }
-        System.out.println(Arrays.toString(ports));
-
+        System.out.println("ports found: " + Arrays.toString(ports));
 
         // Connect to players
-        PrintStream [] outStreams = new PrintStream [ports.length];
-        Scanner     [] inStreams  = new Scanner     [ports.length];
-//         for (int port : ports) {
+        outStreams = new PrintStream [ports.length];
+        inStreams  = new Scanner     [ports.length];
         for (int i = 0; i < ports.length; i++) {
             try {
                 Socket socket = new Socket("localhost", ports[i]);
@@ -66,6 +73,7 @@ public class Game {
                 System.exit(1);
             }
         }
+        // test all connections -- not necessary, just for debugging
         for (int i = 0; i < ports.length; i++) {
             if (outStreams[i] == null) {
                 System.out.println("outStreams[" + i + "] is null!");
@@ -74,15 +82,11 @@ public class Game {
                 System.out.println("inStreams[" + i + "] is null!");
             }
         }
-        for (int i = 0; i < ports.length; i++) {
-            outStreams[i].println("make your move");
-            String response = inStreams[i].nextLine();
-            System.out.println("received: " + response);
-        }
-        System.out.println("done!");
+    }
 
-
+    public static void main (String[] args) {
         // - this will give us the number of players playing (2 or 4)
+        parseArgs(args);
 
         // Instantiate Players array
 
@@ -93,10 +97,15 @@ public class Game {
         // - 1 is player 2
         // - 2 is player 3
         // - 3 is player 4
+        int currentPlayer = 0;
         
-        /* while ( !victory ) {
-
+        // while ( !victory ) {
+        while (true) { 
             // get move from player
+            outStreams[currentPlayer].println("make your move");
+            String response = inStreams[currentPlayer].nextLine();
+            System.out.println("received: " + response);
+
 
             // validate move
             // - if valid, update board & broadcast move to other players
@@ -108,8 +117,10 @@ public class Game {
             // get next player's turn 
             // - make sure turn does not index a booted player
             // - turn = turn + 1 % players.length;
+            currentPlayer = (currentPlayer + 1) % outStreams.length;
 
-        }*/
+        }
+        // } while (!victory)
 
         // broadcast victor
         // - "player ___ has won the game!"
