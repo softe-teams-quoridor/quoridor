@@ -58,7 +58,7 @@ public class Game {
         inStreams  = new Scanner     [ports.length];
         for (int i = 0; i < ports.length; i++) {
             try {
-                Socket socket = new Socket("localhost", ports[i]);
+                Socket socket = new Socket(hosts[i], ports[i]);
                 PrintStream sout = new PrintStream(socket.getOutputStream());
                 outStreams[i] = sout;
                 Scanner sin = new Scanner(socket.getInputStream());
@@ -109,6 +109,10 @@ public class Game {
 
             // validate move
             // - if valid, update board & broadcast move to other players
+            for (int i = 0; i < outStreams.length; i++) {
+                outStreams[i].println("player " + currentPlayer + 
+                                      " made move: " + response);
+            }
 
             // - if invalid, boot player & broadcast boot to other players
             
