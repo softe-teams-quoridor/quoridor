@@ -114,7 +114,7 @@ public class Game {
         // build a player and place him on player 1's spot
 //         numPlayers = 1;
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player("player " + i, board.getSquare(4,i),
+            players[i] = new Player("player_" + i, board.getSquare(4,i),
                                     TWO_PLAYER_WALLS);
             board.addPlayer(players[i],4,i);
         }
