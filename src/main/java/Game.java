@@ -38,38 +38,40 @@ public class Game {
 
     /*
      * parses command-line arguments
-     * populates the inStreams and outStreams arrays
+     * populates the inStreams and outStreams arrays in Protocol
+     * counts the number of players, stores it in numPlayers
      */
     public static void parseArgs (String[] args) {
         if (args.length < 2) {
             usage(1);
         }
 
-        int [] ports = new int[args.length/2];
-        String [] hosts = new String[args.length/2];
+        Protocol.ports = new int[args.length/2];
+        Protocol.hosts = new String[args.length/2];
         for (int i = 0; i < args.length; i++) { 
-            hosts[i/2] = args[i];
+            Protocol.hosts[i/2] = args[i];
             i++;
             try {
-                ports[i/2] = Integer.parseInt(args[i]);
+                Protocol.ports[i/2] = Integer.parseInt(args[i]);
             } catch (Exception e) {
                 usage(2);
             }
+            numPlayers++;
         }
-        System.out.println("ports found: " + Arrays.toString(ports));
-
-
+        debug.println("number of players: " + numPlayers);
+        debug.println("hosts found: " + Arrays.toString(Protocol.hosts));
+        debug.println("ports found: " + Arrays.toString(Protocol.ports));
 
         // Connect to players
-        outStreams = new PrintStream [ports.length];
-        inStreams  = new Scanner     [ports.length];
-        for (int i = 0; i < ports.length; i++) {
+        outStreams = new PrintStream [Protocol.ports.length];
+        inStreams  = new Scanner     [Protocol.ports.length];
+        Protocol.inStreams = inStreams;
+        Protocol.outStreams = outStreams;
+        for (int i = 0; i < Protocol.ports.length; i++) {
             try {
-                Socket socket = new Socket(hosts[i], ports[i]);
-                PrintStream sout = new PrintStream(socket.getOutputStream());
-                outStreams[i] = sout;
-                Scanner sin = new Scanner(socket.getInputStream());
-                inStreams[i] = sin;
+                Socket socket = new Socket(Protocol.hosts[i], Protocol.ports[i]);
+                outStreams[i] = new PrintStream(socket.getOutputStream());
+                inStreams[i] = new Scanner(socket.getInputStream());
             } catch (UnknownHostException uhe) {
                 // the host name provided could not be resolved
                 uhe.printStackTrace();
@@ -81,11 +83,11 @@ public class Game {
             }
         }
         // test all connections -- not necessary, just for debugging
-        for (int i = 0; i < ports.length; i++) {
-            if (outStreams[i] == null) {
+        for (int i = 0; i < Protocol.ports.length; i++) {
+            if (Protocol.outStreams[i] == null) {
                 System.out.println("outStreams[" + i + "] is null!");
             }
-            if (inStreams[i] == null) {
+            if (Protocol.inStreams[i] == null) {
                 System.out.println("inStreams[" + i + "] is null!");
             }
         }
@@ -113,9 +115,12 @@ public class Game {
 
         // ***HARDCODE TEST***
         // build a player and place him on player 1's spot
-        numPlayers = 1;
-        players[0] = new Player("1",board.getSquare(4,0),TWO_PLAYER_WALLS);
-        board.addPlayer(players[0],4,0);
+//         numPlayers = 1;
+        for (int i = 0; i < numPlayers; i++) {
+            players[i] = new Player("" + i, board.getSquare(4,i),
+                                    TWO_PLAYER_WALLS);
+            board.addPlayer(players[i],4,i);
+        }
         int m = 0;
 
         // Start up the display
@@ -157,7 +162,7 @@ public class Game {
                 continue;
             }
 
-            broadcastMove(currentPlayer, response);
+            Protocol.broadcastMove(currentPlayer, response);
 
             // update board & broadcast move to other players
 
@@ -176,14 +181,6 @@ public class Game {
 
             currentPlayer = (currentPlayer + 1) % numPlayers;
 
-        }
-
-
-    }
-    public static void broadcastMove(int playerNo, String move) {
-        for (int i = 0; i < outStreams.length; i++) {
-            outStreams[i].println("player " + playerNo + 
-                                  " made move: " + move);
         }
     }
 }
