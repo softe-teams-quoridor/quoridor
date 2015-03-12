@@ -63,8 +63,31 @@ public class GameEngine {
       * returns true if the string represents a legal move on that gameboard
       */
     public static boolean validate(GameBoard board, Player p, String move) {
-        // FIXME 
-        return true; 
+        
+        //***TEST ME****
+        // Check if the square-to-move-to is adjacent to the player
+        if ( parseMove ( board, move ) ) {
+            Square moveTo = getSquare(board, move);
+            Square moveFrom = p.getLoc();
+            // Check up
+            if ( moveTo.getX() == moveFrom.getX() &&
+                 moveTo.getY() == moveFrom.getY() +1 )
+                return true;
+            // Check down
+            if ( moveTo.getX() == moveFrom.getX() &&
+                 moveTo.getY() == moveFrom.getY() -1 )
+                return true;
+            // Check right
+            if ( moveTo.getX() == moveFrom.getX() +1 &&
+                 moveTo.getY() == moveFrom.getY() )
+                return true;
+            // Check left
+            if ( moveTo.getX() == moveFrom.getX() -1 &&
+                 moveTo.getY() == moveFrom.getY() )
+                return true;
+        }
+
+        return false        
     }
 
     /* 
