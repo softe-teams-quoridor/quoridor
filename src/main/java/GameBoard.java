@@ -121,24 +121,6 @@ public class GameBoard {
     public Square getSquare(int x, int y){
         return squares[x][y];
     }
-//******************************************************************************
-    /**
-     * moves a player to the given location
-     * @param player = the player object
-     * @param x = the column of the board
-     * @param y = the row of the gameboard
-     */
-    /*
-    public void movePlayer(Player p, String move) {
-        GameEngine.validate(this, move);
-        removePlayer();
-        squares[x][y].addplayer(p);
-
-    }
-    */
-
-    //******************************************************************************
-
 
     /**
      * adds a player to the given location
@@ -190,6 +172,11 @@ public class GameBoard {
         return false;
     }
 
+    /**
+     * moves a player to the given location
+     * @param player = the player object
+     * @param Square = the destination square
+     */
     public void move(Player player, Square newSqr) {
     
         removePlayer(player.getX(),player.getY());

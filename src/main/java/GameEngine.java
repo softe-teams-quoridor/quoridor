@@ -64,19 +64,65 @@ public class GameEngine {
       */
     public static boolean validate(GameBoard board, Player p, String move) {
         // FIXME 
-        return false; // no moves are legal
+        return true; 
     }
 
-    /* currently this returns a square on the board
+    /* 
+     *  returns true if the string represents a possibly legal move
+     *  i.e. the string is of the correct format
      *   FIXME: this currently breaks if you input a wall-placing move
      * @param board
      * @param move: a string representing a move
      */
-    public static Square parseMove(GameBoard board, String move) {
+    public static boolean parseMove(GameBoard board, String move) {
+        // TESTME 
+        move = move.trim();
+        String [] strs = move.split("-");
+        if (strs.length == 1) {
+            // no '-' in the string; this move is a wall placement
+            return false; // walls are not implemented yet
+        } 
+        else if (strs.length == 2) {
+            // one '-' in the string; this is a possible pawn movement
+            if (move.length() > 6) {
+                return false; // longest square is VIII-A 
+            }
+            if (strs[1].length() != 1) {
+                return false; // reject strings like "I-AHI"
+            }
+            int x = fromNumerals(strs[0]);
+            int y = fromLetters(strs[1].charAt(0));
+            if (x == -1 || y == -1) {
+                return false; // at least one of the halves of the move string 
+                              // could not be parsed 
+            }
+            return true;
+        } 
+        // yeah, anything else is not allowed
+        return false;
+    }
+
+    /* this returns a square on the board
+     *   FIXME: this currently breaks if you input a wall-placing move
+     * @param board
+     * @param move: a string representing a legal move
+     */
+    public static Square getSquare(GameBoard board, String move) {
         // TESTME 
         String [] strs = move.split("-");
-        int x = fromNumerals(strs[0]);
-        int y = fromLetters(strs[1].charAt(0));
-        return board.getSquare(x, y);
+        if (strs.length == 1) {
+            // no '-' in the string; this move is a wall placement
+            System.exit(101); // walls are not implemented yet
+            return null; // lol unreachable
+        } else if (strs.length == 2) {
+            int x = fromNumerals(strs[0]);
+            int y = fromLetters(strs[1].charAt(0));
+            return board.getSquare(x, y);
+        } else {
+            // yeah, anything else is not allowed
+            // this should never happen, because the move string passed to this
+            // function should have already been checked for the correct format
+            return null;
+        }
     }
 }

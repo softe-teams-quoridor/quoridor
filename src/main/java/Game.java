@@ -3,6 +3,7 @@
  */
 
 import java.util.*;
+import java.io.*;
 
 // networking stuff... 
 import java.io.IOException;
@@ -18,8 +19,13 @@ public class Game {
     private static final int TWO_PLAYER_WALLS = 10; 
     private static final int FOUR_PLAYER_WALLS = 5; 
 
+    private static int numPlayers; // how many players are in the game
+
     private static PrintStream [] outStreams; // these should both have the
     private static Scanner     [] inStreams;  // same length as players
+
+//     private static final PrintStream debug = new PrintStream("Game_debug");
+    private static PrintStream debug;
 
     /*
      * prints a friendly message and exits
@@ -86,22 +92,34 @@ public class Game {
     }
 
     public static void main (String[] args) {
+        // initialize debug stream
+        try {
+            debug = new PrintStream("Game_debug");
+        } catch (FileNotFoundException e) {
+            debug = System.out;
+        }
+
         // Connect to players
+        debug.println("parsing arguments");
         parseArgs(args);
 
         // Instantiate GameBoard
+        debug.println("instantiating GameBoard");
         GameBoard board = new GameBoard();
 
         // Instantiate Players array
+        debug.println("instantiating Players array");
         Player[] players = new Player[args.length/2];
 
         // ***HARDCODE TEST***
         // build a player and place him on player 1's spot
+        numPlayers = 1;
         players[0] = new Player("1",board.getSquare(4,0),TWO_PLAYER_WALLS);
         board.addPlayer(players[0],4,0);
         int m = 0;
 
         // Start up the display
+        debug.println("starting GameboardFrame");
         GameboardFrame f = new GameboardFrame(board);
 
         // Initialize current player to player 1 (index 0)
@@ -109,29 +127,43 @@ public class Game {
 
         // ***FIXME***
         // loop will need to check for a victory condition
+        debug.println("beginning main loop");
         while (true) {
-
             // Get move from player
+            debug.println("requesting move from player: " + currentPlayer);
             outStreams[currentPlayer].println("make your move");
             String response = inStreams[currentPlayer].nextLine();
-            System.out.println("received: " + response);
+            debug.println("received: " + response);
+
+            // make sure the response can reasonably represent a move
+            boolean correctFormat = GameEngine.parseMove(board,response);
+            if (! correctFormat) {
+                // FIXME: boot the player
+                debug.println("incorrect format");
+                continue;
+            }
 
             // Parse the move string to a square location
-            Square moveTo = GameEngine.parseMove(board,response);
+            Square moveTo = GameEngine.getSquare(board,response);
 
             //***FIXME***
             // Validate move
+            boolean legal = 
+                GameEngine.validate(board, players[currentPlayer], response);
 
-            // - if valid, update board & broadcast move to other players
-            for (int i = 0; i < outStreams.length; i++) {
-                outStreams[i].println("player " + currentPlayer + 
-                        " made move: " + response);
+            if (! legal) {
+                // FIXME: if illegal, boot player & broadcast boot to other players
+                debug.println("illegal move attempted");
+                continue;
             }
+
+            broadcastMove(currentPlayer, response);
+
+            // update board & broadcast move to other players
 
             // Move is valid, make the move!
             board.move(players[currentPlayer], moveTo);
 
-            // - if invalid, boot player & broadcast boot to other players
 
             //***FIXME****
             // temporary fix to remove a player from the initial start spot 
@@ -149,9 +181,16 @@ public class Game {
             // - make sure turn does not index a booted player
             // - turn = turn + 1 % players.length;
 
-            //currentPlayer = (currentPlayer + 1) % outStreams.length;
+            currentPlayer = (currentPlayer + 1) % numPlayers;
 
         }
 
+
+    }
+    public static void broadcastMove(int playerNo, String move) {
+        for (int i = 0; i < outStreams.length; i++) {
+            outStreams[i].println("player " + playerNo + 
+                                  " made move: " + move);
+        }
     }
 }
