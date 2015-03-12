@@ -86,47 +86,41 @@ public class Game {
     }
 
     public static void main (String[] args) {
-        // - this will give us the number of players playing (2 or 4)
+        // Connect to players
         parseArgs(args);
 
-        // Connect to players
-        // - this will give us the number of players playing (2 or 4)   
-
+        // Instantiate GameBoard
         GameBoard board = new GameBoard();
 
         // Instantiate Players array
         Player[] players = new Player[args.length/2];
 
+        // ***HARDCODE TEST***
+        // build a player and place him on player 1's spot
         players[0] = new Player("1",board.getSquare(4,0),TWO_PLAYER_WALLS);
-
         board.addPlayer(players[0],4,0);
-
-        GameboardFrame f = new GameboardFrame(board);
-
-
-        int currentPlayer = 0;
-
         int m = 0;
 
+        // Start up the display
+        GameboardFrame f = new GameboardFrame(board);
+
+        // Initialize current player to player 1 (index 0)
+        int currentPlayer = 0;
+
+        // ***FIXME***
+        // loop will need to check for a victory condition
         while (true) {
 
-            // get move from player
+            // Get move from player
             outStreams[currentPlayer].println("make your move");
             String response = inStreams[currentPlayer].nextLine();
             System.out.println("received: " + response);
 
+            // Parse the move string to a square location
             Square moveTo = GameEngine.parseMove(board,response);
 
-            // validate move
-
-
-            board.move(players[currentPlayer], moveTo);
-
-            if(m ==0) //***FIXME****
-                board.removePlayer(4,0);
-            m++;
-            f.update(board);
-
+            //***FIXME***
+            // Validate move
 
             // - if valid, update board & broadcast move to other players
             for (int i = 0; i < outStreams.length; i++) {
@@ -134,7 +128,20 @@ public class Game {
                         " made move: " + response);
             }
 
+            // Move is valid, make the move!
+            board.move(players[currentPlayer], moveTo);
+
             // - if invalid, boot player & broadcast boot to other players
+
+            //***FIXME****
+            // temporary fix to remove a player from the initial start spot 
+            if(m ==0) {
+                board.removePlayer(4,0);
+                m++;
+            }
+
+            // Update the board with our new moves
+            f.update(board);
 
             // if player has won, set victory to true
 
@@ -143,7 +150,6 @@ public class Game {
             // - turn = turn + 1 % players.length;
 
             //currentPlayer = (currentPlayer + 1) % outStreams.length;
-
 
         }
 

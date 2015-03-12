@@ -75,8 +75,8 @@ public class GameEngine {
     public static Square parseMove(GameBoard board, String move) {
         // TESTME 
         String [] strs = move.split("-");
-        int y = fromNumerals(strs[0]) - 1;
-        int x = fromLetters(strs[1].charAt(0)) - 1;
+        int x = fromNumerals(strs[0]);
+        int y = fromLetters(strs[1].charAt(0));
         return board.getSquare(x, y);
     }
 }
