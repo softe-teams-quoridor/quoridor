@@ -26,84 +26,33 @@ public class Protocol {
     public static int [] ports;
     public static String [] hosts; 
 
-    public static void broadcastMove(int playerNo, String move) {
+    public static void broadcastPlayers(Player [] players) {
+        assert (players.length == outStreams.length);
         for (int i = 0; i < outStreams.length; i++) {
-            outStreams[i].println("player " + playerNo + 
-                                  " made move: " + move);
+            outStreams[i].print("PLAYERS ");
+            for (Player playa : players) {
+                outStreams[i].print(playa.getName() + " ");
+            }
+            outStreams[i].println();
         }
     }
 
-    /**
-     * Primary method of the server: Opens a listening socket on the
-     * given port number (parameter)
-     * It then loops forever, accepting connections from clients.
-     * When a client connects, it is assumed to be sending messages, 
-     * one per line. The server will process one client at a time.
-     */
-    public static void startServer(int portNumber) {
-        try {
-            ServerSocket server = new ServerSocket(portNumber);
-            System.out.println("Accepting connections on " + portNumber);
-            Socket currClient;
-
-            while ((currClient = server.accept()) != null) {
-                System.out.println("Connection from " + currClient);
-
-                Scanner cin = new Scanner(currClient.getInputStream());
-                PrintStream cout = 
-                    new PrintStream(currClient.getOutputStream());
-
-                String clientMessage;
-
-                while (cin.hasNextLine()) {
-                    clientMessage = cin.nextLine();
-                    System.out.println("received: " + clientMessage);
-                    cout.println(clientMessage);
-                }
-
-                System.out.println("Server closing connection from " + 
-                                   currClient);
-                cout.close();
-                cin.close();
-            }
-        } catch (IOException ioe) {
-            // there was a standard input/output error (lower-level from uhe)
-            ioe.printStackTrace();
-            System.exit(1);
+    public static void broadcastWent(Player player, String move) {
+        for (int i = 0; i < outStreams.length; i++) {
+            outStreams[i].println("WENT " + player.getName() + " " + move);
         }
-        System.out.println("ReverseServer terminates.");
     }
 
-    public static void connectToClient(String machineName, int portNumber) {
-        try {
-            Socket socket = new Socket(machineName, portNumber);
-            PrintStream sout = new PrintStream(socket.getOutputStream());
-            Scanner sin = new Scanner(socket.getInputStream());
-            Scanner keyboard = new Scanner(System.in);
+    public static String requestMove(int playerNo) {
+        outStreams[playerNo].println("GO?");
+        return inStreams[playerNo].nextLine();
+    }
 
-            System.out.print(PROMPT);
+    public static void broadcastBoot(int playerNo) {
+        outStreams[playerNo].println("BOOT " + playerNo);
+    }
 
-            for ( String serverResponse, msg; keyboard.hasNextLine(); 
-                  System.out.print(PROMPT) ) {
-                msg = keyboard.nextLine();
-
-                if (msg.equals(COMMAND_BYE)) { 
-                    break;
-                }
-                sout.println(msg);
-                serverResponse = sin.nextLine();
-                System.out.println(serverResponse);
-            }
-            sout.close();
-            sin.close();
-        } catch (UnknownHostException uhe) {
-            // the host name provided could not be resolved
-            uhe.printStackTrace();
-            System.exit(1);
-        } catch (IOException ioe) {
-            // there was a standard input/output error (lower-level)
-            ioe.printStackTrace();
-            System.exit(1);
-        }
+    public static void broadcastVictor(int playerNo) {
+        outStreams[playerNo].println("VICTOR " + playerNo);
     }
 }
