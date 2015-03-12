@@ -21,10 +21,6 @@ public class Game {
 
     private static int numPlayers; // how many players are in the game
 
-    private static PrintStream [] outStreams; // these should both have the
-    private static Scanner     [] inStreams;  // same length as players
-
-//     private static final PrintStream debug = new PrintStream("Game_debug");
     private static PrintStream debug;
 
     /*
@@ -63,15 +59,15 @@ public class Game {
         debug.println("ports found: " + Arrays.toString(Protocol.ports));
 
         // Connect to players
-        outStreams = new PrintStream [Protocol.ports.length];
-        inStreams  = new Scanner     [Protocol.ports.length];
-        Protocol.inStreams = inStreams;
-        Protocol.outStreams = outStreams;
+        Protocol.outStreams = new PrintStream [Protocol.ports.length];
+        Protocol.inStreams  = new Scanner     [Protocol.ports.length];
+//         Protocol.inStreams = inStreams;
+//         Protocol.outStreams = outStreams;
         for (int i = 0; i < Protocol.ports.length; i++) {
             try {
                 Socket socket = new Socket(Protocol.hosts[i], Protocol.ports[i]);
-                outStreams[i] = new PrintStream(socket.getOutputStream());
-                inStreams[i] = new Scanner(socket.getInputStream());
+                Protocol.outStreams[i] = new PrintStream(socket.getOutputStream());
+                Protocol.inStreams[i] = new Scanner(socket.getInputStream());
             } catch (UnknownHostException uhe) {
                 // the host name provided could not be resolved
                 uhe.printStackTrace();
@@ -117,11 +113,14 @@ public class Game {
         // build a player and place him on player 1's spot
 //         numPlayers = 1;
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player("" + i, board.getSquare(4,i),
+            players[i] = new Player("player " + i, board.getSquare(4,i),
                                     TWO_PLAYER_WALLS);
             board.addPlayer(players[i],4,i);
         }
         int m = 0;
+
+        // tell all move servers who the players are
+        Protocol.broadcastPlayers(players);
 
         // Start up the display
         debug.println("starting GameboardFrame");
@@ -136,8 +135,7 @@ public class Game {
         while (true) {
             // Get move from player
             debug.println("requesting move from player: " + currentPlayer);
-            outStreams[currentPlayer].println("make your move");
-            String response = inStreams[currentPlayer].nextLine();
+            String response = Protocol.requestMove(currentPlayer);
             debug.println("received: " + response);
 
             // make sure the response can reasonably represent a move
@@ -162,7 +160,7 @@ public class Game {
                 continue;
             }
 
-            Protocol.broadcastMove(currentPlayer, response);
+            Protocol.broadcastWent(players[currentPlayer], response);
 
             // update board & broadcast move to other players
 
