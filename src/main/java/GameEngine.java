@@ -15,11 +15,11 @@
   */
 
 public class GameEngine {
-    private static final String [] numerals = {"", "I", "II", "III", 
+    private static final String [] numerals = {"I", "II", "III", 
                                                "IV", "V", "VI", "VII",
-                                               "VIII", "IX", "X"};
-    private static final char [] letters = {'Z', 'A', 'B', 'C', 'D',
-                                            'E', 'F', 'G', 'H', 'I'};
+                                               "VIII", "IX", "X", ""};
+    private static final char [] letters = {'A', 'B', 'C', 'D',
+                                            'E', 'F', 'G', 'H', 'I', 'Z'};
 
     // converts an int to a string of roman numerals
     public static String toNumerals(int x) {

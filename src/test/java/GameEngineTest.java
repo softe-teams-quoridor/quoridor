@@ -19,21 +19,21 @@ public class GameEngineTest {
 
     @Test
     public void testToNumerals() throws Exception {
-        assertEquals("", GameEngine.toNumerals(0));
-        assertEquals("I", GameEngine.toNumerals(1));
-        assertEquals("V", GameEngine.toNumerals(5));
-        assertEquals("IX", GameEngine.toNumerals(9));
-        assertEquals("X", GameEngine.toNumerals(10));
+        //assertEquals("", GameEngine.toNumerals(0));
+        assertEquals("I", GameEngine.toNumerals(0));
+        assertEquals("V", GameEngine.toNumerals(4));
+        assertEquals("IX", GameEngine.toNumerals(8));
+        assertEquals("X", GameEngine.toNumerals(9));
         assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
     }
 
     @Test
     public void testFromNumerals() throws Exception {
-        assertEquals(0, GameEngine.fromNumerals(""));
-        assertEquals(1, GameEngine.fromNumerals("I"));
-        assertEquals(5, GameEngine.fromNumerals("V"));
-        assertEquals(9, GameEngine.fromNumerals("IX"));
-        assertEquals(10, GameEngine.fromNumerals("X"));
+        //assertEquals(0, GameEngine.fromNumerals(""));
+        assertEquals(0, GameEngine.fromNumerals("I"));
+        assertEquals(4, GameEngine.fromNumerals("V"));
+        assertEquals(8, GameEngine.fromNumerals("IX"));
+        assertEquals(9, GameEngine.fromNumerals("X"));
         assertEquals(-1, GameEngine.fromNumerals("@@@@@@@@@@@@@@"));
         assertEquals(-1, GameEngine.fromNumerals("arbitrary string"));
     }
@@ -51,7 +51,7 @@ public class GameEngineTest {
         board = new GameBoard();
         p1 = new Player("tylUr", board.getSquare(3, 6), 10);
         Square sq = ge.parseMove(board, "III-G");
-        assertEquals(sq, board.getSquare(3, 7));
+        assertEquals(sq, board.getSquare(2, 6));
 
     }
 }
