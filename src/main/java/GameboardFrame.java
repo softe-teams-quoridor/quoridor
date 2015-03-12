@@ -94,12 +94,20 @@ public class GameboardFrame extends JFrame{
     // prints out I-IX
     private void topLayer() {
         JLabel [] labels = new JLabel[10];
-        for (int i = 0; i < 10; i++) {
+        // This bit will print a blank for the first spot
+        labels[0] = new JLabel();
+        labels[0].setOpaque(true);
+        labels[0].setBackground(new Color(0, 0, 30));
+        labels[0].setPreferredSize(new Dimension(100, 70));
+        labels[0].setText("    ");
+        gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
+        // Index starts at 1, toNumerals starts at i-1
+        for (int i = 1; i < 10; i++) {
             labels[i] = new JLabel();
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(0, 0, 30));
             labels[i].setPreferredSize(new Dimension(100, 70));
-            labels[i].setText("    " + GameEngine.toNumerals(i));
+            labels[i].setText("    " + GameEngine.toNumerals(i-1));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
     }

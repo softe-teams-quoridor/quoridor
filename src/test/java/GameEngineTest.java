@@ -23,7 +23,6 @@ public class GameEngineTest {
         assertEquals("I", GameEngine.toNumerals(0));
         assertEquals("V", GameEngine.toNumerals(4));
         assertEquals("IX", GameEngine.toNumerals(8));
-        assertEquals("X", GameEngine.toNumerals(9));
         assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
     }
 
@@ -33,7 +32,6 @@ public class GameEngineTest {
         assertEquals(0, GameEngine.fromNumerals("I"));
         assertEquals(4, GameEngine.fromNumerals("V"));
         assertEquals(8, GameEngine.fromNumerals("IX"));
-        assertEquals(9, GameEngine.fromNumerals("X"));
         assertEquals(-1, GameEngine.fromNumerals("@@@@@@@@@@@@@@"));
         assertEquals(-1, GameEngine.fromNumerals("arbitrary string"));
     }

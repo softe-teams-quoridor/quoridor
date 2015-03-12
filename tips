@@ -9,3 +9,8 @@ function gb() {
 
 you can now type gb from any directory to build the project!
 also you can pass arguments to gb like this: gb clean
+
+this will allow you to run any of your class files for our project
+regardless of what directory you are currently in
+
+export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"

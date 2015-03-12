@@ -17,13 +17,13 @@
 public class GameEngine {
     private static final String [] numerals = {"I", "II", "III", 
                                                "IV", "V", "VI", "VII",
-                                               "VIII", "IX", "X", ""};
+                                               "VIII", "IX", ""};
     private static final char [] letters = {'A', 'B', 'C', 'D',
                                             'E', 'F', 'G', 'H', 'I', 'Z'};
 
     // converts an int to a string of roman numerals
     public static String toNumerals(int x) {
-        if (x < 0 || 10 < x) {
+        if (x < 0 || letters.length < x) {
             return "@@@@@@@@@@@@@@"; // this should never happen
         }
         return numerals[x];
@@ -31,7 +31,7 @@ public class GameEngine {
 
     // does the opposite of toNumerals
     public static int fromNumerals(String str) {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < numerals.length; i++) {
             if (str.equals(numerals[i])) {
                 return i;
             }
@@ -41,7 +41,7 @@ public class GameEngine {
 
     // converts an int to a char A-I
     public static char toLetters(int x) {
-        if (x < 0 || 10 < x) {
+        if (x < 0 || letters.length < x) {
             return 'Z'; // this should never happen
         }
         return letters[x];
@@ -49,7 +49,7 @@ public class GameEngine {
 
     // does the opposite of toLetters
     public static int fromLetters(char ch) {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < numerals.length; i++) {
             if (letters[i] == ch) {
                 return i;
             }
