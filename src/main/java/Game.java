@@ -189,8 +189,7 @@ public class Game {
             currentPlayer = (currentPlayer + 1) % numPlayers;
 
         }
-        
-        Protocol.broadcastMove(currentPlayer, "A player has won");
+
 
         
     }
