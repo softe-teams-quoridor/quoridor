@@ -48,15 +48,10 @@ public class Protocol {
         return inStreams[playerNo].nextLine();
     }
 
-<<<<<<< HEAD
     public static void broadcastBoot(int playerNo) {
         for (int i = 0; i < outStreams.length; i++) {
             outStreams[i].println("BOOT player " + playerNo);
         }
-=======
-    public static void broadcastBoot(int playerNo, Player player) {
-        outStreams[playerNo].println("BOOT " + player.getName());
->>>>>>> f4a62614366b79603ecd92c9801ed71cf67db897
     }
 
     public static void broadcastVictor(Player player, int playerNo) {

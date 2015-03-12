@@ -119,6 +119,7 @@ public class Game {
             board.addPlayer(players[0],4,0);
             players[1] = new Player("player 2",board.getSquare(4,8),TWO_PLAYER_WALLS);
             board.addPlayer(players[1],4,8);
+        }
             
 
         // tell all move servers who the players are
