@@ -165,13 +165,6 @@ public class Game {
             board.move(players[currentPlayer], moveTo);
 
 
-            //***FIXME****
-            // temporary fix to remove a player from the initial start spot 
-            if(m ==0) {
-                board.removePlayer(4,0);
-                m++;
-            }
-
             // Update the board with our new moves
             f.update(board);
 
