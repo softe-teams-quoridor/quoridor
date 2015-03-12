@@ -152,10 +152,14 @@ public class GameEngine {
 
         if(players.length == 2) {
             
-            if(players[0].getY() == 8)
+            if(players[0].getY() == 8) {
+                Protocol.broadcastVictor(players[0],0);
                 return true;
-            else if (players[1].getY() == 0)
+            }
+            else if (players[1].getY() == 0) {
+                Protocol.broadcastVictor(players[1],1);
                 return true;
+            } 
         }
 
         return false;

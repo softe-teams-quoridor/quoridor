@@ -113,12 +113,14 @@ public class Game {
         // ***HARDCODE TEST***
         // build a player and place him on player 1's spot
 //         numPlayers = 1;
-        for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player("player " + i, board.getSquare(4,i),
-                                    TWO_PLAYER_WALLS);
-            board.addPlayer(players[i],4,i);
+
+        if(numPlayers == 2) {
+            players[0] = new Player("player 1",board.getSquare(4,0),TWO_PLAYER_WALLS);
+            board.addPlayer(players[0],4,0);
+            players[1] = new Player("player 2",board.getSquare(4,8),TWO_PLAYER_WALLS);
+            board.addPlayer(players[1],4,8);
+            
         }
-        int m = 0;
 
         // tell all move servers who the players are
         Protocol.broadcastPlayers(players);
@@ -160,19 +162,24 @@ public class Game {
                 GameEngine.validate(board, players[currentPlayer], response);
 
 
-            Protocol.broadcastWent(players[currentPlayer], response);
+            
 
             // update board & broadcast move to other players
 
             if ( legal ) {
                 // Move is valid, make the move!
                 board.move(players[currentPlayer], moveTo);
+                Protocol.broadcastWent(players[currentPlayer], response);
 
                 // Update the board with our new moves
                 f.update(board);
             }
             else {
                 // FIXME: if illegal, boot player & broadcast boot to other players
+                System.out.println("HERE");
+                board.removePlayer(players[currentPlayer].getX(),players[currentPlayer].getY());
+                f.update(board);
+                Protocol.broadcastBoot(currentPlayer);
                 debug.println("illegal move attempted");
                 continue;
             }
