@@ -63,7 +63,6 @@ public class GameEngine {
       * returns true if the string represents a legal move on that gameboard
       */
     public static boolean validate(GameBoard board, Player p, String move) {
-        
         //***TEST ME****
         // Check if the square-to-move-to is adjacent to the player
         if ( parseMove ( board, move ) ) {
