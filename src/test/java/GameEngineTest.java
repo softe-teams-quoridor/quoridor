@@ -48,7 +48,8 @@ public class GameEngineTest {
     public void testParseMove() throws Exception {
         board = new GameBoard();
         p1 = new Player("tylUr", board.getSquare(3, 6), 10);
-        Square sq = ge.parseMove(board, "III-G");
+//         Square sq = ge.parseMove(board, "III-G");
+        Square sq = ge.getSquare(board, "III-G");
         assertEquals(sq, board.getSquare(2, 6));
 
     }
