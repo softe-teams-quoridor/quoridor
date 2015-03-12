@@ -94,6 +94,7 @@ public class Game {
     }
 
     public static void main (String[] args) {
+
         // initialize debug stream
         try {
             debug = new PrintStream("Game_debug");
@@ -130,10 +131,14 @@ public class Game {
         // Initialize current player to player 1 (index 0)
         int currentPlayer = 0;
 
+
+        boolean victory = false;
+
         // ***FIXME***
         // loop will need to check for a victory condition
         debug.println("beginning main loop");
-        while (true) {
+        while (!victory) {
+
             // Get move from player
             debug.println("requesting move from player: " + currentPlayer);
             outStreams[currentPlayer].println("make your move");
@@ -179,8 +184,15 @@ public class Game {
             // - make sure turn does not index a booted player
             // - turn = turn + 1 % players.length;
 
+            // Check for victory
+            victory = GameEngine.checkVictory(board,players);
+
             currentPlayer = (currentPlayer + 1) % numPlayers;
 
         }
+        
+        Protocol.broadcastMove(currentPlayer, "A player has won");
+
+        
     }
 }

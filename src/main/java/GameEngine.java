@@ -125,4 +125,17 @@ public class GameEngine {
             return null;
         }
     }
+
+    public static boolean checkVictory(GameBoard board, Player[] players) {
+
+        if(players.length == 2) {
+            
+            if(players[0].getY() == 8)
+                return true;
+            else if (players[1].getY() == 0)
+                return true;
+        }
+
+        return false;
+    }
 }
