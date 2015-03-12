@@ -154,23 +154,24 @@ public class Game {
             boolean legal = 
                 GameEngine.validate(board, players[currentPlayer], response);
 
-            if (! legal) {
-                // FIXME: if illegal, boot player & broadcast boot to other players
-                debug.println("illegal move attempted");
-                continue;
-            }
 
             Protocol.broadcastWent(players[currentPlayer], response);
 
             // update board & broadcast move to other players
 
-            // Move is valid, make the move!
-            board.move(players[currentPlayer], moveTo);
+            if ( legal ) {
+                // Move is valid, make the move!
+                board.move(players[currentPlayer], moveTo);
 
-
-            // Update the board with our new moves
-            f.update(board);
-
+                // Update the board with our new moves
+                f.update(board);
+            }
+            else {
+                // FIXME: if illegal, boot player & broadcast boot to other players
+                debug.println("illegal move attempted");
+                continue;
+            }
+            
             // if player has won, set victory to true
 
             // get next player's turn 
