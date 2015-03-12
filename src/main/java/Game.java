@@ -1,6 +1,6 @@
 /* 
    this class tracks the game's state. 
-*/
+ */
 
 import java.util.*;
 
@@ -52,7 +52,7 @@ public class Game {
         }
         System.out.println("ports found: " + Arrays.toString(ports));
 
-        
+
 
         // Connect to players
         outStreams = new PrintStream [ports.length];
@@ -91,34 +91,32 @@ public class Game {
 
         // Connect to players
         // - this will give us the number of players playing (2 or 4)   
-        
-        GameBoard board = new GameBoard();
-       
-        // Instantiate Players array
-        Player[] players = new Player[args.length];
 
-        GameEngine game = new GameEngine();
+        GameBoard board = new GameBoard();
+
+        // Instantiate Players array
+        Player[] players = new Player[args.length/2];
 
         players[0] = new Player("1",board.getSquare(4,0),TWO_PLAYER_WALLS);
 
         board.addPlayer(players[0],4,0);
 
-         GameboardFrame f = new GameboardFrame(board);
+        GameboardFrame f = new GameboardFrame(board);
 
 
         int currentPlayer = 0;
 
         int m = 0;
-       
-         while (true) {
+
+        while (true) {
 
             // get move from player
             outStreams[currentPlayer].println("make your move");
             String response = inStreams[currentPlayer].nextLine();
             System.out.println("received: " + response);
 
-            Square moveTo = game.parseMove(board,response);
-            
+            Square moveTo = GameEngine.parseMove(board,response);
+
             // validate move
 
 
@@ -129,15 +127,15 @@ public class Game {
             m++;
             f.update(board);
 
-            
+
             // - if valid, update board & broadcast move to other players
             for (int i = 0; i < outStreams.length; i++) {
                 outStreams[i].println("player " + currentPlayer + 
-                                      " made move: " + response);
+                        " made move: " + response);
             }
 
             // - if invalid, boot player & broadcast boot to other players
-            
+
             // if player has won, set victory to true
 
             // get next player's turn 
@@ -147,7 +145,7 @@ public class Game {
             //currentPlayer = (currentPlayer + 1) % outStreams.length;
 
 
-         }
+        }
 
     }
 }

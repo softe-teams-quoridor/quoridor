@@ -21,8 +21,6 @@ public class GameEngine {
     private static final char [] letters = {'Z', 'A', 'B', 'C', 'D',
                                             'E', 'F', 'G', 'H', 'I'};
 
-    public GameEngine() {}
-
     // converts an int to a string of roman numerals
     public static String toNumerals(int x) {
         if (x < 0 || 10 < x) {
@@ -64,7 +62,7 @@ public class GameEngine {
     /**
       * returns true if the string represents a legal move on that gameboard
       */
-    public boolean validate(GameBoard board, Player p, String move) {
+    public static boolean validate(GameBoard board, Player p, String move) {
         // FIXME 
         return false; // no moves are legal
     }
@@ -74,7 +72,7 @@ public class GameEngine {
      * @param board
      * @param move: a string representing a move
      */
-    public Square parseMove(GameBoard board, String move) {
+    public static Square parseMove(GameBoard board, String move) {
         // TESTME 
         String [] strs = move.split("-");
         int y = fromNumerals(strs[0]) - 1;
