@@ -85,8 +85,7 @@ public class GameEngine {
                  moveTo.getY() == moveFrom.getY() )
                 return true;
         }
-
-        return false        
+        return false; 
     }
 
     /* 
