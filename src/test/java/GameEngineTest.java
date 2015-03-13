@@ -37,6 +37,27 @@ public class GameEngineTest {
     }
 
     @Test
+    public void testToLetters() throws Exception {
+        //assertEquals("", GameEngine.toLetters(0));
+        assertEquals('A', GameEngine.toLetters(0));
+        assertEquals('E', GameEngine.toLetters(4));
+        assertEquals('I', GameEngine.toLetters(8));
+        assertEquals('Z', GameEngine.toLetters(9));
+        assertEquals('Z', GameEngine.toLetters(11));
+    }
+
+    @Test
+    public void testFromLetters() throws Exception {
+        //assertEquals(0, GameEngine.fromLetters(""));
+        assertEquals(0, GameEngine.fromLetters('A'));
+        assertEquals(4, GameEngine.fromLetters('E'));
+        assertEquals(8, GameEngine.fromLetters('I'));
+        assertEquals(-1, GameEngine.fromLetters('J'));
+        assertEquals(-1, GameEngine.fromLetters('Q'));
+        assertEquals(-1, GameEngine.fromLetters(';'));
+    }
+
+    @Test
     public void testMakePlayer() throws Exception {
         p1 = new Player("tylEr", board.getSquare(4, 0), 10);
         p2 = new Player("tylAr", board.getSquare(4, 8), 10);

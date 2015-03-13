@@ -19,16 +19,14 @@
 public class GameEngine {
     private static final String [] numerals = {"I", "II", "III", 
                                                "IV", "V", "VI", "VII",
-                                               "VIII", "IX", ""};
-    private static final char [] letters = {'A', 'B', 'C', 'D',
-                                            'E', 'F', 'G', 'H', 'I', 'Z'};
+                                               "VIII", "IX"};
 
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
       */
     public static String toNumerals(int x) {
-        if (x < 0 || letters.length < x) {
+        if (x < 0 || 8 < x) {
             return "@@@@@@@@@@@@@@"; // this should never happen
         }
         return numerals[x];
@@ -52,10 +50,10 @@ public class GameEngine {
       * @param x: integer to convert to a numeral
       */
     public static char toLetters(int x) {
-        if (x < 0 || letters.length < x) {
+        if (x < 0 || 8 < x) {
             return 'Z'; // this should never happen
         }
-        return letters[x];
+        return (char) (x + 'A');
     }
 
     /**
@@ -63,12 +61,10 @@ public class GameEngine {
       * @param ch: character to convert
       */
     public static int fromLetters(char ch) {
-        for (int i = 0; i < numerals.length; i++) {
-            if (letters[i] == ch) {
-                return i;
-            }
+        if (ch < 'A' || 'I' < ch) {
+            return -1; // this should never happen
         }
-        return -1; // this should never happen
+        return (int) (ch - 'A');
     }
 
     /**
@@ -79,28 +75,29 @@ public class GameEngine {
       */
     public static boolean validate(GameBoard board, Player p, String move) {
         //***TEST ME****
-        // Check if the square-to-move-to is adjacent to the player
+        // make sure the response can reasonably represent a move
         if (! parseMove ( board, move )) {
             return false;
         }
-        Square moveTo = getSquare(board, move);
-        Square moveFrom = p.getLoc();
+        Square destination = getSquare(board, move);
+        Square origin = p.getLoc();
+        // Check if the square-to-move-to is adjacent to the player
         // Check up
-        if ( moveTo.getX() == moveFrom.getX()    &&
-             moveTo.getY() == moveFrom.getY() +1 )
-            return moveTo.vacant(); // && moveTo.
+        if ( destination.getX() == origin.getX()    &&
+             destination.getY() == origin.getY() +1 )
+            return destination.vacant(); // && moveTo.
         // Check down
-        if ( moveTo.getX() == moveFrom.getX()    &&
-             moveTo.getY() == moveFrom.getY() -1 )
-            return moveTo.vacant();
+        if ( destination.getX() == origin.getX()    &&
+             destination.getY() == origin.getY() -1 )
+            return destination.vacant();
         // Check right
-        if ( moveTo.getX() == moveFrom.getX() +1 &&
-             moveTo.getY() == moveFrom.getY()    )
-            return moveTo.vacant();
+        if ( destination.getX() == origin.getX() +1 &&
+             destination.getY() == origin.getY()    )
+            return destination.vacant();
         // Check left
-        if ( moveTo.getX() == moveFrom.getX() -1 &&
-             moveTo.getY() == moveFrom.getY()    )
-            return moveTo.vacant();
+        if ( destination.getX() == origin.getX() -1 &&
+             destination.getY() == origin.getY()    )
+            return destination.vacant();
         // non-adjacent location
         return false; 
     }
@@ -182,4 +179,13 @@ public class GameEngine {
         }
         return false;
     }
+
+    public static Player nextPlayer(int current, Player [] players) {
+        current = (current + 1) % players.length;
+        if (players[current] != null) {
+            return players[current];
+        }
+        return nextPlayer(current, players);
+    }
+
 }

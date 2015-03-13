@@ -141,25 +141,6 @@ public class Game {
             String response = Protocol.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
-            // *** NOTE: the following validation is also taking place in
-            //              GameEngine.validate. Consider one or the other
-            // make sure the response can reasonably represent a move
-            /*
-            boolean correctFormat = GameEngine.parseMove(board,response);
-            if (! correctFormat) {
-                Deb.ug.println("incorrect format");
-                board.bootPlayer(currentPlayer);
-                Protocol.broadcastBoot(currentPlayer);
-                players[currentPlayer.getPlayerNo()] = null;
-                f.update(board);
-                if (GameEngine.checkVictory(board,players)) {
-                    break;
-                }
-                currentPlayer = nextPlayer(currentPlayer.getPlayerNo());
-                continue;
-            }
-
-            */
             // Validate move
             boolean legal = GameEngine.validate(board, currentPlayer, 
                                                 response);
@@ -174,8 +155,8 @@ public class Game {
                 // if the move is legal...
                 // move player on board, broadcast move
                 // Parse the move string to a square location
-                Square moveTo = GameEngine.getSquare(board,response);
-                board.move(currentPlayer, moveTo);
+                Square destination = GameEngine.getSquare(board,response);
+                board.move(currentPlayer, destination);
                 Protocol.broadcastWent(currentPlayer, response);
             }
             f.update(board);
@@ -186,19 +167,11 @@ public class Game {
             }
 
             // get next player's turn 
-            currentPlayer = nextPlayer(currentPlayer.getPlayerNo());
+            currentPlayer = 
+                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
         }
         Protocol.broadcastVictor(currentPlayer);
         // maybe sleep here?
         System.exit(0);
     }
-
-    public static Player nextPlayer(int current) {
-        current = (current + 1) % numPlayers;
-        if (players[current] != null) {
-            return players[current];
-        }
-        return nextPlayer(current);
-    }
-
 }
