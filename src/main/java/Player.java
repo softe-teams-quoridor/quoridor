@@ -34,7 +34,7 @@ class Player {
     private Square pawnLoc;         // player's pawn location
     private int numWalls;          // number of walls
     private int numDraw;
-    private static int numAssign = 1;
+    private static int numAssign = 0;
 
 
     /** Constructor

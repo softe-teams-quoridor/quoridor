@@ -21,7 +21,7 @@ public class Game {
 
     private static int numPlayers; // how many players are in the game
 
-    private static PrintStream debug;
+//     private static PrintStream Deb.ug;
 
     /*
      * prints a friendly message and exits
@@ -64,9 +64,9 @@ public class Game {
         // Set the number of players
         numPlayers = args.length/2;
         
-        debug.println("number of players: " + numPlayers);
-        debug.println("hosts found: " + Arrays.toString(Protocol.hosts));
-        debug.println("ports found: " + Arrays.toString(Protocol.ports));
+        Deb.ug.println("number of players: " + numPlayers);
+        Deb.ug.println("hosts found: " + Arrays.toString(Protocol.hosts));
+        Deb.ug.println("ports found: " + Arrays.toString(Protocol.ports));
 
         // Connect to players
         Protocol.outStreams = new PrintStream [Protocol.ports.length];
@@ -100,41 +100,43 @@ public class Game {
     }
 
     public static void main (String[] args) {
+        Deb.initialize();
 
-        // initialize debug stream
-        try {
-            debug = new PrintStream("Game_debug");
-        } catch (FileNotFoundException e) {
-            debug = System.out;
-        }
-
+//         // initialize debug stream
+//         try {
+//             debug = new PrintStream("Game_debug");
+//         } catch (FileNotFoundException e) {
+//             debug = System.err;
+//         }
+// 
         // Connect to players
-        debug.println("parsing arguments");
+        Deb.ug.println("parsing arguments");
         System.out.println("args provided: " + Arrays.toString(args));
         parseArgs(args);
 
         // Instantiate GameBoard
-        debug.println("instantiating GameBoard");
+        Deb.ug.println("instantiating GameBoard");
         GameBoard board = new GameBoard();
 
         // Instantiate Players array
-        debug.println("instantiating Players array");
+        Deb.ug.println("instantiating Players array");
         Player[] players = new Player[args.length/2];
 
+        board.setupInitialPosition(players);
         // Initialization of a two-player game
-        debug.println("initializing player_1");
-        players[0] = new Player("player_1",board.getSquare(4,0),20/numPlayers);
+        Deb.ug.println("initializing player_0");
+        players[0] = new Player("player_0",board.getSquare(4,0),20/numPlayers);
         board.addPlayer(players[0],4,0);
-        debug.println("initializing player_2");
-        players[1] = new Player("player_2",board.getSquare(4,8),20/numPlayers);
+        Deb.ug.println("initializing player_1");
+        players[1] = new Player("player_1",board.getSquare(4,8),20/numPlayers);
         board.addPlayer(players[1],4,8);
         // If this is a four player game...
         if (numPlayers == 4 ) {
-            debug.println("initializing player_3");
-            players[2] = new Player("player_3",board.getSquare(0,4),20/numPlayers);
+            Deb.ug.println("initializing player_2");
+            players[2] = new Player("player_2",board.getSquare(0,4),20/numPlayers);
             board.addPlayer(players[2],0,4);
-            debug.println("initializing player_4");
-            players[3] = new Player("player_4",board.getSquare(8,4),20/numPlayers);
+            Deb.ug.println("initializing player_3");
+            players[3] = new Player("player_3",board.getSquare(8,4),20/numPlayers);
             board.addPlayer(players[3],8,4);    
         }
 
@@ -142,7 +144,7 @@ public class Game {
         Protocol.broadcastPlayers(players);
 
         // Start up the display
-        debug.println("starting GameboardFrame");
+        Deb.ug.println("starting GameboardFrame");
         GameboardFrame f = new GameboardFrame(board);
 
         // Initialize current player to player 1 (index 0)
@@ -150,12 +152,12 @@ public class Game {
 
         // ***FIXME***
         // loop will need to check for a victory condition
-        debug.println("beginning main loop");
+        Deb.ug.println("beginning main loop");
         while (true) {
             // Get move from player
-            debug.println("requesting move from player: " + currentPlayer);
+            Deb.ug.println("requesting move from player: " + currentPlayer);
             String response = Protocol.requestMove(currentPlayer);
-            debug.println("received: " + response);
+            Deb.ug.println("received: " + response);
 
             // *** NOTE: the following validation is also taking place in
             //              GameEngine.validate. Consider one or the other
@@ -163,7 +165,7 @@ public class Game {
             boolean correctFormat = GameEngine.parseMove(board,response);
             if (! correctFormat) {
                 // FIXME: boot the player
-                debug.println("incorrect format");
+                Deb.ug.println("incorrect format");
                 continue;
             }
 
@@ -181,7 +183,7 @@ public class Game {
                                    players[currentPlayer].getY());
                 Protocol.broadcastBoot(currentPlayer);
                 Protocol.closeStreams(currentPlayer);
-                debug.println("illegal move attempted");
+                Deb.ug.println("illegal move attempted");
             } else {
                 // if the move is legal...
                 // move player on board, broadcast move

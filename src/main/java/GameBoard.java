@@ -184,6 +184,12 @@ public class GameBoard {
         player.setLocation(newSqr);
 
     }
+
+    public void setupInitialPosition(Player [] players) {
+        Deb.ug.println("test");
+        return;
+    }
+
 }
 
 
