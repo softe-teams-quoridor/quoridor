@@ -14,3 +14,11 @@ repositories {
 dependencies {
     testCompile 'junit:junit:4.11'
 }
+
+version = '0.1'
+jar {
+    manifest {
+        attributes("Main-Class": "Game",
+                   "Implementation-Version": version)
+    }
+}
