@@ -35,6 +35,7 @@ class Player {
     private int numWalls;          // number of walls
     private int playerNo;           // unique player I.D. between 0 and 3
     private static int numAssign = 0; // for assigning playerNo
+    private boolean isActive;
 
     /**
      * instantiates a player object
@@ -47,6 +48,7 @@ class Player {
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
         this.playerNo = numAssign;
+        isActive = true;
         numAssign++;
     } 
 
@@ -78,6 +80,13 @@ class Player {
       */
     public String getName(){
         return playerName;
+    }
+
+    /**
+      * returns a player's active status
+      */
+    public boolean isActive() {
+        return this.isActive;
     }
 
     // Consider if this is needed when we start to implement wall placement
