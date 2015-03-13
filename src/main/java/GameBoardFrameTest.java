@@ -1,8 +1,8 @@
-public class GameboardFrameTest{
+public class GameBoardFrameTest{
     public static void main(String [] args){
 	
 	GameBoard board = new GameBoard();
-	//constructs GameboardFrame
+	//constructs GameBoardFrame
 	
 	Square s = board.getSquare(2,3);
 	
@@ -12,7 +12,7 @@ public class GameboardFrameTest{
 	
 	board.addPlayer(p, 2, 3);
 	
-	GameboardFrame test = new GameboardFrame(board);
+	GameBoardFrame test = new GameBoardFrame(board);
 	
 	//draws panel (visual test)
 	//exits on close (visual test)

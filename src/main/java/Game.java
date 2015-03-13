@@ -124,8 +124,8 @@ public class Game {
         Protocol.broadcastPlayers(players);
 
         // Start up the display
-        Deb.ug.println("starting GameboardFrame");
-        GameboardFrame f = new GameboardFrame(board);
+        Deb.ug.println("starting GameBoardFrame");
+        GameBoardFrame f = new GameBoardFrame(board);
 
         // Initialize current player to player 0 (index 0)
 //         int currentPlayer = 0;

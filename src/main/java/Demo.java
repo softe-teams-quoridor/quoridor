@@ -10,7 +10,7 @@ public class Demo{
         GameBoard nBoard=new GameBoard();
         Player tylor=new Player("Tylor",nBoard.getSquare(1,1),10);
         Player nTylor=new Player("Not Tylor", nBoard.getSquare(2,2),10);
-        GameboardFrame g1=new GameboardFrame(nBoard);
+        GameBoardFrame g1=new GameBoardFrame(nBoard);
         int x=4, y=8, iExit=0, i = 0;
         while (iExit==0){
 	    if(y==0)

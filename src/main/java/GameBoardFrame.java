@@ -3,12 +3,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class GameboardFrame extends JFrame{
+public class GameBoardFrame extends JFrame{
 
     private JFrame gameboard;
 
     //constructs JFrame
-    public GameboardFrame(GameBoard board){
+    public GameBoardFrame(GameBoard board){
 
         //initialize JFrame
         gameboard = new JFrame("Quoridor");
