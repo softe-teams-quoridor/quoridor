@@ -31,15 +31,24 @@ public class Game {
         System.err.println("usage: java Game <host> <port> [<host> <port>]");
         System.exit(error);
     }
-
     /*
      * parses command-line arguments
      * populates the inStreams and outStreams arrays in Protocol
      * counts the number of players, stores it in numPlayers
      */
     public static void parseArgs (String[] args) {
-        if (args.length < 2) {
+        
+        // need 4 arguments for a two player game
+        if (args.length < 4) {
             usage(1);
+        }
+        // need 8 arguments for a four player game
+        else if (args.length < 8) {
+            usage(1);
+        }
+        else {
+            System.out.println("error: game only supports 2 or 4 players");
+            System.exit(1);
         }
 
         Protocol.ports = new int[args.length/2];
@@ -110,17 +119,22 @@ public class Game {
         debug.println("instantiating Players array");
         Player[] players = new Player[args.length/2];
 
-        // ***HARDCODE TEST***
-        // build a player and place him on player 1's spot
-//         numPlayers = 1;
-
-        if(numPlayers == 2) {
-            players[0] = new Player("player 1",board.getSquare(4,0),TWO_PLAYER_WALLS);
-            board.addPlayer(players[0],4,0);
-            players[1] = new Player("player 2",board.getSquare(4,8),TWO_PLAYER_WALLS);
-            board.addPlayer(players[1],4,8);
+        // Initialization of a two-player game
+        debug.println("initializing player 1");
+        players[0] = new Player("player 1",board.getSquare(4,0),TWO_PLAYER_WALLS);
+        board.addPlayer(players[0],4,0);
+        debug.println("initializing player 2");
+        players[1] = new Player("player 2",board.getSquare(4,8),TWO_PLAYER_WALLS);
+        board.addPlayer(players[1],4,8);
+        // If this is a four player game...
+        if ( players.length == 4 ) {
+            debug.println("initializing player 3");
+            players[2] = new Player("player 3",board.getSquare(0,4),TWO_PLAYER_WALLS);
+            board.addPlayer(players[2],0,4);
+            debug.println("initializing player 4");
+            players[3] = new Player("player 4",board.getSquare(8,4),TWO_PLAYER_WALLS);
+            board.addPlayer(players[3],8,4);    
         }
-            
 
         // tell all move servers who the players are
         Protocol.broadcastPlayers(players);
@@ -132,19 +146,19 @@ public class Game {
         // Initialize current player to player 1 (index 0)
         int currentPlayer = 0;
 
-
         boolean victory = false;
 
         // ***FIXME***
         // loop will need to check for a victory condition
         debug.println("beginning main loop");
         while (!victory) {
-
             // Get move from player
             debug.println("requesting move from player: " + currentPlayer);
             String response = Protocol.requestMove(currentPlayer);
             debug.println("received: " + response);
 
+            // *** NOTE: the following validation is also taking place in
+            //              GameEngine.validate. Consider one or the other
             // make sure the response can reasonably represent a move
             boolean correctFormat = GameEngine.parseMove(board,response);
             if (! correctFormat) {
@@ -161,17 +175,11 @@ public class Game {
             boolean legal = 
                 GameEngine.validate(board, players[currentPlayer], response);
 
-
-            
-
-            // update board & broadcast move to other players
-
+            // if the move is legal...
             if ( legal ) {
-                // Move is valid, make the move and update board and frame
+                // move player on board, broadcast move, update display frame
                 board.move(players[currentPlayer], moveTo);
                 Protocol.broadcastWent(players[currentPlayer], response);
-
-                // Update the board with our new moves
                 f.update(board);
             }
             else {
@@ -181,7 +189,6 @@ public class Game {
                 f.update(board);
                 Protocol.broadcastBoot(currentPlayer);
                 debug.println("illegal move attempted");
-                continue;
             }
             
             // if player has won, set victory to true
@@ -196,8 +203,5 @@ public class Game {
             currentPlayer = (currentPlayer + 1) % numPlayers;
 
         }
-
-
-        
     }
 }
