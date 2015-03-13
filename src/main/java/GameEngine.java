@@ -110,12 +110,35 @@ public class GameEngine {
     }
     
     /**
-      * some documentation
+      * please don't tamper with this...
+      * this should hopefully recursively check adjacent squares of the
+      * player's very first position and any positions it can jump to.
+      * this should evaluate x and y to the following values respectively:
+      *                       0, 1    square below
+      *                       1, 0    square right
+      *                       0,-1    square above
+      *                      -1, 0    square left
       */
     /*
-    private static boolean validate ( GameBoard g, Square origin, Square dest ) {
-       if  
-
+    private static boolean validate ( GameBoard g, Square orig, Square dest ) {
+       int oneZero = 10;
+       int sign = 6;
+       // Theoretically, this should check all 4 directions using bitwise ops
+       for ( int i = 0; i < 4; i++ ) {
+            int x = ((oneZero & 1))       * Integer.signum(sign);
+            int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
+            Square check = g.getSquare(orig.getX() + x,
+                                       orig.getY() + y);
+            if (check.equals(dest) || 
+               !check.vacant()     &&
+               validate (g, check, dest))
+                return true;
+            //if ( check.equals(dest) )
+            //    return true;
+            oneZero = oneZero >> 1;
+            sign = Integer.rotateRight(sign);
+       }
+       return false;
     }
     */
 
