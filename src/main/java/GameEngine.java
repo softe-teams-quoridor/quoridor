@@ -71,7 +71,7 @@ public class GameEngine {
             // Check up
             if ( moveTo.getX() == moveFrom.getX()    &&
                  moveTo.getY() == moveFrom.getY() +1 )
-                return moveTo.vacant();
+                return moveTo.vacant(); // && moveTo.
             // Check down
             if ( moveTo.getX() == moveFrom.getX()    &&
                  moveTo.getY() == moveFrom.getY() -1 )
