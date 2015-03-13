@@ -1,8 +1,11 @@
-/** Square.java - CIS 405 - teams 
- * Last Edit: February 19, 2015
+/* Square.java - CIS 405 - teams 
+ * Last Edit: March 13, 2015
  * _______________________________________________________
  *
  * represents a single cell on a GameBoard grid
+ *
+ *   ROW == Y
+ *   COL == X
  *
  * --------------------- METHODS -------------------------
  *
@@ -20,16 +23,14 @@
 public class Square {
     // Data members
     private Player occupying; // Indicates which player occupies this square
-    private int row;              // the location in the board of this square
-    private int col;              // the location in the board of this square
+    private int row;          // the Y coordinate of this square
+    private int col;          // the X coordinate of this square
     private Wall vert;        // vertical wall
     private Wall horz;        // horizontal wall
 
-
-
-    /** Constructor
-     * instantiates a square object
-     */
+    /** 
+      * instantiates a square object
+      */
     public Square(int x, int y) {
         occupying = null;
         vert = null;
@@ -38,53 +39,51 @@ public class Square {
         row = y;
     }
 
-
-
-    /** getPlayer
-     * returns the player object occupying this square
-     * @return = player object occupying this square
-     */
+    /** 
+      * returns the player object occupying this square
+      * @return = player object occupying this square
+      */
     public Player getPlayer(){
         return occupying;
     }
 
-
+    /**
+      * returns the x coordinate of this square
+      */
     public int getX(){
         return col;
     }
 
+    /**
+      * returns the y coordinate of this square
+      */
     public int getY(){
         return row;
     }
 
-
-
-    /** addPlayer
-     * adds a player to the square
-     */
+    /** 
+      * adds a player to the square
+      * @param p player to add to the square
+      */
     public void addplayer(Player p){
         occupying = p;
     }
 
-
-
-    /** removePlayer
+    /** 
      * removes a player from the square
      */
     public void removePlayer() {
         occupying = null;
     }
 
-    /** vacant
-     * returns false if this square is occupied by a player
-     */
+    /**
+      * returns false if this square is occupied by a player
+      */
     public boolean vacant() {
         return (this.occupying == null);
     }
 
-
-
-    /** placeWallVert
+    /** 
      * places a vertical wall on this square
      * @param start = indicates if this is the top (true) or bottom (false)
      *                of a wall
@@ -94,8 +93,6 @@ public class Square {
     public void placeWallVert(boolean start) {
         vert = new Wall(start);
     }
-
-
 
     /** placeWallHorz
      * places a horizontal wall on this square
@@ -107,8 +104,6 @@ public class Square {
     public void placeWallHorz(boolean start) {
         horz = new Wall(start);
     }
-
-
 
     /**
      * returns if the vertical wall starts or ends
@@ -122,7 +117,6 @@ public class Square {
         else
             throw new RuntimeException("There is no vertical wall on this square");
     }
-
 
     /**
      * returns if the horizontal wall starts or ends
