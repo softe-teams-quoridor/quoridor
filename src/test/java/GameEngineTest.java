@@ -59,5 +59,8 @@ public class GameEngineTest {
 
     @Test
     public void testValidate() throws Exception {
+        board = new GameBoard();
+        p1 = new Player("semi-collin",board.getSquare(4,0), 10);
+        
     }
 }
