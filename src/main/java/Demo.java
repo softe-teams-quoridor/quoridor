@@ -20,7 +20,7 @@ public class Demo{
 	    nBoard.addPlayer(tylor, x, y);
 	    g1.update(nBoard);
 	    Thread.sleep(50);
-	    nBoard.removePlayer(x,y);
+// 	    nBoard.removePlayer(x,y);
 	    i = UserInput.nextInt();
 	    switch (i){
 		case 8: y--;

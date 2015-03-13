@@ -13,13 +13,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Game {
-
-
-    // Constants
-    private static final int TWO_PLAYER_WALLS = 10; 
-    private static final int FOUR_PLAYER_WALLS = 5; 
-
     private static int numPlayers; // how many players are in the game
+    private static Player [] players ; // the players
 
 //     private static PrintStream Deb.ug;
 
@@ -120,26 +115,11 @@ public class Game {
 
         // Instantiate Players array
         Deb.ug.println("instantiating Players array");
-        Player[] players = new Player[args.length/2];
+//         Player[] players = new Player[args.length/2];
+        players = new Player[args.length/2];
+        assert (players.length == numPlayers);
 
         board.setupInitialPosition(players);
-        // Initialization of a two-player game
-        Deb.ug.println("initializing player_0");
-        players[0] = new Player("player_0",board.getSquare(4,0),20/numPlayers);
-        board.addPlayer(players[0],4,0);
-        Deb.ug.println("initializing player_1");
-        players[1] = new Player("player_1",board.getSquare(4,8),20/numPlayers);
-        board.addPlayer(players[1],4,8);
-        // If this is a four player game...
-        if (numPlayers == 4 ) {
-            Deb.ug.println("initializing player_2");
-            players[2] = new Player("player_2",board.getSquare(0,4),20/numPlayers);
-            board.addPlayer(players[2],0,4);
-            Deb.ug.println("initializing player_3");
-            players[3] = new Player("player_3",board.getSquare(8,4),20/numPlayers);
-            board.addPlayer(players[3],8,4);    
-        }
-
         // tell all move servers who the players are
         Protocol.broadcastPlayers(players);
 
@@ -147,8 +127,9 @@ public class Game {
         Deb.ug.println("starting GameboardFrame");
         GameboardFrame f = new GameboardFrame(board);
 
-        // Initialize current player to player 1 (index 0)
-        int currentPlayer = 0;
+        // Initialize current player to player 0 (index 0)
+//         int currentPlayer = 0;
+        Player currentPlayer = players[0];
 
         // ***FIXME***
         // loop will need to check for a victory condition
@@ -156,54 +137,68 @@ public class Game {
         while (true) {
             // Get move from player
             Deb.ug.println("requesting move from player: " + currentPlayer);
+//             String response = Protocol.requestMove(players[currentPlayer]);
             String response = Protocol.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
             // *** NOTE: the following validation is also taking place in
             //              GameEngine.validate. Consider one or the other
             // make sure the response can reasonably represent a move
+            /*
             boolean correctFormat = GameEngine.parseMove(board,response);
             if (! correctFormat) {
-                // FIXME: boot the player
                 Deb.ug.println("incorrect format");
+                board.bootPlayer(currentPlayer);
+                Protocol.broadcastBoot(currentPlayer);
+                players[currentPlayer.getPlayerNo()] = null;
+                f.update(board);
+                if (GameEngine.checkVictory(board,players)) {
+                    break;
+                }
+                currentPlayer = nextPlayer(currentPlayer.getPlayerNo());
                 continue;
             }
 
-            // Parse the move string to a square location
-            Square moveTo = GameEngine.getSquare(board,response);
-
-            //***FIXME***
+            */
             // Validate move
-            boolean legal = 
-                GameEngine.validate(board, players[currentPlayer], response);
+            boolean legal = GameEngine.validate(board, currentPlayer, 
+                                                response);
 
             if (!legal) {
                 // if illegal, boot player & broadcast boot to other players
-                board.removePlayer(players[currentPlayer].getX(),
-                                   players[currentPlayer].getY());
-                Protocol.broadcastBoot(currentPlayer);
-                Protocol.closeStreams(currentPlayer);
                 Deb.ug.println("illegal move attempted");
+                board.bootPlayer(currentPlayer);
+                Protocol.broadcastBoot(currentPlayer);
+                players[currentPlayer.getPlayerNo()] = null;
             } else {
                 // if the move is legal...
                 // move player on board, broadcast move
-                board.move(players[currentPlayer], moveTo);
-                Protocol.broadcastWent(players[currentPlayer], response);
+                // Parse the move string to a square location
+                Square moveTo = GameEngine.getSquare(board,response);
+                board.move(currentPlayer, moveTo);
+                Protocol.broadcastWent(currentPlayer, response);
             }
             f.update(board);
 
-            // get next player's turn 
-            // - make sure turn does not index a booted player
-            // - turn = turn + 1 % players.length;
-
             // Check for victory
-//             victory = GameEngine.checkVictory(board,players);
             if (GameEngine.checkVictory(board,players)) {
                 break;
             }
 
-            currentPlayer = (currentPlayer + 1) % numPlayers;
+            // get next player's turn 
+            currentPlayer = nextPlayer(currentPlayer.getPlayerNo());
         }
-        Protocol.broadcastVictor(players[currentPlayer], currentPlayer);
+        Protocol.broadcastVictor(currentPlayer);
+        // maybe sleep here?
+        System.exit(0);
     }
+
+    public static Player nextPlayer(int current) {
+        current = (current + 1) % numPlayers;
+        if (players[current] != null) {
+            return players[current];
+        }
+        return nextPlayer(current);
+    }
+
 }

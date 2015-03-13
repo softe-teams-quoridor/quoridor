@@ -139,7 +139,7 @@ public class GameBoard {
      * @param x = the column of the board
      * @param y = the row of the board
      */
-    public void removePlayer(int x, int y) {
+    private void removePlayer(int x, int y) {
         squares[x][y].removePlayer();
     }
 
@@ -185,12 +185,32 @@ public class GameBoard {
 
     }
 
+    public void bootPlayer(Player player) {
+        this.removePlayer(player.getX(), player.getY());
+    }
+
+
     public void setupInitialPosition(Player [] players) {
-        Deb.ug.println("test");
-        return;
+        assert (players.length == 2 || players.length == 4);
+        int wallsEach = 20 / players.length;
+
+        // Initialization of a two-player game
+        Deb.ug.println("initializing player_0");
+        players[0] = new Player("player_0", this.getSquare(4,0), wallsEach);
+        this.addPlayer(players[0], 4, 0);
+        Deb.ug.println("initializing player_1");
+        players[1] = new Player("player_1", this.getSquare(4,8), wallsEach);
+        this.addPlayer(players[1],4,8);
+        if (players.length == 4) {
+            // If this is a four player game...
+            Deb.ug.println("initializing player_2");
+            players[2] = new Player("player_2", this.getSquare(0,4),wallsEach);
+            this.addPlayer(players[2],0,4);
+            Deb.ug.println("initializing player_3");
+            players[3] = new Player("player_3", this.getSquare(8,4),wallsEach);
+            this.addPlayer(players[3],8,4);
+        }
+
     }
 
 }
-
-
-
