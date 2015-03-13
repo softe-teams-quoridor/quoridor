@@ -53,4 +53,11 @@ public class GameEngineTest {
         assertEquals(sq, board.getSquare(2, 6));
 
     }
+
+    @Test
+    public void testValidate() throw Exception {
+        board = new GameBoard();
+        p1 = new Player("semi-collin",board.getSquare(4,0), 10);
+        
+    }
 }

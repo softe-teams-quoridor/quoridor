@@ -1,5 +1,5 @@
 /*
- * i'm not currently using this at all LOL
+ *
  *
  */
 import java.io.IOException;
@@ -10,10 +10,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import java.util.Scanner;
-
-/**
- *
- */
 
 public class Protocol {
     /** Commands to quit */

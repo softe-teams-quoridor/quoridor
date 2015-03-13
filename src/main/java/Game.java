@@ -38,21 +38,17 @@ public class Game {
      */
     public static void parseArgs (String[] args) {
         
+        // ********* FIX ME *********************
+        // Cannot start a a two player game with this in
         // need 4 arguments for a two player game
-        if (args.length < 4) {
+        if (args.length !=  4 && args.length != 8) {
             usage(1);
-        }
-        // need 8 arguments for a four player game
-        else if (args.length < 8) {
-            usage(1);
-        }
-        else {
-            System.out.println("error: game only supports 2 or 4 players");
-            System.exit(1);
         }
 
         Protocol.ports = new int[args.length/2];
         Protocol.hosts = new String[args.length/2];
+
+        //reconsider
         for (int i = 0; i < args.length; i++) { 
             Protocol.hosts[i/2] = args[i];
             i++;
@@ -61,8 +57,12 @@ public class Game {
             } catch (Exception e) {
                 usage(2);
             }
-            numPlayers++;
+           
         }
+
+        // Set the number of players
+        numPlayers = args.length/2;
+        
         debug.println("number of players: " + numPlayers);
         debug.println("hosts found: " + Arrays.toString(Protocol.hosts));
         debug.println("ports found: " + Arrays.toString(Protocol.ports));
@@ -120,19 +120,19 @@ public class Game {
         Player[] players = new Player[args.length/2];
 
         // Initialization of a two-player game
-        debug.println("initializing player 1");
-        players[0] = new Player("player 1",board.getSquare(4,0),TWO_PLAYER_WALLS);
+        debug.println("initializing player_1");
+        players[0] = new Player("player_1",board.getSquare(4,0),20/numPlayers);
         board.addPlayer(players[0],4,0);
-        debug.println("initializing player 2");
-        players[1] = new Player("player 2",board.getSquare(4,8),TWO_PLAYER_WALLS);
+        debug.println("initializing player_2");
+        players[1] = new Player("player_2",board.getSquare(4,8),20/numPlayers);
         board.addPlayer(players[1],4,8);
         // If this is a four player game...
-        if ( players.length == 4 ) {
-            debug.println("initializing player 3");
-            players[2] = new Player("player 3",board.getSquare(0,4),TWO_PLAYER_WALLS);
+        if (numPlayers == 4 ) {
+            debug.println("initializing player_3");
+            players[2] = new Player("player_3",board.getSquare(0,4),20/numPlayers);
             board.addPlayer(players[2],0,4);
-            debug.println("initializing player 4");
-            players[3] = new Player("player 4",board.getSquare(8,4),TWO_PLAYER_WALLS);
+            debug.println("initializing player_4");
+            players[3] = new Player("player_4",board.getSquare(8,4),20/numPlayers);
             board.addPlayer(players[3],8,4);    
         }
 
@@ -183,8 +183,8 @@ public class Game {
                 f.update(board);
             }
             else {
-                // FIXME: if illegal, boot player & broadcast boot to other players
-                System.out.println("HERE");
+                // If illegal move is attempted
+                // Remove player, update board
                 board.removePlayer(players[currentPlayer].getX(),players[currentPlayer].getY());
                 f.update(board);
                 Protocol.broadcastBoot(currentPlayer);
