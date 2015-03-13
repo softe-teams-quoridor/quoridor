@@ -1,17 +1,21 @@
-/** Player.java - CIS405 - teams
- * Last Edit: February 17, 2015
+/* Player.java - CIS405 - teams
+ * Last Edit: March 13, 2015
  * _______________________________________________________ 
  *
  * represents the data of a player of the game, such
- *  as the player's name, number of walls, and the player's
- *  location on the gameboard
+ *   as the player's name, number of walls, and the player's
+ *   location on the gameboard
  * 
  * ----------------------- METHODS -----------------------
  * 
- * Player()      --> constructor
- * getLoc()      --> returns the square the player occupies
- * getNumWalls() --> returns number of walls
- * placeWall()   --> decrements numWalls if player has > 0 walls
+ * Player()       --> constructor
+ * getPlayerNo()  --> returns the player number
+ * getLoc()       --> returns the square the player occupies
+ * setLoc(Square) --> sets the player's location on a square
+ * getName()      --> returns the player's name
+ * isActive()     --> returns the player's active status
+ * getNumWalls()  --> returns number of walls
+ * placeWall()    --> decrements numWalls if player has > 0 walls
  * 
  * Considerations
  *     
@@ -26,18 +30,15 @@
 
 class Player {
 
-
-
-
     // Data Members
     private String playerName = ""; // player's name
     private Square pawnLoc;         // player's pawn location
     private int numWalls;          // number of walls
     private int playerNo;           // unique player I.D. between 0 and 3
     private static int numAssign = 0; // for assigning playerNo
+    private boolean isActive;
 
-
-    /** Constructor
+    /**
      * instantiates a player object
      * @param playerName = name of the player
      * @param startLoc   = starting square on the gameboard
@@ -48,57 +49,67 @@ class Player {
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
         this.playerNo = numAssign;
+        isActive = true;
         numAssign++;
     } 
 
+    /**
+      * returns the player's number
+      */
     public int getPlayerNo() {
         return playerNo;
     }
 
-    // NEED?
-    /** getLoc
-     * returns the square that the player's pawn is occupying
-     * @return = returns a square
-     */
+    /** 
+      * returns the square that the player's pawn is occupying
+      * @return = returns a square
+      */
     public Square getLoc(){
         return pawnLoc; 
     }
-
-    public int getX() {
-        return pawnLoc.getX();
-    }
     
-    public int getY() {
-        return pawnLoc.getY();
+    /**
+      * sets the player's location
+      * @param sqr square to set player to
+      */
+    public void setLoc(Square sqr) {
+        pawnLoc = sqr;
     }
 
-
-
+    /**
+      * returns the player's name
+      */
     public String getName(){
         return playerName;
     }
 
-    /** getNumWalls
-     * returns the number of walls
-     */
+    /**
+      * returns a player's active status
+      */
+    public boolean isActive() {
+        return this.isActive;
+    }
+
+    // Consider if this is needed when we start to implement wall placement
+
+    /** 
+      * returns the number of walls
+      */
     public int getNumWalls() {
         return numWalls;
     }
 
+    // Consider if this should be a boolean
 
-
-    /** placeWalls
-     * decrements the number of walls this player has if player has more than 0 walls
-     */    
+    /**
+      * decrements the number of walls this player has
+      * @exception RuntimeException thrown if player has 0 walls
+      */    
     public void placeWall() {
         if (numWalls > 0)
             numWalls--;
         else
             throw new RuntimeException("Cannot place wall; player is out of walls!");
-    }
-
-    public void setLocation(Square sqr) {
-        pawnLoc = sqr;
     }
 
 }
