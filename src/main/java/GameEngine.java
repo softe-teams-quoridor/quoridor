@@ -70,22 +70,27 @@ public class GameEngine {
             Square moveTo = getSquare(board, move);
             Square moveFrom = p.getLoc();
             // Check up
-            if ( moveTo.getX() == moveFrom.getX() &&
-                 moveTo.getY() == moveFrom.getY() +1 )
+            if ( moveTo.getX() == moveFrom.getX()    &&
+                 moveTo.getY() == moveFrom.getY() +1 &&
+                 moveTo.vacant() )
                 return true;
             // Check down
-            if ( moveTo.getX() == moveFrom.getX() &&
-                 moveTo.getY() == moveFrom.getY() -1 )
+            if ( moveTo.getX() == moveFrom.getX()    &&
+                 moveTo.getY() == moveFrom.getY() -1 &&
+                 moveTo.vacant() )
                 return true;
             // Check right
             if ( moveTo.getX() == moveFrom.getX() +1 &&
-                 moveTo.getY() == moveFrom.getY() )
+                 moveTo.getY() == moveFrom.getY()    &&
+                 moveTo.vacant() )
                 return true;
             // Check left
             if ( moveTo.getX() == moveFrom.getX() -1 &&
-                 moveTo.getY() == moveFrom.getY() )
+                 moveTo.getY() == moveFrom.getY()    &&
+                 moveTo.vacant() )
                 return true;
         }
+        // non-adjacent or player-occupied spot was found
         return false; 
     }
 

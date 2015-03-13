@@ -165,10 +165,8 @@ public class Game {
             // update board & broadcast move to other players
 
             if ( legal ) {
-                // Move is valid, make the move!
+                // Move is valid, make the move and update board and frame
                 board.move(players[currentPlayer], moveTo);
-
-                // Update the board with our new moves
                 f.update(board);
             }
             else {
