@@ -33,8 +33,8 @@ class Player {
     private String playerName = ""; // player's name
     private Square pawnLoc;         // player's pawn location
     private int numWalls;          // number of walls
-    private int numDraw;
-    private static int numAssign = 0;
+    private int playerNo;           // unique player I.D. between 0 and 3
+    private static int numAssign = 0; // for assigning playerNo
 
 
     /** Constructor
@@ -47,12 +47,12 @@ class Player {
         this.playerName = playerName;
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
-        this.numDraw = numAssign;
+        this.playerNo = numAssign;
         numAssign++;
     } 
 
-    public int getColor(){
-        return numDraw;
+    public int getPlayerNo() {
+        return playerNo;
     }
 
     // NEED?
