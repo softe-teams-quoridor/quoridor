@@ -15,8 +15,6 @@
  * getPlayer(int x, int y)    -- returns a player at the given cell, return null if unoccupied
  * removePlayer(int x, int y) -- removes a player at the given cell
  * validLoc(int x, int y)     -- returns true if coordinates are in the board 
- * getBoard() IS THIS NEEDED? -- returns the Square array 
- * 
  *
  * Considerations
  *  
@@ -119,7 +117,11 @@ public class GameBoard {
      * @return the square object
      */
     public Square getSquare(int x, int y){
-        return squares[x][y];
+        if ( x >= 0 && x <= 8 &&
+             y >= 0 && y <= 8 )
+            return squares[x][y];
+        else
+            return null;
     }
 
     /**

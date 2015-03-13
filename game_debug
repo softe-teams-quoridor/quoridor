@@ -1,0 +1,36 @@
+parsing arguments
+number of players: 2
+hosts found: [localhost, localhost]
+ports found: [1111, 2222]
+instantiating GameBoard
+instantiating Players array
+initializing player_0
+initializing player_1
+starting GameBoardFrame
+beginning main loop
+requesting move from player: Player@398825b3
+received: V-B
+requesting move from player: Player@326b9c84
+received: V-H
+requesting move from player: Player@398825b3
+received: V-C
+requesting move from player: Player@326b9c84
+received: V-G
+requesting move from player: Player@398825b3
+received: V-D
+requesting move from player: Player@326b9c84
+received: V-F
+requesting move from player: Player@398825b3
+received: V-E
+requesting move from player: Player@326b9c84
+received: V-D
+illegal move attempted
+booting playerplayer_1
+requesting move from player: Player@398825b3
+received: V-F
+requesting move from player: Player@398825b3
+received: V-G
+requesting move from player: Player@398825b3
+received: V-H
+requesting move from player: Player@398825b3
+received: V-I

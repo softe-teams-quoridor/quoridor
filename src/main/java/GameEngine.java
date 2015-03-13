@@ -101,12 +101,12 @@ public class GameEngine {
         // non-adjacent location
         return false; 
 
-        /*
-        if ( parseMove ( board, move ) {
-            return validate ( board, p.getLoc(), getSquare(board, move));
+/*        
+        if ( parseMove ( board, move ) ) {
+            return validate ( board, p.getLoc(), getSquare(board, move), -1);
         }
-        return false
-        */
+        return false;
+  */      
     }
     
     /**
@@ -119,28 +119,38 @@ public class GameEngine {
       *                       0,-1    square above
       *                      -1, 0    square left
       */
-    /*
-    private static boolean validate ( GameBoard g, Square orig, Square dest ) {
-       int oneZero = 10;
-       int sign = 6;
-       // Theoretically, this should check all 4 directions using bitwise ops
-       for ( int i = 0; i < 4; i++ ) {
+    private static boolean validate ( GameBoard g, Square orig, Square dest, int dontCheck ) {
+        int oneZero = 10;
+        int sign = 14;
+        // Theoretically, this should check all 4 directions using bitwise ops
+        for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
             Square check = g.getSquare(orig.getX() + x,
                                        orig.getY() + y);
-            if (check.equals(dest) || 
-               !check.vacant()     &&
-               validate (g, check, dest))
-                return true;
-            //if ( check.equals(dest) )
-            //    return true;
+            //@DEBUGGING
+            if ( check != null )
+                Deb.ug.println("validate: checking square@ " + check.getX() 
+                                                      + ", " + check.getY());
+            else
+                Deb.ug.println("validate: square is null");
+    
             oneZero = oneZero >> 1;
-            sign = Integer.rotateRight(sign);
+            sign = Integer.rotateRight(sign,1);
+
+            if ( check != null   && (check.equals(dest) ||
+                 !check.vacant() && i != dontCheck && validate (g, check, dest,(i+2)%4)))
+            {
+                //@DEBUGGING
+                Deb.ug.println("validate: true");
+                return true;
+            }
        }
+       //@DEBUGGING
+       Deb.ug.println("validate: false");
        return false;
     }
-    */
+    
 
     /** 
      *  returns true if the string represents a possibly legal move
