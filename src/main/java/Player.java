@@ -13,6 +13,7 @@
  * getLoc()       --> returns the square the player occupies
  * setLoc(Square) --> sets the player's location on a square
  * getName()      --> returns the player's name
+ * isActive()     --> returns the player's active status
  * getNumWalls()  --> returns number of walls
  * placeWall()    --> decrements numWalls if player has > 0 walls
  * 
