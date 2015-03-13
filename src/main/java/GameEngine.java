@@ -100,7 +100,24 @@ public class GameEngine {
             return destination.vacant();
         // non-adjacent location
         return false; 
+
+        /*
+        if ( parseMove ( board, move ) {
+            return validate ( board, p.getLoc(), getSquare(board, move));
+        }
+        return false
+        */
     }
+    
+    /**
+      * some documentation
+      */
+    /*
+    private static boolean validate ( GameBoard g, Square origin, Square dest ) {
+        
+
+    }
+    */
 
     /** 
      *  returns true if the string represents a possibly legal move

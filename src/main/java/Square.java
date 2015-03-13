@@ -14,6 +14,7 @@
  * addPlayer(Player)   --> assigns a Player obj to this square
  * removePlayer()      --> removes a Player obj from this square
  * vacant()            --> returns true if no player on this square
+ * equals(Square)      --> returns if the squares are equal
  * placeWallVert(bool) --> places a vertical wall
  * placeWallHorz(bool) --> places a horizontal wall
  * getVertWallStatus() --> returns if a vert wall starts or ends
@@ -81,6 +82,15 @@ public class Square {
       */
     public boolean vacant() {
         return (this.occupying == null);
+    }
+
+    /**
+      * returns if the squares are equal
+      * @param s square to compare
+      * @return true if equal, false otherwise
+      */
+    public boolean equals ( Square s ) {
+        return row == s.getY() && col == s.getX();
     }
 
     /** 
