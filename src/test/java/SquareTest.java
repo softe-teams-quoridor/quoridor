@@ -73,4 +73,11 @@ public class SquareTest {
         Square u = new Square(8,8);
         assertEquals(s.equals(u), false);
     }
+
+    @Test
+    public void testSquareEqualToXandY() throws Exception {
+        Square s = new Square(5,5);
+        assertEquals(s.equals(5,5), true);
+        assertEquals(s.equals(8,4), false);
+    }
 }
