@@ -179,8 +179,8 @@ public class Game {
 
             if (!legal) {
                 // if illegal, boot player & broadcast boot to other players
-                board.removePlayer(players[currentPlayer].getX(),
-                                   players[currentPlayer].getY());
+                board.removePlayer(players[currentPlayer].getLoc().getX(),
+                                   players[currentPlayer].getLoc().getY());
                 Protocol.broadcastBoot(currentPlayer);
                 Protocol.closeStreams(currentPlayer);
                 Deb.ug.println("illegal move attempted");

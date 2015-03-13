@@ -179,9 +179,10 @@ public class GameBoard {
      */
     public void move(Player player, Square newSqr) {
     
-        removePlayer(player.getX(),player.getY());
+        removePlayer(player.getLoc().getX(),
+                     player.getLoc().getY());
         addPlayer(player, newSqr.getX(),newSqr.getY());
-        player.setLocation(newSqr);
+        player.setLoc(newSqr);
 
     }
 

@@ -80,26 +80,25 @@ public class GameEngine {
     public static boolean validate(GameBoard board, Player p, String move) {
         //***TEST ME****
         // Check if the square-to-move-to is adjacent to the player
-        if ( parseMove ( board, move ) ) {
-            Square moveTo = getSquare(board, move);
-            Square moveFrom = p.getLoc();
-            // Check up
-            if ( moveTo.getX() == moveFrom.getX()    &&
-                 moveTo.getY() == moveFrom.getY() +1 )
-                return moveTo.vacant(); // && moveTo.
-            // Check down
-            if ( moveTo.getX() == moveFrom.getX()    &&
-                 moveTo.getY() == moveFrom.getY() -1 )
-                return moveTo.vacant();
-            // Check right
-            if ( moveTo.getX() == moveFrom.getX() +1 &&
-                 moveTo.getY() == moveFrom.getY()    )
-                return moveTo.vacant();
-            // Check left
-            if ( moveTo.getX() == moveFrom.getX() -1 &&
-                 moveTo.getY() == moveFrom.getY()    )
-                return moveTo.vacant();
-        }
+        Square moveTo = getSquare(board, move);
+        Square moveFrom = p.getLoc();
+        // Check up
+        if ( moveTo.getX() == moveFrom.getX()    &&
+             moveTo.getY() == moveFrom.getY() +1 )
+            return moveTo.vacant(); // && moveTo.
+        // Check down
+        if ( moveTo.getX() == moveFrom.getX()    &&
+             moveTo.getY() == moveFrom.getY() -1 )
+            return moveTo.vacant();
+        // Check right
+        if ( moveTo.getX() == moveFrom.getX() +1 &&
+             moveTo.getY() == moveFrom.getY()    )
+            return moveTo.vacant();
+        // Check left
+        if ( moveTo.getX() == moveFrom.getX() -1 &&
+             moveTo.getY() == moveFrom.getY()    )
+            return moveTo.vacant();
+       
         // non-adjacent location
         return false; 
     }
@@ -173,11 +172,11 @@ public class GameEngine {
 
         if(players.length == 2) {
             
-            if(players[0].getY() == 8) {
+            if(players[0].getLoc().getY() == 8) {
                 Protocol.broadcastVictor(players[0],0);
                 return true;
             }
-            else if (players[1].getY() == 0) {
+            else if (players[1].getLoc().getY() == 0) {
                 Protocol.broadcastVictor(players[1],1);
                 return true;
             } 
