@@ -59,4 +59,8 @@ public class Protocol {
             outStreams[playerNo].println("VICTOR " + player.getName());
         }
     }
+
+    public static void closeStreams(int playerNo) {
+        return;
+    }
 }

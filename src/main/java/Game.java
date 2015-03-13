@@ -29,6 +29,7 @@ public class Game {
      */
     private static void usage(int error) {
         System.err.println("usage: java Game <host> <port> [<host> <port>]");
+
         System.exit(error);
     }
     /*
@@ -109,6 +110,7 @@ public class Game {
 
         // Connect to players
         debug.println("parsing arguments");
+        System.out.println("args provided: " + Arrays.toString(args));
         parseArgs(args);
 
         // Instantiate GameBoard
@@ -146,12 +148,10 @@ public class Game {
         // Initialize current player to player 1 (index 0)
         int currentPlayer = 0;
 
-        boolean victory = false;
-
         // ***FIXME***
         // loop will need to check for a victory condition
         debug.println("beginning main loop");
-        while (!victory) {
+        while (true) {
             // Get move from player
             debug.println("requesting move from player: " + currentPlayer);
             String response = Protocol.requestMove(currentPlayer);
@@ -175,33 +175,33 @@ public class Game {
             boolean legal = 
                 GameEngine.validate(board, players[currentPlayer], response);
 
-            // if the move is legal...
-            if ( legal ) {
-                // move player on board, broadcast move, update display frame
+            if (!legal) {
+                // if illegal, boot player & broadcast boot to other players
+                board.removePlayer(players[currentPlayer].getX(),
+                                   players[currentPlayer].getY());
+                Protocol.broadcastBoot(currentPlayer);
+                Protocol.closeStreams(currentPlayer);
+                debug.println("illegal move attempted");
+            } else {
+                // if the move is legal...
+                // move player on board, broadcast move
                 board.move(players[currentPlayer], moveTo);
                 Protocol.broadcastWent(players[currentPlayer], response);
-                f.update(board);
             }
-            else {
-                // FIXME: if illegal, boot player & broadcast boot to other players
-                System.out.println("HERE");
-                board.removePlayer(players[currentPlayer].getX(),players[currentPlayer].getY());
-                f.update(board);
-                Protocol.broadcastBoot(currentPlayer);
-                debug.println("illegal move attempted");
-            }
-            
-            // if player has won, set victory to true
+            f.update(board);
 
             // get next player's turn 
             // - make sure turn does not index a booted player
             // - turn = turn + 1 % players.length;
 
             // Check for victory
-            victory = GameEngine.checkVictory(board,players);
+//             victory = GameEngine.checkVictory(board,players);
+            if (GameEngine.checkVictory(board,players)) {
+                break;
+            }
 
             currentPlayer = (currentPlayer + 1) % numPlayers;
-
         }
+        Protocol.broadcastVictor(players[currentPlayer], currentPlayer);
     }
 }
