@@ -3,5 +3,6 @@
 .gradle
 build/
 *.class
-cwProg
 *~
+#*
+*#
