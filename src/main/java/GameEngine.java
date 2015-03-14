@@ -1,19 +1,21 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: March 13, 2015
+ * Last Edit: March 14, 2015
  * _________________________________________________________________________________
  *
  * this class is used by both the client and the server!
  * 
  * ----------------------------------- METHODS -------------------------------------
  *
- * validate(GameBoard, String)  --> returns if string represents a legal move
  * toNumerals(int)              --> converts int to a numeral 
  * fromNumerals(String)         --> converts string(numeral) to an int
  * toLetters(int)               --> converts int to a letter ex 0 -> A
  * fromLetters(char)            --> conversions between ints and numerals/letters
+ * validate(GameBoard, String)  --> returns if string represents a legal move
+ * parseMove(GameBoard, String) --> returns if the move string is valid
  * getSquare(GameBoard, string) --> constructs a square based on the move string
  * checkVictory(GameBoard,      --> checks if a player has won the game 
  *              Players[])
+ * nextPlayer(int, Player[])    --> returns the next player available
  */
 
 public class GameEngine {
@@ -32,6 +34,8 @@ public class GameEngine {
         return numerals[x];
     }
 
+    //******************************************************************************
+
     /**
       * converts a roman numeral to an integer
       * @param str: string to convert
@@ -45,6 +49,8 @@ public class GameEngine {
         return -1; // this should never happen
     }
 
+    //******************************************************************************
+
     /**
       * converts an int to a char A-I
       * @param x: integer to convert to a numeral
@@ -55,6 +61,8 @@ public class GameEngine {
         }
         return (char) (x + 'A');
     }
+
+    //******************************************************************************
 
     /**
       * converts a character to an integer value
@@ -67,6 +75,8 @@ public class GameEngine {
         return (int) (ch - 'A');
     }
 
+    //******************************************************************************
+
     /**
       * returns true if the string represents a legal move on that gameboard
       * @param board: GameBoard object to move on
@@ -77,7 +87,9 @@ public class GameEngine {
         return parseMove(board,move) ? 
             validate(board, p.getLoc(), getSquare(board,move) ,-1, 0) : false;
     }
-    
+   
+    //******************************************************************************
+
     /**
       * validates a user move by checking adjacent squares and the squares
       *   adjacent to any nearby players
@@ -113,6 +125,7 @@ public class GameEngine {
        return false;
     }
     
+    //******************************************************************************
 
     /** 
      *  returns true if the string represents a possibly legal move
@@ -149,11 +162,14 @@ public class GameEngine {
         return false;
     }
 
+    //******************************************************************************
+
     /**
-     * this returns a square on the board
+     * returns a square on the board that we want to move to
      * FIXME: this currently breaks if you input a wall-placing move
      * @param board
      * @param move: a string representing a legal move
+     * @return a square on the board
      */
     public static Square getSquare(GameBoard board, String move) {
         // TESTME 
@@ -174,11 +190,13 @@ public class GameEngine {
         }
     }
 
+    //******************************************************************************
+
     /**
-      * Checks if any player has won the game
+      * returns if any player has won the game
       * @param board: GameBoard to check
       * @param players: array of players to check if they have won
-      * FIXME: implement 4-player mode 
+      * @return true if any player has won, false otherwise
       */
     public static boolean checkVictory(GameBoard board, Player[] players) {
         if (players.length == 2) {
@@ -187,10 +205,18 @@ public class GameEngine {
             }
             else if (players[1] != null && players[1].getLoc().getY() == 0) {
                 return true;
+            }
+            else if (players[2] != null && players[2].getLoc().getX() == 8) {
+                return true;
+            }
+            else if (players[3] != null && players[3].getLoc().getX() == 0) {
+                return true;
             } 
         }
         return false;
     }
+
+    //******************************************************************************
 
     /**
       * returns the next active player
