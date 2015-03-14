@@ -2,3 +2,4 @@
 [ ] make GameEngine.checkVictory check if only one player is left
 [ ] make GameEngine.validate check for a possible jump-move
 [ ] discuss how we're going to demo our project for Monday!
+[ ] make GameBoardFrame not steal focus
