@@ -9,7 +9,7 @@ public class Deb {
     public static void initialize(String name) {
         // initialize debug stream
         try {
-            ug = new PrintStream(name);
+            ug = new PrintStream(name + "_debug");
         } catch (FileNotFoundException e) {
             ug = System.err;
         }

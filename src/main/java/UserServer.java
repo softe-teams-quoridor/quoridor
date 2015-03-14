@@ -13,7 +13,7 @@ public class UserServer {
             usage(1);
         }
 
-        Deb.initialize("userserver_debug");
+        Deb.initialize("userserver");
 
         // process command-line argument
         int port = 0;

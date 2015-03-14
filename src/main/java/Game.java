@@ -95,7 +95,7 @@ public class Game {
     }
 
     public static void main (String[] args) {
-        Deb.initialize("game_debug");
+        Deb.initialize("game");
 
 //         // initialize debug stream
 //         try {
@@ -161,16 +161,16 @@ public class Game {
             }
             f.update(board);
 
+            // get next player's turn 
+            currentPlayer = 
+                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
+
             // Check for victory
             if (GameEngine.checkVictory(board,players)) {
                 break;
             }
-
-            // get next player's turn 
-            currentPlayer = 
-                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
         }
-        Protocol.broadcastVictor(currentPlayer);
+        Protocol.broadcastVictor(players[currentPlayer.getPlayerNo()-1]);
         // maybe sleep here?
         System.exit(0);
     }
