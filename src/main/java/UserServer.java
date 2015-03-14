@@ -5,34 +5,40 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class UserServer {
-    public static final boolean SERVER_DISPLAY = false;
+    public static boolean SERVER_DISPLAY = false;
+
+    public static void usage(int error) {
+        // display usage information then exit and return failure
+        System.err.println("usage: java UserServer <port> [--display]");
+        System.exit(error);
+    }
+
     public static void main(String[] args) {
-        if (args.length != 1) { // one required command-line argument
+        if (args.length != 1 && args.length != 2) { 
             usage(1);
         }
 
         Deb.initialize("userserver");
+        Deb.ug.println(Arrays.toString(args));
+        if (args.length == 2) {
+            Deb.ug.println("two args detected ");
+            if (args[1].equals("-d") || args[1].equals("--display")) {
+                Deb.ug.println("enabling display");
+                SERVER_DISPLAY = true;
+            }
+        }
 
         // process command-line argument
-        int port = 0;
+        int portNumber = 0;
         try {
-            port = Integer.parseInt(args[0]);
+            portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) {
             usage(2);
         }
 
-        run(port);
-    }
-
-    public static void usage(int error) {
-        // display usage information then exit and return failure
-        System.err.println("usage: java UserServer <port>");
-        System.exit(error);
-    }
-
-    public static void run(int portNumber) {
         try {
             ServerSocket server = new ServerSocket(portNumber);
             System.out.println("Accepting connections on " + portNumber);
@@ -40,17 +46,13 @@ public class UserServer {
             Socket currClient;
 
             while ((currClient = server.accept()) != null) {
+                ServerProtocol.init(currClient);
                 System.out.println("Connection from " + currClient);
-
-                Scanner displayClientInStream = 
-                    new Scanner(currClient.getInputStream());
-                PrintStream displayClientOutStream = 
-                    new PrintStream(currClient.getOutputStream());
 
                 String clientMessage;
 
-                if (displayClientInStream.hasNextLine()) {
-                    clientMessage = displayClientInStream.nextLine();
+                if (ServerProtocol.hasNextLine()) {
+                    clientMessage = ServerProtocol.nextLine();
                 } else {
                     System.out.println("expected message from client");
                     currClient = null;
@@ -67,16 +69,17 @@ public class UserServer {
                     break;
                 }
                 Player [] players = new Player[numPlayers];
+                Deb.ug.println("numPlayers: " + numPlayers);
                 GameBoard board = new GameBoard();
                 board.setupInitialPosition(players);
                 Player currentPlayer = players[0];
-                GameBoardFrame fserver;
+                GameBoardFrame fserver = null;
                 if (SERVER_DISPLAY) {
                     fserver = new GameBoardFrame(board);
                 }
 
-                while (displayClientInStream.hasNextLine()) {
-                    clientMessage = displayClientInStream.nextLine();
+                while (ServerProtocol.hasNextLine()) {
+                    clientMessage = ServerProtocol.nextLine();
                     System.out.println("received: " + clientMessage);
                     parsey = clientMessage.split(" ");
                     if (clientMessage.equals("GO?")) {
@@ -93,7 +96,7 @@ public class UserServer {
                             move = keyboard.nextLine();
                             System.out.println("move: " + move);
                         }
-                        displayClientOutStream.println(move);
+                        ServerProtocol.go(move);
                     } else if (parsey[0].equals("WENT")) {
                         Square destination = GameEngine.getSquare(board,
                                                                 parsey[2]);
@@ -109,6 +112,8 @@ public class UserServer {
                         currentPlayer = 
                             GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
                                                   players);
+                    } else if (parsey[0].equals("VICTOR")) {
+                        System.out.println("somebody won!");
                     } else {
                         System.out.println( "unknown");
                     }
@@ -118,13 +123,11 @@ public class UserServer {
 
                 }
 
-//                 System.out.println("Server closing connection from " + 
-//                                    currClient);
-//                 cout.close();
-//                 cin.close();
+                System.out.println("Server closing connection from " + 
+                                   currClient);
+                ServerProtocol.closeStreams();
             }
             System.out.println( "game over");
-            assert (! ((currClient = server.accept()) != null));
 
         } catch (IOException ioe) {
             // there was a standard input/output error (lower-level from uhe)
