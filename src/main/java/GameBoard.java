@@ -1,42 +1,39 @@
-/** GameBoard.java - CIS405 - teams
- * _______________________________________________________
- * GameBoard object to represent a 9x9 grid for the 
- *  quoridor game
+/* GameBoard.java - CIS405 - teams
+ * Last Edit: March 13, 2015
+ * _________________________________________________________________________________
+ *
+ * GameBoard object to represent a 9x9 grid for the Quoridor game
  *
  * X == COLUMN
  * Y == ROW
  *
- * ----------------------- METHODS -----------------------
+ * ------------------------------------ METHODS ------------------------------------
  *
- * GameBoard()                -- Default Constructor (initializes the squares of the board)
- * isOccupied(int x, int y)   -- returns true if player is at location, false otherwise 
- * getSquare(int x, int y)    -- returns the squares field
- * addPlayer(int x, int y)    -- adds a player to a given location
- * getPlayer(int x, int y)    -- returns a player at the given cell, return null if unoccupied
- * removePlayer(int x, int y) -- removes a player at the given cell
- * validLoc(int x, int y)     -- returns true if coordinates are in the board 
- *
- * Considerations
- *  
- *    Saturday (2/14) 
- *     if this object is only going to represent an array,
- *     then why not just have a Square array called 
- *     GameBoard within the Game class? - Walling
+ * [DEPRECATED] GameBoard()        --> Default Constructor 
+ * GameBoard(int)                  --> Constructor: initalizes board and player locs
+ * isOccupied(int, int)            --> returns if player is at given location 
+ * getSquare(int, int)             --> returns a square at a given location
+ * getPlayer(int, int)             --> returns a player at the given location
+ * addPlayer(player, int, int)     --> adds a player to a given location
+ * removePlayer(int, int)          --> removes a player from the given location
+ * validLoc(int, int)              --> returns if coordinates are within bounds
+ * move(Player, Square)            --> moves a player from one square to another
+ * bootPlayer(Player)              --> boots given player from game
+ * setupInitialPosition(Player []) --> sets initial player locations
  */
 
 public class GameBoard {
 
     // Constants
-    private static final int  COLUMNS = 9;
+    private static final int COLUMNS = 9;
     private static final int ROWS = 9;
 
-
-
-    // Members
-    private Square [][] squares; // The cells of the GameBoard
-    private final int players;   // the number of players in the game
+    // Data Members
+    private Square [][] squares;  // The cells of the GameBoard
     private Square [] playerLocs; // locations of the players
-
+    private final int players;    // the number of players in the game
+        
+    //******************************************************************************
 
     /** Constructor -- DEPRECATE THIS -- 
      * this constructor is only to be kept until the rest of the codebase 
@@ -55,8 +52,9 @@ public class GameBoard {
         }
     }
 
+    //******************************************************************************
 
-    /** Constructor
+    /**
      * The constructor builds the cells of the board
      * @param: the number of players in the game
      */
@@ -72,6 +70,7 @@ public class GameBoard {
         }
     }
 
+    //******************************************************************************
 
     /** Constructor FOR TESTING ONLY, DON'T USE THIS!
      * does all the stuff of the other constructor, but also puts a player
@@ -93,10 +92,8 @@ public class GameBoard {
      * @return true if the cell is occupied, false otherwise
      */
     public boolean isOccupied(int x, int y) {
-
         // Check for valid location
         if(validLoc(x,y)) {
-
             // Check to see if a player is there
             if(squares[x][y].getPlayer() == null)
                 return false;
@@ -105,7 +102,6 @@ public class GameBoard {
         }
         else
             return false;
-        //throw new RuntimeException("Invalid Location");
     }
 
     //******************************************************************************
@@ -116,13 +112,23 @@ public class GameBoard {
      * @param y = the row of the gameboard
      * @return the square object
      */
-    public Square getSquare(int x, int y){
-        if ( x >= 0 && x <= 8 &&
-             y >= 0 && y <= 8 )
-            return squares[x][y];
-        else
-            return null;
+    public Square getSquare(int x, int y) {
+        return validLoc(x,y) ? squares[x][y] : null;
     }
+    
+    //******************************************************************************
+    
+    /**
+     * gets a player at a given location
+     * @param x = the column of the board
+     * @param y = the row of the gameboard
+     * @return the player at the location, null if unoccupied
+     */
+    public Player getPlayer (int x, int y){
+        return validLoc(x,y) ? squares[x][y].getPlayer() : null;
+    }
+
+    //******************************************************************************
 
     /**
      * adds a player to the given location
@@ -130,8 +136,8 @@ public class GameBoard {
      * @param x = the column of the board
      * @param y = the row of the gameboard
      */
-    public void addPlayer(Player p, int x, int y){
-        squares[x][y].addplayer(p);
+    public void addPlayer(Player p, int x, int y) {
+        if (validLoc(x,y)) { squares[x][y].addplayer(p); }
     }
 
     //******************************************************************************
@@ -142,20 +148,7 @@ public class GameBoard {
      * @param y = the row of the board
      */
     private void removePlayer(int x, int y) {
-        squares[x][y].removePlayer();
-    }
-
-    //******************************************************************************
-
-    /**
-     * gets a player at a given location
-     * @param x = the column of the board
-     * @param y = the row of the gameboard
-     * @return the player at the location, null if unoccupied
-     */
-    public Player getPlayer (int x, int y){
-        assert (validLoc(x,y));
-        return squares[x][y].getPlayer();
+        if (validLoc(x,y)) squares[x][y].removePlayer();
     }
 
     //*******************************************************************************
@@ -167,12 +160,11 @@ public class GameBoard {
      * @param y = the row of the gameboard
      * @return true if location is on board, false otherwise
      */
-    public boolean validLoc(int x, int y) {
-        if(x >= 0 && x < COLUMNS)
-            if(y >= 0 && y < ROWS)
-                return true;
-        return false;
+    private boolean validLoc(int x, int y) {
+        return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
     }
+
+    //*******************************************************************************
 
     /**
      * moves a player to the given location
@@ -180,19 +172,28 @@ public class GameBoard {
      * @param Square = the destination square
      */
     public void move(Player player, Square newSqr) {
-    
         removePlayer(player.getLoc().getX(),
                      player.getLoc().getY());
         addPlayer(player, newSqr.getX(),newSqr.getY());
         player.setLoc(newSqr);
-
     }
 
+    //*******************************************************************************
+
+    /**
+     * boots a player from the game
+     * @param player player to be removed
+     */
     public void bootPlayer(Player player) {
         this.removePlayer(player.getLoc().getX(), player.getLoc().getY());
     }
 
+    //*******************************************************************************
 
+    /**
+     * initializes the players in their appropriate start locations
+     * @param players array of players to initialize
+     */
     public void setupInitialPosition(Player [] players) {
         assert (players.length == 2 || players.length == 4);
         int wallsEach = 20 / players.length;
