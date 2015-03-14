@@ -12,8 +12,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Protocol {
+    /** display client stuff **/
     public static final String BOOT = "BOOT";
-    public static final String GO = "GO";
     public static final String GO_Q = "GO?";
 
     public static PrintStream [] outStreams; // these should both have the
@@ -23,12 +23,23 @@ public class Protocol {
 
     public static String requestMove(int playerNo) {
         outStreams[playerNo].println(GO_Q);
-        return inStreams[playerNo].nextLine();
+        String response = inStreams[playerNo].nextLine();
+        if (! response.startsWith("GO ")) {
+            return null;
+        }
+        Deb.ug.println("requestMove returning: " + response.substring(3));
+        return response.substring(3);
     }
 
     public static String requestMove(Player player) {
         outStreams[player.getPlayerNo()].println(GO_Q);
-        return inStreams[player.getPlayerNo()].nextLine();
+        String response = inStreams[player.getPlayerNo()].nextLine();
+        Deb.ug.println("requestMove saw: " + response);
+        if (! response.startsWith("GO ")) {
+            return "B-O-O-T-M-E"; // response must begin with GO
+        }
+//         return response.substring(3).strip();
+        return response.substring(3);
     }
 
     public static void broadcastPlayers(Player [] players) {

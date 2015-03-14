@@ -95,18 +95,11 @@ public class Game {
     }
 
     public static void main (String[] args) {
-        Deb.initialize("game_debug");
+        // initialize debug stream
+        Deb.initialize("game");
 
-//         // initialize debug stream
-//         try {
-//             debug = new PrintStream("Game_debug");
-//         } catch (FileNotFoundException e) {
-//             debug = System.err;
-//         }
-// 
         // Connect to players
-        Deb.ug.println("parsing arguments");
-        System.out.println("args provided: " + Arrays.toString(args));
+        Deb.ug.println("args provided: " + Arrays.toString(args));
         parseArgs(args);
 
         // Instantiate GameBoard
@@ -115,7 +108,6 @@ public class Game {
 
         // Instantiate Players array
         Deb.ug.println("instantiating Players array");
-//         Player[] players = new Player[args.length/2];
         players = new Player[args.length/2];
         assert (players.length == numPlayers);
 
@@ -128,7 +120,6 @@ public class Game {
         GameBoardFrame f = new GameBoardFrame(board);
 
         // Initialize current player to player 0 (index 0)
-//         int currentPlayer = 0;
         Player currentPlayer = players[0];
 
         // ***FIXME***
@@ -137,7 +128,6 @@ public class Game {
         while (true) {
             // Get move from player
             Deb.ug.println("requesting move from player: " + currentPlayer);
-//             String response = Protocol.requestMove(players[currentPlayer]);
             String response = Protocol.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
@@ -161,16 +151,27 @@ public class Game {
             }
             f.update(board);
 
+            // get next player's turn 
+            currentPlayer = 
+                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
+
             // Check for victory
             if (GameEngine.checkVictory(board,players)) {
                 break;
             }
-
-            // get next player's turn 
-            currentPlayer = 
-                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
         }
-        Protocol.broadcastVictor(currentPlayer);
+        if (currentPlayer.getPlayerNo() == 0) {
+            // the last remaining player
+            // the last player in the array might have been booted
+            Player winner = null;
+            for (int i = 1; winner == null; i++) {
+                // find somebody who isn't null
+                winner = players[numPlayers-i];
+            }
+            Protocol.broadcastVictor(winner);
+        } else {
+            Protocol.broadcastVictor(players[currentPlayer.getPlayerNo()-1]);
+        }
         // maybe sleep here?
         System.exit(0);
     }
