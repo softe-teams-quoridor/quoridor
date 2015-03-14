@@ -19,19 +19,20 @@
  */
 
 public class GameEngine {
-    private static final String [] numerals = {"I", "II", "III", 
-                                               "IV", "V", "VI", "VII",
-                                               "VIII", "IX"};
+    private static final String [] numerals = {"I"  , "II"  , "III", 
+                                               "IV" , "V"   , "VI" , 
+                                               "VII", "VIII", "IX" };
 
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
       */
     public static String toNumerals(int x) {
-        if (x < 0 || 8 < x) {
+        /*if (x < 0 || 8 < x) {
             return "@@@@@@@@@@@@@@"; // this should never happen
         }
-        return numerals[x];
+        return numerals[x];*/
+        return (x < 0 || 8 < x) ? null : numerals[x];
     }
 
     //******************************************************************************
@@ -56,10 +57,11 @@ public class GameEngine {
       * @param x: integer to convert to a numeral
       */
     public static char toLetters(int x) {
-        if (x < 0 || 8 < x) {
+        /*if (x < 0 || 8 < x) {
             return 'Z'; // this should never happen
         }
-        return (char) (x + 'A');
+        return (char) (x + 'A');*/
+        return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
     }
 
     //******************************************************************************
@@ -69,10 +71,11 @@ public class GameEngine {
       * @param ch: character to convert
       */
     public static int fromLetters(char ch) {
-        if (ch < 'A' || 'I' < ch) {
+        /*if (ch < 'A' || 'I' < ch) {
             return -1; // this should never happen
         }
-        return (int) (ch - 'A');
+        return (int) (ch - 'A');*/
+        return (ch < 'A' || 'I' < ch) ? -1 : ((int) (ch - 'A'));
     }
 
     //******************************************************************************
@@ -200,18 +203,14 @@ public class GameEngine {
       */
     public static boolean checkVictory(GameBoard board, Player[] players) {
         if (players.length == 2) {
-            if (players[0] != null && players[0].getLoc().getY() == 8) {
+            if (players[0] != null && players[0].getLoc().getY() == 8)
                 return true;
-            }
-            else if (players[1] != null && players[1].getLoc().getY() == 0) {
+            if (players[1] != null && players[1].getLoc().getY() == 0)
                 return true;
-            }
-            else if (players[2] != null && players[2].getLoc().getX() == 8) {
+            if (players[2] != null && players[2].getLoc().getX() == 8)
                 return true;
-            }
-            else if (players[3] != null && players[3].getLoc().getX() == 0) {
+            if (players[3] != null && players[3].getLoc().getX() == 0)
                 return true;
-            } 
         }
         return false;
     }

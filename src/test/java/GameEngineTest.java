@@ -19,18 +19,28 @@ public class GameEngineTest {
 
     @Test
     public void testToNumerals() throws Exception {
-        //assertEquals("", GameEngine.toNumerals(0));
-        assertEquals("I", GameEngine.toNumerals(0));
-        assertEquals("V", GameEngine.toNumerals(4));
-        assertEquals("IX", GameEngine.toNumerals(8));
-        assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
+        assertEquals("I",    GameEngine.toNumerals(0));
+        assertEquals("II",   GameEngine.toNumerals(1));
+        assertEquals("III",  GameEngine.toNumerals(2));
+        assertEquals("IV",   GameEngine.toNumerals(3));
+        assertEquals("V",    GameEngine.toNumerals(4));
+        assertEquals("VI",   GameEngine.toNumerals(5));
+        assertEquals("VII",  GameEngine.toNumerals(6));
+        assertEquals("VIII", GameEngine.toNumerals(7));
+        assertEquals("IX",   GameEngine.toNumerals(8));
+        assertEquals(null,   GameEngine.toNumerals(11));
     }
 
     @Test
     public void testFromNumerals() throws Exception {
-        //assertEquals(0, GameEngine.fromNumerals(""));
         assertEquals(0, GameEngine.fromNumerals("I"));
+        assertEquals(1, GameEngine.fromNumerals("II"));
+        assertEquals(2, GameEngine.fromNumerals("III"));
+        assertEquals(3, GameEngine.fromNumerals("IV"));
         assertEquals(4, GameEngine.fromNumerals("V"));
+        assertEquals(5, GameEngine.fromNumerals("VI"));
+        assertEquals(6, GameEngine.fromNumerals("VII"));
+        assertEquals(7, GameEngine.fromNumerals("VIII"));
         assertEquals(8, GameEngine.fromNumerals("IX"));
         assertEquals(-1, GameEngine.fromNumerals("@@@@@@@@@@@@@@"));
         assertEquals(-1, GameEngine.fromNumerals("arbitrary string"));
@@ -38,12 +48,16 @@ public class GameEngineTest {
 
     @Test
     public void testToLetters() throws Exception {
-        //assertEquals("", GameEngine.toLetters(0));
         assertEquals('A', GameEngine.toLetters(0));
+        assertEquals('B', GameEngine.toLetters(1));
+        assertEquals('C', GameEngine.toLetters(2));
+        assertEquals('D', GameEngine.toLetters(3));
         assertEquals('E', GameEngine.toLetters(4));
+        assertEquals('F', GameEngine.toLetters(5));
+        assertEquals('G', GameEngine.toLetters(6));
+        assertEquals('H', GameEngine.toLetters(7));
         assertEquals('I', GameEngine.toLetters(8));
         assertEquals('Z', GameEngine.toLetters(9));
-        assertEquals('Z', GameEngine.toLetters(11));
     }
 
     @Test
