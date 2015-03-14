@@ -14,7 +14,7 @@
  * isOccupied(int, int)            --> returns if player is at given location 
  * getSquare(int, int)             --> returns a square at a given location
  * getPlayer(int, int)             --> returns a player at the given location
- * addPlayer(player, int, int)     --> adds a player to a given location
+ * addPlayer(player)     --> adds a player to a given location
  * removePlayer(int, int)          --> removes a player from the given location
  * validLoc(int, int)              --> returns if coordinates are within bounds
  * move(Player, Square)            --> moves a player from one square to another
@@ -66,6 +66,8 @@ public class GameBoard {
             for (int j = 0; j < ROWS; j++){
                 squares[i][j] = new Square(i, j);
                 // Should also set the bottom and right cells to have walls
+                // --technically not necessary since we can never input a move that
+                //   goes beyond the bounds of the board
             }
         }
     }
@@ -80,7 +82,7 @@ public class GameBoard {
         this();
         Player p = new Player("tylur", getSquare(x, y), 0);
         //         getSquare(x, y).addPlayer(p);
-        addPlayer(p, x, y);
+        addPlayer(p);
     }
 
     //******************************************************************************
@@ -136,8 +138,9 @@ public class GameBoard {
      * @param x = the column of the board
      * @param y = the row of the gameboard
      */
-    public void addPlayer(Player p, int x, int y) {
-        if (validLoc(x,y)) { squares[x][y].addplayer(p); }
+    public void addPlayer(Player p) {
+        if (validLoc(p.getLoc().getX(), p.getLoc().getY()))
+             squares[p.getLoc().getX()][p.getLoc().getY()].addplayer(p);
     }
 
     //******************************************************************************
@@ -147,8 +150,9 @@ public class GameBoard {
      * @param x = the column of the board
      * @param y = the row of the board
      */
-    private void removePlayer(int x, int y) {
-        if (validLoc(x,y)) squares[x][y].removePlayer();
+    private void removePlayer(Player p) {
+        if (validLoc(p.getLoc().getX(), p.getLoc().getY()))
+             squares[p.getLoc().getX()][p.getLoc().getY()].removePlayer();
     }
 
     //*******************************************************************************
@@ -172,10 +176,9 @@ public class GameBoard {
      * @param Square = the destination square
      */
     public void move(Player player, Square newSqr) {
-        removePlayer(player.getLoc().getX(),
-                     player.getLoc().getY());
-        addPlayer(player, newSqr.getX(),newSqr.getY());
+        removePlayer(player);
         player.setLoc(newSqr);
+        addPlayer(player);
     }
 
     //*******************************************************************************
@@ -185,7 +188,7 @@ public class GameBoard {
      * @param player player to be removed
      */
     public void bootPlayer(Player player) {
-        this.removePlayer(player.getLoc().getX(), player.getLoc().getY());
+        this.removePlayer(player);
     }
 
     //*******************************************************************************
@@ -196,23 +199,18 @@ public class GameBoard {
      */
     public void setupInitialPosition(Player [] players) {
         assert (players.length == 2 || players.length == 4);
+        
         int wallsEach = 20 / players.length;
+        int colInd = 32836;
+        int rowInd = 17536;
 
-        // Initialization of a two-player game
-        Deb.ug.println("initializing player_0");
-        players[0] = new Player("player_0", this.getSquare(4,0), wallsEach);
-        this.addPlayer(players[0], 4, 0);
-        Deb.ug.println("initializing player_1");
-        players[1] = new Player("player_1", this.getSquare(4,8), wallsEach);
-        this.addPlayer(players[1],4,8);
-        if (players.length == 4) {
-            // If this is a four player game...
-            Deb.ug.println("initializing player_2");
-            players[2] = new Player("player_2", this.getSquare(0,4),wallsEach);
-            this.addPlayer(players[2],0,4);
-            Deb.ug.println("initializing player_3");
-            players[3] = new Player("player_3", this.getSquare(8,4),wallsEach);
-            this.addPlayer(players[3],8,4);
+        for ( int i = 0; i < players.length; i++ ) {
+            int x = colInd & 15;
+            int y = rowInd & 15;
+            players[i] = new Player(("player_" + i), this.getSquare(x,y), wallsEach);
+            this.addPlayer(players[i]);
+            colInd = colInd >> 4;
+            rowInd = rowInd >> 4;
         }
 
     }

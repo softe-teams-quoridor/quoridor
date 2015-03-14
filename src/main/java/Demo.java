@@ -17,7 +17,7 @@ public class Demo{
 	    {
 		iExit=1;
 	    }
-	    nBoard.addPlayer(tylor, x, y);
+	    nBoard.addPlayer(tylor);
 	    g1.update(nBoard);
 	    Thread.sleep(50);
 // 	    nBoard.removePlayer(x,y);

@@ -10,7 +10,7 @@ public class GameBoardFrameTest{
 	
 	Player p = new Player ("test", s, b);
 	
-	board.addPlayer(p, 2, 3);
+	board.addPlayer(p);
 	
 	GameBoardFrame test = new GameBoardFrame(board);
 	
@@ -23,7 +23,7 @@ public class GameBoardFrameTest{
 	
 	Player p2 = new Player ("test2", s2, b2);
 	
-	board.addPlayer(p2, 5, 8);
+	board.addPlayer(p2);
 	
 	Square s3 = board.getSquare(7,1);
 	
@@ -31,7 +31,7 @@ public class GameBoardFrameTest{
 	
 	Player p3 = new Player ("test3", s3, b3);
 	
-	board.addPlayer(p3, 7, 1);
+	board.addPlayer(p3);
 	
 	Square s4 = board.getSquare(4,6);
 	
@@ -39,7 +39,7 @@ public class GameBoardFrameTest{
 	
 	Player p4 = new Player ("test4", s4, b4);
 	
-	board.addPlayer(p4, 4, 6);
+	board.addPlayer(p4);
 	
 	test.update(board);
     }

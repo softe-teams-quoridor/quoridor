@@ -74,57 +74,24 @@ public class GameEngine {
       * @param move: String that contains the move destination
       */
     public static boolean validate(GameBoard board, Player p, String move) {
-        //***TEST ME****
-        // make sure the response can reasonably represent a move
-  /*      if (! parseMove ( board, move )) {
-            return false;
-        }
-        Square destination = getSquare(board, move);
-        Square origin = p.getLoc();
-        // Check if the square-to-move-to is adjacent to the player
-        // Check up
-        if ( destination.getX() == origin.getX()    &&
-             destination.getY() == origin.getY() +1 )
-            return destination.vacant(); // && moveTo.
-        // Check down
-        if ( destination.getX() == origin.getX()    &&
-             destination.getY() == origin.getY() -1 )
-            return destination.vacant();
-        // Check right
-        if ( destination.getX() == origin.getX() +1 &&
-             destination.getY() == origin.getY()    )
-            return destination.vacant();
-        // Check left
-        if ( destination.getX() == origin.getX() -1 &&
-             destination.getY() == origin.getY()    )
-            return destination.vacant();
-        // non-adjacent location
-        return false; 
-*/
-        
-        /*if ( parseMove ( board, move ) ) {
-            return validate ( board, p.getLoc(), getSquare(board, move), -1);
-        }
-        return false;
-        */
         return parseMove(board,move) ? 
             validate(board, p.getLoc(), getSquare(board,move) ,-1, 0) : false;
     }
     
     /**
-      * please don't tamper with this...
-      * this should hopefully recursively check adjacent squares of the
-      * player's very first position and any positions it can jump to.
-      * this should evaluate x and y to the following values respectively:
-      *                       0, 1    square below
-      *                       1, 0    square right
-      *                       0,-1    square above
-      *                      -1, 0    square left
-      */
+      * validates a user move by checking adjacent squares and the squares
+      *   adjacent to any nearby players
+      * @param g GameBoard to validate a move on
+      * @param orig the square to check adjacencies from
+      * @param dest the destination to loo for
+      * @param dontCheckMe flag to prevent recursing to a previous location
+      * @param numJumps flag to prevent a 4th jump, in case of clustering
+      * @return true true if move is valid, false otherwise 
+     */
     private static boolean validate 
         ( GameBoard g, Square orig, Square dest, int dontCheckMe, int numJumps ) {
-        int oneZero = 10;
-        int sign = 6;
+        int oneZero = 10;   // 1010b
+        int sign = 6;       // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
@@ -133,24 +100,11 @@ public class GameEngine {
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
 
-            // check if the square is NOT null
-            // AND (check if we found the destination
-            //      OR the location is NOT occupied 
-            //      AND if we do not want to check the particular location 
-            //        AND if we can validate the adjacent squares of the 
-            //        nearby occupied location)
-            //    
-            /*if ( check != null   && 
-                (check.equals(dest) ||
-                 !check.vacant() && i != dontCheckMe && 
-                 validate (g, check, dest,(i+2)%4)
-                )
-               )
-                return true;
-                */
             if ( check != null ) {
+                // Adjacency found check
                 if ( check.vacant() && check.equals(dest) )
                     return true;
+                // Adjacency occupied check
                 if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
                    && validate(g, check, dest, (i+2)%4, numJumps+1) )
                     return true;
@@ -238,12 +192,19 @@ public class GameEngine {
         return false;
     }
 
+    /**
+      * returns the next active player
+      * @param current the current player number
+      * @param players the players array
+      * @return the next available player
+      */
     public static Player nextPlayer(int current, Player [] players) {
         current = (current + 1) % players.length;
         if (players[current] != null) {
             return players[current];
         }
         return nextPlayer(current, players);
+        //return (players[current] != null) ? players[current] : nextPlayer(current,players);
     }
 
 }
