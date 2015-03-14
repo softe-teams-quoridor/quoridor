@@ -1,7 +1,9 @@
-/* 
-   this class tracks the game's state. 
+/* Game.java (aka Quoridor) - CIS 405 - teams
+ * Last Edit: March 14, 2015
+ * _________________________________________________________________________________
+ * 
+ * implements the GameEngine and Protocols to create the game Quoridor
  */
-
 import java.util.*;
 import java.io.*;
 
@@ -13,6 +15,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Game {
+
+
     private static int numPlayers; // how many players are in the game
     private static Player [] players ; // the players
 
