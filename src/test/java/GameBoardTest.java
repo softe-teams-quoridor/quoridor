@@ -27,7 +27,7 @@ public class GameBoardTest {
         GameBoard b = new GameBoard();
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ ) {
-                b.addPlayer(new Player("CDEMST", new Square(i,j),0),i,j);
+                b.addPlayer(new Player("CDEMST", new Square(i,j),0));
                 assertTrue(b.isOccupied(i,j));
             }
     }
@@ -55,7 +55,7 @@ public class GameBoardTest {
     public void testAddAndGetPlayer() {
         GameBoard b = new GameBoard();
         Player p = new Player("CDEMST", b.getSquare(1,1), 0);
-        b.addPlayer(p,1,1);
+        b.addPlayer(p);
         assertEquals(b.getPlayer(1,1), p);
     }
 
@@ -63,7 +63,7 @@ public class GameBoardTest {
     public void testMovePlayer() {
         GameBoard b = new GameBoard();
         Player p = new Player("farple", b.getSquare(5,5), 0);
-        b.addPlayer(p,5,5);
+        b.addPlayer(p);
         b.move(p, new Square(2,3));
         assertTrue(b.isOccupied(2,3));
         assertTrue(!b.isOccupied(5,5));        
@@ -73,7 +73,7 @@ public class GameBoardTest {
     public void testBootPlayer() {
         GameBoard b = new GameBoard();
         Player p = new Player("bootMe", b.getSquare(2,2), 0);
-        b.addPlayer(p,2,2);
+        b.addPlayer(p);
         assertTrue(b.isOccupied(2,2));
         b.bootPlayer(p);
         assertTrue(!b.isOccupied(2,2));
