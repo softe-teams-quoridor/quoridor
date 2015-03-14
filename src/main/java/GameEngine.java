@@ -102,11 +102,13 @@ public class GameEngine {
         return false; 
 */
         
-        if ( parseMove ( board, move ) ) {
+        /*if ( parseMove ( board, move ) ) {
             return validate ( board, p.getLoc(), getSquare(board, move), -1);
         }
         return false;
-        
+        */
+        return parseMove(board,move) ? 
+            validate(board, p.getLoc(), getSquare(board,move) ,-1, 0) : false;
     }
     
     /**
@@ -119,35 +121,41 @@ public class GameEngine {
       *                       0,-1    square above
       *                      -1, 0    square left
       */
-    private static boolean validate ( GameBoard g, Square orig, Square dest, int dontCheck ) {
+    private static boolean validate 
+        ( GameBoard g, Square orig, Square dest, int dontCheckMe, int numJumps ) {
         int oneZero = 10;
-        int sign = 14;
-        // Theoretically, this should check all 4 directions using bitwise ops
+        int sign = 6;
         for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
             Square check = g.getSquare(orig.getX() + x,
                                        orig.getY() + y);
-            //@DEBUGGING
-            if ( check != null )
-                Deb.ug.println("validate: checking square@ " + check.getX() 
-                                                      + ", " + check.getY());
-            else
-                Deb.ug.println("validate: square is null");
-    
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
 
-            if ( check != null   && (check.equals(dest) ||
-                 !check.vacant() && i != dontCheck && validate (g, check, dest,(i+2)%4)))
-            {
-                //@DEBUGGING
-                Deb.ug.println("validate: true");
+            // check if the square is NOT null
+            // AND (check if we found the destination
+            //      OR the location is NOT occupied 
+            //      AND if we do not want to check the particular location 
+            //        AND if we can validate the adjacent squares of the 
+            //        nearby occupied location)
+            //    
+            /*if ( check != null   && 
+                (check.equals(dest) ||
+                 !check.vacant() && i != dontCheckMe && 
+                 validate (g, check, dest,(i+2)%4)
+                )
+               )
                 return true;
+                */
+            if ( check != null ) {
+                if ( check.vacant() && check.equals(dest) )
+                    return true;
+                if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
+                   && validate(g, check, dest, (i+2)%4, numJumps+1) )
+                    return true;
             }
        }
-       //@DEBUGGING
-       Deb.ug.println("validate: false");
        return false;
     }
     
