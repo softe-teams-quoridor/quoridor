@@ -76,7 +76,7 @@ public class GameEngine {
     public static boolean validate(GameBoard board, Player p, String move) {
         //***TEST ME****
         // make sure the response can reasonably represent a move
-        if (! parseMove ( board, move )) {
+  /*      if (! parseMove ( board, move )) {
             return false;
         }
         Square destination = getSquare(board, move);
@@ -100,13 +100,13 @@ public class GameEngine {
             return destination.vacant();
         // non-adjacent location
         return false; 
-
-/*        
+*/
+        
         if ( parseMove ( board, move ) ) {
             return validate ( board, p.getLoc(), getSquare(board, move), -1);
         }
         return false;
-  */      
+        
     }
     
     /**
