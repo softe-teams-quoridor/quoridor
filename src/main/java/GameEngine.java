@@ -1,20 +1,20 @@
-/** GameEngine.java - CIS405 - teams
-  * _______________________________________________________
-  *
-  * this class is used by both the client and the server!
-  * 
-  * ----------------------- METHODS -----------------------
-  *
-  * validate(GameBoard, String)  --> returns true if the string represents
-  *                                    a legal move on that gameboard
-  * toNumerals(int)              --> converts int to a numeral 
-  * fromNumerals(String)         --> converts string to an int
-  * toLetters(int)               --> converts int to a letter ex 0 -> A
-  * fromLetters(char)            --> conversions between ints and numerals/letters
-  * getSquare(GameBoard, string) --> constructs a square based on the move string
-  * checkVictory(GameBoard,      --> checks if a player has won the game 
-  *              Players[])
-  */
+/* GameEngine.java - CIS405 - teams
+ * Last Edit: March 13, 2015
+ * _________________________________________________________________________________
+ *
+ * this class is used by both the client and the server!
+ * 
+ * ----------------------------------- METHODS -------------------------------------
+ *
+ * validate(GameBoard, String)  --> returns if string represents a legal move
+ * toNumerals(int)              --> converts int to a numeral 
+ * fromNumerals(String)         --> converts string(numeral) to an int
+ * toLetters(int)               --> converts int to a letter ex 0 -> A
+ * fromLetters(char)            --> conversions between ints and numerals/letters
+ * getSquare(GameBoard, string) --> constructs a square based on the move string
+ * checkVictory(GameBoard,      --> checks if a player has won the game 
+ *              Players[])
+ */
 
 public class GameEngine {
     private static final String [] numerals = {"I", "II", "III", 
