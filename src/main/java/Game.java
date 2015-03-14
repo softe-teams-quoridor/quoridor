@@ -95,7 +95,7 @@ public class Game {
     }
 
     public static void main (String[] args) {
-        Deb.initialize();
+        Deb.initialize("game_debug");
 
 //         // initialize debug stream
 //         try {

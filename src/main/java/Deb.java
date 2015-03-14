@@ -6,10 +6,10 @@ import java.io.PrintStream;
 public class Deb {
     public static PrintStream ug;
 
-    public static void initialize() {
+    public static void initialize(String name) {
         // initialize debug stream
         try {
-            ug = new PrintStream("game_debug");
+            ug = new PrintStream(name);
         } catch (FileNotFoundException e) {
             ug = System.err;
         }
