@@ -15,6 +15,7 @@ public class GameBoardFrame extends JFrame{
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameboard.setSize(1000,700);
         gameboard.setLocationRelativeTo(null);
+        
 
         //creates the grid
         GridLayout game = new GridLayout(10,10);
@@ -34,7 +35,9 @@ public class GameBoardFrame extends JFrame{
         topLayer();
         rows(board);
         gameboard.pack();
+        gameboard.setFocusableWindowState(false);
         gameboard.setVisible(true);
+        gameboard.setFocusableWindowState(true);
     }
 
     //creates rows A-I

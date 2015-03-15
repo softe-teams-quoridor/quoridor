@@ -2,7 +2,7 @@
 [ ] make GameEngine.checkVictory check if only one player is left
 [X] make GameEngine.validate check for a possible jump-move
 [ ] discuss how we're going to demo our project for Monday!
-[ ] make GameBoardFrame not steal focus
+[X] make GameBoardFrame not steal focus
 
 After 1.0
 [ ] ensure a player has a clear path from their position to their victory row
