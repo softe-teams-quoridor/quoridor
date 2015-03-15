@@ -112,8 +112,7 @@ public class Game {
 
         // Instantiate Players array
         Deb.ug.println("instantiating Players array");
-        players = new Player[args.length/2];
-        assert (players.length == numPlayers);
+        players = new Player[numPlayers];
 
         board.setupInitialPosition(players);
         // tell all move servers who the players are
@@ -131,7 +130,7 @@ public class Game {
         Deb.ug.println("beginning main loop");
         while (true) {
             // Get move from player
-            Deb.ug.println("requesting move from player: " + currentPlayer);
+            Deb.ug.println("requesting move from player: " + currentPlayer.getName());
             String response = Protocol.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
@@ -139,19 +138,18 @@ public class Game {
             boolean legal = GameEngine.validate(board, currentPlayer, 
                                                 response);
 
-            if (!legal) {
+            if (legal) {
+                // Parse the move string to a square location
+                Square destination = GameEngine.getSquare(board,response);
+                // move player on board, broadcast move
+                board.move(currentPlayer, destination);
+                Protocol.broadcastWent(currentPlayer, response);
+            } else {
                 // if illegal, boot player & broadcast boot to other players
                 Deb.ug.println("illegal move attempted");
                 board.bootPlayer(currentPlayer);
                 Protocol.broadcastBoot(currentPlayer);
                 players[currentPlayer.getPlayerNo()] = null;
-            } else {
-                // if the move is legal...
-                // move player on board, broadcast move
-                // Parse the move string to a square location
-                Square destination = GameEngine.getSquare(board,response);
-                board.move(currentPlayer, destination);
-                Protocol.broadcastWent(currentPlayer, response);
             }
             f.update(board);
 

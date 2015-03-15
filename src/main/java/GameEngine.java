@@ -32,7 +32,7 @@ public class GameEngine {
             return "@@@@@@@@@@@@@@"; // this should never happen
         }
         return numerals[x];*/
-        return (x < 0 || 8 < x) ? null : numerals[x];
+        return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
     }
 
     //******************************************************************************
@@ -196,23 +196,38 @@ public class GameEngine {
     //******************************************************************************
 
     /**
-      * returns if any player has won the game
+      * returns true if any player has won the game
       * @param board: GameBoard to check
       * @param players: array of players to check if they have won
       * @return true if any player has won, false otherwise
       */
     public static boolean checkVictory(GameBoard board, Player[] players) {
-        if (players.length == 2) {
-            if (players[0] != null && players[0].getLoc().getY() == 8)
-                return true;
-            if (players[1] != null && players[1].getLoc().getY() == 0)
-                return true;
+        if (onlyOnePlayerRemaining(players))
+            return true;
+        if (players[0] != null && players[0].getLoc().getY() == 8)
+            return true;
+        if (players[1] != null && players[1].getLoc().getY() == 0)
+            return true;
+        if (players.length == 4) {
             if (players[2] != null && players[2].getLoc().getX() == 8)
                 return true;
             if (players[3] != null && players[3].getLoc().getX() == 0)
                 return true;
         }
         return false;
+    }
+
+    /* returns false unless there is only one player left */
+    private static boolean onlyOnePlayerRemaining(Player [] players) {
+        boolean oneActivePlayer = false;
+        for (int i = 0; i < players.length; i++) {
+            if (oneActivePlayer) {
+                return false;
+            } else {
+                oneActivePlayer = true;
+            }
+        }
+        return true;
     }
 
     //******************************************************************************
