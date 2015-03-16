@@ -16,6 +16,7 @@
  * isActive()     --> returns the player's active status
  * getNumWalls()  --> returns number of walls
  * placeWall()    --> decrements numWalls if player has > 0 walls
+ * resetPlayerNos()-> resets numAssign to zero
  * 
  * Considerations
  *     
@@ -112,4 +113,11 @@ class Player {
             throw new RuntimeException("Cannot place wall; player is out of walls!");
     }
 
+    /**
+      * resets the current assignment number to zero
+      * useful for a move server to reset the count of players after each game
+      */
+    public static void resetPlayerNos() {
+        numAssign = 0;
+    }
 }

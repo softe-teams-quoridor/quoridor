@@ -314,17 +314,18 @@ public class GameEngine {
         return nextPlayer(current, players);*/
         //return (players[current] != null) ? players[current] : nextPlayer(current,players);
 
-        // The above method will encounter infinite recursion if all players in the
-        // array are null. Typically, we avoid this by calling the victory condition
-        // method prior to getting the next active player... but it's never good to have
-        // a method that can recur infinitely...
-      
+        /* The above method will encounter infinite recursion if all players 
+         * in the array are null. Typically, we avoid this by calling the 
+         * victory condition method prior to getting the next active player... 
+         * but it's never good to have a method that can recur infinitely...
+         */
         //============
 
-        // This loop will make make sure that if we are looking at the same player again,
-        // we exit and return null
-        // In Game.java, after we call this method, we can check if player == null then
-        // exit the main loop if true
+        /* This loop will make make sure that if we are looking at the same 
+         * player again, we exit and return null
+         * In Game.java, after we call this method, we can check 
+         * if player == null then exit the main loop if true
+         */
         int nextP = (current + 1) % players.length;
         while ( nextP != current ) {
             if (players[nextP] != null)

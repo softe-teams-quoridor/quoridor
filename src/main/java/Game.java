@@ -167,7 +167,7 @@ public class Game {
 
             // The next few lines here have a some-what messy work-around
             Player winner = GameEngine.checkVictory(board, players);
-            if ( winner != null){
+            if (winner != null) {
                 Protocol.broadcastVictor(winner);
                 break;
             }

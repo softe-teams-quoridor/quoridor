@@ -42,12 +42,15 @@ public class UserServer {
         try {
             ServerSocket server = new ServerSocket(portNumber);
             System.out.println("Accepting connections on " + portNumber);
+            Deb.ug.println("Accepting connections on " + portNumber);
             Scanner keyboard = new Scanner(System.in);
             Socket currClient;
 
             while ((currClient = server.accept()) != null) {
+                Player.resetPlayerNos();
                 ServerProtocol.init(currClient);
                 System.out.println("Connection from " + currClient);
+                Deb.ug.println("Connection from " + currClient);
 
                 String clientMessage;
 
@@ -55,6 +58,7 @@ public class UserServer {
                     clientMessage = ServerProtocol.nextLine();
                 } else {
                     System.out.println("expected message from client");
+                    Deb.ug.println("expected message from client");
                     currClient = null;
                     break;
                 }
@@ -65,6 +69,7 @@ public class UserServer {
                     numPlayers = parsey.length - 1;
                 } else {
                     System.out.println("expected PLAYERS from client");
+                    Deb.ug.println("expected PLAYERS from client");
                     currClient = null;
                     break;
                 }
@@ -81,6 +86,7 @@ public class UserServer {
                 while (ServerProtocol.hasNextLine()) {
                     clientMessage = ServerProtocol.nextLine();
                     System.out.println("received: " + clientMessage);
+                    Deb.ug.println("received: " + clientMessage);
                     parsey = clientMessage.split(" ");
                     if (clientMessage.equals("GO?")) {
                         System.out.print(">> ");
@@ -96,6 +102,7 @@ public class UserServer {
                             move = keyboard.nextLine();
                             System.out.println("move: " + move);
                         }
+                        Deb.ug.println("sending: " + move);
                         ServerProtocol.go(move);
                     } else if (parsey[0].equals("WENT")) {
                         Square destination = GameEngine.getSquare(board,
@@ -108,6 +115,10 @@ public class UserServer {
                     } else if (parsey[0].equals("BOOT")) {
                         assert parsey[1].equals(currentPlayer.getName());
                         board.bootPlayer(currentPlayer);
+                        Deb.ug.println("currentPlayer.getName()" +
+                                       currentPlayer.getName());
+                        Deb.ug.println("currentPlayer.getPlayerNo()" + 
+                                        currentPlayer.getPlayerNo());
                         players[currentPlayer.getPlayerNo()] = null;
                         currentPlayer = 
                             GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
