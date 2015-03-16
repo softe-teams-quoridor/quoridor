@@ -25,8 +25,7 @@ public class Game {
      * @param an int to return to the OS
      */
     private static void usage(int error) {
-        System.err.println("usage: java Game <host> <port> <host> <port>
-                                            [<host> <port> <host> <port>]");
+        System.err.println("usage: java Game <host> <port> <host> <port> [<host> <port> <host> <port>]");
         System.exit(error);
     }
 
