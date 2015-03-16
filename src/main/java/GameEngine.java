@@ -194,6 +194,10 @@ public class GameEngine {
     }
 
     //******************************************************************************
+   
+    //============
+    //= OLD CODE =
+    //============
 
     /**
       * returns true if any player has won the game
@@ -201,7 +205,7 @@ public class GameEngine {
       * @param players: array of players to check if they have won
       * @return true if any player has won, false otherwise
       */
-    public static boolean checkVictory(GameBoard board, Player[] players) {
+    /* public static boolean checkVictory(GameBoard board, Player[] players) {
         if (onlyOnePlayerRemaining(players))
             return true;
         if (players[0] != null && players[0].getLoc().getY() == 8)
@@ -215,10 +219,38 @@ public class GameEngine {
                 return true;
         }
         return false;
+    }*/
+
+    //============
+
+    /** DOCUMENTME **/
+    // Retrieves a player that has won the game.
+    // Returns a null player if there is no victory
+    public static Player checkVictory(GameBoard board, Player[] players) {
+        // See if there is only one player left, and return that victor
+        Player lastStanding = onlyOnePlayerRemaining(players);
+        if (lastStanding != null)
+            return lastStanding;
+
+        // Check if one of the players have met the traditional victory
+        // condition
+        if (players[0] != null && players[0].getLoc().getY() == 8)
+            return players[0];
+        if (players[1] != null && players[1].getLoc().getY() == 0)
+            return players[1];
+        if (players.length == 4) {
+            if (players[2] != null && players[2].getLoc().getX() == 8)
+                return players[2];
+            if (players[3] != null && players[3].getLoc().getX() == 0)
+                return players[3];
+        }
+        // No player has won, return null
+        return null;
     }
 
     /* returns false unless there is only one player left */
-    private static boolean onlyOnePlayerRemaining(Player [] players) {
+    //private static boolean onlyOnePlayerRemaining(Player [] players) {
+        /*
         boolean oneActivePlayer = false;
         for (int i = 0; i < players.length; i++) {
             if (oneActivePlayer) {
@@ -228,6 +260,36 @@ public class GameEngine {
             }
         }
         return true;
+        */
+
+        // I am not sure how the above method works... 
+        // every even iteration (i=0, i=2) will
+        // return true,
+        // every odd iteration  (i=1, i=3) will return false...
+        // because we only have 2 or 4 players, we will always
+        // exit on an odd iteration and return false
+
+        //----
+
+        // This loop will count the number of active players.
+        // if the number of null players in the players array
+        // is one less than the array length, then we only have
+        // one active player
+    private static Player onlyOnePlayerRemaining(Player [] players) {
+        int nullPlayerCount = 0;
+        // Check if we only have one player
+        for (int i = 0; i < players.length; i++) {
+            if ( players[i] == null )
+                nullPlayerCount++;
+        }
+        // If we only have one player left... let's return that player!
+        if (nullPlayerCount == players.length - 1) {
+            for (int i = 0; i < players.length; i++) 
+                if (players[i] != null)
+                    return players[i];
+        }
+        // Else, we have more than one player left
+        return null;
     }
 
     //******************************************************************************
@@ -239,12 +301,40 @@ public class GameEngine {
       * @return the next available player
       */
     public static Player nextPlayer(int current, Player [] players) {
+        
+        //============
+        //= OLD CODE =
+        //============
+       
+        /*
         current = (current + 1) % players.length;
         if (players[current] != null) {
             return players[current];
         }
-        return nextPlayer(current, players);
+        return nextPlayer(current, players);*/
         //return (players[current] != null) ? players[current] : nextPlayer(current,players);
+
+        // The above method will encounter infinite recursion if all players in the
+        // array are null. Typically, we avoid this by calling the victory condition
+        // method prior to getting the next active player... but it's never good to have
+        // a method that can recur infinitely...
+      
+        //============
+
+        // This loop will make make sure that if we are looking at the same player again,
+        // we exit and return null
+        // In Game.java, after we call this method, we can check if player == null then
+        // exit the main loop if true
+        int nextP = (current + 1) % players.length;
+        while ( nextP != current ) {
+            if (players[nextP] != null)
+                return players[nextP];
+            nextP = (nextP + 1) % players.length;
+        }
+        
+        //@DEBUGGING
+        //Deb.ug.println("GameEngine.nextPlayer: cannot get next player; no more players");
+        return null;
     }
 
 }
