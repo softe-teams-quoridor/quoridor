@@ -48,14 +48,14 @@ public class UserServer {
 
             while ((currClient = server.accept()) != null) {
                 Player.resetPlayerNos();
-                ServerProtocol.init(currClient);
+                ServerMessenger hermes = new ServerMessenger(currClient);
                 System.out.println("Connection from " + currClient);
                 Deb.ug.println("Connection from " + currClient);
 
                 String clientMessage;
 
-                if (ServerProtocol.hasNextLine()) {
-                    clientMessage = ServerProtocol.nextLine();
+                if (hermes.hasNextLine()) {
+                    clientMessage = hermes.nextLine();
                 } else {
                     System.out.println("expected message from client");
                     Deb.ug.println("expected message from client");
@@ -83,8 +83,8 @@ public class UserServer {
                     fserver = new GameBoardFrame(board);
                 }
 
-                while (ServerProtocol.hasNextLine()) {
-                    clientMessage = ServerProtocol.nextLine();
+                while (hermes.hasNextLine()) {
+                    clientMessage = hermes.nextLine();
                     System.out.println("received: " + clientMessage);
                     Deb.ug.println("received: " + clientMessage);
                     parsey = clientMessage.split(" ");
@@ -103,7 +103,7 @@ public class UserServer {
                             System.out.println("move: " + move);
                         }
                         Deb.ug.println("sending: " + move);
-                        ServerProtocol.go(move);
+                        hermes.go(move);
                     } else if (parsey[0].equals("WENT")) {
                         Square destination = GameEngine.getSquare(board,
                                                                 parsey[2]);
@@ -136,7 +136,7 @@ public class UserServer {
 
                 System.out.println("Server closing connection from " + 
                                    currClient);
-                ServerProtocol.closeStreams();
+                hermes.closeStreams();
             }
             System.out.println( "game over");
 

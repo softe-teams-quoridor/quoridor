@@ -10,15 +10,15 @@ import java.net.UnknownHostException;
 
 import java.util.Scanner;
 
-public class ServerProtocol {
+public class ServerMessenger {
     /** display client stuff **/
-    private static PrintStream outStream; // connection to the display client
-    private static Scanner     inStream;  // connection to the display client
+    private PrintStream outStream; // connection to the display client
+    private Scanner     inStream;  // connection to the display client
 
-    public static void init(Socket sock) {
+    public ServerMessenger(Socket sock) {
         try {
-            inStream = new Scanner(sock.getInputStream());
-            outStream = new PrintStream(sock.getOutputStream());
+            this.inStream = new Scanner(sock.getInputStream());
+            this.outStream = new PrintStream(sock.getOutputStream());
         } catch (IOException ioe) {
             // there was a standard input/output error (lower-level from uhe)
             ioe.printStackTrace();
@@ -26,26 +26,25 @@ public class ServerProtocol {
         }
     }
 
-    public static void go(String move) {
+    public void go(String move) {
         outStream.println("GO " + move);
     }
 
     /* tells display client that this server is ready to play */
-    public static void move(String move) {
+    public void move(String move) {
         outStream.println("MOVE");
     }
 
-    public static boolean hasNextLine() {
+    public boolean hasNextLine() {
         return inStream.hasNextLine();
     }
 
-    public static String nextLine() {
+    public String nextLine() {
         return inStream.nextLine();
     }
 
-    public static void closeStreams() {
+    public void closeStreams() {
         outStream.close();
         inStream.close();
     }
-
 }
