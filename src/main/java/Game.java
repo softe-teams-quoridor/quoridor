@@ -1,8 +1,8 @@
 /* Game.java (aka Quoridor) - CIS 405 - teams
  * Last Edit: March 14, 2015
- * _________________________________________________________________________________
+ * ____________________________________________________________________________
  * 
- * implements the GameEngine and Protocols to create the game Quoridor
+ * implements the GameEngine and Protocols to create and run the game Quoridor
  */
 import java.util.*;
 import java.io.*;
@@ -16,21 +16,20 @@ import java.net.UnknownHostException;
 
 public class Game {
 
-
-    private static int numPlayers; // how many players are in the game
+    private static int numPlayers;     // how many players are in the game
     private static Player [] players ; // the players
-
-//     private static PrintStream Deb.ug;
+    //private static PrintStream Deb.ug; // debugging outstream
 
     /*
      * prints a friendly message and exits
      * @param an int to return to the OS
      */
     private static void usage(int error) {
-        System.err.println("usage: java Game <host> <port> <host> <port> [<host> <port> <host> <port>]");
-
+        System.err.println("usage: java Game <host> <port> <host> <port>
+                                            [<host> <port> <host> <port>]");
         System.exit(error);
     }
+
     /*
      * parses command-line arguments
      * populates the inStreams and outStreams arrays in Protocol
@@ -152,76 +151,30 @@ public class Game {
                 players[currentPlayer.getPlayerNo()] = null;
             }
         
+            // Update the graphical board
             f.update(board);
-           
-            //============
-            //= OLD CODE =
-            //============
-    
-            // Check for victory
-            /*if (GameEngine.checkVictory(board,players)) {
-                break;
-            }*/
 
-            //============
-
-            // The next few lines here have a some-what messy work-around
+            // Retrieve a possibly winning player
             Player winner = GameEngine.checkVictory(board, players);
             if (winner != null) {
+                // If the retrieved player is a winner, display and exit loop
                 Protocol.broadcastVictor(winner);
                 break;
             }
+
+            //...the game is still going, get the next player and continue
             
-            // get next player's turn 
+            // Get next player's turn 
             currentPlayer = 
                 GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
  
+            // Sleepy time
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 // ignore it
             }
         }
-
-        //============
-        //= OLD CODE =
-        //============
-
-        // This was a work-around for when this only checked one or two players...
-        // didn't work out so well.
-        /*if ( currentPlayer != null)
-            Protocol.broadcastVictor(players[(currentPlayer.getPlayerNo())]);
-
-        else {
-            Player winner = null;
-            for (int i = 0; winner == null; i++) {
-                // find somebody who isn't null
-                winner = players[i];
-            }
-            Protocol.broadcastVictor(winner);
-        }*/
-
-        //-----------------
-
-        //***FIXME***
-        // Temporary fix, this will work for a 2p game if one of the two
-        // players get booted
-        // if (currentPlayer.getPlayerNo() == 0 )  //<--- original if statement
-        /* if (currentPlayer.getPlayerNo() == 0 ||
-            currentPlayer.getPlayerNo() == 1 ) {
-            // the last remaining player
-            // the last player in the array might have been booted
-            Player winner = null;
-            for (int i = 1; winner == null; i++) {
-                // find somebody who isn't null
-                winner = players[numPlayers-i];
-            }
-            Protocol.broadcastVictor(winner);
-        } else {
-            Protocol.broadcastVictor(players[currentPlayer.getPlayerNo()-1]);
-        }*/
-        
-        //===========
 
         Protocol.closeAllStreams(players);
         // maybe sleep here?
@@ -230,6 +183,7 @@ public class Game {
         } catch (InterruptedException e) {
             // ignore it; just quit
         }
+
         System.exit(0);
     }
 }
