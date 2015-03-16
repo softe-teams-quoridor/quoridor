@@ -275,6 +275,8 @@ public class GameEngine {
         // if the number of null players in the players array
         // is one less than the array length, then we only have
         // one active player
+
+
     private static Player onlyOnePlayerRemaining(Player [] players) {
         int nullPlayerCount = 0;
         // Check if we only have one player
@@ -321,7 +323,7 @@ public class GameEngine {
          */
         //============
 
-        /* This loop will make make sure that if we are looking at the same 
+        /* This loop will make sure that if we are looking at the same 
          * player again, we exit and return null
          * In Game.java, after we call this method, we can check 
          * if player == null then exit the main loop if true

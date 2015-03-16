@@ -34,6 +34,7 @@ public class Game {
      * parses command-line arguments
      * populates the inStreams and outStreams arrays in Protocol
      * counts the number of players, stores it in numPlayers
+     * @param
      */
     public static void parseArgs (String[] args) {
         
