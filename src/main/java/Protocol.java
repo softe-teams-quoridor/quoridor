@@ -38,8 +38,8 @@ public class Protocol {
         if (! response.startsWith("GO ")) {
             return "B-O-O-T-M-E"; // response must begin with GO
         }
-//         return response.substring(3).strip();
-        return response.substring(3);
+        return response.substring(3).trim();
+//         return response.substring(3);
     }
 
     public static void broadcastPlayers(Player [] players) {
@@ -88,5 +88,14 @@ public class Protocol {
         outStreams[playerNo] = null;
         inStreams[playerNo].close();
         inStreams[playerNo] = null;
+    }
+
+    public static void closeAllStreams(Player [] players) {
+//         for (Player p : players) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                closeStreams(i);
+            }
+        }
     }
 }

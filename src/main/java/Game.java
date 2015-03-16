@@ -218,7 +218,13 @@ public class Game {
         
         //===========
 
+        Protocol.closeAllStreams(players);
         // maybe sleep here?
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // ignore it; just quit
+        }
         System.exit(0);
     }
 }

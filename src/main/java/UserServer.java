@@ -90,7 +90,7 @@ public class UserServer {
                     parsey = clientMessage.split(" ");
                     if (clientMessage.equals("GO?")) {
                         System.out.print(">> ");
-                        String move = keyboard.nextLine();
+                        String move = keyboard.nextLine().trim();
                         System.out.println("move: " + move);
                         while (! GameEngine.validate(board, currentPlayer, move)) {
                             System.out.println("looks illegal; you sure?");
