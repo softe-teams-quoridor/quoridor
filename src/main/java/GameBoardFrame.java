@@ -3,6 +3,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+
+
+
+//Handles the construction of the GUI
 public class GameBoardFrame extends JFrame{
 
     private JFrame gameboard;
@@ -24,20 +28,22 @@ public class GameBoardFrame extends JFrame{
         //draw the original board
         draw(board);
     }
-
+    
+    //Removes contents of frame and calls draw in order to update
     public void update(GameBoard board){
         gameboard.getContentPane().removeAll();
         draw(board);
 
     }
-
+    
+    //Constructs the gameboard and makes it visible
     private void draw(GameBoard board){
         topLayer();
         rows(board);
         gameboard.pack();
-        gameboard.setFocusableWindowState(false);
-        gameboard.setVisible(true);
-        gameboard.setFocusableWindowState(true);
+        gameboard.setFocusableWindowState(false);	//prevents window from
+        gameboard.setVisible(true);					
+        gameboard.setFocusableWindowState(true);	//autofocusing
     }
 
     //creates rows A-I
@@ -62,7 +68,8 @@ public class GameBoardFrame extends JFrame{
         labelblank.setPreferredSize(new Dimension(100, 70));
         labelblank.setText("    " + row);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
-
+        
+        //Fills frame with blue Squares if unoccupied 
         for (int i = 1; i < 10; i++){
             if (!board.isOccupied(i-1,rownum-1)){ //Tylor Changed this
                 JLabel labelblue = new JLabel();
@@ -77,6 +84,8 @@ public class GameBoardFrame extends JFrame{
         }
     }
 
+    //Changes the color of the squares that contain a player and shows 
+    //the player name
     private void printPlayerLabel(Player p){
         JLabel label = new JLabel();
         label.setOpaque(true);
@@ -94,7 +103,7 @@ public class GameBoardFrame extends JFrame{
         gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
 
-    // prints out I-IX
+    // prints out I-IX labels
     private void topLayer() {
         JLabel [] labels = new JLabel[10];
         // This bit will print a blank for the first spot
