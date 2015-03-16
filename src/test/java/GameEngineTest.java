@@ -13,7 +13,7 @@ public class GameEngineTest {
     public void beef() throws Exception {
         ge = new GameEngine();
         assertNotNull("ge should not be null!", ge);
-        board = new GameBoard(4, 6);
+        board = new GameBoard();
         assertNotNull("board should not be null!", board);
     }
 
