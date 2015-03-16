@@ -151,18 +151,59 @@ public class Game {
                 Protocol.broadcastBoot(currentPlayer);
                 players[currentPlayer.getPlayerNo()] = null;
             }
+        
             f.update(board);
+           
+            //============
+            //= OLD CODE =
+            //============
+    
+            // Check for victory
+            /*if (GameEngine.checkVictory(board,players)) {
+                break;
+            }*/
 
+            //============
+
+            // The next few lines here have a some-what messy work-around
+            Player winner = GameEngine.checkVictory(board, players);
+            if ( winner != null){
+                Protocol.broadcastVictor(winner);
+                break;
+            }
+            
             // get next player's turn 
             currentPlayer = 
                 GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
-
-            // Check for victory
-            if (GameEngine.checkVictory(board,players)) {
-                break;
-            }
+ 
         }
-        if (currentPlayer.getPlayerNo() == 0) {
+
+        //============
+        //= OLD CODE =
+        //============
+
+        // This was a work-around for when this only checked one or two players...
+        // didn't work out so well.
+        /*if ( currentPlayer != null)
+            Protocol.broadcastVictor(players[(currentPlayer.getPlayerNo())]);
+
+        else {
+            Player winner = null;
+            for (int i = 0; winner == null; i++) {
+                // find somebody who isn't null
+                winner = players[i];
+            }
+            Protocol.broadcastVictor(winner);
+        }*/
+
+        //-----------------
+
+        //***FIXME***
+        // Temporary fix, this will work for a 2p game if one of the two
+        // players get booted
+        // if (currentPlayer.getPlayerNo() == 0 )  //<--- original if statement
+        /* if (currentPlayer.getPlayerNo() == 0 ||
+            currentPlayer.getPlayerNo() == 1 ) {
             // the last remaining player
             // the last player in the array might have been booted
             Player winner = null;
@@ -173,7 +214,10 @@ public class Game {
             Protocol.broadcastVictor(winner);
         } else {
             Protocol.broadcastVictor(players[currentPlayer.getPlayerNo()-1]);
-        }
+        }*/
+        
+        //===========
+
         // maybe sleep here?
         System.exit(0);
     }
