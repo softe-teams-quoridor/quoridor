@@ -33,6 +33,9 @@ public class Protocol {
 
     public static String requestMove(Player player) {
         outStreams[player.getPlayerNo()].println(GO_Q);
+        if (! inStreams[player.getPlayerNo()].hasNextLine()) {
+            return "B-O-O-T-M-E"; // no response from the server!
+        }
         String response = inStreams[player.getPlayerNo()].nextLine();
         Deb.ug.println("requestMove saw: " + response);
         if (! response.startsWith("GO ")) {
