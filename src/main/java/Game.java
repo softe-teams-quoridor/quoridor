@@ -176,6 +176,11 @@ public class Game {
             currentPlayer = 
                 GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
  
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                // ignore it
+            }
         }
 
         //============
@@ -221,7 +226,7 @@ public class Game {
         Protocol.closeAllStreams(players);
         // maybe sleep here?
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             // ignore it; just quit
         }
