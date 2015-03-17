@@ -34,18 +34,6 @@ public class GameBoard {
     /** 
      * constructs the GameBoard by instantiating the array of squares
      */
-    public GameBoard() {
-        squares = new Square[COLUMNS][ROWS];
-        for(int i = 0; i < COLUMNS; i++){
-            for (int j = 0; j < ROWS; j++){
-                squares[i][j] = new Square(i, j);
-            }
-        }
-    }
-
-    /** 
-     * constructs the GameBoard by instantiating the array of squares
-     */
     public GameBoard(Player [] players) {
         squares = new Square[COLUMNS][ROWS];
         for(int i = 0; i < COLUMNS; i++){

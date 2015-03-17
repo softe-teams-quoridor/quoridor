@@ -34,7 +34,7 @@ class Player {
 
     // Data Members
     private String playerName = "";    // player's name
-    private Square pawnLoc;            // player's pawn location
+//     private Square pawnLoc;            // player's pawn location
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
     private static int numAssign = 0;  // for assigning playerNo
@@ -45,6 +45,7 @@ class Player {
      * @param startLoc   = starting square on the gameboard
      * @param numWalls   = number of walls this player has to start with
      */
+    /*
     public Player(String playerName, Square startLoc, int numWalls) {
         this.playerName = playerName;
         this.pawnLoc    = startLoc;
@@ -52,6 +53,7 @@ class Player {
         this.playerNo = numAssign;
         numAssign++;
     } 
+    */
 
     public Player(String playerName, int numWalls) {
         this.playerName = playerName;
@@ -69,10 +71,10 @@ class Player {
         return playerNo;
     }
 
+    /*
     /** 
       * returns the square that the player's pawn is occupying
       * @return = returns a square
-      */
     public Square getLoc() {
         return pawnLoc; 
     }
@@ -80,7 +82,6 @@ class Player {
     /** 
       * returns the x coordinate of the square the pawn is on
       * @return = returns an int
-      */
     public int getX() {
         return pawnLoc.getX(); 
     }
@@ -88,7 +89,6 @@ class Player {
     /** 
       * returns the y coordinate of the square the pawn is on
       * @return = returns an int
-      */
     public int getY() {
         return pawnLoc.getY(); 
     }
@@ -97,10 +97,10 @@ class Player {
     /**
       * sets the player's location
       * @param sqr square to set player to
-      */
     public void setLoc(Square sqr) {
         pawnLoc = sqr;
     }
+      */
 
     /**
       * returns the player's name
