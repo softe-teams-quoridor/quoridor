@@ -6,16 +6,17 @@
  * 
  * ----------------------------------- METHODS -------------------------------------
  *
- * toNumerals(int)              --> converts int to a numeral 
- * fromNumerals(String)         --> converts string(numeral) to an int
- * toLetters(int)               --> converts int to a letter ex 0 -> A
- * fromLetters(char)            --> conversions between ints and numerals/letters
- * validate(GameBoard, String)  --> returns if string represents a legal move
- * parseMove(GameBoard, String) --> returns if the move string is valid
- * getSquare(GameBoard, string) --> constructs a square based on the move string
- * checkVictory(GameBoard,      --> checks if a player has won the game 
+ * String toNumerals(int)                --> converts int to a numeral 
+ * int fromNumerals(String)              --> converts string(numeral) to an int
+ * char toLetters(int)                   --> converts int to a letter ex 0 -> A
+ * int fromLetters(char)                 --> conversions between ints and numerals/letters
+ * boolean validate(GameBoard, String)   --> returns if string represents a legal move
+ * boolean parseMove(GameBoard, String)  --> returns if the move string is valid
+ * Sqaure getSquare(GameBoard, string)   --> constructs a square based on the move string
+ * boolean checkVictory(GameBoard,       --> checks if a player has won the game 
  *              Players[])
- * nextPlayer(int, Player[])    --> returns the next player available
+ * Player nextPlayer(int, Player[])      --> returns the next player available
+ * Player onlyOnePlayerRemaining(Player [] players) --> returns the only player remaining, null if 2 or more players still in game
  */
 
 public class GameEngine {
@@ -194,10 +195,6 @@ public class GameEngine {
     }
 
     //******************************************************************************
-   
-    //============
-    //= OLD CODE =
-    //============
 
     /**
       * returns true if any player has won the game
@@ -205,23 +202,6 @@ public class GameEngine {
       * @param players: array of players to check if they have won
       * @return true if any player has won, false otherwise
       */
-    /* public static boolean checkVictory(GameBoard board, Player[] players) {
-        if (onlyOnePlayerRemaining(players))
-            return true;
-        if (players[0] != null && players[0].getLoc().getY() == 8)
-            return true;
-        if (players[1] != null && players[1].getLoc().getY() == 0)
-            return true;
-        if (players.length == 4) {
-            if (players[2] != null && players[2].getLoc().getX() == 8)
-                return true;
-            if (players[3] != null && players[3].getLoc().getX() == 0)
-                return true;
-        }
-        return false;
-    }*/
-
-    //============
 
     /** DOCUMENTME **/
     // Retrieves a player that has won the game.
@@ -248,35 +228,16 @@ public class GameEngine {
         return null;
     }
 
-    /* returns false unless there is only one player left */
-    //private static boolean onlyOnePlayerRemaining(Player [] players) {
-        /*
-        boolean oneActivePlayer = false;
-        for (int i = 0; i < players.length; i++) {
-            if (oneActivePlayer) {
-                return false;
-            } else {
-                oneActivePlayer = true;
-            }
-        }
-        return true;
-        */
-
-        // I am not sure how the above method works... 
-        // every even iteration (i=0, i=2) will
-        // return true,
-        // every odd iteration  (i=1, i=3) will return false...
-        // because we only have 2 or 4 players, we will always
-        // exit on an odd iteration and return false
-
-        //----
+        
 
         // This loop will count the number of active players.
         // if the number of null players in the players array
         // is one less than the array length, then we only have
         // one active player
 
-
+    // checks for only one player remaining
+    // @param players the array of players in the game
+    // @return the only player remaining or null if multiple players in game
     private static Player onlyOnePlayerRemaining(Player [] players) {
         int nullPlayerCount = 0;
         // Check if we only have one player

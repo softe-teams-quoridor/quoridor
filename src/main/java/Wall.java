@@ -14,7 +14,7 @@
  * ----------------------- METHODS -----------------------
  *
  * Wall(bool)   --> constructor
- * getIsStart() --> returns if this wall is a start or end piece
+ * boolean getIsStart() --> returns if this wall is a start or end piece
  */
 
 public class Wall{

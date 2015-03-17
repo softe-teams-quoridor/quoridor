@@ -8,15 +8,15 @@
  * 
  * ----------------------- METHODS -----------------------
  * 
- * Player()       --> constructor
- * getPlayerNo()  --> returns the player number
- * getLoc()       --> returns the square the player occupies
- * setLoc(Square) --> sets the player's location on a square
- * getName()      --> returns the player's name
- * isActive()     --> returns the player's active status
- * getNumWalls()  --> returns number of walls
- * placeWall()    --> decrements numWalls if player has > 0 walls
- * resetPlayerNos()-> resets numAssign to zero
+ * Player()              --> constructor
+ * int getPlayerNo()     --> returns the player number
+ * Sqaure getLoc()       --> returns the square the player occupies
+ * void setLoc(Square)   --> sets the player's location on a square
+ * String getName()      --> returns the player's name
+ * boolean isActive()    --> returns the player's active status
+ * int getNumWalls()     --> returns number of walls
+ * void placeWall()      --> decrements numWalls if player has > 0 walls
+ * void resetPlayerNos() --> resets numAssign to zero
  * 
  * Considerations
  *     
@@ -32,12 +32,12 @@
 class Player {
 
     // Data Members
-    private String playerName = ""; // player's name
-    private Square pawnLoc;         // player's pawn location
-    private int numWalls;          // number of walls
-    private int playerNo;           // unique player I.D. between 0 and 3
-    private static int numAssign = 0; // for assigning playerNo
-    private boolean isActive;
+    private String playerName = "";    // player's name
+    private Square pawnLoc;            // player's pawn location
+    private int numWalls;              // number of walls
+    private int playerNo;              // unique player I.D. between 0 and 3
+    private static int numAssign = 0;  // for assigning playerNo
+    private boolean isActive;          // If the player is active
 
     /**
      * instantiates a player object
@@ -56,6 +56,7 @@ class Player {
 
     /**
       * returns the player's number
+      * @return the players number
       */
     public int getPlayerNo() {
         return playerNo;
@@ -79,6 +80,7 @@ class Player {
 
     /**
       * returns the player's name
+      * @return the name of the player
       */
     public String getName(){
         return playerName;
@@ -86,6 +88,7 @@ class Player {
 
     /**
       * returns a player's active status
+      * @return if the player is still active
       */
     public boolean isActive() {
         return this.isActive;
@@ -95,6 +98,7 @@ class Player {
 
     /** 
       * returns the number of walls
+      * @return the number of walls remaining
       */
     public int getNumWalls() {
         return numWalls;

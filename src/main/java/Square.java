@@ -9,17 +9,17 @@
  *
  * --------------------- METHODS -------------------------
  *
- * Square()            --> constructor
- * getPlayer()         --> returns player on square
- * addPlayer(Player)   --> assigns a Player obj to this square
- * removePlayer()      --> removes a Player obj from this square
- * vacant()            --> returns true if no player on this square
- * equals(Square)      --> returns if the squares are equal
- * equals(int,int)     -->
- * placeWallVert(bool) --> places a vertical wall
- * placeWallHorz(bool) --> places a horizontal wall
- * getVertWallStatus() --> returns if a vert wall starts or ends
- * getHorzWallStatus() --> returns if a horz wall starts or ends
+ * Square()                    --> constructor
+ * Player getPlayer()          --> returns player on square
+ * void addPlayer(Player)      --> assigns a Player obj to this square
+ * void removePlayer()         --> removes a Player obj from this square
+ * boolean vacant()            --> returns true if no player on this square
+ * boolean equals(Square)      --> returns true if the squares are equal
+ * ???equals(int,int)          -->
+ * void placeWallVert(bool)    --> places a vertical wall
+ * void placeWallHorz(bool)    --> places a horizontal wall
+ * boolean getVertWallStatus() --> returns if a vert wall starts or ends
+ * boolean getHorzWallStatus() --> returns if a horz wall starts or ends
  */
 
 public class Square {
@@ -51,6 +51,7 @@ public class Square {
 
     /**
       * returns the x coordinate of this square
+      * @return the column number
       */
     public int getX(){
         return col;
@@ -58,6 +59,7 @@ public class Square {
 
     /**
       * returns the y coordinate of this square
+      * @return the row number
       */
     public int getY(){
         return row;
@@ -80,6 +82,7 @@ public class Square {
 
     /**
       * returns false if this square is occupied by a player
+      * @return if the Sqaure is occupied
       */
     public boolean vacant() {
         return (this.occupying == null);
@@ -110,6 +113,7 @@ public class Square {
      *                of a wall
      * TODO: this should not be allowed to be called if there is already 
      * a wall on this square
+     * Maybe should be checked first? not validate here but in Game.java using GameEngine.java? --Eric
      */
     public void placeWallVert(boolean start) {
         vert = new Wall(start);
