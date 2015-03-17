@@ -129,7 +129,7 @@ public class GameBoard {
         player.setLoc(newSqr);
         assert (player.getX() == newSqr.getX()); 
         assert (player.getY() == newSqr.getY());
-//         squares[player.getX()][player.getY()].addPlayer(player);
+        squares[newSqr.getX()][newSqr.getY()].addPlayer(player);
 //         this.addPlayer(player);
     }
 

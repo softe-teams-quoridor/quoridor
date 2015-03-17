@@ -26,6 +26,11 @@ public class GameEngine {
                                                "IV" , "V"   , "VI" , 
                                                "VII", "VIII", "IX" };
 
+    /* you can't instantiate this class 
+     * this would be private, except then GameEngineTest couldn't extend it
+     */
+    protected GameEngine() {}
+
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
@@ -142,7 +147,7 @@ public class GameEngine {
      * @param move: a string representing a move
      */
     // can we make this private?
-    public static boolean parseMove(GameBoard board, String move) {
+    protected static boolean parseMove(GameBoard board, String move) {
         move = move.trim();
         String [] strs = move.split("-");
         if (strs.length == 1) {

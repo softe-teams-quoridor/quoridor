@@ -79,6 +79,7 @@ public class Game {
                                                 response);
 
             if (legal) {
+                Deb.ug.println("move legal");
                 // Parse the move string to a square location
                 Square destination = GameEngine.getSquare(board,response);
                 // move player on board, broadcast move

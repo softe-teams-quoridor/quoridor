@@ -70,16 +70,16 @@ class Player {
     }
 
     /** 
-      * returns the x coordinate aof the square the pawn is on
-      * @return = returns a int
+      * returns the x coordinate of the square the pawn is on
+      * @return = returns an int
       */
     public int getX() {
         return pawnLoc.getX(); 
     }
 
     /** 
-      * returns the y coordinate aof the square the pawn is on
-      * @return = returns a int
+      * returns the y coordinate of the square the pawn is on
+      * @return = returns an int
       */
     public int getY() {
         return pawnLoc.getY(); 

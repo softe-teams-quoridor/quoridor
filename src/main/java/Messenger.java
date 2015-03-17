@@ -1,27 +1,21 @@
-/*
- *
- *
+/** 
+ * display client stuff
  */
-import java.util.*;
-// import java.io.*;
+
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Messenger {
-    /** display client stuff **/
-    public static final String BOOT = "BOOT";
-    public static final String GO_Q = "GO?";
-
     public PrintStream [] outStreams; // these should both have the
     public Scanner     [] inStreams;  // same length as players
-    private int [] ports;
-    private String [] hosts; 
+    private int        [] ports;
+    private String     [] hosts; 
 
     /*
      * constructor
@@ -74,7 +68,7 @@ public class Messenger {
     }
 
     public String requestMove(Player player) {
-        outStreams[player.getPlayerNo()].println(GO_Q);
+        outStreams[player.getPlayerNo()].println("GO?");
         if (! inStreams[player.getPlayerNo()].hasNextLine()) {
             return "B-O-O-T-M-E"; // no response from the server!
         }
@@ -111,7 +105,7 @@ public class Messenger {
         Deb.ug.println("booting player" + player.getName());
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
-                outStreams[i].println(BOOT + " " + player.getName());
+                outStreams[i].println("BOOT " + player.getName());
             }
         }
         closeStreams(player.getPlayerNo());

@@ -8,7 +8,9 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class UserServer {
-    public static boolean SERVER_DISPLAY = false;
+    private static boolean SERVER_DISPLAY = false;
+    private static final Scanner keyboard = new Scanner(System.in);
+    private static int portNumber;
 
     public static void usage(int error) {
         // display usage information then exit and return failure
@@ -17,11 +19,16 @@ public class UserServer {
     }
 
     public static void main(String[] args) {
-        if (args.length != 1 && args.length != 2) { 
+        Deb.initialize("userserver");
+
+        // process command-line arguments
+        try {
+            portNumber = Integer.parseInt(args[0]);
+        } catch (Exception e) { // NumberFormatException, ArrayIndexOutOfBounds
             usage(1);
         }
 
-        Deb.initialize("userserver");
+        // process optional command-line --display argument 
         Deb.ug.println(Arrays.toString(args));
         if (args.length == 2) {
             Deb.ug.println("two args detected ");
@@ -31,120 +38,129 @@ public class UserServer {
             }
         }
 
-        // process command-line argument
-        int portNumber = 0;
-        try {
-            portNumber = Integer.parseInt(args[0]);
-        } catch (Exception e) {
-            usage(2);
-        }
+        ServerSocket server = null;
+        Socket currClient = null;
 
         try {
-            ServerSocket server = new ServerSocket(portNumber);
+            server = new ServerSocket(portNumber);
             System.out.println("Accepting connections on " + portNumber);
             Deb.ug.println("Accepting connections on " + portNumber);
-            Scanner keyboard = new Scanner(System.in);
-            Socket currClient;
-
-            while ((currClient = server.accept()) != null) {
-                Player.resetPlayerNos();
-                ServerMessenger hermes = new ServerMessenger(currClient);
-                System.out.println("Connection from " + currClient);
-                Deb.ug.println("Connection from " + currClient);
-
-                String clientMessage;
-
-                if (hermes.hasNextLine()) {
-                    clientMessage = hermes.nextLine();
-                } else {
-                    System.out.println("expected message from client");
-                    Deb.ug.println("expected message from client");
-                    currClient = null;
-                    break;
-                }
-
-                String [] parsey = clientMessage.split(" ");
-                int numPlayers;
-                if (parsey[0].equals("PLAYERS")) {
-                    numPlayers = parsey.length - 1;
-                } else {
-                    System.out.println("expected PLAYERS from client");
-                    Deb.ug.println("expected PLAYERS from client");
-                    currClient = null;
-                    break;
-                }
-                Player [] players = new Player[numPlayers];
-                Deb.ug.println("numPlayers: " + numPlayers);
-                GameBoard board = new GameBoard();
-                board.setupInitialPosition(players);
-                Player currentPlayer = players[0];
-                GameBoardFrame fserver = null;
-                if (SERVER_DISPLAY) {
-                    fserver = new GameBoardFrame(board);
-                }
-
-                while (hermes.hasNextLine()) {
-                    clientMessage = hermes.nextLine();
-                    System.out.println("received: " + clientMessage);
-                    Deb.ug.println("received: " + clientMessage);
-                    parsey = clientMessage.split(" ");
-                    if (clientMessage.equals("GO?")) {
-                        System.out.print(">> ");
-                        String move = keyboard.nextLine().trim();
-                        System.out.println("move: " + move);
-                        while (! GameEngine.validate(board, currentPlayer, move)) {
-                            System.out.println("looks illegal; you sure?");
-                            String confirm = keyboard.nextLine();
-                            if (confirm.equals("y")) {
-                                break;
-                            }
-                            System.out.print(">> ");
-                            move = keyboard.nextLine();
-                            System.out.println("move: " + move);
-                        }
-                        Deb.ug.println("sending: " + move);
-                        hermes.go(move);
-                    } else if (parsey[0].equals("WENT")) {
-                        Square destination = GameEngine.getSquare(board,
-                                                                parsey[2]);
-                        assert (currentPlayer != null);
-                        board.move(currentPlayer, destination);
-                        currentPlayer = 
-                            GameEngine.nextPlayer(currentPlayer.getPlayerNo(), 
-                                                  players);
-                    } else if (parsey[0].equals("BOOT")) {
-                        assert parsey[1].equals(currentPlayer.getName());
-                        board.removePlayer(currentPlayer);
-                        Deb.ug.println("currentPlayer.getName()" +
-                                       currentPlayer.getName());
-                        Deb.ug.println("currentPlayer.getPlayerNo()" + 
-                                        currentPlayer.getPlayerNo());
-                        players[currentPlayer.getPlayerNo()] = null;
-                        currentPlayer = 
-                            GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
-                                                  players);
-                    } else if (parsey[0].equals("VICTOR")) {
-                        System.out.println("somebody won!");
-                    } else {
-                        System.out.println( "unknown");
-                    }
-                    if (SERVER_DISPLAY) {
-                        fserver.update(board);
-                    }
-
-                }
-
-                System.out.println("Server closing connection from " + 
-                                   currClient);
-                hermes.closeStreams();
-            }
-            System.out.println( "game over");
-
+            currClient = server.accept();
         } catch (IOException ioe) {
             // there was a standard input/output error (lower-level from uhe)
             ioe.printStackTrace();
-            System.exit(1);
+            System.exit(2);
         }
-        System.out.println("done");
+        assert (server != null); 
+        assert (currClient != null); 
+
+        while (true) {
+            playGame(currClient);
+            Player.resetPlayerNos();
+            try {
+                Deb.ug.println("closing connection");
+                currClient.close();
+                System.out.println("Accepting connections on " + portNumber);
+                Deb.ug.println("Accepting connections on " + portNumber);
+                currClient = server.accept();
+            } catch (IOException ioe) {
+                // there was a standard input/output error
+                ioe.printStackTrace();
+                System.exit(3);
+            }
+        }
+    }
+
+    private static void playGame(Socket currClient) {
+        ServerMessenger hermes = new ServerMessenger(currClient);
+        System.out.println("Connection from " + currClient);
+        Deb.ug.println("Connection from " + currClient);
+
+        String clientMessage = null;
+
+        if (! hermes.hasNextLine()) {
+            System.out.println("expected message from client");
+            Deb.ug.println("expected message from client");
+            return;
+        }
+        clientMessage = hermes.nextLine();
+        assert (clientMessage != null);
+
+        String [] words = clientMessage.split(" ");
+        int numPlayers = 0;
+        if (words[0].equals("PLAYERS")) {
+            numPlayers = words.length - 1;
+            Deb.ug.println("numPlayers: " + numPlayers);
+        } else {
+            System.out.println("expected PLAYERS from client");
+            Deb.ug.println("expected PLAYERS from client");
+            return;
+        }
+        Player [] players = new Player[numPlayers];
+        GameBoard board = new GameBoard();
+        board.setupInitialPosition(players);
+        Player currentPlayer = players[0];
+        GameBoardFrame frame = null;
+        if (SERVER_DISPLAY) {
+            frame = new GameBoardFrame(board);
+        }
+
+        /* handle different types of messages the client might send */
+        while (hermes.hasNextLine()) {
+            clientMessage = hermes.nextLine();
+            System.out.println("received: " + clientMessage);
+            Deb.ug.println("received: " + clientMessage);
+            words = clientMessage.split(" ");
+            if (clientMessage.equals("GO?")) {
+                String move = getMove(board, currentPlayer);
+                System.out.println("move: " + move);
+                Deb.ug.println("sending: " + move);
+                hermes.go(move);
+            } else if (words[0].equals("WENT")) {
+                Square destination = GameEngine.getSquare(board, words[2]);
+                assert (currentPlayer != null);
+                board.move(currentPlayer, destination);
+                currentPlayer = 
+                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(), 
+                                          players);
+            } else if (words[0].equals("BOOT")) {
+                assert words[1].equals(currentPlayer.getName());
+                board.removePlayer(currentPlayer);
+                Deb.ug.println("currentPlayer.getName()" +
+                               currentPlayer.getName());
+                Deb.ug.println("currentPlayer.getPlayerNo()" + 
+                                currentPlayer.getPlayerNo());
+                players[currentPlayer.getPlayerNo()] = null;
+                currentPlayer = 
+                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
+                                          players);
+            } else if (words[0].equals("VICTOR")) {
+                System.out.println("somebody won!");
+            } else {
+                System.out.println("unknown message from client");
+            }
+            if (SERVER_DISPLAY) {
+                frame.update(board);
+            }
+        }
+        System.out.println("game over");
+        Deb.ug.println("game over");
+        System.out.println("Server closing connection from " + currClient);
+        hermes.closeStreams();
+    }
+
+    private static String getMove(GameBoard b, Player p) {
+        System.out.print(">> ");
+        String move = keyboard.nextLine().trim();
+        System.out.println("move: " + move);
+        if (GameEngine.validate(b, p, move)) {
+            return move;
+        }
+        System.out.println("that looks illegal; are you sure?");
+        String confirm = keyboard.nextLine();
+        if (confirm.equals("y")) {
+            return move;
+        }
+        return getMove(b, p);
     }
 }
