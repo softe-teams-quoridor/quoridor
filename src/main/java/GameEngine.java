@@ -96,7 +96,8 @@ public class GameEngine {
       */
     public static boolean validate(GameBoard board, Player p, String move) {
         return parseMove(board,move) 
-            ? validate(board, p.getLoc(), getSquare(board,move), -1, 0) 
+//             ? validate(board, p.getLoc(), getSquare(board,move), -1, 0) 
+            ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
             : false;
     }
 
@@ -114,6 +115,7 @@ public class GameEngine {
      */
     private static boolean validate(GameBoard g, Square orig, Square dest, 
                                     int dontCheckMe, int numJumps) {
+        assert (orig != null);
         int oneZero = 10;   // 1010b
         int sign = 6;       // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
@@ -209,6 +211,7 @@ public class GameEngine {
       * @param players: array of players to check if they have won
       * @return a player if that player has won the game, null otherwise
       */
+    /*
     public static Player getWinner(GameBoard board, Player[] players) {
         // See if there is only one player left, and return that victor
         Player lastStanding = onlyOnePlayerRemaining(players);
@@ -225,6 +228,28 @@ public class GameEngine {
             if (players[2] != null && players[2].getX() == 8)
                 return players[2];
             if (players[3] != null && players[3].getX() == 0)
+                return players[3];
+        }
+        // No player has won, return null
+        return null;
+    }
+    */
+
+    public static Player getWinner(GameBoard board, Player[] players) {
+        Player lastStanding = onlyOnePlayerRemaining(players);
+        if (lastStanding != null)
+            return lastStanding;
+
+        // Check if one of the players have met the traditional victory
+        // condition
+        if (players[0] != null && board.getPlayerLoc(0).getY() == 8)
+            return players[0];
+        if (players[1] != null && board.getPlayerLoc(1).getY() == 0)
+            return players[1];
+        if (players.length == 4) {
+            if (players[2] != null && board.getPlayerLoc(2).getX() == 8)
+                return players[2];
+            if (players[3] != null && board.getPlayerLoc(3).getX() == 0)
                 return players[3];
         }
         // No player has won, return null

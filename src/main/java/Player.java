@@ -53,6 +53,14 @@ class Player {
         numAssign++;
     } 
 
+    public Player(String playerName, int numWalls) {
+        this.playerName = playerName;
+//         this.pawnLoc    = startLoc;
+        this.numWalls   = numWalls;
+        this.playerNo = numAssign;
+        numAssign++;
+    } 
+
     /**
       * returns the player's number
       * @return the players number

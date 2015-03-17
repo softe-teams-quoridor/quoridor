@@ -48,11 +48,14 @@ public class Game {
         // Instantiate Players array
         Deb.ug.println("instantiating Players array");
         players = new Player[numPlayers];
+        int wallsEach = 20 / players.length;
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(("player_" + i), wallsEach);
+        }
 
         // Instantiate GameBoard
         Deb.ug.println("instantiating GameBoard");
-        GameBoard board = new GameBoard();
-        board.setupInitialPosition(players);
+        GameBoard board = new GameBoard(players);
         Deb.ug.println("players array: " + Arrays.toString(players));
 
         // tell all move servers who the players are

@@ -27,6 +27,7 @@ public class GameBoard {
 
     // Data Members
     private Square [][] squares;  // The cells of the GameBoard
+    private Square [] playerLocs;  // locations of the players on the board
         
     //*************************************************************************
 
@@ -42,6 +43,20 @@ public class GameBoard {
         }
     }
 
+    /** 
+     * constructs the GameBoard by instantiating the array of squares
+     */
+    public GameBoard(Player [] players) {
+        squares = new Square[COLUMNS][ROWS];
+        for(int i = 0; i < COLUMNS; i++){
+            for (int j = 0; j < ROWS; j++){
+                squares[i][j] = new Square(i, j);
+            }
+        }
+        this.playerLocs = new Square[players.length];
+        setupInitialPosition2(players);
+    }
+
     //*************************************************************************
 
     /**
@@ -53,7 +68,6 @@ public class GameBoard {
      */
     public boolean isOccupied(int x, int y) {
         // Check for valid location
-//         if (validLoc(x,y)) {
         assert (validLoc(x,y));
         return (! squares[x][y].vacant());
     }
@@ -87,10 +101,13 @@ public class GameBoard {
     /**
      * adds a player to the given location
      * @param p the player to add
+     * @param two ints: coordinates on a game board
      */
-    protected void addPlayer(Player player) {
-        assert (validLoc(player.getX(), player.getY()));
-        squares[player.getX()][player.getY()].addPlayer(player);
+    protected void addPlayer(Player player, int x, int y) {
+        assert (validLoc(x, y));
+        squares[x][y].addPlayer(player);
+        assert (player != null);
+        playerLocs[player.getPlayerNo()] = squares[x][y];
     }
 
     //*************************************************************************
@@ -100,8 +117,10 @@ public class GameBoard {
      * @param player the player to remove
      */
     public void removePlayer(Player player) {
-        assert (validLoc(player.getX(), player.getY()));
-        squares[player.getX()][player.getY()].removePlayer();
+        Square loc = playerLocs[player.getPlayerNo()];
+        assert (validLoc(loc.getX(), loc.getY()));
+        playerLocs[player.getPlayerNo()] = null;
+        squares[loc.getX()][loc.getY()].removePlayer();
     }
 
     //*************************************************************************
@@ -124,28 +143,10 @@ public class GameBoard {
      * @param newSqr the destination square
      */
     public void move(Player player, Square newSqr) {
-        assert (validLoc(player.getX(), player.getY()));
+        assert (validLoc(newSqr.getX(), newSqr.getY()));
         removePlayer(player);
-        player.setLoc(newSqr);
-        assert (player.getX() == newSqr.getX()); 
-        assert (player.getY() == newSqr.getY());
-        squares[newSqr.getX()][newSqr.getY()].addPlayer(player);
-//         this.addPlayer(player);
+        this.addPlayer(player, newSqr.getX(), newSqr.getY());
     }
-
-    //*************************************************************************
-
-    /**
-     * boots a player from the game
-     * @param player player to be removed
-     * this is literally identical equivalent to removePlayer
-     * why did i even think this was a good idea
-   sorry
-     * /
-    public void bootPlayer(Player player) {
-        this.removePlayer(player);
-    }
-    */
 
     //*************************************************************************
 
@@ -154,25 +155,29 @@ public class GameBoard {
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
      * @param players array of players to initialize
      */
-    public void setupInitialPosition(Player [] players) {
+    public void setupInitialPosition2(Player [] players) {
         // Test to ensure that the Player array is 2 or 4
         assert (players.length == 2 || players.length == 4);
         
-        int wallsEach = 20 / players.length;
         int colInd = 32836; // collin dalling
         int rowInd = 17536;
 
         for ( int i = 0; i < players.length; i++ ) {
             int x = colInd & 15;
             int y = rowInd & 15;
-            players[i] = new Player(("player_" + i),
-                                     this.getSquare(x,y), 
-                                     wallsEach);
 
-            this.addPlayer(players[i]);
+            this.addPlayer(players[i], x, y);
+            this.playerLocs[i] = getSquare(x, y);
             colInd = colInd >> 4;
             rowInd = rowInd >> 4;
         }
+    }
 
+    public Square getPlayerLoc(Player player) {
+        return playerLocs[player.getPlayerNo()];
+    }
+
+    public Square getPlayerLoc(int playerNo) {
+        return playerLocs[playerNo];
     }
 }

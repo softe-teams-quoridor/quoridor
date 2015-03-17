@@ -97,8 +97,13 @@ public class UserServer {
             return;
         }
         Player [] players = new Player[numPlayers];
-        GameBoard board = new GameBoard();
-        board.setupInitialPosition(players);
+        int wallsEach = 20 / numPlayers;
+        for (int i = 0; i < numPlayers; i++) {
+            players[i] = new Player(("player_" + i), wallsEach);
+        }
+        GameBoard board = new GameBoard(players);
+//         GameBoard board = new GameBoard();
+//         board.setupInitialPosition(players);
         Player currentPlayer = players[0];
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
