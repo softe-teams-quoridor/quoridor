@@ -13,9 +13,8 @@
  * Sqaure getLoc()       --> returns the square the player occupies
  * void setLoc(Square)   --> sets the player's location on a square
  * String getName()      --> returns the player's name
- * boolean isActive()    --> returns the player's active status
  * int getNumWalls()     --> returns number of walls
- * void placeWall()      --> decrements numWalls if player has > 0 walls
+ * boolean mayPlaceWall()--> decrements numWalls if player has > 0 walls
  * void resetPlayerNos() --> resets numAssign to zero
  * 
  * Considerations
@@ -27,6 +26,8 @@
  *      Depending on what the object that implements the game rules does,
  *      we may want placeWall() to be a boolean method and return false
  *      if the player cannot place any more walls - Walling (2/16)
+ *
+ *     oh yeah that's way better
  */
 
 class Player {
@@ -37,7 +38,6 @@ class Player {
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
     private static int numAssign = 0;  // for assigning playerNo
-    private boolean isActive;          // If the player is active
 
     /**
      * instantiates a player object
@@ -50,7 +50,6 @@ class Player {
         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
         this.playerNo = numAssign;
-        isActive = true;
         numAssign++;
     } 
 
@@ -66,10 +65,27 @@ class Player {
       * returns the square that the player's pawn is occupying
       * @return = returns a square
       */
-    public Square getLoc(){
+    public Square getLoc() {
         return pawnLoc; 
     }
-    
+
+    /** 
+      * returns the x coordinate aof the square the pawn is on
+      * @return = returns a int
+      */
+    public int getX() {
+        return pawnLoc.getX(); 
+    }
+
+    /** 
+      * returns the y coordinate aof the square the pawn is on
+      * @return = returns a int
+      */
+    public int getY() {
+        return pawnLoc.getY(); 
+    }
+
+
     /**
       * sets the player's location
       * @param sqr square to set player to
@@ -82,20 +98,12 @@ class Player {
       * returns the player's name
       * @return the name of the player
       */
-    public String getName(){
+    public String getName() {
         return playerName;
     }
 
-    /**
-      * returns a player's active status
-      * @return if the player is still active
-      */
-    public boolean isActive() {
-        return this.isActive;
-    }
-
     // Consider if this is needed when we start to implement wall placement
-
+    // possibly useful for display if we wanna show walls in the hand
     /** 
       * returns the number of walls
       * @return the number of walls remaining
@@ -104,17 +112,17 @@ class Player {
         return numWalls;
     }
 
-    // Consider if this should be a boolean
-
     /**
-      * decrements the number of walls this player has
-      * @exception RuntimeException thrown if player has 0 walls
+      * @return true if this player has any walls left to place
+      * side-effect: decrements the number of walls this player has
       */    
-    public void placeWall() {
-        if (numWalls > 0)
+    public boolean mayPlaceWall() {
+        if (numWalls > 0) {
             numWalls--;
-        else
-            throw new RuntimeException("Cannot place wall; player is out of walls!");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

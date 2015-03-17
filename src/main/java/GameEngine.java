@@ -1,22 +1,24 @@
 /* GameEngine.java - CIS405 - teams
  * Last Edit: March 14, 2015
- * _________________________________________________________________________________
+ * ____________________________________________________________________________
  *
  * this class is used by both the client and the server!
  * 
- * ----------------------------------- METHODS -------------------------------------
+ * --------------------------------- METHODS ----------------------------------
  *
- * String toNumerals(int)                --> converts int to a numeral 
- * int fromNumerals(String)              --> converts string(numeral) to an int
- * char toLetters(int)                   --> converts int to a letter ex 0 -> A
- * int fromLetters(char)                 --> conversions between ints and numerals/letters
- * boolean validate(GameBoard, String)   --> returns if string represents a legal move
- * boolean parseMove(GameBoard, String)  --> returns if the move string is valid
- * Sqaure getSquare(GameBoard, string)   --> constructs a square based on the move string
- * boolean checkVictory(GameBoard,       --> checks if a player has won the game 
- *              Players[])
+ * String toNumerals(int)   --> converts int to a numeral 
+ * int fromNumerals(String) --> converts string(numeral) to an int
+ * char toLetters(int)      --> converts int to a letter ex 0 -> A
+ * int fromLetters(char)    --> conversions between ints and numerals/letters
+ * boolean validate(GameBoard, String)   --> returns if string represents a 
+ *                                           legal move
+ * boolean parseMove(GameBoard, String)  --> returns if the move string is 
+ *                                           valid
+ * Sqaure getSquare(GameBoard, String)   --> constructs a square based on the 
+ *                                           move string
+ * boolean getWinner(GameBoard,Players[])--> checks if a player has won the 
+ *                                           game 
  * Player nextPlayer(int, Player[])      --> returns the next player available
- * Player onlyOnePlayerRemaining(Player [] players) --> returns the only player remaining, null if 2 or more players still in game
  */
 
 public class GameEngine {
@@ -36,7 +38,7 @@ public class GameEngine {
         return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
       * converts a roman numeral to an integer
@@ -51,7 +53,7 @@ public class GameEngine {
         return -1; // this should never happen
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
       * converts an int to a char A-I
@@ -65,7 +67,7 @@ public class GameEngine {
         return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
       * converts a character to an integer value
@@ -79,7 +81,7 @@ public class GameEngine {
         return (ch < 'A' || 'I' < ch) ? -1 : ((int) (ch - 'A'));
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
       * returns true if the string represents a legal move on that gameboard
@@ -88,11 +90,12 @@ public class GameEngine {
       * @param move: String that contains the move destination
       */
     public static boolean validate(GameBoard board, Player p, String move) {
-        return parseMove(board,move) ? 
-            validate(board, p.getLoc(), getSquare(board,move) ,-1, 0) : false;
+        return parseMove(board,move) 
+            ? validate(board, p.getLoc(), getSquare(board,move), -1, 0) 
+            : false;
     }
-   
-    //******************************************************************************
+
+    //*************************************************************************
 
     /**
       * validates a user move by checking adjacent squares and the squares
@@ -104,15 +107,14 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, in case of clustering
       * @return true true if move is valid, false otherwise 
      */
-    private static boolean validate 
-        ( GameBoard g, Square orig, Square dest, int dontCheckMe, int numJumps ) {
+    private static boolean validate(GameBoard g, Square orig, Square dest, 
+                                    int dontCheckMe, int numJumps) {
         int oneZero = 10;   // 1010b
         int sign = 6;       // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
-            Square check = g.getSquare(orig.getX() + x,
-                                       orig.getY() + y);
+            Square check = g.getSquare(orig.getX() + x, orig.getY() + y);
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
 
@@ -122,14 +124,15 @@ public class GameEngine {
                     return true;
                 // Adjacency occupied check
                 if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
-                   && validate(g, check, dest, (i+2)%4, numJumps+1) )
+                   && validate(g, check, dest, (i+2)%4, numJumps+1) ) {
                     return true;
+                }
             }
        }
        return false;
-    }
-    
-    //******************************************************************************
+    } // i don't understand this and i'm grumpy about it
+
+    //*************************************************************************
 
     /** 
      *  returns true if the string represents a possibly legal move
@@ -138,8 +141,8 @@ public class GameEngine {
      * @param board
      * @param move: a string representing a move
      */
+    // can we make this private?
     public static boolean parseMove(GameBoard board, String move) {
-        // TESTME 
         move = move.trim();
         String [] strs = move.split("-");
         if (strs.length == 1) {
@@ -166,7 +169,7 @@ public class GameEngine {
         return false;
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
      * returns a square on the board that we want to move to
@@ -194,19 +197,14 @@ public class GameEngine {
         }
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
-      * returns true if any player has won the game
       * @param board: GameBoard to check
       * @param players: array of players to check if they have won
-      * @return true if any player has won, false otherwise
+      * @return a player if that player has won the game, null otherwise
       */
-
-    /** DOCUMENTME **/
-    // Retrieves a player that has won the game.
-    // Returns a null player if there is no victory
-    public static Player checkVictory(GameBoard board, Player[] players) {
+    public static Player getWinner(GameBoard board, Player[] players) {
         // See if there is only one player left, and return that victor
         Player lastStanding = onlyOnePlayerRemaining(players);
         if (lastStanding != null)
@@ -214,21 +212,19 @@ public class GameEngine {
 
         // Check if one of the players have met the traditional victory
         // condition
-        if (players[0] != null && players[0].getLoc().getY() == 8)
+        if (players[0] != null && players[0].getY() == 8)
             return players[0];
-        if (players[1] != null && players[1].getLoc().getY() == 0)
+        if (players[1] != null && players[1].getY() == 0)
             return players[1];
         if (players.length == 4) {
-            if (players[2] != null && players[2].getLoc().getX() == 8)
+            if (players[2] != null && players[2].getX() == 8)
                 return players[2];
-            if (players[3] != null && players[3].getLoc().getX() == 0)
+            if (players[3] != null && players[3].getX() == 0)
                 return players[3];
         }
         // No player has won, return null
         return null;
     }
-
-        
 
         // This loop will count the number of active players.
         // if the number of null players in the players array
@@ -255,7 +251,7 @@ public class GameEngine {
         return null;
     }
 
-    //******************************************************************************
+    //*************************************************************************
 
     /**
       * returns the next active player
@@ -264,26 +260,6 @@ public class GameEngine {
       * @return the next available player
       */
     public static Player nextPlayer(int current, Player [] players) {
-        
-        //============
-        //= OLD CODE =
-        //============
-       
-        /*
-        current = (current + 1) % players.length;
-        if (players[current] != null) {
-            return players[current];
-        }
-        return nextPlayer(current, players);*/
-        //return (players[current] != null) ? players[current] : nextPlayer(current,players);
-
-        /* The above method will encounter infinite recursion if all players 
-         * in the array are null. Typically, we avoid this by calling the 
-         * victory condition method prior to getting the next active player... 
-         * but it's never good to have a method that can recur infinitely...
-         */
-        //============
-
         /* This loop will make sure that if we are looking at the same 
          * player again, we exit and return null
          * In Game.java, after we call this method, we can check 

@@ -53,6 +53,7 @@ public class Game {
         Deb.ug.println("instantiating GameBoard");
         GameBoard board = new GameBoard();
         board.setupInitialPosition(players);
+        Deb.ug.println("players array: " + Arrays.toString(players));
 
         // tell all move servers who the players are
         hermes.broadcastPlayers(players);
@@ -84,9 +85,9 @@ public class Game {
                 board.move(currentPlayer, destination);
                 hermes.broadcastWent(currentPlayer, response);
             } else {
-                // if illegal, boot player & broadcast boot to other players
+                // if illegal, remove player & broadcast boot to other players
                 Deb.ug.println("illegal move attempted");
-                board.bootPlayer(currentPlayer);
+                board.removePlayer(currentPlayer);
                 hermes.broadcastBoot(currentPlayer);
                 players[currentPlayer.getPlayerNo()] = null;
             }
@@ -95,7 +96,7 @@ public class Game {
             frame.update(board);
 
             // Retrieve a possibly winning player
-            Player winner = GameEngine.checkVictory(board, players);
+            Player winner = GameEngine.getWinner(board, players);
             if (winner != null) {
                 // If the retrieved player is a winner, display and exit loop
                 hermes.broadcastVictor(winner);
@@ -105,8 +106,7 @@ public class Game {
             //...the game is still going, get the next player and continue
             
             // Get next player's turn 
-            currentPlayer = 
-                GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
+            currentPlayer = GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
  
             // Sleepy time
             sleep(200);
@@ -125,5 +125,4 @@ public class Game {
             // ignore it
         }
     }
-
 }

@@ -12,11 +12,10 @@
  * boolean isOccupied(int, int)  --> returns if player is at given location 
  * Square getSquare(int, int)    --> returns a square at a given location
  * Player getPlayer(int, int)    --> returns a player at the given location
- * void addPlayer(player)        --> adds a player to a given location
- * void removePlayer(int, int)   --> removes a player from the given location
+ * void addPlayer(Player)        --> adds a player to a given location
+ * void removePlayer(Player)   --> removes a player from the given location
  * boolean validLoc(int, int)    --> returns if coordinates are within bounds
  * void move(Player, Square)     --> moves a player from one square to another
- * void bootPlayer(Player)       --> boots given player from game
  * void setupInitialPosition(Player []) --> sets initial player locations
  */
 
@@ -50,18 +49,13 @@ public class GameBoard {
      * @param x the column of the board
      * @param y the row of the gameboard
      * @return true if the cell is occupied, false otherwise
+     * don't pass square coordinates that aren't on the board
      */
     public boolean isOccupied(int x, int y) {
         // Check for valid location
-        if(validLoc(x,y)) {
-            // Check to see if a player is there
-            if(squares[x][y].getPlayer() == null)
-                return false;
-            // A player is there 
-            return true;
-        }
-        else
-            return false;
+//         if (validLoc(x,y)) {
+        assert (validLoc(x,y));
+        return (! squares[x][y].vacant());
     }
 
     //*************************************************************************
@@ -75,16 +69,16 @@ public class GameBoard {
     public Square getSquare(int x, int y) {
         return validLoc(x,y) ? squares[x][y] : null;
     }
-    
+
     //*************************************************************************
-    
+
     /**
      * gets a player at a given location
      * @param x the column of the board
      * @param y the row of the gameboard
      * @return the player at the location, null if unoccupied
      */
-    public Player getPlayer (int x, int y){
+    public Player getPlayer(int x, int y) {
         return validLoc(x,y) ? squares[x][y].getPlayer() : null;
     }
 
@@ -94,10 +88,9 @@ public class GameBoard {
      * adds a player to the given location
      * @param p the player to add
      */
-    public void addPlayer(Player player) {
-        if (validLoc(player.getLoc().getX(), player.getLoc().getY()))
-             squares[player.getLoc().getX()]
-                    [player.getLoc().getY()].addplayer(player);
+    protected void addPlayer(Player player) {
+        assert (validLoc(player.getX(), player.getY()));
+        squares[player.getX()][player.getY()].addPlayer(player);
     }
 
     //*************************************************************************
@@ -106,10 +99,9 @@ public class GameBoard {
      * removes a player from the given location
      * @param player the player to remove
      */
-    private void removePlayer(Player player) {
-        if (validLoc(player.getLoc().getX(), player.getLoc().getY()))
-             squares[player.getLoc().getX()]
-                    [player.getLoc().getY()].removePlayer();
+    public void removePlayer(Player player) {
+        assert (validLoc(player.getX(), player.getY()));
+        squares[player.getX()][player.getY()].removePlayer();
     }
 
     //*************************************************************************
@@ -132,9 +124,13 @@ public class GameBoard {
      * @param newSqr the destination square
      */
     public void move(Player player, Square newSqr) {
+        assert (validLoc(player.getX(), player.getY()));
         removePlayer(player);
         player.setLoc(newSqr);
-        addPlayer(player);
+        assert (player.getX() == newSqr.getX()); 
+        assert (player.getY() == newSqr.getY());
+//         squares[player.getX()][player.getY()].addPlayer(player);
+//         this.addPlayer(player);
     }
 
     //*************************************************************************
@@ -142,10 +138,14 @@ public class GameBoard {
     /**
      * boots a player from the game
      * @param player player to be removed
-     */
+     * this is literally identical equivalent to removePlayer
+     * why did i even think this was a good idea
+   sorry
+     * /
     public void bootPlayer(Player player) {
         this.removePlayer(player);
     }
+    */
 
     //*************************************************************************
 
@@ -159,7 +159,7 @@ public class GameBoard {
         assert (players.length == 2 || players.length == 4);
         
         int wallsEach = 20 / players.length;
-        int colInd = 32836;
+        int colInd = 32836; // collin dalling
         int rowInd = 17536;
 
         for ( int i = 0; i < players.length; i++ ) {
@@ -175,7 +175,4 @@ public class GameBoard {
         }
 
     }
-
-    //*************************************************************************
-
 }

@@ -14,8 +14,6 @@
  * void addPlayer(Player)      --> assigns a Player obj to this square
  * void removePlayer()         --> removes a Player obj from this square
  * boolean vacant()            --> returns true if no player on this square
- * boolean equals(Square)      --> returns true if the squares are equal
- * ???equals(int,int)          -->
  * void placeWallVert(bool)    --> places a vertical wall
  * void placeWallHorz(bool)    --> places a horizontal wall
  * boolean getVertWallStatus() --> returns if a vert wall starts or ends
@@ -24,7 +22,7 @@
 
 public class Square {
     // Data members
-    private Player occupying; // Indicates which player occupies this square
+    private Player occupant; // Indicates which player occupies this square
     private int row;          // the Y coordinate of this square
     private int col;          // the X coordinate of this square
     private Wall vert;        // vertical wall
@@ -32,9 +30,11 @@ public class Square {
 
     /** 
       * instantiates a square object
+      * teams can we make this constructor private?? only the gameboard should
+      make squares
       */
     public Square(int x, int y) {
-        occupying = null;
+        occupant = null;
         vert = null;
         horz = null;
         col = x;
@@ -45,15 +45,15 @@ public class Square {
       * returns the player object occupying this square
       * @return = player object occupying this square
       */
-    public Player getPlayer(){
-        return occupying;
+    public Player getPlayer() {
+        return occupant;
     }
 
     /**
       * returns the x coordinate of this square
       * @return the column number
       */
-    public int getX(){
+    public int getX() {
         return col;
     }
 
@@ -61,7 +61,7 @@ public class Square {
       * returns the y coordinate of this square
       * @return the row number
       */
-    public int getY(){
+    public int getY() {
         return row;
     }
 
@@ -69,42 +69,22 @@ public class Square {
       * adds a player to the square
       * @param p player to add to the square
       */
-    public void addplayer(Player p){
-        occupying = p;
+    public void addPlayer(Player p) {
+        occupant = p;
     }
 
     /** 
      * removes a player from the square
      */
     public void removePlayer() {
-        occupying = null;
+        occupant = null;
     }
 
     /**
-      * returns false if this square is occupied by a player
-      * @return if the Sqaure is occupied
+      * @return false if the Sqaure is occupied
       */
     public boolean vacant() {
-        return (this.occupying == null);
-    }
-
-    /**
-      * returns if the squares are equal
-      * @param s square to compare
-      * @return true if equal, false otherwise
-      */
-    public boolean equals ( Square s ) {
-        return row == s.getY() && col == s.getX();
-    }
-    
-    /**
-      * returns if the square does a thing
-      * @param x row
-      * @param y column
-      * @return true if equal, false otherwise
-      */
-    public boolean equals ( int x, int y ) {
-        return row == y && col == x;
+        return (this.occupant == null);
     }
 
     /** 

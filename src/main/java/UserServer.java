@@ -114,7 +114,7 @@ public class UserServer {
                                                   players);
                     } else if (parsey[0].equals("BOOT")) {
                         assert parsey[1].equals(currentPlayer.getName());
-                        board.bootPlayer(currentPlayer);
+                        board.removePlayer(currentPlayer);
                         Deb.ug.println("currentPlayer.getName()" +
                                        currentPlayer.getName());
                         Deb.ug.println("currentPlayer.getPlayerNo()" + 
