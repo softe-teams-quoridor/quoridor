@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class SquareTest {
-/*
     @Before
     public void empty() throws Exception {
         // do whatever you want here
+        Player.resetPlayerNos();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class SquareTest {
     @Test
     public void testSquareAddPlayer() throws Exception {
        Square s = new Square(3, 5);
-       Player p = new Player("name", s,0);
+       Player p = new Player("name", 0);
        s.addPlayer(p);
        assertEquals(s.getPlayer(),p);
     }
@@ -39,14 +39,15 @@ public class SquareTest {
     @Test
     public void testSquareRemovePlayer() throws Exception {
         Square s = new Square(3, 5);
-        Player p = new Player("name",s,0);
+        Player p = new Player("name", 0);
         s.addPlayer(p);
         assertFalse(s.vacant());
         s.removePlayer();
-        assertEquals(s.getPlayer(),null);
+        assertEquals(s.getPlayer(), null);
         assertTrue(s.vacant());
     }
 
+/*
     @Test
     public void testSquarePlaceVertWall() throws Exception {
         Square s = new Square(3, 5);
