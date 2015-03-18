@@ -18,10 +18,10 @@
  * Square()                   --> constructor
  * int getX()                 --> returns the x coordinate
  * int getY()                 --> returns the y coordinate
- * @DEPRECATE Player getPlayer()      --> returns player on the square
- * @DEPRECATE void addPlayer(Player)  --> assigns a Player obj to this square
- * @DEPRECATE void removePlayer()     --> removes a Player obj from this square
- * @DEPRECATE boolean vacant()        --> returns true if no player on this square
+ * Player getPlayer()         --> returns player on the square
+ * void addPlayer(Player)     --> assigns a Player obj to this square
+ * void removePlayer()        --> removes a Player obj from this square
+ * boolean vacant()           --> returns true if no player on this square
  * boolean isOccupied()       --> returns if the square is occupied by a player
  * void placeWallRight(bool)  --> places a the right-side wall
  * void placeWallBottom(bool) --> places the bottom-side wall
@@ -31,8 +31,7 @@
 
 public class Square {
     // Data members
-    private Player occupant;  //@deprecate Replace with isOccupied
-    boolean isOccupied;       // replaces above determines if a player is on this square
+    private Player occupant;  // player on this square
     private int row;          // the Y coordinate of this square
     private int col;          // the X coordinate of this square
     private Wall rightWall;   // right wall
@@ -46,10 +45,10 @@ public class Square {
       *
       */
     public Square(int x, int y) {
+        assert (true);
         col = x;
         row = y;
-        occupant   = null;  //@deprecate
-        isOccupied = false; //replaces above
+        occupant   = null;
         rightWall  = null;
         bottomWall = null;
     }
@@ -77,7 +76,6 @@ public class Square {
     //*************************************************************************    
 
     /**
-      * @deprecated As of Quoridor release 1.0, replaced by isOccupied()
       * returns the player object occupying this square
       * @return player object occupying this square
       */
@@ -87,8 +85,7 @@ public class Square {
 
     //*************************************************************************    
  
-    /** @deprecated As of Quoridor release 1.0
-      * adds a player to the square
+     /* adds a player to the square
       * @param p player to add to the square
       */
     public void addPlayer(Player p) {
@@ -97,8 +94,7 @@ public class Square {
 
     //*************************************************************************    
 
-    /** @deprecated As of Quoridor release 1.0
-      * removes a player from the square
+    /** removes a player from the square
       */
     public void removePlayer() {
         occupant = null;
@@ -106,8 +102,7 @@ public class Square {
 
     //*************************************************************************    
 
-    /** @deprecated As of Quoridor release 1.0, replaced by isOccupied() 
-      * @return false if the Sqaure is occupied
+    /** @return false if the Square is occupied
       */
     public boolean vacant() {
         return (occupant == null);
@@ -120,7 +115,7 @@ public class Square {
       * @return true if occupied; false otherwise
       */
     public boolean isOccupied() {
-        return isOccupied;
+        return (! this.vacant());
     }
 
     //*************************************************************************    
@@ -130,8 +125,9 @@ public class Square {
      * @param start is this is the top (true) or bottom (false) of a wall?
      */
     public void placeWallRight(boolean isStart) {
-        if ( rightWall != null )
-            rightWall = new Wall(isStart);
+        assert (rightWall == null); 
+//         if ( rightWall == null )
+        rightWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -141,8 +137,9 @@ public class Square {
       * @param start is this is the left (true) or right (false) of a wall?
       */
     public void placeWallBottom(boolean isStart) {
-        if ( bottomWall != null )
-            bottomWall = new Wall(isStart);
+        assert (bottomWall == null); 
+//         if ( bottomWall == null )
+        bottomWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -152,7 +149,7 @@ public class Square {
       * @return returns if wall starts or ends
       */
     public boolean hasWallRight() {
-        return (rightWall != null) ? true : false;
+        return (rightWall != null);
     }
 
     //*************************************************************************    
@@ -162,6 +159,6 @@ public class Square {
       * @return returns if wall starts or ends
       */
     public boolean hasWallBottom() {
-        return (bottomWall != null) ? true : false;
+        return (bottomWall != null);
     }
 }

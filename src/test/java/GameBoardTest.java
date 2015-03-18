@@ -11,6 +11,7 @@ public class GameBoardTest {
         Player [] players = new Player[2];
         players[0] = new Player("0", 0);
         players[1] = new Player("1", 0);
+        assert (players.length == 2);
 
         GameBoard b = new GameBoard(players);
 

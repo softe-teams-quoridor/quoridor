@@ -83,7 +83,7 @@ public class GameEngine {
             return -1; // this should never happen
         }
         return (int) (ch - 'A');*/
-        return (ch < 'A' || 'I' < ch) ? -1 : ((int) (ch - 'A'));
+        return (ch < 'A' || 'I' < ch) ? -1 : (ch - 'A');
     }
 
     //*************************************************************************
@@ -127,7 +127,7 @@ public class GameEngine {
 
             if ( check != null ) {
                 // Adjacency found check
-                if ( check.vacant() && check.equals(dest) )
+                if (check.vacant() && check == dest)
                     return true;
                 // Adjacency occupied check
                 if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
@@ -211,30 +211,6 @@ public class GameEngine {
       * @param players: array of players to check if they have won
       * @return a player if that player has won the game, null otherwise
       */
-    /*
-    public static Player getWinner(GameBoard board, Player[] players) {
-        // See if there is only one player left, and return that victor
-        Player lastStanding = onlyOnePlayerRemaining(players);
-        if (lastStanding != null)
-            return lastStanding;
-
-        // Check if one of the players have met the traditional victory
-        // condition
-        if (players[0] != null && players[0].getY() == 8)
-            return players[0];
-        if (players[1] != null && players[1].getY() == 0)
-            return players[1];
-        if (players.length == 4) {
-            if (players[2] != null && players[2].getX() == 8)
-                return players[2];
-            if (players[3] != null && players[3].getX() == 0)
-                return players[3];
-        }
-        // No player has won, return null
-        return null;
-    }
-    */
-
     public static Player getWinner(GameBoard board, Player[] players) {
         Player lastStanding = onlyOnePlayerRemaining(players);
         if (lastStanding != null)
@@ -303,7 +279,8 @@ public class GameEngine {
         }
         
         //@DEBUGGING
-        //Deb.ug.println("GameEngine.nextPlayer: cannot get next player; no more players");
+        Deb.ug.println("GameEngine.nextPlayer: " + 
+                       "cannot get next player; no more players");
         return null;
     }
 
