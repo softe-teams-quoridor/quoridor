@@ -76,17 +76,18 @@ public class GameBoardFrame extends JFrame{
                 labelblue.setOpaque(true);
                 labelblue.setBackground(new Color(0, 0, 150));
                 labelblue.setPreferredSize(new Dimension(100, 70));
-                labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
+                //labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
+                labelblue=setBoarder(labelblue,board.getSquare(i-1,rownum-1));			//Untested
                 gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
             } else {
-                printPlayerLabel(board.getPlayer(i-1,rownum-1));//And this.
+                printPlayerLabel(board.getPlayer(i-1,rownum-1), board.getSquare(i-1,rownum-1));//And this.
             }
         }
     }
 
     //Changes the color of the squares that contain a player and shows 
     //the player name
-    private void printPlayerLabel(Player p){
+    private void printPlayerLabel(Player p, Square tSquare){
         JLabel label = new JLabel();
         label.setOpaque(true);
         if(p.getPlayerNo() == 1)
@@ -98,7 +99,8 @@ public class GameBoardFrame extends JFrame{
         else
             label.setBackground(new Color(0, 150, 150));
         label.setPreferredSize(new Dimension(100, 70));
-        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        //label.setBorder(BorderFactory.createLineBorder(Color.black));
+        label=setBoarder(label,  tSquare);									//Untested
         label.setText("    " + p.getName());
         gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
@@ -122,5 +124,20 @@ public class GameBoardFrame extends JFrame{
             labels[i].setText("    " + GameEngine.toNumerals(i-1));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
+    }
+    
+    
+    //Ok team, I know one of these loops is redundant, but it was a just in case kind of thing.
+    private JLabel setBoarder(JLabel someLabel,Square tSquare){
+    	    if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
+    	    }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 3, 1, Color.BLACK));
+    	    }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 3, Color.BLACK));
+    	    }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 3, 3, Color.BLACK));
+    	    }
+    	    return someLabel;
     }
 }
