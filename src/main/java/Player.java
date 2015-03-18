@@ -39,22 +39,6 @@ class Player {
     private int playerNo;              // unique player I.D. between 0 and 3
     private static int numAssign = 0;  // for assigning playerNo
 
-    /**
-     * instantiates a player object
-     * @param playerName = name of the player
-     * @param startLoc   = starting square on the gameboard
-     * @param numWalls   = number of walls this player has to start with
-     */
-    /*
-    public Player(String playerName, Square startLoc, int numWalls) {
-        this.playerName = playerName;
-        this.pawnLoc    = startLoc;
-        this.numWalls   = numWalls;
-        this.playerNo = numAssign;
-        numAssign++;
-    } 
-    */
-
     public Player(String playerName, int numWalls) {
         this.playerName = playerName;
 //         this.pawnLoc    = startLoc;

@@ -35,6 +35,7 @@ public class GameBoard {
      * constructs the GameBoard by instantiating the array of squares
      */
     public GameBoard(Player [] players) {
+        assert (players.length == 2 || players.length == 4);
         squares = new Square[COLUMNS][ROWS];
         for(int i = 0; i < COLUMNS; i++){
             for (int j = 0; j < ROWS; j++){
@@ -42,7 +43,7 @@ public class GameBoard {
             }
         }
         this.playerLocs = new Square[players.length];
-        setupInitialPosition2(players);
+        setupInitialPosition(players);
     }
 
     //*************************************************************************
@@ -69,13 +70,14 @@ public class GameBoard {
      * @return the square object
      */
     public Square getSquare(int x, int y) {
-        return validLoc(x,y) ? squares[x][y] : null;
+//         return validLoc(x,y) ? squares[x][y] : null;
+        assert (validLoc(x,y));
+        return squares[x][y];
     }
 
     //*************************************************************************
 
     /**
-     * @deprecated squares should no longer refer to a player
      * gets a player at a given location
      * @param x the column of the board
      * @param y the row of the gameboard
@@ -148,7 +150,7 @@ public class GameBoard {
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
      * @param players array of players to initialize
      */
-    public void setupInitialPosition2(Player [] players) {
+    public void setupInitialPosition(Player [] players) {
         // Test to ensure that the Player array is 2 or 4
         assert (players.length == 2 || players.length == 4);
         
@@ -159,7 +161,12 @@ public class GameBoard {
             int x = colInd & 15;
             int y = rowInd & 15;
 
+            assert (validLoc(x, y));
+            assert (x >= 0 && x < 9);
+            assert (y >= 0 && y < 9);
+            assert (i >= 0 && i < players.length);
             this.addPlayer(players[i], x, y);
+            assert (i >= 0 && i < this.playerLocs.length);
             this.playerLocs[i] = getSquare(x, y);
             colInd = colInd >> 4;
             rowInd = rowInd >> 4;

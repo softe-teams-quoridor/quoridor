@@ -18,10 +18,10 @@
  * Square()                   --> constructor
  * int getX()                 --> returns the x coordinate
  * int getY()                 --> returns the y coordinate
- * @DEPRECATE Player getPlayer()      --> returns player on the square
- * @DEPRECATE void addPlayer(Player)  --> assigns a Player obj to this square
- * @DEPRECATE void removePlayer()     --> removes a Player obj from this square
- * @DEPRECATE boolean vacant()        --> returns true if no player on this square
+ * Player getPlayer()         --> returns player on the square
+ * void addPlayer(Player)     --> assigns a Player obj to this square
+ * void removePlayer()        --> removes a Player obj from this square
+ * boolean vacant()           --> returns true if no player on this square
  * boolean isOccupied()       --> returns if the square is occupied by a player
  * void placeWallRight(bool)  --> places a the right-side wall
  * void placeWallBottom(bool) --> places the bottom-side wall
@@ -31,8 +31,7 @@
 
 public class Square {
     // Data members
-    private Player occupant;  //@deprecate Replace with isOccupied
-    boolean isOccupied;       // replaces above determines if a player is on this square
+    private Player occupant;  // player on this square
     private int row;          // the Y coordinate of this square
     private int col;          // the X coordinate of this square
     private Wall rightWall;   // right wall
@@ -45,10 +44,10 @@ public class Square {
       * ^ I should slap whoever said this :) - Walling
       */
     public Square(int x, int y) {
+        assert (true);
         col = x;
         row = y;
-        occupant   = null;  //@deprecate
-        isOccupied = false; //replaces above
+        occupant   = null;
         rightWall  = null;
         bottomWall = null;
     }
@@ -76,7 +75,6 @@ public class Square {
     //*************************************************************************    
 
     /**
-      * @deprecated As of Quoridor release 1.0, replaced by isOccupied()
       * returns the player object occupying this square
       * @return player object occupying this square
       */
@@ -86,8 +84,7 @@ public class Square {
 
     //*************************************************************************    
  
-    /** @deprecated As of Quoridor release 1.0
-      * adds a player to the square
+     /* adds a player to the square
       * @param p player to add to the square
       */
     public void addPlayer(Player p) {
@@ -96,8 +93,7 @@ public class Square {
 
     //*************************************************************************    
 
-    /** @deprecated As of Quoridor release 1.0
-      * removes a player from the square
+    /** removes a player from the square
       */
     public void removePlayer() {
         occupant = null;
@@ -105,8 +101,7 @@ public class Square {
 
     //*************************************************************************    
 
-    /** @deprecated As of Quoridor release 1.0, replaced by isOccupied() 
-      * @return false if the Sqaure is occupied
+    /** @return false if the Square is occupied
       */
     public boolean vacant() {
         return (occupant == null);
@@ -119,7 +114,7 @@ public class Square {
       * @return true if occupied; false otherwise
       */
     public boolean isOccupied() {
-        return isOccupied;
+        return (! this.vacant());
     }
 
     //*************************************************************************    
