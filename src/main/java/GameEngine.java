@@ -96,7 +96,6 @@ public class GameEngine {
       */
     public static boolean validate(GameBoard board, Player p, String move) {
         return parseMove(board,move) 
-//             ? validate(board, p.getLoc(), getSquare(board,move), -1, 0) 
             ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
             : false;
     }
@@ -115,7 +114,8 @@ public class GameEngine {
      */
     private static boolean validate(GameBoard g, Square orig, Square dest, 
                                     int dontCheckMe, int numJumps) {
-        assert (orig != null);
+        //assert (orig != null); // if we encounter a null adjacent square,
+                                 // we still need to check the next one!!!!
         int oneZero = 10;   // 1010b
         int sign = 6;       // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
