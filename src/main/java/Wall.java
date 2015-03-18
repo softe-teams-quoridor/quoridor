@@ -19,6 +19,10 @@
 
 public class Wall{
 
+    public enum orientation {
+        Horizontal, Vertical
+    }
+
     // Data Members
     private boolean isStart; // Indicates if this wall is a beginning
     // or end piece    
