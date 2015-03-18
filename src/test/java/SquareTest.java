@@ -47,37 +47,25 @@ public class SquareTest {
         assertTrue(s.vacant());
     }
 
-/*
     @Test
     public void testSquarePlaceVertWall() throws Exception {
         Square s = new Square(3, 5);
-        s.placeWallVert(true);
-        assertEquals(s.getVertWallStatus(), true);
-        s.placeWallVert(false);
-        assertEquals(s.getVertWallStatus(), false);
-    }
-
-    @Test
-    public void testSquarePlaceHorzWall() throws Exception {
-        // if you try to place a wall on the same place twice, then explosions
-        Square s = new Square(3, 5);
-        s.placeWallHorz(true);
-        assertEquals(s.getHorzWallStatus(), true);
-        s.placeWallHorz(false);
-        assertEquals(s.getHorzWallStatus(), false);
+        s.placeWallBottom(true);
+        assertTrue(s.hasWallBottom());
+        s.placeWallRight(false);
+        assertTrue(s.hasWallRight());
     }
 
     @Test
     public void testSquareEqualToAnotherSquare() throws Exception {
-        /*
-        Square s = new Square(5,5);
-        Square q = new Square(5,5);
-        assertEquals(s.equals(q), true);
-        Square u = new Square(8,8);
-        assertEquals(s.equals(u), false);
-        
+        Square sq1 = new Square(5,5);
+        Square sq2 = sq1;
+        assertEquals(sq1, sq2);
+        Square sq3 = new Square(8,8);
+        assertNotEquals(sq2, sq3);
     }
 
+/*
     @Test
     public void testSquareEqualToXandY() throws Exception {
         /*

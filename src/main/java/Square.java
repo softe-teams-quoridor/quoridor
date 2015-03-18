@@ -124,8 +124,9 @@ public class Square {
      * @param start is this is the top (true) or bottom (false) of a wall?
      */
     public void placeWallRight(boolean isStart) {
-        if ( rightWall != null )
-            rightWall = new Wall(isStart);
+        assert (rightWall == null); 
+//         if ( rightWall == null )
+        rightWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -135,8 +136,9 @@ public class Square {
       * @param start is this is the left (true) or right (false) of a wall?
       */
     public void placeWallBottom(boolean isStart) {
-        if ( bottomWall != null )
-            bottomWall = new Wall(isStart);
+        assert (bottomWall == null); 
+//         if ( bottomWall == null )
+        bottomWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -146,7 +148,7 @@ public class Square {
       * @return returns if wall starts or ends
       */
     public boolean hasWallRight() {
-        return (rightWall != null) ? true : false;
+        return (rightWall != null);
     }
 
     //*************************************************************************    
@@ -156,6 +158,6 @@ public class Square {
       * @return returns if wall starts or ends
       */
     public boolean hasWallBottom() {
-        return (bottomWall != null) ? true : false;
+        return (bottomWall != null);
     }
 }
