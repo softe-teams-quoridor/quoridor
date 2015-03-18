@@ -70,9 +70,7 @@ public class GameBoard {
      * @return the square object
      */
     public Square getSquare(int x, int y) {
-//         return validLoc(x,y) ? squares[x][y] : null;
-        assert (validLoc(x,y));
-        return squares[x][y];
+        return validLoc(x,y) ? squares[x][y] : null;
     }
 
     //*************************************************************************

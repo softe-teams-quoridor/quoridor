@@ -125,9 +125,10 @@ public class GameEngine {
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
 
+            //It is possible to check for a square that is outside of the board
             if ( check != null ) {
                 // Adjacency found check
-                if (check.vacant() && check == dest)
+                if (check.vacant() && check.equals(dest))
                     return true;
                 // Adjacency occupied check
                 if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  

@@ -114,9 +114,9 @@ public class GameEngineTest {
     public void testValidate() throws Exception {
        // Make sure you can only move one space 
        assertTrue(GameEngine.validate(board,players[0],"V-B"));
-       //assertFalse(GameEngine.validate(board,players[0],"V-A"));
-       assertFalse(GameEngine.validate(board,players[0],"IV-A"));
        assertTrue(GameEngine.validate(board,players[0],"VI-A"));
+       assertTrue(GameEngine.validate(board,players[0],"IV-A"));
+       //assertTrue(GameEngine.validate(board,players[0],"VI-A"));
        //assertFalse(GameEngine.validate(board,players[0],"I-D"));
      }
  
