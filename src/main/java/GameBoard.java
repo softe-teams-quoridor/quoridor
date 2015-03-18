@@ -27,7 +27,7 @@ public class GameBoard {
 
     // Data Members
     private Square [][] squares;  // The cells of the GameBoard
-    private Square [] playerLocs;  // locations of the players on the board
+    private Square [] playerLocs; // locations of the players on the board
         
     //*************************************************************************
 
@@ -75,6 +75,7 @@ public class GameBoard {
     //*************************************************************************
 
     /**
+     * @deprecated squares should no longer refer to a player
      * gets a player at a given location
      * @param x the column of the board
      * @param y the row of the gameboard
@@ -85,6 +86,10 @@ public class GameBoard {
     }
 
     //*************************************************************************
+
+//    public Player getPlayer(int playerNo) {
+
+  //  }
 
     /**
      * adds a player to the given location

@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class GameEngineTest {
+
+/*
     GameEngine ge;
     GameBoard board;
     Player p1, p2;
@@ -98,4 +100,5 @@ public class GameEngineTest {
         p1 = new Player("semi-collin",board.getSquare(4,0), 10);
         
     }
+    */
 }
