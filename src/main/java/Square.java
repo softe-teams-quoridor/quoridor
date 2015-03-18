@@ -42,7 +42,8 @@ public class Square {
       * instantiates a square object
       * teams can we make this constructor private?? only the gameboard should make squares
       *
-      * ^ I should slap whoever said this :) - Walling
+      * ^ I should slap whoever said this :) - Walling 
+      *
       */
     public Square(int x, int y) {
         col = x;

@@ -7,18 +7,20 @@ import org.junit.Before;
 
 public class GameEngineTest {
 
-/*
     GameEngine ge;
     GameBoard board;
-    Player p1, p2;
+    Player [] players;
     @Before
     public void beef() throws Exception {
-        ge = new GameEngine();
-        assertNotNull("ge should not be null!", ge);
-        board = new GameBoard();
+        players[0] = new Player("a",10);
+        players[1] = new Player("b",10);
+        assertNotNull("players should not be null", players);
+        board = new GameBoard(players);
         assertNotNull("board should not be null!", board);
+        Player.resetPlayerNos();
     }
 
+/*
     @Test
     public void testToNumerals() throws Exception {
         assertEquals("I",    GameEngine.toNumerals(0));
@@ -32,7 +34,8 @@ public class GameEngineTest {
         assertEquals("IX",   GameEngine.toNumerals(8));
         assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
     }
-
+*/
+/*
     @Test
     public void testFromNumerals() throws Exception {
         assertEquals(0, GameEngine.fromNumerals("I"));
@@ -47,7 +50,8 @@ public class GameEngineTest {
         assertEquals(-1, GameEngine.fromNumerals("@@@@@@@@@@@@@@"));
         assertEquals(-1, GameEngine.fromNumerals("arbitrary string"));
     }
-
+*/
+/*
     @Test
     public void testToLetters() throws Exception {
         assertEquals('A', GameEngine.toLetters(0));
@@ -61,7 +65,8 @@ public class GameEngineTest {
         assertEquals('I', GameEngine.toLetters(8));
         assertEquals('Z', GameEngine.toLetters(9));
     }
-
+*/
+/*
     @Test
     public void testFromLetters() throws Exception {
         //assertEquals(0, GameEngine.fromLetters(""));
@@ -72,7 +77,8 @@ public class GameEngineTest {
         assertEquals(-1, GameEngine.fromLetters('Q'));
         assertEquals(-1, GameEngine.fromLetters(';'));
     }
-
+*/
+/*    
     @Test
     public void testMakePlayer() throws Exception {
         p1 = new Player("tylEr", board.getSquare(4, 0), 10);
@@ -80,25 +86,28 @@ public class GameEngineTest {
         assertNotNull("p1 null?", p1);
         assertNotNull("p2 null?", p2);
     }
-
+*/
+/*
     @Test
     public void testParseMove() throws Exception {
         board = new GameBoard();
         p1 = new Player("tylUr", board.getSquare(3, 6), 10);
         assertTrue(ge.parseMove(board, "III-G"));
     }
-
+*/
+/*
     @Test
     public void testGetSquare() throws Exception {
         Square sq = ge.getSquare(board, "III-G");
         assertEquals(sq, board.getSquare(2, 6));
     }
-
+*/
+/*
     @Test
     public void testValidate() throws Exception {
         board = new GameBoard();
         p1 = new Player("semi-collin",board.getSquare(4,0), 10);
         
     }
-    */
+*/ 
 }
