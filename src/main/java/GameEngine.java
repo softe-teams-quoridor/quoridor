@@ -148,7 +148,7 @@ public class GameEngine {
      * @param board
      * @param move: a string representing a move
      */
-    // can we make this private?
+    // can we make this private? we have it now protected
     protected static boolean parseMove(GameBoard board, String move) {
         move = move.trim();
         String [] strs = move.split("-");
