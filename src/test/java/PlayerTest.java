@@ -19,8 +19,8 @@ public class PlayerTest {
         //Player.resetPlayerNos();
         players = new Player[NUM_PLAYERS];
         walls = 20 / NUM_PLAYERS;
-        for(int i = 0; i < NUM_PLAYERS; i++)
-            players[i] = new Player("player_" + i,walls,i); 
+       for(int i = 0; i < NUM_PLAYERS; i++)
+            players[i] = new Player(i, "player_" + i,walls); 
         
     }
 
@@ -61,11 +61,5 @@ public class PlayerTest {
     
     }
 
-    @Test
-    public void resetPlayerNosTest() throws Exception {
-        // Reset player number and check
-        Player.resetPlayerNos();
-        assertEquals(Player.numAssign,0);
-    
-    }
+  
 }

@@ -6,20 +6,21 @@ import org.junit.Before;
 
 public class GameBoardTest {
 
+    private static final int NUM_PLAYERS = 4;
     GameBoard board;
     Player [] players;
+    int walls;
     @Before
     public void beef() throws Exception {
-        Player.resetPlayerNos();
-        players = new Player[4];
-        players[0] = new Player("a",10);
-        players[1] = new Player("b",10);
-        players[2] = new Player("c",10);
-        players[3] = new Player("d",10);
+        players = new Player[NUM_PLAYERS];
+        walls = 20 / NUM_PLAYERS;
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            players[i] = new Player(i, "player_" + i, walls);
+        
         assertNotNull("players should not be null", players);
         board = new GameBoard(players);
         assertNotNull("board should not be null!", board);
-        assert(players.length == 4);
+        assert(players.length == NUM_PLAYERS);
     }
 
     @Test
@@ -41,11 +42,15 @@ public class GameBoardTest {
     public void testGameBoardIsOccupied() {
         assertTrue(board.isOccupied(4,0));
         assertTrue(board.isOccupied(4,8));
+
+        if(NUM_PLAYERS == 4) {
+            assertTrue(board.isOccupied(0,4));
+            assertTrue(board.isOccupied(4,8));
+        }
+
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            board.removePlayer(players[i]);
         
-        board.removePlayer(players[0]);
-        board.removePlayer(players[1]);
-        board.removePlayer(players[2]);
-        board.removePlayer(players[3]);
         // Test on empty board
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ )
@@ -66,10 +71,10 @@ public class GameBoardTest {
 
     @Test
     public void testGameBoardGetNULLPlayer() {
-        board.removePlayer(players[0]);
-        board.removePlayer(players[1]);
-        board.removePlayer(players[2]);
-        board.removePlayer(players[3]);
+
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            board.removePlayer(players[i]);
+        
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ ) 
                 assertEquals(board.getPlayer(i,j), null);
@@ -100,7 +105,10 @@ public class GameBoardTest {
     public void testSetUpIntialPosition() throws Exception {
         assertEquals(board.getPlayerLoc(players[0]), board.getSquare(4,0));
         assertEquals(board.getPlayerLoc(players[1]), board.getSquare(4,8));
-        assertEquals(board.getPlayerLoc(players[2]), board.getSquare(0,4));
-        assertEquals(board.getPlayerLoc(players[3]), board.getSquare(8,4));
+        if(NUM_PLAYERS == 4) {
+            assertEquals(board.getPlayerLoc(players[2]), board.getSquare(0,4));
+            assertEquals(board.getPlayerLoc(players[3]), board.getSquare(8,4));
+        }
     }
+    
 }

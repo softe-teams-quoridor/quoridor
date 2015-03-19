@@ -7,17 +7,21 @@ import org.junit.Before;
 
 public class GameEngineTest {
 
+    private static final int NUM_PLAYERS = 2;
+
     GameBoard board;
     Player [] players;
+    int walls;
     @Before
     public void beef() throws Exception {
-        players = new Player[2];
-        players[0] = new Player("a",10);
-        players[1] = new Player("b",10);
+        players = new Player[NUM_PLAYERS];
+        walls = 20 / NUM_PLAYERS;
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            players[i] = new Player(i, "player_" + i, walls);
         assertNotNull("players should not be null", players);
+
         board = new GameBoard(players);
         assertNotNull("board should not be null!", board);
-        Player.resetPlayerNos();
     }
 
 
@@ -132,10 +136,18 @@ public class GameEngineTest {
 
     @Test
     public void testNextPlayer() throws Exception {
-        assertEquals(players[1], GameEngine.nextPlayer(0,players));
-        assertEquals(players[0], GameEngine.nextPlayer(1,players));
-    
-    }
+        // Go through each players turn twice
+        assertEquals(players[1],GameEngine.nextPlayer(0,players));
+        
+        if(NUM_PLAYERS == 4) {
+            assertEquals(players[2],GameEngine.nextPlayer(1,players));
+            assertEquals(players[3],GameEngine.nextPlayer(2,players));
+            assertEquals(players[0],GameEngine.nextPlayer(3,players));
+        }
+        else {
+            assertEquals(players[0],GameEngine.nextPlayer(1,players));
+        }
+            
 
- 
+    }
 }

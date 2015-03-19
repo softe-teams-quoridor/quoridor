@@ -50,7 +50,7 @@ public class Game {
         players = new Player[numPlayers];
         int wallsEach = 20 / players.length;
         for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(("player_" + i), wallsEach);
+            players[i] = new Player(i, ("player_" + i), wallsEach);
         }
 
         // Instantiate GameBoard

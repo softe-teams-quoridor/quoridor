@@ -40,6 +40,8 @@ class Player {
     // Changed to protected for testing purposes -- Eric
     protected static int numAssign = 0;  // for assigning playerNo
 
+    /*
+
     public Player(String playerName, int numWalls) {
         this.playerName = playerName;
         this.numWalls   = numWalls;
@@ -47,7 +49,9 @@ class Player {
         numAssign++;
     }
 
-    public Player(String playerName, int numWalls, int pno) {
+    */
+
+    public Player(int pno, String playerName, int numWalls) {
         this.playerName = playerName;
         this.numWalls = numWalls;
         this.playerNo = pno;
@@ -98,12 +102,4 @@ class Player {
         }
         return false;
     } 
-
-    /**
-      * resets the current assignment number to zero
-      * useful for a move server to reset the count of players after each game
-      */
-    public static void resetPlayerNos() {
-        numAssign = 0;
-    }
 }

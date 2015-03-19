@@ -56,7 +56,6 @@ public class UserServer {
 
         while (true) {
             playGame(currClient);
-            Player.resetPlayerNos();
             try {
                 Deb.ug.println("closing connection");
                 currClient.close();
@@ -99,7 +98,7 @@ public class UserServer {
         Player [] players = new Player[numPlayers];
         int wallsEach = 20 / numPlayers;
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player(("player_" + i), wallsEach);
+            players[i] = new Player(i, ("player_" + i), wallsEach);
         }
         GameBoard board = new GameBoard(players);
 //         GameBoard board = new GameBoard();
