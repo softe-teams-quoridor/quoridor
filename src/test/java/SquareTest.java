@@ -10,69 +10,64 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class SquareTest {
+    
+    Square square;
+    Player player;
+   
+    
     @Before
-    public void empty() throws Exception {
+    public void beef() throws Exception {
         // do whatever you want here
-        Player.resetPlayerNos();
+        // I always do what I want hehe
+
+       square = new Square(3,5);
+       player = new Player("player_0",10,0);
+               
+
     }
 
     @Test
     public void testSquareConstructor() throws Exception {
-        Square square = new Square(3, 5);
         assertNotNull("Square() returned null", square);
     }
 
     @Test
     public void testSquareGetPlayer() throws Exception {
-       Square s = new Square(3, 5);
-       assertNull(s.getPlayer());
+       assertNull(square.getPlayer());
     }
 
     @Test
     public void testSquareAddPlayer() throws Exception {
-       Square s = new Square(3, 5);
-       Player p = new Player("name", 0);
-       s.addPlayer(p);
-       assertEquals(s.getPlayer(),p);
+       square.addPlayer(player);
+       assertEquals(square.getPlayer(),player);
+    }
+
+    @Test
+    public void testVacant() throws Exception {
+        assertTrue(square.vacant());
+        square.addPlayer(player);
+        assertFalse(square.vacant());
     }
 
     @Test
     public void testSquareRemovePlayer() throws Exception {
-        Square s = new Square(3, 5);
-        Player p = new Player("name", 0);
-        s.addPlayer(p);
-        assertFalse(s.vacant());
-        s.removePlayer();
-        assertEquals(s.getPlayer(), null);
-        assertTrue(s.vacant());
+       //Add the player to the board to remove it
+       square.addPlayer(player);
+       assertNotNull(square.getPlayer());
+
+       // Remove the player and check 
+       square.removePlayer();
+       assertNull(square.getPlayer());
+    }
+
+    @Test
+    public void testEquals() throws Exception {
+        Square square2 = new Square(3,5);
+        assertTrue(square.equals(square2));
     }
 
     @Test
     public void testSquarePlaceVertWall() throws Exception {
-        Square s = new Square(3, 5);
-        s.placeWallBottom(true);
-        assertTrue(s.hasWallBottom());
-        s.placeWallRight(false);
-        assertTrue(s.hasWallRight());
-    }
-
-    @Test
-    public void testSquareEqualToAnotherSquare() throws Exception {
-        Square sq1 = new Square(5,5);
-        Square sq2 = sq1;
-        assertEquals(sq1, sq2);
-        Square sq3 = new Square(8,8);
-        assertNotEquals(sq2, sq3);
-    }
-
-/*
-    @Test
-    public void testSquareEqualToXandY() throws Exception {
-        /*
-        Square s = new Square(5,5);
-        assertEquals(s.equals(5,5), true);
-        assertEquals(s.equals(8,4), false);
         
-    }
-    */
+    }   
 }

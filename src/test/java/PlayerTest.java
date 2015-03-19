@@ -16,11 +16,11 @@ public class PlayerTest {
     @Before
     public void beef() throws Exception {
         // Setup a players array of NUM_PLAYERS players
-        Player.resetPlayerNos();
+        //Player.resetPlayerNos();
         players = new Player[NUM_PLAYERS];
         walls = 20 / NUM_PLAYERS;
         for(int i = 0; i < NUM_PLAYERS; i++)
-            players[i] = new Player("player_" + i,walls); 
+            players[i] = new Player("player_" + i,walls,i); 
         
     }
 

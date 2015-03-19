@@ -45,6 +45,12 @@ class Player {
         this.numWalls   = numWalls;
         this.playerNo = numAssign;
         numAssign++;
+    }
+
+    public Player(String playerName, int numWalls, int pno) {
+        this.playerName = playerName;
+        this.numWalls = numWalls;
+        this.playerNo = pno;
     } 
 
     /**

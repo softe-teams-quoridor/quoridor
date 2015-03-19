@@ -83,8 +83,8 @@ public class Square {
      /* adds a player to the square
       * @param p player to add to the square
       */
-    public void addPlayer(Player p) {
-        occupant = p;
+    public void addPlayer(Player player) {
+        occupant = player;
     }
 
     //*************************************************************************    
@@ -110,9 +110,8 @@ public class Square {
      * @param start is this is the top (true) or bottom (false) of a wall?
      */
     public void placeWallRight(boolean isStart) {
-        assert (rightWall == null); 
-//         if ( rightWall == null )
-        rightWall = new Wall(isStart);
+        if (!hasWallRight())
+            rightWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -122,9 +121,8 @@ public class Square {
       * @param start is this is the left (true) or right (false) of a wall?
       */
     public void placeWallBottom(boolean isStart) {
-        assert (bottomWall == null); 
-//         if ( bottomWall == null )
-        bottomWall = new Wall(isStart);
+        if (!hasWallBottom())
+            bottomWall = new Wall(isStart);
     }
 
     //*************************************************************************    
@@ -145,5 +143,20 @@ public class Square {
       */
     public boolean hasWallBottom() {
         return (bottomWall != null);
+    }
+
+
+    //*************************************************************************
+    
+    /**
+      * returns true if the sqaures equal
+      * @return true if the sqaures are equal false otherwise
+      */
+    // Maybe should also check walls? probably?
+    // I'll add that later
+    public boolean equals(Square square) {
+        if(this.getX() == square.getX() && this.getY() == square.getY())
+            return true;
+        return false;
     }
 }
