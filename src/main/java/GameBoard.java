@@ -123,7 +123,7 @@ public class GameBoard {
      * @param y the row of the gameboard
      * @return true if location is on board, false otherwise
      */
-    private boolean validLoc(int x, int y) {
+    protected boolean validLoc(int x, int y) {
         return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
     }
 
@@ -159,9 +159,6 @@ public class GameBoard {
             int y = rowInd & 15;
 
             assert (validLoc(x, y));
-            assert (x >= 0 && x < 9);
-            assert (y >= 0 && y < 9);
-            assert (i >= 0 && i < players.length);
             this.addPlayer(players[i], x, y);
             assert (i >= 0 && i < this.playerLocs.length);
             this.playerLocs[i] = getSquare(x, y);
@@ -170,11 +167,10 @@ public class GameBoard {
         }
     }
 
+    //*************************************************************************
+
     public Square getPlayerLoc(Player player) {
         return playerLocs[player.getPlayerNo()];
     }
-
-    public Square getPlayerLoc(int playerNo) {
-        return playerLocs[playerNo];
-    }
+    
 }

@@ -210,14 +210,14 @@ public class GameEngine {
 
         // Check if one of the players have met the traditional victory
         // condition
-        if (players[0] != null && board.getPlayerLoc(0).getY() == 8)
+        if (players[0] != null && board.getPlayerLoc(players[0]).getY() == 8)
             return players[0];
-        if (players[1] != null && board.getPlayerLoc(1).getY() == 0)
+        if (players[1] != null && board.getPlayerLoc(players[1]).getY() == 0)
             return players[1];
         if (players.length == 4) {
-            if (players[2] != null && board.getPlayerLoc(2).getX() == 8)
+            if (players[2] != null && board.getPlayerLoc(players[2]).getX() == 8)
                 return players[2];
-            if (players[3] != null && board.getPlayerLoc(3).getX() == 0)
+            if (players[3] != null && board.getPlayerLoc(players[3]).getX() == 0)
                 return players[3];
         }
         // No player has won, return null

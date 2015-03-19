@@ -34,14 +34,12 @@ class Player {
 
     // Data Members
     private String playerName = "";    // player's name
-//     private Square pawnLoc;            // player's pawn location
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
     private static int numAssign = 0;  // for assigning playerNo
 
     public Player(String playerName, int numWalls) {
         this.playerName = playerName;
-//         this.pawnLoc    = startLoc;
         this.numWalls   = numWalls;
         this.playerNo = numAssign;
         numAssign++;
@@ -54,37 +52,6 @@ class Player {
     public int getPlayerNo() {
         return playerNo;
     }
-
-    /*
-    /** 
-      * returns the square that the player's pawn is occupying
-      * @return = returns a square
-    public Square getLoc() {
-        return pawnLoc; 
-    }
-
-    /** 
-      * returns the x coordinate of the square the pawn is on
-      * @return = returns an int
-    public int getX() {
-        return pawnLoc.getX(); 
-    }
-
-    /** 
-      * returns the y coordinate of the square the pawn is on
-      * @return = returns an int
-    public int getY() {
-        return pawnLoc.getY(); 
-    }
-
-
-    /**
-      * sets the player's location
-      * @param sqr square to set player to
-    public void setLoc(Square sqr) {
-        pawnLoc = sqr;
-    }
-      */
 
     /**
       * returns the player's name
