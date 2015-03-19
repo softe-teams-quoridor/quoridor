@@ -91,15 +91,14 @@ public class GameEngineTest {
         //Test all possible moves! 
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
-                assertTrue(GameEngine.parseMove(board,
-                            (GameEngine.toNumerals(i) + "-" + 
-                             GameEngine.toLetters(j))));
+                assertTrue(GameEngine.parseMove((GameEngine.toNumerals(i) 
+                                + "-" + GameEngine.toLetters(j))));
             }
         }
 
         //Test some impossible moves :)
-        assertFalse(GameEngine.parseMove(board,"IIII-A"));
-        assertFalse(GameEngine.parseMove(board,"A-II"));
+        assertFalse(GameEngine.parseMove("IIII-A"));
+        assertFalse(GameEngine.parseMove("A-II"));
 
     }
 

@@ -95,7 +95,7 @@ public class GameEngine {
       * @param move: String that contains the move destination
       */
     public static boolean validate(GameBoard board, Player p, String move) {
-        return parseMove(board,move) 
+        return parseMove(move) 
             ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
             : false;
     }
@@ -148,7 +148,7 @@ public class GameEngine {
      * @param move: a string representing a move
      */
     // can we make this private? we have it now protected
-    protected static boolean parseMove(GameBoard board, String move) {
+    protected static boolean parseMove(String move) {
         move = move.trim();
         String [] strs = move.split("-");
         if (strs.length == 1) {
