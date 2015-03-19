@@ -39,13 +39,8 @@ public class Square {
 
     /** 
       * instantiates a square object
-      * teams can we make this constructor private?? only the gameboard should make squares
-      *
-      * ^ I should slap whoever said this :) - Walling 
-      *
-      */
+     */
     public Square(int x, int y) {
-        assert (true);
         col = x;
         row = y;
         occupant   = null;
@@ -106,16 +101,6 @@ public class Square {
       */
     public boolean vacant() {
         return (occupant == null);
-    }
-
-    //*************************************************************************    
-
-    /**
-      * returns if this square is claimed to be occupied
-      * @return true if occupied; false otherwise
-      */
-    public boolean isOccupied() {
-        return (! this.vacant());
     }
 
     //*************************************************************************    

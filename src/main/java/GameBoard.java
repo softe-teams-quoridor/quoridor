@@ -36,13 +36,16 @@ public class GameBoard {
      */
     public GameBoard(Player [] players) {
         assert (players.length == 2 || players.length == 4);
+        // Instantiate squares array, setting X and Y to i and j respectively
         squares = new Square[COLUMNS][ROWS];
         for(int i = 0; i < COLUMNS; i++){
             for (int j = 0; j < ROWS; j++){
                 squares[i][j] = new Square(i, j);
             }
         }
-        this.playerLocs = new Square[players.length];
+        // Instantiate player location array
+        playerLocs = new Square[players.length];
+        // Initialize player positions
         setupInitialPosition(players);
     }
 

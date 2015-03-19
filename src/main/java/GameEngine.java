@@ -10,15 +10,21 @@
  * int fromNumerals(String) --> converts string(numeral) to an int
  * char toLetters(int)      --> converts int to a letter ex 0 -> A
  * int fromLetters(char)    --> conversions between ints and numerals/letters
- * boolean validate(GameBoard, String)   --> returns if string represents a 
- *                                           legal move
- * boolean parseMove(GameBoard, String)  --> returns if the move string is 
- *                                           valid
- * Sqaure getSquare(GameBoard, String)   --> constructs a square based on the 
- *                                           move string
- * boolean getWinner(GameBoard,Players[])--> checks if a player has won the 
- *                                           game 
- * Player nextPlayer(int, Player[])      --> returns the next player available
+ * boolean validate(GameBoard, String)  
+ *                          --> returns if string represents a legal move
+ * boolean parseMove(GameBoard, String) 
+ *                          --> returns if the move string is valid
+ * Sqaure getSquare(GameBoard, String) 
+ *                          --> constructs a square based on the move string
+ * boolean getWinner(GameBoard,Players[])
+ *                          --> checks if a player has won the game 
+ * Player nextPlayer(int, Player[])      
+ *                          --> returns the next player available
+ * -------------------------- PRIVATE METHODS -------------------------
+ *
+ * Player onlyOnePlayerRemaining(Player[])
+ *                          --> returns if a player is the last one alive
+ * 
  */
 
 public class GameEngine {
@@ -26,20 +32,11 @@ public class GameEngine {
                                                "IV" , "V"   , "VI" , 
                                                "VII", "VIII", "IX" };
 
-    /* you can't instantiate this class 
-     * this would be private, except then GameEngineTest couldn't extend it
-     */
-    protected GameEngine() {}
-
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
       */
     public static String toNumerals(int x) {
-        /*if (x < 0 || 8 < x) {
-            return "@@@@@@@@@@@@@@"; // this should never happen
-        }
-        return numerals[x];*/
         return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
     }
 
@@ -65,10 +62,6 @@ public class GameEngine {
       * @param x: integer to convert to a numeral
       */
     public static char toLetters(int x) {
-        /*if (x < 0 || 8 < x) {
-            return 'Z'; // this should never happen
-        }
-        return (char) (x + 'A');*/
         return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
     }
 
@@ -79,10 +72,6 @@ public class GameEngine {
       * @param ch: character to convert
       */
     public static int fromLetters(char ch) {
-        /*if (ch < 'A' || 'I' < ch) {
-            return -1; // this should never happen
-        }
-        return (int) (ch - 'A');*/
         return (ch < 'A' || 'I' < ch) ? -1 : (ch - 'A');
     }
 
@@ -112,26 +101,29 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, in case of clustering
       * @return true true if move is valid, false otherwise 
      */
-    private static boolean validate(GameBoard g, Square orig, Square dest, 
+    private static boolean validate(GameBoard board, Square currLoc, Square dest, 
                                     int dontCheckMe, int numJumps) {
-        int oneZero = 10;   // 1010b
-        int sign = 6;       // 0...0110b
+        int oneZero = 10; // 1010b
+        int sign = 6;     // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
-        
-            Square check = g.getSquare(orig.getX() + x, orig.getY() + y);
+            
+            Square checkLoc = board.getSquare(currLoc.getX() + x,
+                                              currLoc.getY() + y);
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
-
+            
             //It is possible to check for a square that is outside of the board
-            if ( check != null ) {
-                // Adjacency found check
-                if (check.vacant() && check.equals(dest))
+            if ( checkLoc != null ) {
+                // If checkLoc is adjacent and where we want to go...
+                if (checkLoc.vacant() && checkLoc == dest)
                     return true;
-                // Adjacency occupied check
-                if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
-                   && validate(g, check, dest, (i+2)%4, numJumps+1) )
+                // If the spot is occupied, this isn't our third jump, and the
+                // adjacent spot to check isn't the spot we were just in, check
+                // if our destination could possibly be adjacent to that player
+                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe  
+                    && validate(board, checkLoc, dest, (i+2)%4, numJumps+1) )
                     return true;
             }
        }
