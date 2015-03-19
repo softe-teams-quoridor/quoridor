@@ -87,10 +87,6 @@ public class GameBoard {
 
     //*************************************************************************
 
-//    public Player getPlayer(int playerNo) {
-
-  //  }
-
     /**
      * adds a player to the given location
      * @param p the player to add

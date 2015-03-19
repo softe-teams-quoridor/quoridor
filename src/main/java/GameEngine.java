@@ -1,5 +1,5 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: March 14, 2015
+ * Last Edit: March 18, 2015
  * ____________________________________________________________________________
  *
  * this class is used by both the client and the server!
@@ -114,13 +114,12 @@ public class GameEngine {
      */
     private static boolean validate(GameBoard g, Square orig, Square dest, 
                                     int dontCheckMe, int numJumps) {
-        //assert (orig != null); // if we encounter a null adjacent square,
-                                 // we still need to check the next one!!!!
         int oneZero = 10;   // 1010b
         int sign = 6;       // 0...0110b
         for ( int i = 0; i < 4; i++ ) {
             int x = ((oneZero & 1))       * Integer.signum(sign);
             int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
+        
             Square check = g.getSquare(orig.getX() + x, orig.getY() + y);
             oneZero = oneZero >> 1;
             sign = Integer.rotateRight(sign,1);
@@ -132,9 +131,8 @@ public class GameEngine {
                     return true;
                 // Adjacency occupied check
                 if ( !check.vacant() && numJumps !=3 && i != dontCheckMe  
-                   && validate(g, check, dest, (i+2)%4, numJumps+1) ) {
+                   && validate(g, check, dest, (i+2)%4, numJumps+1) )
                     return true;
-                }
             }
        }
        return false;
@@ -208,10 +206,10 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-      * @param board: GameBoard to check
-      * @param players: array of players to check if they have won
-      * @return a player if that player has won the game, null otherwise
-      */
+     * @param board: GameBoard to check
+     * @param players: array of players to check if they have won
+     * @return a player if that player has won the game, null otherwise
+     */
     public static Player getWinner(GameBoard board, Player[] players) {
         Player lastStanding = onlyOnePlayerRemaining(players);
         if (lastStanding != null)
@@ -233,52 +231,45 @@ public class GameEngine {
         return null;
     }
 
-        // This loop will count the number of active players.
-        // if the number of null players in the players array
-        // is one less than the array length, then we only have
-        // one active player
+    //*************************************************************************
 
-    // checks for only one player remaining
-    // @param players the array of players in the game
-    // @return the only player remaining or null if multiple players in game
+    /**  
+     * checks if there is only one player remaining
+     * @param players the array of players in the game
+     * @return the the last player remaining or null if more players exist
+     */
     private static Player onlyOnePlayerRemaining(Player [] players) {
-        int nullPlayerCount = 0;
+        int nullPlayerCount = 0; // keeps count of the null players
+        int playerFound = 0;     // used to index a player in the array
+        
         // Check if we only have one player
         for (int i = 0; i < players.length; i++) {
+            // Count the null players in the array
             if ( players[i] == null )
                 nullPlayerCount++;
+            // Keep track of a player if one is found to be returned
+            else 
+                playerFound = i;
         }
-        // If we only have one player left... let's return that player!
-        if (nullPlayerCount == players.length - 1) {
-            for (int i = 0; i < players.length; i++) 
-                if (players[i] != null)
-                    return players[i];
-        }
-        // Else, we have more than one player left
-        return null;
+        // If there are 3 null players, return the only player left
+        return ( nullPlayerCount == 3 ) ? players[playerFound] : null;
     }
 
     //*************************************************************************
 
     /**
-      * returns the next active player
-      * @param current the current player number
-      * @param players the players array
-      * @return the next available player
-      */
+     * returns the next active player
+     * @param current the current player number
+     * @param players the players array
+     * @return the next available player
+     */
     public static Player nextPlayer(int current, Player [] players) {
-        /* This loop will make sure that if we are looking at the same 
-         * player again, we exit and return null
-         * In Game.java, after we call this method, we can check 
-         * if player == null then exit the main loop if true
-         */
         int nextP = (current + 1) % players.length;
         while ( nextP != current ) {
             if (players[nextP] != null)
                 return players[nextP];
             nextP = (nextP + 1) % players.length;
         }
-        
         //@DEBUGGING
         Deb.ug.println("GameEngine.nextPlayer: " + 
                        "cannot get next player; no more players");
