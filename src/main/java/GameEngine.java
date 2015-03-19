@@ -211,6 +211,7 @@ public class GameEngine {
      * @return a player if that player has won the game, null otherwise
      */
     public static Player getWinner(GameBoard board, Player[] players) {
+        // Check if there is only one player left
         Player lastStanding = onlyOnePlayerRemaining(players);
         if (lastStanding != null)
             return lastStanding;
@@ -264,7 +265,8 @@ public class GameEngine {
      * @return the next available player
      */
     public static Player nextPlayer(int current, Player [] players) {
-        int nextP = (current + 1) % players.length;
+        int nextP = (current + 1) % players.length; // index of player array
+        // Iterate through player array, skipping null players
         while ( nextP != current ) {
             if (players[nextP] != null)
                 return players[nextP];
@@ -273,7 +275,10 @@ public class GameEngine {
         //@DEBUGGING
         Deb.ug.println("GameEngine.nextPlayer: " + 
                        "cannot get next player; no more players");
+        // No players left
         return null;
     }
+
+    //*************************************************************************
 
 }
