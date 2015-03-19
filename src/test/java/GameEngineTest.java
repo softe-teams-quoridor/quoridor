@@ -99,6 +99,7 @@ public class GameEngineTest {
 
         //Test some impossible moves :)
         assertFalse(GameEngine.parseMove(board,"IIII-A"));
+        assertFalse(GameEngine.parseMove(board,"A-II"));
 
     }
 
@@ -116,8 +117,26 @@ public class GameEngineTest {
        assertTrue(GameEngine.validate(board,players[0],"V-B"));
        assertTrue(GameEngine.validate(board,players[0],"VI-A"));
        assertTrue(GameEngine.validate(board,players[0],"IV-A"));
-       //assertTrue(GameEngine.validate(board,players[0],"VI-A"));
-       //assertFalse(GameEngine.validate(board,players[0],"I-D"));
-     }
+       assertFalse(GameEngine.validate(board,players[0],"I-D"));
+    }
+
+    @Test
+    public void testGetWinner() throws Exception {
+        assertNull(GameEngine.getWinner(board, players));
+        board.move(players[1],board.getSquare(3,8));
+        for(int i = 1; i < 9; i++)
+            board.move(players[0],board.getSquare(4,i));   
+        assertNotNull(GameEngine.getWinner(board, players));
+    
+    }
+
+
+    @Test
+    public void testNextPlayer() throws Exception {
+        assertEquals(players[1], GameEngine.nextPlayer(0,players));
+        assertEquals(players[0], GameEngine.nextPlayer(1,players));
+    
+    }
+
  
 }
