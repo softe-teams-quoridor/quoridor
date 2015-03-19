@@ -36,7 +36,9 @@ class Player {
     private String playerName = "";    // player's name
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
-    private static int numAssign = 0;  // for assigning playerNo
+    
+    // Changed to protected for testing purposes -- Eric
+    protected static int numAssign = 0;  // for assigning playerNo
 
     public Player(String playerName, int numWalls) {
         this.playerName = playerName;
@@ -72,17 +74,24 @@ class Player {
     }
 
     /**
-      * @return true if this player has any walls left to place
-      * side-effect: decrements the number of walls this player has
+      * Checks to see if the player can place a wall
+      * @return true if this player has any walls left to place     
       */    
-    public boolean mayPlaceWall() {
-        if (numWalls > 0) {
+    private boolean mayPlaceWall() {
+        return(numWalls != 0);        
+    }
+
+    /**
+      * Decrements the number of walls if possible
+      * @return true if walls have been decremented, false otherwise
+      */
+    public boolean placeWall() {
+        if(mayPlaceWall()) {
             numWalls--;
             return true;
-        } else {
-            return false;
         }
-    }
+        return false;
+    } 
 
     /**
       * resets the current assignment number to zero
