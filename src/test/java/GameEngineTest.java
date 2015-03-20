@@ -17,7 +17,7 @@ public class GameEngineTest {
         players = new Player[NUM_PLAYERS];
         walls = 20 / NUM_PLAYERS;
         for(int i = 0; i < NUM_PLAYERS; i++)
-            players[i] = new Player(i, "player_" + i, walls);
+            players[i] = new Player(i, walls);
         assertNotNull("players should not be null", players);
 
         board = new GameBoard(players);

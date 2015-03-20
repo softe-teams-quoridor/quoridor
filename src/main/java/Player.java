@@ -57,6 +57,10 @@ class Player {
         this.playerNo = pno;
     } 
 
+    public Player(int pno, int numWalls) {
+        this(pno, "player_" + pno, numWalls);
+    } 
+
     /**
       * returns the player's number
       * @return the players number

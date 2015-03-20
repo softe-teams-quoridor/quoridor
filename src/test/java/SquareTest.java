@@ -21,7 +21,7 @@ public class SquareTest {
         // I always do what I want hehe
 
        square = new Square(3,5);
-       player = new Player(0,"player_0",10);
+       player = new Player(0, 10);
                
 
     }
