@@ -1,5 +1,5 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: March 18, 2015
+ * Last Edit: March 20, 2015
  * ____________________________________________________________________________
  *
  * this class is used by both the client and the server!
@@ -10,17 +10,17 @@
  * int fromNumerals(String) --> converts string(numeral) to an int
  * char toLetters(int)      --> converts int to a letter ex 0 -> A
  * int fromLetters(char)    --> conversions between ints and numerals/letters
- * boolean validate(GameBoard, String)  
- *                          --> returns if string represents a legal move
  * boolean parseMove(GameBoard, String) 
  *                          --> returns if the move string is valid
+ * boolean validate(GameBoard, String)  
+ *                          --> returns if string represents a legal move
  * Sqaure getSquare(GameBoard, String) 
  *                          --> constructs a square based on the move string
  * boolean getWinner(GameBoard,Players[])
  *                          --> checks if a player has won the game 
  * Player nextPlayer(int, Player[])      
  *                          --> returns the next player available
- * -------------------------- PRIVATE METHODS -------------------------
+ * ----------------------------- PRIVATE METHODS ------------------------------
  *
  * Player onlyOnePlayerRemaining(Player[])
  *                          --> returns if a player is the last one alive
@@ -77,61 +77,6 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /**
-      * returns true if the string represents a legal move on that gameboard
-      * @param board: GameBoard object to move on
-      * @param p: Player object requesting the move
-      * @param move: String that contains the move destination
-      */
-    public static boolean validate(GameBoard board, Player p, String move) {
-        return parseMove(move) 
-            ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
-            : false;
-    }
-
-    //*************************************************************************
-
-    /**
-      * validates a user move by checking adjacent squares and the squares
-      *   adjacent to any nearby players
-      * @param g GameBoard to validate a move on
-      * @param orig the square to check adjacencies from
-      * @param dest the destination to loo for
-      * @param dontCheckMe flag to prevent recursing to a previous location
-      * @param numJumps flag to prevent a 4th jump, in case of clustering
-      * @return true true if move is valid, false otherwise 
-     */
-    private static boolean validate(GameBoard board, Square currLoc, Square dest, 
-                                    int dontCheckMe, int numJumps) {
-        int oneZero = 10; // 1010b
-        int sign = 6;     // 0...0110b
-        for ( int i = 0; i < 4; i++ ) {
-            int x = ((oneZero & 1))       * Integer.signum(sign);
-            int y = ((oneZero & 2) >> 1 ) * Integer.signum(sign);
-            
-            Square checkLoc = board.getSquare(currLoc.getX() + x,
-                                              currLoc.getY() + y);
-            oneZero = oneZero >> 1;
-            sign = Integer.rotateRight(sign,1);
-            
-            //It is possible to check for a square that is outside of the board
-            if ( checkLoc != null ) {
-                // If checkLoc is adjacent and where we want to go...
-                if (checkLoc.vacant() && checkLoc == dest)
-                    return true;
-                // If the spot is occupied, this isn't our third jump, and the
-                // adjacent spot to check isn't the spot we were just in, check
-                // if our destination could possibly be adjacent to that player
-                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe  
-                    && validate(board, checkLoc, dest, (i+2)%4, numJumps+1) )
-                    return true;
-            }
-       }
-       return false;
-    } // i don't understand this and i'm grumpy about it
-
-    //*************************************************************************
-
     /** 
      *  returns true if the string represents a possibly legal move
      *  i.e. the string is of the correct format
@@ -166,6 +111,82 @@ public class GameEngine {
         // yeah, anything else is not allowed
         return false;
     }
+
+    //*************************************************************************
+
+    /**
+      * returns true if the string represents a legal move on that gameboard
+      * @param board: GameBoard object to move on
+      * @param p: Player object requesting the move
+      * @param move: String that contains the move destination
+      */
+    public static boolean validate(GameBoard board, Player p, String move) {
+        return parseMove(move) 
+            ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
+            : false;
+    }
+
+    //*************************************************************************
+
+    /**
+      * validates a user move by checking for walls that might be obstructing
+      *   the direction we want to jump to, checking if the destination is
+      *   a square adjacent to the player's current location, or if the dest is
+      *   adjacent to another player (who is adjacent to the player making the 
+      *   move)
+      * @param board GameBoard to validate a move on
+      * @param currLoc the square we are checking adjacent squares from
+      * @param dest the square we wish to move to
+      * @param dontCheckMe flag to prevent recursing to a previous location
+      * @param numJumps flag to prevent a 4th jump, inc. of player clustering
+      * @return true if move is valid, false otherwise 
+     */
+    private static boolean validate(GameBoard board, Square currLoc, Square dest, 
+                                    int dontCheckMe, int numJumps) {
+        int direction = 86; 
+        for ( int i = 0; i < 4; i++ ) {
+            // Calculate the x and y offsets
+            int x = ((direction & 8)  >> 3) * Integer.signum(direction);
+            int y = ((direction & 16) >> 4) * Integer.signum(direction);
+            
+            // Retrieve a square to compare
+            Square checkLoc = board.getSquare(currLoc.getX() + x,
+                                              currLoc.getY() + y);
+            // Modify bits
+            direction = Integer.rotateRight(direction,1);
+            //It is possible to check for a square that is outside of the board
+            if ( checkLoc != null ) {
+
+
+                // NEEDS TESTING
+                //* [Hint: remove one of the slashes to comment this piece out]
+                // Confirms if there is a wall obstructing the direction we
+                //   want to check for our destination
+                // Note: 0 = down, 1 = right, 2 = up, 3 = left
+                switch ( i ) {
+                    // If we encounter a wall, continue to the next iteration
+                    case 0: if ( currLoc.hasWallBottom() ) continue; break;
+                    case 1: if ( currLoc.hasWallRight()  ) continue; break;
+                    case 2: if ( checkLoc.hasWallBottom()) continue; break;
+                    case 3: if ( checkLoc.hasWallRight() ) continue; break;
+                    default: break; //assertion here maybe?
+                }
+                //*/
+
+
+                // If checkLoc is adjacent and where we want to go...
+                if ( checkLoc.vacant() && checkLoc == dest )
+                    return true;
+                // If the spot is occupied, this isn't our third jump, and the
+                // adjacent spot to check isn't the spot we were just in, check
+                // if our destination could possibly be adjacent to that player
+                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe  
+                    && validate(board, checkLoc, dest, (i+2)%4, numJumps+1) )
+                    return true;
+            }
+       }
+       return false;
+    } // i don't understand this and i'm grumpy about it
 
     //*************************************************************************
 

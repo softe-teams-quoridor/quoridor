@@ -1,5 +1,5 @@
 /* Wall.java - CIS405 - teams
- * Last Edit: February 19, 2014
+ * Last Edit: March 20, 2015
  * _______________________________________________________
  *
  * a wall that is placed on a gameboard square
@@ -20,7 +20,7 @@
 public class Wall{
 
     public enum orientation {
-        Horizontal, Vertical
+        Bottom, Right
     }
 
     // Data Members
