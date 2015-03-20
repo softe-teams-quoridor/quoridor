@@ -215,9 +215,9 @@ public class GameEngine {
         if (players[1] != null && board.getPlayerLoc(players[1]).getY() == 0)
             return players[1];
         if (players.length == 4) {
-            if (players[2] != null && board.getPlayerLoc(players[2]).getX() == 8)
+            if (players[2]!=null && board.getPlayerLoc(players[2]).getX() == 8)
                 return players[2];
-            if (players[3] != null && board.getPlayerLoc(players[3]).getX() == 0)
+            if (players[3]!=null && board.getPlayerLoc(players[3]).getX() == 0)
                 return players[3];
         }
         // No player has won, return null
@@ -245,7 +245,9 @@ public class GameEngine {
                 playerFound = i;
         }
         // If there are 3 null players, return the only player left
-        return ( nullPlayerCount == 3 ) ? players[playerFound] : null;
+        return ( nullPlayerCount == players.length -1 )
+            ? players[playerFound] 
+            : null;
     }
 
     //*************************************************************************

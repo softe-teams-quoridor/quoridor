@@ -103,7 +103,9 @@ public class GameEngineTest {
         //Test some impossible moves :)
         assertFalse(GameEngine.parseMove("IIII-A"));
         assertFalse(GameEngine.parseMove("A-II"));
-
+        assertFalse(GameEngine.parseMove("X-T"));
+        assertFalse(GameEngine.parseMove("hello"));
+        assertFalse(GameEngine.parseMove("Brian C. Ladd"));
     }
 
 
