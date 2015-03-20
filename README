@@ -1,18 +1,64 @@
-if you have never run gradle, you might have to install it. run:
+README file for teams
 
-./gradlew
+    Contents
+        01: How to run the game
+        02: Gradle Help
 
-it should say downloading gradle..................
-afterward you can run 
+--------------------------------------------------------------------------
 
-./gradlew build 
-./gradlew clean
+How to run the game:
 
-the first builds the whole project (including running any tests)
-the second removes the build.
+    1. Start up a UserServer, give it a port number
 
-after you have built the code, run the following:
+                java -cp build/classes/main/UserServer 1234
 
-java -cp build/libs/quoridorschmoridor.jar Main
 
-for an example of running a program.
+    2. Run Game, give it the port-host of at least two other User-
+         Servers
+                
+                java -cp build/classes/main/ Game localhost 1234 \
+                localhost 5678
+
+
+         Note that the \ just means to continue the command onto the
+         next line. You do not need to do this.
+
+         You can also start a 4-player game using a similar setup
+
+                java -cp build.classes/main/Game localhost 1234 \
+                Whiteface 5678 Gothics 9012 Redfield 3456
+
+
+    3. Play the game! You have to input moves via the terminal that is
+         running the respective UserServer
+
+         An example move for player 0 is V-B (moves down)
+
+         Use the labels printed on the graphic display to guide your
+         movements
+
+--------------------------------------------------------------------------
+
+Gradle Help:
+
+    1. If you have never run gradle, you might have to install it. run:
+
+                ./gradlew
+
+
+    2. It should say downloading gradle..................
+         afterward you can run 
+
+                ./gradlew build 
+                ./gradlew clean
+
+
+         The first builds the whole project (including running any tests),
+         the second removes the build.
+
+    3. After you have built the code, run the following:
+
+                java -cp build/libs/quoridorschmoridor.jar Main
+
+
+         for an example of running a program.
