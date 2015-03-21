@@ -1,25 +1,22 @@
 /* Player.java - CIS405 - teams
- * Last Edit: March 13, 2015
- * _______________________________________________________ 
+ * Last Edit: March 20, 2015
+ * ____________________________________________________________________________
  *
- * represents the data of a player of the game, such
- *   as the player's name, number of walls, and the player's
- *   location on the gameboard
+ * represents the data of a player of the game, such as the player's name,
+ *   number of walls, and the player's location on the gameboard
  * 
- * ----------------------- METHODS -----------------------
+ * --------------------------------- METHODS ----------------------------------
  * 
- * Player()              --> constructor
- * int getPlayerNo()     --> returns the player number
- * Sqaure getLoc()       --> returns the square the player occupies
- * void setLoc(Square)   --> sets the player's location on a square
- * String getName()      --> returns the player's name
- * int getNumWalls()     --> returns number of walls
- * boolean mayPlaceWall()--> decrements numWalls if player has > 0 walls
- * void resetPlayerNos() --> resets numAssign to zero
- * 
+ * Player(int,int)        --> constructs player with an ID and wall count
+ * Player(int,string,int) --> constructs player with ID, name, and wall count
+ * int getPlayerNo()      --> returns the player number
+ * String getName()       --> returns the player's name
+ * int getNumWalls()      --> returns number of walls
+ * boolean mayPlaceWall() --> returns if a player has walls that they may place
+ * boolean placeWall()    --> decrements numWalls if player can place a wall
+ *
  * Considerations
  *     
- *     Tuesday (2/17)
  *      Is getNumWalls() needed if we're checking for the number of walls
  *      within method placeWall()? - Cavanagh, Walling (2/16)
  *     
@@ -31,35 +28,37 @@
  */
 
 class Player {
-
-    // Data Members
+    
     private String playerName = "";    // player's name
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
-    
-    // Changed to protected for testing purposes -- Eric
-    protected static int numAssign = 0;  // for assigning playerNo
 
-    /*
+    //*************************************************************************
 
-    public Player(String playerName, int numWalls) {
-        this.playerName = playerName;
-        this.numWalls   = numWalls;
-        this.playerNo = numAssign;
-        numAssign++;
-    }
+    /**
+      * constructs a player object with a name based on pno
+      * @param pno player number
+      * @param numWalls number of walls the player is given
+      */
+    public Player(int pno, int numWalls) {
+        this(pno, "player_" + pno, numWalls);
+    } 
 
-    */
+    //*************************************************************************
 
+    /**
+      * constructs a player object with a specfic name
+      * @param pno player number
+      * @param playerName name of player
+      * @param numWalls number of walls the player is given
+      */
     public Player(int pno, String playerName, int numWalls) {
         this.playerName = playerName;
         this.numWalls = numWalls;
         this.playerNo = pno;
     } 
 
-    public Player(int pno, int numWalls) {
-        this(pno, "player_" + pno, numWalls);
-    } 
+    //*************************************************************************
 
     /**
       * returns the player's number
@@ -69,6 +68,8 @@ class Player {
         return playerNo;
     }
 
+    //*************************************************************************
+
     /**
       * returns the player's name
       * @return the name of the player
@@ -76,6 +77,8 @@ class Player {
     public String getName() {
         return playerName;
     }
+
+    //*************************************************************************
 
     // Consider if this is needed when we start to implement wall placement
     // possibly useful for display if we wanna show walls in the hand
@@ -87,6 +90,8 @@ class Player {
         return numWalls;
     }
 
+    //*************************************************************************
+
     /**
       * Checks to see if the player can place a wall
       * @return true if this player has any walls left to place     
@@ -94,6 +99,8 @@ class Player {
     private boolean mayPlaceWall() {
         return(numWalls != 0);        
     }
+
+    //*************************************************************************
 
     /**
       * Decrements the number of walls if possible

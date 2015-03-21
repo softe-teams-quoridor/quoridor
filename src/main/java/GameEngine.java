@@ -2,6 +2,10 @@
  * Last Edit: March 20, 2015
  * ____________________________________________________________________________
  *
+ * used for game rules and validation. capable of converting numeral/character
+ *   to appropriate array index, validate proper player moves, check victory
+ *   conditions, and rotate player turn-order.
+ *
  * this class is used by both the client and the server!
  * 
  * --------------------------------- METHODS ----------------------------------
@@ -20,6 +24,7 @@
  *                          --> checks if a player has won the game 
  * Player nextPlayer(int, Player[])      
  *                          --> returns the next player available
+ *
  * ----------------------------- PRIVATE METHODS ------------------------------
  *
  * Player onlyOnePlayerRemaining(Player[])
@@ -28,9 +33,11 @@
  */
 
 public class GameEngine {
-    private static final String [] numerals = {"I"  , "II"  , "III", 
-                                               "IV" , "V"   , "VI" , 
-                                               "VII", "VIII", "IX" };
+    
+    private static final String [] numerals = 
+        {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+
+    //*************************************************************************
 
     /** 
       * converts an int to a string of roman numerals
@@ -193,8 +200,8 @@ public class GameEngine {
     /**
      * returns a square on the board that we want to move to
      * FIXME: this currently breaks if you input a wall-placing move
-     * @param board
-     * @param move: a string representing a legal move
+     * @param board GameBoard object to retrieve a square from
+     * @param move a string representing a legal move
      * @return a square on the board
      */
     public static Square getSquare(GameBoard board, String move) {
@@ -293,7 +300,5 @@ public class GameEngine {
         // No players left
         return null;
     }
-
-    //*************************************************************************
 
 }

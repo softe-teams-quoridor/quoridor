@@ -30,12 +30,14 @@
  */
 
 public class Square {
-    // Data members
+    
     private Player occupant;  // player on this square
     private int row;          // the Y coordinate of this square
     private int col;          // the X coordinate of this square
     private Wall rightWall;   // right wall
     private Wall bottomWall;  // bottom wall
+
+    //*************************************************************************    
 
     /** 
       * instantiates a square object
@@ -145,7 +147,6 @@ public class Square {
         return (bottomWall != null);
     }
 
-
     //*************************************************************************
     
     /**
@@ -154,6 +155,7 @@ public class Square {
       */
     // Maybe should also check walls? probably?
     // I'll add that later
+    // Eric can't spell, lol
     public boolean equals(Square square) {
         if(this.getX() == square.getX() && this.getY() == square.getY())
             return true;

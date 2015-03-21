@@ -1,5 +1,5 @@
 /* Game.java (aka Quoridor) - CIS 405 - teams
- * Last Edit: March 14, 2015
+ * Last Edit: March 20, 2015
  * ____________________________________________________________________________
  * 
  * implements the GameEngine and Messenger to create and run the game Quoridor
@@ -15,10 +15,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Game {
+    
     private static int numPlayers;     // how many players are in the game
     private static Player [] players ; // the players
 
-    /*
+    private static final int WALL_POOL = 20; // total collection of walls
+
+    /**
      * prints a friendly message and exits
      * @param an int to return to the OS
      */
@@ -26,6 +29,18 @@ public class Game {
         System.err.println("usage: java Game <host> <port> <host> <port> " + 
                            "[<host> <port> <host> <port>]");
         System.exit(error);
+    }
+
+    /**
+     * sleepy time
+     * @param length duration for thread to pause
+     */
+    private static void sleep(int length) {
+        try {
+            Thread.sleep(length);
+        } catch (InterruptedException e) {
+            // ignore it
+        }
     }
 
     public static void main (String[] args) {
@@ -48,9 +63,8 @@ public class Game {
         // Instantiate Players array
         Deb.ug.println("instantiating Players array");
         players = new Player[numPlayers];
-        int wallsEach = 20 / players.length;
         for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(i, wallsEach);
+            players[i] = new Player(i, WALL_POOL / players.length);
         }
 
         // Instantiate GameBoard
@@ -77,15 +91,11 @@ public class Game {
             String response = hermes.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
-            // Validate move
-            boolean legal = GameEngine.validate(board, currentPlayer, 
-                                                response);
-
-            if (legal) {
+            if ( GameEngine.validate(board,currentPlayer,response) ) {
+                // if legal, parse the move string to a square location
                 Deb.ug.println("move legal");
-                // Parse the move string to a square location
                 Square destination = GameEngine.getSquare(board,response);
-                // move player on board, broadcast move
+                // move player on board & broadcast move
                 board.move(currentPlayer, destination);
                 hermes.broadcastWent(currentPlayer, response);
             } else {
@@ -102,31 +112,21 @@ public class Game {
             // Retrieve a possibly winning player
             Player winner = GameEngine.getWinner(board, players);
             if (winner != null) {
-                // If the retrieved player is a winner, display and exit loop
+                // If the retrieved player is a winner, broadcast and exit loop
                 hermes.broadcastVictor(winner);
                 break;
             }
-
+             
             //...the game is still going, get the next player and continue
-            
-            // Get next player's turn 
             currentPlayer = GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
  
-            // Sleepy time
-            sleep(200);
-        }
+            sleep(200); // sleepy time
+
+        }//-----END OF LOOP-----
 
         hermes.closeAllStreams(players);
         // pause board for two seconds before ending
         sleep(2000);
         System.exit(0);
-    }
-
-    private static void sleep(int length) {
-        try {
-            Thread.sleep(length);
-        } catch (InterruptedException e) {
-            // ignore it
-        }
     }
 }
