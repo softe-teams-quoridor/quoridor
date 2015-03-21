@@ -4,15 +4,8 @@
  * 
  * implements the GameEngine and Messenger to create and run the game Quoridor
  */
-import java.util.*;
-import java.io.*;
 
-// networking stuff... 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.*;
 
 public class Game {
     
@@ -61,14 +54,14 @@ public class Game {
         Messenger hermes = new Messenger(args);
 
         // Instantiate Players array
-        Deb.ug.println("instantiating Players array");
+        Deb.ug.println("instantiating Players array...");
         players = new Player[numPlayers];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(i, WALL_POOL / players.length);
         }
 
         // Instantiate GameBoard
-        Deb.ug.println("instantiating GameBoard");
+        Deb.ug.println("instantiating GameBoard...");
         GameBoard board = new GameBoard(players);
         Deb.ug.println("players array: " + Arrays.toString(players));
 
@@ -76,7 +69,7 @@ public class Game {
         hermes.broadcastPlayers(players);
 
         // Start up the display
-        Deb.ug.println("starting GameBoardFrame");
+        Deb.ug.println("starting GameBoardFrame...");
         GameBoardFrame frame = new GameBoardFrame(board);
 
         // Initialize current player to player 0 (index 0)
@@ -93,7 +86,7 @@ public class Game {
 
             if ( GameEngine.validate(board,currentPlayer,response) ) {
                 // if legal, parse the move string to a square location
-                Deb.ug.println("move legal");
+                Deb.ug.println("legal move");
                 Square destination = GameEngine.getSquare(board,response);
                 // move player on board & broadcast move
                 board.move(currentPlayer, destination);
@@ -109,16 +102,16 @@ public class Game {
             // Update the graphical board
             frame.update(board);
 
-            // Retrieve a possibly winning player
+            // Retrieve a possibly winning player and broadcast if winner found
             Player winner = GameEngine.getWinner(board, players);
             if (winner != null) {
-                // If the retrieved player is a winner, broadcast and exit loop
                 hermes.broadcastVictor(winner);
                 break;
             }
              
-            //...the game is still going, get the next player and continue
-            currentPlayer = GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
+            //...the game is still going, get the next player and continue!
+            currentPlayer 
+                = GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
  
             sleep(200); // sleepy time
 
