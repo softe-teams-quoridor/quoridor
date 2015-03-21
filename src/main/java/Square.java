@@ -31,9 +31,9 @@
 
 public class Square {
     
-    private Player occupant;  // player on this square
-    private int row;          // the Y coordinate of this square
     private int col;          // the X coordinate of this square
+    private int row;          // the Y coordinate of this square
+    private Player occupant;  // player on this square
     private Wall rightWall;   // right wall
     private Wall bottomWall;  // bottom wall
 
@@ -41,6 +41,8 @@ public class Square {
 
     /** 
       * instantiates a square object
+      * @param x column coordinate
+      * @param y row coordinate
      */
     public Square(int x, int y) {
         col = x;
@@ -53,7 +55,7 @@ public class Square {
     //*************************************************************************    
 
     /**
-      * returns the x coordinate of this square
+      * returns the x (col) coordinate of this square
       * @return the column number
       */
     public int getX() {
@@ -63,7 +65,7 @@ public class Square {
     //*************************************************************************    
 
     /**
-      * returns the y coordinate of this square
+      * returns the y (row) coordinate of this square
       * @return the row number
       */
     public int getY() {
@@ -82,7 +84,8 @@ public class Square {
 
     //*************************************************************************    
  
-     /* adds a player to the square
+    /**
+      * adds a player to the square
       * @param p player to add to the square
       */
     public void addPlayer(Player player) {
@@ -91,7 +94,8 @@ public class Square {
 
     //*************************************************************************    
 
-    /** removes a player from the square
+    /** 
+      * removes a player from the square
       */
     public void removePlayer() {
         occupant = null;
@@ -99,7 +103,9 @@ public class Square {
 
     //*************************************************************************    
 
-    /** @return false if the Square is occupied
+    /** 
+      * Observes if this square is occupied by a player object
+      * @return false if the Square is occupied
       */
     public boolean vacant() {
         return (occupant == null);
