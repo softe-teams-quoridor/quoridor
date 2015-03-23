@@ -29,7 +29,7 @@ public class Wall{
     private Orientation direction; 
 
     //*************************************************************************
-    
+
     /**
      * instantiates a Wall object
      * @param start indicates if the wall piece is a start or end piece 

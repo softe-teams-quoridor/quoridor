@@ -30,14 +30,14 @@
  */
 
 public class Square {
-    
+
     private int col;          // the X coordinate of this square
     private int row;          // the Y coordinate of this square
     private Player occupant;  // player on this square
     private Wall rightWall;   // right wall
     private Wall bottomWall;  // bottom wall
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /** 
       * instantiates a square object
@@ -52,7 +52,7 @@ public class Square {
         bottomWall = null;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns the x (col) coordinate of this square
@@ -62,7 +62,7 @@ public class Square {
         return col;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns the y (row) coordinate of this square
@@ -72,7 +72,7 @@ public class Square {
         return row;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns the player object occupying this square
@@ -82,8 +82,8 @@ public class Square {
         return occupant;
     }
 
-    //*************************************************************************    
- 
+    //*************************************************************************
+
     /**
       * adds a player to the square
       * @param p player to add to the square
@@ -92,7 +92,7 @@ public class Square {
         occupant = player;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /** 
       * removes a player from the square
@@ -101,7 +101,7 @@ public class Square {
         occupant = null;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /** 
       * Observes if this square is occupied by a player object
@@ -111,7 +111,7 @@ public class Square {
         return (occupant == null);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /** 
      * places a wall on the bottom of this square
@@ -122,7 +122,7 @@ public class Square {
             rightWall = new Wall(isStart);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * places a wall on the right on this square
@@ -133,7 +133,7 @@ public class Square {
             bottomWall = new Wall(isStart);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns if the right wall is a start piece or end piece
@@ -143,7 +143,7 @@ public class Square {
         return (rightWall != null);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns if the bottom wall is a start piece or end piece
@@ -154,7 +154,7 @@ public class Square {
     }
 
     //*************************************************************************
-    
+
     /**
       * returns true if the sqaures equal
       * @return true if the sqaures are equal false otherwise

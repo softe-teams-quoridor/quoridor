@@ -33,7 +33,7 @@
  */
 
 public class GameEngine {
-    
+
     private static final String [] numerals = 
         {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
 
@@ -127,9 +127,9 @@ public class GameEngine {
       * @param p: Player object requesting the move
       * @param move: String that contains the move destination
       */
-    public static boolean validate(GameBoard board, Player p, String move) {
+    public static boolean validate(GameBoard b, Player p, String move) {
         return parseMove(move) 
-            ? validate(board, board.getPlayerLoc(p), getSquare(board,move), -1, 0) 
+            ? validate(b, b.getPlayerLoc(p), getSquare(b, move), -1, 0) 
             : false;
     }
 
@@ -148,8 +148,8 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, inc. of player clustering
       * @return true if move is valid, false otherwise 
      */
-    private static boolean validate(GameBoard board, Square currLoc, Square dest, 
-                                    int dontCheckMe, int numJumps) {
+    private static boolean validate(GameBoard board, Square currLoc, 
+                                Square dest, int dontCheckMe, int numJumps) {
         int direction = 86; 
         for ( int i = 0; i < 4; i++ ) {
             // Calculate the x and y offsets
@@ -300,5 +300,4 @@ public class GameEngine {
         // No players left
         return null;
     }
-
 }
