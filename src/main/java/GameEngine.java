@@ -1,5 +1,5 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: March 20, 2015
+ * Last Edit: March 25, 2015
  * ____________________________________________________________________________
  *
  * used for game rules and validation. capable of converting numeral/character
@@ -10,25 +10,25 @@
  * 
  * --------------------------------- METHODS ----------------------------------
  *
- * String toNumerals(int)   --> converts int to a numeral 
- * int fromNumerals(String) --> converts string(numeral) to an int
- * char toLetters(int)      --> converts int to a letter ex 0 -> A
- * int fromLetters(char)    --> conversions between ints and numerals/letters
- * boolean parseMove(GameBoard, String) 
- *                          --> returns if the move string is valid
+ * String toNumerals(int)    --> converts int to a numeral 
+ * int fromNumerals(String)  --> converts string(numeral) to an int
+ * char toLetters(int)       --> converts int to a letter ex 0 -> A
+ * int fromLetters(char)     --> conversions between ints and numerals/letters
+ * boolean parseMove(String) --> returns if the move string is valid
+ * boolean parseWall(String) --> returns if the wall placement string is valid
  * boolean validate(GameBoard, String)  
- *                          --> returns if string represents a legal move
+ *                           --> returns if string represents a legal move
  * Sqaure getSquare(GameBoard, String) 
- *                          --> constructs a square based on the move string
+ *                           --> constructs a square based on the move string
  * boolean getWinner(GameBoard,Players[])
- *                          --> checks if a player has won the game 
+ *                           --> checks if a player has won the game 
  * Player nextPlayer(int, Player[])      
- *                          --> returns the next player available
+ *                           --> returns the next player available
  *
  * ----------------------------- PRIVATE METHODS ------------------------------
  *
  * Player onlyOnePlayerRemaining(Player[])
- *                          --> returns if a player is the last one alive
+ *                           --> returns if a player is the last one alive
  * 
  */
 
@@ -120,12 +120,82 @@ public class GameEngine {
     }
 
     //*************************************************************************
+    
+    /** !!!!!!NEEDS TESTING!!!!!!
+      * returns true if a string represents a correctly formatted wall
+      *  placement
+      * @param move the string to parse
+      */
+    protected static boolean parseWall ( String move ) {
+        // (V-A, V-B)
+        String[] commaSep = move.split(",");
+        // [0] == (V-A
+        // [1] == V-B)
+
+        // Make sure the string array only has 2 elements
+        if ( commaSep.length != 2 )
+            return false;
+
+        // Remove parenthesis
+        commaSep[0].replace ( "(", "" );
+        commaSep[1].replace ( ")", "" );
+        // [0] == V-A
+        // [1] == V-B
+       
+        String[] firstW = commaSep[0].split("-");
+        // [0] == V
+        // [1] == A
+        String[] secndW = commaSep[1].split("-");
+        // [0] == V
+        // [1] == B
+
+        // Make sure the two string arrays only have 2 elements
+        if ( firstW.length != 2 && secndW.length != 2 )
+            return false;
+
+        int firstX = fromNumerals ( firstW[0] );
+        int firstY = fromLetters  ( firstW[1].charAt(0) );
+        // X == 4
+        // Y == 0
+        int secndX = fromNumerals ( secndW[0] );
+        int secndY = fromLetters  ( secndW[1].charAt(0) );
+        // X == 4
+        // Y == 1
+
+        // Check if the conversions returned an erroneous value
+        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
+            return false;
+
+        // Check if the second location is to the RIGHT of the first,
+        //  or if it BELOW the first
+        if ( firstX+1 == secndX && firstY == secndY ||
+             firstY+1 == secndY && firstX == secndX )
+            return true;
+
+        /* the below method works (theoretically) and looks cleaner,
+           but involves a bit of overhead by asking for the board...
+        // call parseMove on both to validate our cleaned up string contains
+        //  two valid locations
+        if ( parseMove ( commaSep[0] ) && parseMove ( commaSep[1] ) ) {
+            Square startW = getSquare ( board, commaSep[0] );
+            Square endW   = getSquare ( board, commaSep[1] );
+
+            // Walls may only be placed UP-DOWN or LEFT-RIGHT
+            if (starW.getX()+1 == endW.getX() && starW.getY() == endW.getY() ||
+                starW.getY()+1 == endW.getY() && starW.getX() == endW.getX() )
+                return true;
+        }
+        */
+        return false;
+    }
+    
+    //*************************************************************************
 
     /**
       * returns true if the string represents a legal move on that gameboard
-      * @param board: GameBoard object to move on
-      * @param p: Player object requesting the move
-      * @param move: String that contains the move destination
+      * @param board GameBoard object to move on
+      * @param p Player object requesting the move
+      * @param move String that contains the move destination
       */
     public static boolean validate(GameBoard b, Player p, String move) {
         return parseMove(move) 
@@ -150,17 +220,25 @@ public class GameEngine {
      */
     private static boolean validate(GameBoard board, Square currLoc, 
                                 Square dest, int dontCheckMe, int numJumps) {
-        int direction = 86; 
+        int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
+            // This is the order in which we check for adjacencies:
+            //    ITERATION         COORDINATES
+            //  i = 0 -> down   |  x = 0;  y = 1
+            //  i = 1 -> right  |  x = 1;  y = 0
+            //  i = 2 -> up     |  x = 0;  y = -1
+            //  i = 3 -> left   |  x = -1; y = 0
+
             // Calculate the x and y offsets
             int x = ((direction & 8)  >> 3) * Integer.signum(direction);
             int y = ((direction & 16) >> 4) * Integer.signum(direction);
             
-            // Retrieve a square to compare
+            // Retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
                                               currLoc.getY() + y);
-            // Modify bits
+            // Modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
+
             //It is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
 
@@ -194,6 +272,7 @@ public class GameEngine {
        }
        return false;
     } // i don't understand this and i'm grumpy about it
+      // I added more comments and I can offer to explain it if you'd like :)
 
     //*************************************************************************
 
@@ -226,8 +305,8 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-     * @param board: GameBoard to check
-     * @param players: array of players to check if they have won
+     * @param board GameBoard to check
+     * @param players array of players to check if they have won
      * @return a player if that player has won the game, null otherwise
      */
     public static Player getWinner(GameBoard board, Player[] players) {
@@ -257,7 +336,7 @@ public class GameEngine {
     /**  
      * checks if there is only one player remaining
      * @param players the array of players in the game
-     * @return the the last player remaining or null if more players exist
+     * @return the last player remaining or null if more players exist
      */
     private static Player onlyOnePlayerRemaining(Player [] players) {
         int nullPlayerCount = 0; // keeps count of the null players
