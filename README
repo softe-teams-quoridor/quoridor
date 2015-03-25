@@ -10,7 +10,7 @@ How to run the game:
 
     1. Start up a UserServer, give it a port number
 
-                java -cp build/classes/main/UserServer 1234
+                java -cp build/classes/main/ UserServer 1234
 
 
     2. Run Game, give it the port-host of at least two other User-
