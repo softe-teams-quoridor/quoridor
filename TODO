@@ -9,6 +9,7 @@ Pre-release Objectives
 [X] refactor code
 [ ] ensure a player has a clear path from their position to their victory 
       row
+[X] parse walls
 [ ] place walls
 [ ] update validate to check for wall obstruction
 [ ] make GameBoard.addPlayer private
