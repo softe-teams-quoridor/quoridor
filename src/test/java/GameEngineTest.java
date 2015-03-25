@@ -108,6 +108,42 @@ public class GameEngineTest {
         assertFalse(GameEngine.parseMove("Brian C. Ladd"));
     }
 
+    
+    @Test
+    public void testParseWallOnInsertingHorizontalWalls() throws Exception {
+        // Test all horizontal wall strings
+        // Iterate through rows
+        for ( int r = 0; r < 8; r++ )
+            // Iterate through columns, except last
+            for ( int c = 0; c < 8; c++ ) {
+                String wall = "(" + GameEngine.toNumerals(c)   + "-"
+                                  + GameEngine.toLetters(r)    + ","
+                                  + GameEngine.toNumerals(c+1) + "-"
+                                  + GameEngine.toLetters(r)    + ")";
+                assertTrue ( GameEngine.parseWall ( wall ) ); 
+            }
+
+        // Test invalid horizontals here
+    }
+
+
+    @Test
+    public void testParseWallOnInsertingVerticalWalls() throws Exception {
+        // Test all vertical wall strings
+        // Iterate through columns
+        for ( int c = 0; c < 8; c++ )
+            // Iterate through rows, except last
+            for ( int r = 0; r < 8; r++ ) {
+                String wall = "(" + GameEngine.toNumerals(c)   + "-"
+                                  + GameEngine.toLetters(r)    + ","
+                                  + GameEngine.toNumerals(c+1) + "-"
+                                  + GameEngine.toLetters(r)    + ")";
+                assertTrue ( GameEngine.parseWall ( wall ) ); 
+            }
+
+        // Test invalid verticals here
+    }
+
 
     @Test
     public void testGetSquare() throws Exception {

@@ -121,35 +121,38 @@ public class GameEngine {
 
     //*************************************************************************
     
-    /** !!!!!!NEEDS TESTING!!!!!!
+    /**
       * returns true if a string represents a correctly formatted wall
       *  placement
       * @param move the string to parse
       */
     protected static boolean parseWall ( String move ) {
+        move = move.trim();
         // (V-A, V-B)
         String[] commaSep = move.split(",");
         // [0] == (V-A
         // [1] == V-B)
 
-        // Make sure the string array only has 2 elements
+        // Make sure the string array has only 2 elements
         if ( commaSep.length != 2 )
             return false;
 
-        // Remove parenthesis
-        commaSep[0].replace ( "(", "" );
-        commaSep[1].replace ( ")", "" );
+        // Remove parentheses
+        commaSep[0] = commaSep[0].replace ( "(", "" );
+        commaSep[1] = commaSep[1].replace ( ")", "" );
         // [0] == V-A
         // [1] == V-B
        
+        commaSep[0] = commaSep[0].trim();
         String[] firstW = commaSep[0].split("-");
         // [0] == V
         // [1] == A
+        commaSep[1] = commaSep[1].trim();
         String[] secndW = commaSep[1].split("-");
         // [0] == V
         // [1] == B
 
-        // Make sure the two string arrays only have 2 elements
+        // Make sure the two string arrays have only 2 elements
         if ( firstW.length != 2 && secndW.length != 2 )
             return false;
 
@@ -168,24 +171,12 @@ public class GameEngine {
 
         // Check if the second location is to the RIGHT of the first,
         //  or if it BELOW the first
-        if ( firstX+1 == secndX && firstY == secndY ||
-             firstY+1 == secndY && firstX == secndX )
+        // also make sure if horizontal, we don't place on the bottom row
+        //  and make sure if vertical, we don't place on the right-most row
+        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
+             firstY+1 == secndY && firstX == secndX && firstX != 8)
             return true;
-
-        /* the below method works (theoretically) and looks cleaner,
-           but involves a bit of overhead by asking for the board...
-        // call parseMove on both to validate our cleaned up string contains
-        //  two valid locations
-        if ( parseMove ( commaSep[0] ) && parseMove ( commaSep[1] ) ) {
-            Square startW = getSquare ( board, commaSep[0] );
-            Square endW   = getSquare ( board, commaSep[1] );
-
-            // Walls may only be placed UP-DOWN or LEFT-RIGHT
-            if (starW.getX()+1 == endW.getX() && starW.getY() == endW.getY() ||
-                starW.getY()+1 == endW.getY() && starW.getX() == endW.getX() )
-                return true;
-        }
-        */
+        
         return false;
     }
     
