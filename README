@@ -3,12 +3,14 @@ README file for teams
     Contents
         01: How to run the game
         02: Gradle Help
+        03: Tips
 
 --------------------------------------------------------------------------
 
-How to run the game:
+[1] How to run the game:
 
-    1. After running gradle to build the class files, navigate to:
+    1. After running gradle to build the class files, navigate from within
+         the teams.git root to:
 
                 ./build/classes/main
 
@@ -43,7 +45,7 @@ How to run the game:
 
 --------------------------------------------------------------------------
 
-Gradle Help:
+[2] Gradle Help:
 
     1. If you have never run gradle, you might have to install it. run:
 
@@ -66,3 +68,34 @@ Gradle Help:
 
 
          for an example of running a program.
+
+--------------------------------------------------------------------------
+
+[3] TIPS
+
+    Easy gradle build function
+
+        add this to your .bashrc or .zshrc :
+
+                function gb() {
+                    pushd . > /dev/null
+                    # you might have to adjust this line below
+                    cd "$HOME/405/teams/" > /dev/null
+                    ./gradlew build "$@"
+                    popd > /dev/null
+                }
+
+
+        you can now type gb from any directory to build the project!
+          also you can pass arguments to gb like this: gb clean
+
+         -------------------------------------------------------
+
+    Run class files from anywhere
+
+        this will allow you to run any of your class files for our project
+          regardless of what directory you are currently in
+
+                export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"
+
+
