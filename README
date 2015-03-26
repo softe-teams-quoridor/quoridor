@@ -8,28 +8,32 @@ README file for teams
 
 How to run the game:
 
-    1. Start up a UserServer, give it a port number
+    1. After running gradle to build the class files, navigate to:
 
-                java -cp build/classes/main/ UserServer 1234
+                ./build/classes/main
+
+    2. Start up at least two UserServers (in different terminals), give
+         them unique port numbers
+
+                java UserServer 1234
 
 
-    2. Run Game, give it the port-host of at least two other User-
-         Servers
+    3. Run Game in another terminal. Give it the port-host of at least two 
+         other UserServers
                 
-                java -cp build/classes/main/ Game localhost 1234 \
-                localhost 5678
+                java Game localhost 1234 localhost 5678
+
+
+         You can also start a 4-player game using a similar setup
+
+                java Game localhost 1234 Whiteface 5678 \
+                          Gothics 9012 Redfield 3456
 
 
          Note that the \ just means to continue the command onto the
          next line. You do not need to do this.
 
-         You can also start a 4-player game using a similar setup
-
-                java -cp build.classes/main/Game localhost 1234 \
-                Whiteface 5678 Gothics 9012 Redfield 3456
-
-
-    3. Play the game! You have to input moves via the terminal that is
+    4. Play the game! You have to input moves via the terminal that is
          running the respective UserServer
 
          An example move for player 0 is V-B (moves down)
