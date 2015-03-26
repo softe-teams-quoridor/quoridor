@@ -84,7 +84,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /** 
+    /** @deprecated use parseMove that returns a Square instead 
      *  returns true if the string represents a possibly legal move
      *  i.e. the string is of the correct format
      *   FIXME: this currently breaks if you input a wall-placing move
@@ -157,6 +157,11 @@ public class GameEngine {
     protected static boolean parseWall ( String move ) {
         move = move.trim();
         // (V-A, V-B)
+
+        // Reject any move that does not start and end with parenthesis
+        if ( !move.startsWith("(") && !move.endsWith(")") )
+            return false;
+
         String[] commaSep = move.split(",");
         // [0] == (V-A
         // [1] == V-B)
