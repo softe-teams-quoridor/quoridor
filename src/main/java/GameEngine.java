@@ -120,7 +120,35 @@ public class GameEngine {
     }
 
     //*************************************************************************
-    
+
+    /** !!!!NEEDS TESTING!!!!
+      * parses an input player move and returns a square from the board if it
+      *   is valid 
+      * @param board the board to get a square from
+      * @param move a string representing a move
+      */
+    protected Square parseMove ( GameBoard board, String move ) {
+        move = move.trim();
+        String [] strs = move.split("-");
+        // Reject any string that has more than one "-"
+        if (strs.length != 2)
+            return null;   
+        // Reject any string that has more than four numerals and/or more than
+        //   one letter
+        if (strs[0].length() > 4 && strs[1].length() != 1)
+            return null;
+        // Parse the string into the respective x and y coordinates
+        int x = fromNumerals(strs[0]);
+        int y = fromLetters(strs[1].charAt(0));
+        // Reject any coordinate that is not within the game board
+        if (x == -1 || y == -1) {
+            return null;  
+        }
+        return board.getSquare ( x, y );
+    }
+
+    //*************************************************************************
+   
     /**
       * returns true if a string represents a correctly formatted wall
       *  placement
