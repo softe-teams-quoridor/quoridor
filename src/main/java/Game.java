@@ -84,7 +84,7 @@ public class Game {
             String response = hermes.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
-            if ( GameEngine.validate(board,currentPlayer,response) ) {
+            if ( GameEngine.validateMove ( board,currentPlayer,response ) ) {
                 // if legal, parse the move string to a square location
                 Deb.ug.println("legal move");
                 Square destination = GameEngine.getSquare(board,response);

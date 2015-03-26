@@ -157,7 +157,7 @@ public class UserServer {
         System.out.print(">> ");
         String move = keyboard.nextLine().trim();
         System.out.println("move: " + move);
-        if (GameEngine.validate(b, p, move)) {
+        if (GameEngine.validateMove(b, p, move)) {
             return move;
         }
         System.out.println("that looks illegal; are you sure?");

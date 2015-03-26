@@ -142,6 +142,12 @@ public class GameBoard {
 
     //*************************************************************************
 
+    public void placeWall ( Player player, Square first, Square second ) {
+
+    }
+
+    //*************************************************************************
+
     /**
      * initializes the players in their appropriate start locations
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)

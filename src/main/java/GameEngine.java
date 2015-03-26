@@ -188,9 +188,9 @@ public class GameEngine {
       * @param p Player object requesting the move
       * @param move String that contains the move destination
       */
-    public static boolean validate(GameBoard b, Player p, String move) {
+    public static boolean validateMove ( GameBoard b, Player p, String move ) {
         return parseMove(move) 
-            ? validate(b, b.getPlayerLoc(p), getSquare(b, move), -1, 0) 
+            ? validateMove ( b, b.getPlayerLoc(p), getSquare(b, move), -1, 0 ) 
             : false;
     }
 
@@ -209,8 +209,8 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, inc. of player clustering
       * @return true if move is valid, false otherwise 
      */
-    private static boolean validate(GameBoard board, Square currLoc, 
-                                Square dest, int dontCheckMe, int numJumps) {
+    private static boolean validateMove ( GameBoard board, Square currLoc, 
+                                Square dest, int dontCheckMe, int numJumps ) {
         int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
             // This is the order in which we check for adjacencies:
@@ -257,7 +257,7 @@ public class GameEngine {
                 // adjacent spot to check isn't the spot we were just in, check
                 // if our destination could possibly be adjacent to that player
                 if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe  
-                    && validate(board, checkLoc, dest, (i+2)%4, numJumps+1) )
+                    && validateMove (board,checkLoc,dest,(i+2)%4,numJumps+1) )
                     return true;
             }
        }
