@@ -149,7 +149,7 @@ public class GameEngine {
 
     //*************************************************************************
    
-    /**
+    /** @deprecated use parseWall that returns an array of squares
       * returns true if a string represents a correctly formatted wall
       *  placement
       * @param move the string to parse
@@ -213,6 +213,77 @@ public class GameEngine {
         return false;
     }
     
+    //*************************************************************************
+
+    /**
+      * parses a player input wall action and returns an array of two squares
+      *   if the action is valid
+      * @param board board to getSquares from
+      * @param move the string to parse
+      */
+    protected static Square[] parseWall ( GameBoard board, String move ) {
+        move = move.trim();
+        // (V-A, V-B)
+
+        // Reject any move that does not start and end with parenthesis
+        if ( !move.startsWith("(") && !move.endsWith(")") )
+            return null;
+
+        String[] commaSep = move.split(",");
+        // [0] == (V-A
+        // [1] == V-B)
+
+        // Make sure the string array has only 2 elements
+        if ( commaSep.length != 2 )
+            return null;
+
+        // Remove parentheses
+        commaSep[0] = commaSep[0].replace ( "(", "" );
+        commaSep[1] = commaSep[1].replace ( ")", "" );
+        // [0] == V-A
+        // [1] == V-B
+       
+        commaSep[0] = commaSep[0].trim();
+        String[] firstW = commaSep[0].split("-");
+        // [0] == V
+        // [1] == A
+        commaSep[1] = commaSep[1].trim();
+        String[] secndW = commaSep[1].split("-");
+        // [0] == V
+        // [1] == B
+
+        // Make sure the two string arrays have only 2 elements
+        if ( firstW.length != 2 && secndW.length != 2 )
+            return null;
+
+        int firstX = fromNumerals ( firstW[0] );
+        int firstY = fromLetters  ( firstW[1].charAt(0) );
+        // X == 4
+        // Y == 0
+        int secndX = fromNumerals ( secndW[0] );
+        int secndY = fromLetters  ( secndW[1].charAt(0) );
+        // X == 4
+        // Y == 1
+
+        // Check if the conversions returned an erroneous value
+        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
+            return null;
+
+        // Check if the second location is to the RIGHT of the first,
+        //  or if it BELOW the first
+        // also make sure if horizontal, we don't place on the bottom row
+        //  and make sure if vertical, we don't place on the right-most row
+        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
+             firstY+1 == secndY && firstX == secndX && firstX != 8) {
+            Square[] wallSquares = new Square[2];
+            wallSquares[0] = board.getSquare ( firstX, firstY );
+            wallSquares[1] = board.getSquare ( secndX, secndY );
+            return wallSquares; 
+        }
+        
+        return null;
+    }
+
     //*************************************************************************
 
     /**
