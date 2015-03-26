@@ -127,7 +127,7 @@ public class GameEngine {
       * @param board the board to get a square from
       * @param move a string representing a move
       */
-    protected Square parseMove ( GameBoard board, String move ) {
+    protected static Square parseMove ( GameBoard board, String move ) {
         move = move.trim();
         String [] strs = move.split("-");
         // Reject any string that has more than one "-"
@@ -222,8 +222,9 @@ public class GameEngine {
       * @param move String that contains the move destination
       */
     public static boolean validateMove ( GameBoard b, Player p, String move ) {
-        return parseMove(move) 
-            ? validateMove ( b, b.getPlayerLoc(p), getSquare(b, move), -1, 0 ) 
+        Square moveSquare = parseMove ( b, move );
+        return ( moveSquare != null ) ?
+            validateMove ( b, b.getPlayerLoc(p), moveSquare, -1, 0 ) 
             : false;
     }
 
@@ -300,7 +301,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /**
+    /** @deprecated this method is redunant, parseMove now gets the square
      * returns a square on the board that we want to move to
      * FIXME: this currently breaks if you input a wall-placing move
      * @param board GameBoard object to retrieve a square from
