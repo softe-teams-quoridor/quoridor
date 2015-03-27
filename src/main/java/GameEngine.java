@@ -20,14 +20,14 @@
  *                           --> returns if string represents a legal move
  * Sqaure getSquare(GameBoard, String) 
  *                           --> constructs a square based on the move string
- * boolean getWinner(GameBoard,Players[])
+ * Player getWinner(GameBoard,Players[])
  *                           --> checks if a player has won the game 
  * Player nextPlayer(int, Player[])      
  *                           --> returns the next player available
  *
  * ----------------------------- PRIVATE METHODS ------------------------------
  *
- * Player onlyOnePlayerRemaining(Player[])
+ * Player getLastPlayerStanding(Player[])
  *                           --> returns if a player is the last one alive
  * 
  */
@@ -407,7 +407,7 @@ public class GameEngine {
      */
     public static Player getWinner(GameBoard board, Player[] players) {
         // Check if there is only one player left
-        Player lastStanding = onlyOnePlayerRemaining(players);
+        Player lastStanding = getLastPlayerStanding(players);
         if (lastStanding != null)
             return lastStanding;
 
@@ -434,10 +434,10 @@ public class GameEngine {
      * @param players the array of players in the game
      * @return the last player remaining or null if more players exist
      */
-    private static Player onlyOnePlayerRemaining(Player [] players) {
+    private static Player getLastPlayerStanding(Player [] players) {
         int nullPlayerCount = 0; // keeps count of the null players
         int playerFound = 0;     // used to index a player in the array
-        
+
         // Check if we only have one player
         for (int i = 0; i < players.length; i++) {
             // Count the null players in the array
