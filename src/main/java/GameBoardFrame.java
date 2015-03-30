@@ -3,9 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
-
-
+import java.lang.*;
+import java.io.*;
 
 //Handles the construction of the GUI
 public class GameBoardFrame extends JFrame{
@@ -85,24 +84,28 @@ public class GameBoardFrame extends JFrame{
             }
         }
     }
-
+    
+    
     //Changes the color of the squares that contain a player and shows 
     //the player name
     private void printPlayerLabel(Player p, Square tSquare){
+        Icon pl1 = new ImageIcon(getClass().getResource("player_1.jpg"));
+        Icon pl2 = new ImageIcon(getClass().getResource("player_2.jpg"));
+        Icon pl3 = new ImageIcon(getClass().getResource("player_3.jpg"));
+        Icon pl4 = new ImageIcon(getClass().getResource("player_4.jpg"));
         JLabel label = new JLabel();
-        label.setOpaque(true);
         if(p.getPlayerNo() == 1)
-            label.setBackground(new Color(150, 0, 0));
+            label.setIcon(pl2); 
         else if(p.getPlayerNo() == 2)
-            label.setBackground(new Color(0, 150, 0));
+            label.setIcon(pl3);
         else if(p.getPlayerNo() == 3)
-            label.setBackground(new Color(150, 0, 150));
+            label.setIcon(pl4);
         else
-            label.setBackground(new Color(0, 150, 150));
+            label.setIcon(pl1);
+        label.setOpaque(true);
         label.setPreferredSize(new Dimension(100, 70));
         //label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label=setBoarder(label,  tSquare);									//Untested
-        label.setText("    " + p.getName());
+        label=setBoarder(label,  tSquare);
         gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
 
