@@ -32,6 +32,8 @@
  * 
  */
 
+import java.util.Queue;
+
 public class GameEngine {
 
     private static final String [] numerals = 
@@ -148,72 +150,6 @@ public class GameEngine {
     }
 
     //*************************************************************************
-   
-    /** @deprecated use parseWall that returns an array of squares
-      * returns true if a string represents a correctly formatted wall
-      *  placement
-      * @param move the string to parse
-      */
-    protected static boolean parseWall ( String move ) {
-        move = move.trim();
-        // (V-A, V-B)
-
-        // Reject any move that does not start and end with parenthesis
-        if ( !move.startsWith("(") && !move.endsWith(")") )
-            return false;
-
-        String[] commaSep = move.split(",");
-        // [0] == (V-A
-        // [1] == V-B)
-
-        // Make sure the string array has only 2 elements
-        if ( commaSep.length != 2 )
-            return false;
-
-        // Remove parentheses
-        commaSep[0] = commaSep[0].replace ( "(", "" );
-        commaSep[1] = commaSep[1].replace ( ")", "" );
-        // [0] == V-A
-        // [1] == V-B
-       
-        commaSep[0] = commaSep[0].trim();
-        String[] firstW = commaSep[0].split("-");
-        // [0] == V
-        // [1] == A
-        commaSep[1] = commaSep[1].trim();
-        String[] secndW = commaSep[1].split("-");
-        // [0] == V
-        // [1] == B
-
-        // Make sure the two string arrays have only 2 elements
-        if ( firstW.length != 2 && secndW.length != 2 )
-            return false;
-
-        int firstX = fromNumerals ( firstW[0] );
-        int firstY = fromLetters  ( firstW[1].charAt(0) );
-        // X == 4
-        // Y == 0
-        int secndX = fromNumerals ( secndW[0] );
-        int secndY = fromLetters  ( secndW[1].charAt(0) );
-        // X == 4
-        // Y == 1
-
-        // Check if the conversions returned an erroneous value
-        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
-            return false;
-
-        // Check if the second location is to the RIGHT of the first,
-        //  or if it BELOW the first
-        // also make sure if horizontal, we don't place on the bottom row
-        //  and make sure if vertical, we don't place on the right-most row
-        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
-             firstY+1 == secndY && firstX == secndX && firstX != 8)
-            return true;
-        
-        return false;
-    }
-    
-    //*************************************************************************
 
     /**
       * parses a player input wall action and returns an array of two squares
@@ -282,6 +218,71 @@ public class GameEngine {
         }
         
         return null;
+    }
+
+    //*************************************************************************
+
+    /** @deprecated use the one that returns a Square array instead
+      * @param move the string to parse
+      */
+    protected static boolean parseWall ( String move ) {
+        move = move.trim();
+        // (V-A, V-B)
+
+        // Reject any move that does not start and end with parenthesis
+        if ( !move.startsWith("(") && !move.endsWith(")") )
+            return false;
+
+        String[] commaSep = move.split(",");
+        // [0] == (V-A
+        // [1] == V-B)
+
+        // Make sure the string array has only 2 elements
+        if ( commaSep.length != 2 )
+            return false;
+
+        // Remove parentheses
+        commaSep[0] = commaSep[0].replace ( "(", "" );
+        commaSep[1] = commaSep[1].replace ( ")", "" );
+        // [0] == V-A
+        // [1] == V-B
+       
+        commaSep[0] = commaSep[0].trim();
+        String[] firstW = commaSep[0].split("-");
+        // [0] == V
+        // [1] == A
+        commaSep[1] = commaSep[1].trim();
+        String[] secndW = commaSep[1].split("-");
+        // [0] == V
+        // [1] == B
+
+        // Make sure the two string arrays have only 2 elements
+        if ( firstW.length != 2 && secndW.length != 2 )
+            return false;
+
+        int firstX = fromNumerals ( firstW[0] );
+        int firstY = fromLetters  ( firstW[1].charAt(0) );
+        // X == 4
+        // Y == 0
+        int secndX = fromNumerals ( secndW[0] );
+        int secndY = fromLetters  ( secndW[1].charAt(0) );
+        // X == 4
+        // Y == 1
+
+        // Check if the conversions returned an erroneous value
+        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
+            return false;
+
+        // Check if the second location is to the RIGHT of the first,
+        //  or if it BELOW the first
+        // also make sure if horizontal, we don't place on the bottom row
+        //  and make sure if vertical, we don't place on the right-most row
+        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
+             firstY+1 == secndY && firstX == secndX && firstX != 8) {
+            return true;
+             }
+        
+        return false;
     }
 
     //*************************************************************************
@@ -400,7 +401,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /**
+    /** @deprecated use the version that utilizes a queue of players instead
      * @param board GameBoard to check
      * @param players array of players to check if they have won
      * @return a player if that player has won the game, null otherwise
@@ -429,7 +430,36 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /**  
+    /**
+     * find a possible winner 
+     * @param board GameBoard to check
+     * @param players array of players to check if they have won
+     * @return a player if that player has won the game, null otherwise
+     */
+    public static Player getWinner(GameBoard board, Queue<Player> players) {
+        // Check if there is only one player left
+        if ( players.size() == 1 )
+            return players.peek();
+
+        // Check if one of the players have met the traditional victory
+        // condition
+        for ( Player p : players ) {
+            if (p.getPlayerNo() == 0 && board.getPlayerLoc(p).getY() == 8)
+                return p;
+            if (p.getPlayerNo() == 1 && board.getPlayerLoc(p).getY() == 0)
+                return p;
+            if (p.getPlayerNo() == 2 && board.getPlayerLoc(p).getX() == 8)
+                return p;
+            if (p.getPlayerNo() == 3 && board.getPlayerLoc(p).getX() == 0)
+                return p;
+        }
+        // No player has won, return null
+        return null;
+    }
+
+    //*************************************************************************
+
+    /** @deprecated getWinner can now check if there is only one player left 
      * checks if there is only one player remaining
      * @param players the array of players in the game
      * @return the last player remaining or null if more players exist
@@ -455,7 +485,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /**
+    /** @deprecated use Game.java now handles queue shuffling
      * returns the next active player
      * @param current the current player number
      * @param players the players array
@@ -475,4 +505,7 @@ public class GameEngine {
         // No players left
         return null;
     }
+
+    //*************************************************************************
+
 }
