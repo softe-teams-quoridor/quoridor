@@ -68,6 +68,10 @@ public class SquareTest {
 
     @Test
     public void testSquarePlaceVertWall() throws Exception {
-        
+        square.placeWallBottom(true);
+	assertTrue(square.hasWallBottom());
+
+	square.placeWallBottom(false);
+	assertTrue(square.hasWallBottom());
     }   
 }
