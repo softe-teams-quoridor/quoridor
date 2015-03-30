@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -64,7 +65,7 @@ public class GameBoardFrame extends JFrame{
 
         JLabel labelblank = new JLabel();
         labelblank.setOpaque(true);
-        labelblank.setBackground(new Color(255, 255, 255));
+        labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
         labelblank.setText("    " + row);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
@@ -111,7 +112,7 @@ public class GameBoardFrame extends JFrame{
         // This bit will print a blank for the first spot
         labels[0] = new JLabel();
         labels[0].setOpaque(true);
-        labels[0].setBackground(new Color(255, 255, 255));
+        labels[0].setBackground(new Color(0, 0, 0));
         labels[0].setPreferredSize(new Dimension(100, 70));
         labels[0].setText("    ");
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
@@ -119,7 +120,7 @@ public class GameBoardFrame extends JFrame{
         for (int i = 1; i < 10; i++) {
             labels[i] = new JLabel();
             labels[i].setOpaque(true);
-            labels[i].setBackground(new Color(255, 255, 255));
+            labels[i].setBackground(new Color(150, 0, 0));
             labels[i].setPreferredSize(new Dimension(100, 70));
             labels[i].setText("    " + GameEngine.toNumerals(i-1));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
