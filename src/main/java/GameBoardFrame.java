@@ -89,10 +89,10 @@ public class GameBoardFrame extends JFrame{
     //Changes the color of the squares that contain a player and shows 
     //the player name
     private void printPlayerLabel(Player p, Square tSquare){
-        Icon pl1 = new ImageIcon(getClass().getResource("player_1.jpg"));
-        Icon pl2 = new ImageIcon(getClass().getResource("player_2.jpg"));
-        Icon pl3 = new ImageIcon(getClass().getResource("player_3.jpg"));
-        Icon pl4 = new ImageIcon(getClass().getResource("player_4.jpg"));
+        Icon pl1 = new ImageIcon("/images/player_1.jpg");
+        Icon pl2 = new ImageIcon("/images/player_2.jpg");
+        Icon pl3 = new ImageIcon("/images/player_3.jpg");
+        Icon pl4 = new ImageIcon("/images/player_4.jpg");
         JLabel label = new JLabel();
         if(p.getPlayerNo() == 1)
             label.setIcon(pl2); 
