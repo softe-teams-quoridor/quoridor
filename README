@@ -1,4 +1,12 @@
-README file for teams
+README file for teams' Quoridor Project
+
+    Contributors:
+        Eric Cavanagh
+        Montana Earle
+        Scott Forbes
+        Tylor Lehman
+        Daniel Soucy
+        Collin Walling
 
     Contents
         01: How to run the game
@@ -7,7 +15,7 @@ README file for teams
 
 --------------------------------------------------------------------------
 
-[1] How to run the game:
+[01] How to run the game:
 
     1. After running gradle to build the class files, navigate from within
          the teams.git root to:
@@ -45,7 +53,7 @@ README file for teams
 
 --------------------------------------------------------------------------
 
-[2] Gradle Help:
+[02] Gradle Help:
 
     1. If you have never run gradle, you might have to install it. run:
 
@@ -71,9 +79,9 @@ README file for teams
 
 --------------------------------------------------------------------------
 
-[3] TIPS
+[03] Tips
 
-    Easy gradle build function
+    1. Easy gradle build function
 
         add this to your .bashrc or .zshrc :
 
@@ -89,13 +97,9 @@ README file for teams
         you can now type gb from any directory to build the project!
           also you can pass arguments to gb like this: gb clean
 
-         -------------------------------------------------------
-
-    Run class files from anywhere
+    2. Run class files from anywhere
 
         this will allow you to run any of your class files for our project
           regardless of what directory you are currently in
 
                 export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"
-
-
