@@ -1,3 +1,3 @@
-public interface AI {
+public interface MoveServer {
     String getNextMove(GameBoard board);
 }

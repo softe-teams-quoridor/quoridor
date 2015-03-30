@@ -8,11 +8,11 @@
 import java.util.*;
 
 public class Game {
-    
+
     private static int numPlayers;     // how many players are in the game
     private static final int WALL_POOL = 20; // total collection of walls
     private static Queue<Player> players = new LinkedList<Player>(); // players
-    
+
     /**
      * prints a friendly message and exits
      * @param an int to return to the OS
@@ -95,7 +95,7 @@ public class Game {
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
             }
-        
+
             // Update the graphical board
             frame.update(board);
 
@@ -105,16 +105,16 @@ public class Game {
                 hermes.broadcastVictor(winner);
                 break;
             }
-             
+
             // Shuffle queue
             players.add(players.remove());
 
             sleep(200); // sleepy time
 
         }//-----END OF LOOP-----
-   
+
         hermes.closeAllStreams(players.toArray(new Player[players.size()]));
-        
+
         // pause board for two seconds before ending
         sleep(2000);
         System.exit(0);
