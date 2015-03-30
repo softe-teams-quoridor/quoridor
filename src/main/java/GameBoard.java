@@ -1,5 +1,5 @@
 /* GameBoard.java - CIS405 - teams
- * Last Edit: March 16, 2015
+ * Last Edit: March 29, 2015
  * ____________________________________________________________________________
  *
  * GameBoard object to represent a 9x9 grid for the Quoridor game. This handles
@@ -19,6 +19,8 @@
  * void setupInitialPosition(Player []) --> sets initial player locations
  */
 
+import java.util.Queue;
+
 public class GameBoard {
 
     // Constants
@@ -31,7 +33,7 @@ public class GameBoard {
         
     //*************************************************************************
 
-    /** 
+    /** @deprecated use the constructor that takes a queue instead 
      * constructs the GameBoard by instantiating the array of squares
      */
     public GameBoard(Player [] players) {
@@ -45,6 +47,27 @@ public class GameBoard {
         }
         // Instantiate player location array
         playerLocs = new Square[players.length];
+        // Initialize player positions
+        setupInitialPosition(players);
+    }
+
+    //*************************************************************************
+
+    /** 
+     * constructs the GameBoard by instantiating the array of squares
+     * @param players queue of players to be given a start location
+     */
+    public GameBoard(Queue<Player> players) {
+        assert (players.size() == 2 || players.size() == 4);
+        // Instantiate squares array, setting X and Y to i and j respectively
+        squares = new Square[COLUMNS][ROWS];
+        for(int i = 0; i < COLUMNS; i++){
+            for (int j = 0; j < ROWS; j++){
+                squares[i][j] = new Square(i, j);
+            }
+        }
+        // Instantiate player location array
+        playerLocs = new Square[players.size()];
         // Initialize player positions
         setupInitialPosition(players);
     }
@@ -148,7 +171,7 @@ public class GameBoard {
 
     //*************************************************************************
 
-    /**
+    /** @deprecated use setup that takes in a queue instead
      * initializes the players in their appropriate start locations
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
      * @param players array of players to initialize
@@ -168,6 +191,29 @@ public class GameBoard {
             this.addPlayer(players[i], x, y);
             assert (i >= 0 && i < this.playerLocs.length);
             this.playerLocs[i] = getSquare(x, y);
+            colInd = colInd >> 4;
+            rowInd = rowInd >> 4;
+        }
+    }
+
+    //*************************************************************************
+
+    /**
+     * initializes the players in their appropriate start locations
+     * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
+     * @param players queue of players to initialize
+     */
+    public void setupInitialPosition(Queue<Player> players) {
+        int colInd = 32836; // collin dalling
+        int rowInd = 17536;
+
+        for ( Player p : players ) {  
+            int x = colInd & 15;
+            int y = rowInd & 15;
+
+            this.addPlayer(p, x, y);
+            this.playerLocs[p.getPlayerNo()] = getSquare(x, y);
+            
             colInd = colInd >> 4;
             rowInd = rowInd >> 4;
         }
