@@ -74,7 +74,7 @@ public class GameBoardFrame extends JFrame{
             if (!board.isOccupied(i-1,rownum-1)){ //Tylor Changed this
                 JLabel labelblue = new JLabel();
                 labelblue.setOpaque(true);
-                labelblue.setBackground(new Color(0, 0, 150));
+                labelblue.setBackground(new Color(140, 130, 130));
                 labelblue.setPreferredSize(new Dimension(100, 70));
                 //labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
                 labelblue=setBoarder(labelblue,board.getSquare(i-1,rownum-1));			//Untested
@@ -89,20 +89,17 @@ public class GameBoardFrame extends JFrame{
     //Changes the color of the squares that contain a player and shows 
     //the player name
     private void printPlayerLabel(Player p, Square tSquare){
-        Icon pl1 = new ImageIcon("/images/player_1.jpg");
-        Icon pl2 = new ImageIcon("/images/player_2.jpg");
-        Icon pl3 = new ImageIcon("/images/player_3.jpg");
-        Icon pl4 = new ImageIcon("/images/player_4.jpg");
         JLabel label = new JLabel();
         if(p.getPlayerNo() == 1)
-            label.setIcon(pl2); 
+            label.setBackground(new Color(230, 200, 200)); 
         else if(p.getPlayerNo() == 2)
-            label.setIcon(pl3);
+            label.setBackground(new Color(220, 200, 200)); 
         else if(p.getPlayerNo() == 3)
-            label.setIcon(pl4);
+            label.setBackground(new Color(240, 200, 200)); 
         else
-            label.setIcon(pl1);
+            label.setBackground(new Color(250, 200, 200)); 
         label.setOpaque(true);
+        label.setText("     " + p.getName());
         label.setPreferredSize(new Dimension(100, 70));
         //label.setBorder(BorderFactory.createLineBorder(Color.black));
         label=setBoarder(label,  tSquare);
@@ -115,7 +112,7 @@ public class GameBoardFrame extends JFrame{
         // This bit will print a blank for the first spot
         labels[0] = new JLabel();
         labels[0].setOpaque(true);
-        labels[0].setBackground(new Color(0, 0, 0));
+        labels[0].setBackground(new Color(30, 0, 0));
         labels[0].setPreferredSize(new Dimension(100, 70));
         labels[0].setText("    ");
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
