@@ -19,14 +19,14 @@ public class UserServer {
     }
 
     public static void main(String[] args) {
-        Deb.initialize("userserver");
-
         // process command-line arguments
         try {
             portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) { // NumberFormatException, ArrayIndexOutOfBounds
             usage(1);
         }
+
+        Deb.initialize("userserver_" + portNumber);
 
         // process optional command-line --display argument 
         Deb.ug.println(Arrays.toString(args));

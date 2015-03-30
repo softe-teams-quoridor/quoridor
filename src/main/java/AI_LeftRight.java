@@ -4,7 +4,7 @@ public class AI_LeftRight implements MoveServer {
         direction = false;
     }
 
-    public String getNextMove(GameBoard board) {
+    public String getMove() {
         direction = (! direction);
         if (direction) {
             return "IV-A";

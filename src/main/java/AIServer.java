@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 public class AIServer {
     private static boolean SERVER_DISPLAY = false;
-//     private static final Scanner keyboard = new Scanner(System.in);
     private static int portNumber;
     private static final MoveServer ai = new AI_LeftRight();
 
@@ -102,8 +101,6 @@ public class AIServer {
             players[i] = new Player(i, wallsEach);
         }
         GameBoard board = new GameBoard(players);
-//         GameBoard board = new GameBoard();
-//         board.setupInitialPosition(players);
         Player currentPlayer = players[0];
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
@@ -117,8 +114,7 @@ public class AIServer {
             Deb.ug.println("received: " + clientMessage);
             words = clientMessage.split(" ");
             if (clientMessage.equals("GO?")) {
-//                 String move = getMove(board, currentPlayer);
-                String move = ai.getNextMove(board);
+                String move = ai.getMove();
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
@@ -154,22 +150,4 @@ public class AIServer {
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
     }
-
-    /*
-    private static String getMove(GameBoard b, Player p) {
-        System.out.print(">> ");
-        String move = keyboard.nextLine().trim();
-        System.out.println("move: " + move);
-        if (GameEngine.validateMove(b, p, move)) {
-            return move;
-        }
-        System.out.println("that looks illegal; are you sure?");
-        String confirm = keyboard.nextLine();
-        if (confirm.equals("y")) {
-            return move;
-        }
-        return getMove(b, p);
-    }
-    */
 }
-
