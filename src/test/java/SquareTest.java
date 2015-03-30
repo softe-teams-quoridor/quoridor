@@ -74,4 +74,13 @@ public class SquareTest {
 	square.placeWallBottom(false);
 	assertTrue(square.hasWallBottom());
     }   
+
+    @Test
+    public void testSquarePlaceHorizWall() throws Exception {
+	square.placeWallRight(true);
+	assertTrue(square.hasWallRight());
+
+	square.placeWallRight(false);
+	assertTrue(square.hasWallRight());
+    }
 }
