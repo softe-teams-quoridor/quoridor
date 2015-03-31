@@ -165,8 +165,21 @@ public class GameBoard {
 
     //*************************************************************************
 
-    public void placeWall ( Player player, Square first, Square second ) {
+    public void placeWall (Square first, Square second ) {
+        
+        // Horz
+        if(first.getX() == second.getX()) {
+            first.placeWallRight(true);
+            second.placeWallRight(false); 
+        }
+        //Vert
+        else {
+            first.placeWallBottom(true);
+            second.placeWallBottom(false); 
+        }
 
+        squares[first.getX()][first.getY()] = first;
+        squares[second.getX()][second.getY()] = second;
     }
 
     //*************************************************************************
