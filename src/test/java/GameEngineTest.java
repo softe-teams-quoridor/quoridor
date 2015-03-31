@@ -95,18 +95,62 @@ public class GameEngineTest {
         //Test all possible moves! 
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
-                assertTrue(GameEngine.parseMove((GameEngine.toNumerals(i) 
-                                + "-" + GameEngine.toLetters(j))));
+                assertEquals(GameEngine.parseMove(board, (GameEngine.toNumerals(i) 
+                                + "-" + GameEngine.toLetters(j))), board.getSquare(i,j));
             }
         }
 
         //Test some impossible moves :)
-        assertFalse(GameEngine.parseMove("IIII-A"));
-        assertFalse(GameEngine.parseMove("A-II"));
-        assertFalse(GameEngine.parseMove("X-T"));
-        assertFalse(GameEngine.parseMove("hello"));
-        assertFalse(GameEngine.parseMove("Brian C. Ladd"));
+        assertNull(GameEngine.parseMove(board, "IIII-A"));
+        assertNull(GameEngine.parseMove(board, "A-II"));
+        assertNull(GameEngine.parseMove(board, "X-T"));
+        assertNull(GameEngine.parseMove(board, "hello"));
+        assertNull(GameEngine.parseMove(board, "Brian C. Ladd"));
     }
+
+    @Test
+    public void testParseWall() throws Exception {
+
+        Square[] wallSquares = new Square[2];
+        
+        // Test all vetical walls
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                wallSquares[0] = board.getSquare(x,y);
+                wallSquares[1] = board.getSquare(x,y+1);
+                assertEquals(GameEngine.parseWall(board,
+                            "(" + GameEngine.toNumerals(x)  + "-" 
+                                + GameEngine.toLetters(y)   + ","
+                                + GameEngine.toNumerals(x)  + "-" 
+                                + GameEngine.toLetters(y+1) + ")" )
+                                                    , wallSquares);
+            }
+        }
+
+        // Test all horizontal walls
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                wallSquares[0] = board.getSquare(x,y);
+                wallSquares[1] = board.getSquare(x+1,y);
+                assertEquals(GameEngine.parseWall(board,
+                            "(" + GameEngine.toNumerals(x)   + "-"
+                                + GameEngine.toLetters(y)    + ","
+                                + GameEngine.toNumerals(x+1) + "-" 
+                                + GameEngine.toLetters(y)    + ")" )
+                                                     , wallSquares);
+            }
+        }
+
+        //Test some impossible wall placements
+        assertNull(GameEngine.parseWall(board, "(III-B,III-D)"));
+        assertNull(GameEngine.parseWall(board, "(II-A,I-B"));
+        assertNull(GameEngine.parseWall(board, "(Collin-Keyboard,PretendTo-Type)"));
+        //Board Walls
+        assertNull(GameEngine.parseWall(board, "(IX-A,IX-B)"));
+        assertNull(GameEngine.parseWall(board, "(I-I,II-I"));
+
+        
+    }   
 
     
     @Test
@@ -120,13 +164,15 @@ public class GameEngineTest {
                                   + GameEngine.toLetters(r)    + ","
                                   + GameEngine.toNumerals(c+1) + "-"
                                   + GameEngine.toLetters(r)    + ")";
-                assertTrue ( GameEngine.parseWall ( wall ) ); 
+                // FIXME
+                //assertEquals(GameEngine.parseWall(board,wall), board.getSquare(c,r)); 
             }
 
         // Test invalid horizontals here
     }
 
 
+    // FIXME
     @Test
     public void testParseWallOnInsertingVerticalWalls() throws Exception {
         // Test all vertical wall strings

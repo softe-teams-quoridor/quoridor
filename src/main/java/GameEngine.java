@@ -128,6 +128,7 @@ public class GameEngine {
       *   is valid 
       * @param board the board to get a square from
       * @param move a string representing a move
+      * @return the square to move to
       */
     protected static Square parseMove ( GameBoard board, String move ) {
         move = move.trim();
@@ -376,17 +377,31 @@ public class GameEngine {
         Square [] validSquares;
         //Check for move
         if(move.charAt(0) != '(') {
+            System.out.println("MOVE");
             validSquares = new Square[1];
             validSquares[0] = parseMove(board, move);
+            if(validSquares == null)
+                System.out.println("null");
             if(validateMove(board,board.getPlayerLoc(player), 
-                            validSquares[0],-1,0))
-               return validSquares; 
+                            validSquares[0],-1,0)) {
+                System.out.println("valid");
+                return validSquares; 
+            }
         } 
-       //else if(move.charAt(0) == '(') {
-                
-       //}
+        else if(move.charAt(0) == '(') {
+            System.out.println("wall");
+            validSquares = parseWall(board, move);
+            if(true) // this will be validatewall
+                return validSquares;
+        }
+
+        System.out.println("fjkhdlhfjdk");
         return null;
-        //Check for wall placement
+        //check for wall placement
+    }
+
+    public static boolean validateWall () {
+        return true;
     }
 
     //*************************************************************************
