@@ -1,24 +1,19 @@
 /* Game.java (aka Quoridor) - CIS 405 - teams
- * Last Edit: March 14, 2015
+ * Last Edit: March 29, 2015
  * ____________________________________________________________________________
  * 
  * implements the GameEngine and Messenger to create and run the game Quoridor
  */
-import java.util.*;
-import java.io.*;
 
-// networking stuff... 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.*;
 
 public class Game {
-    private static int numPlayers;     // how many players are in the game
-    private static Player [] players ; // the players
 
-    /*
+    private static int numPlayers;     // how many players are in the game
+    private static final int WALL_POOL = 20; // total collection of walls
+    private static Queue<Player> players = new LinkedList<Player>(); // players
+
+    /**
      * prints a friendly message and exits
      * @param an int to return to the OS
      */
@@ -28,12 +23,25 @@ public class Game {
         System.exit(error);
     }
 
+    /**
+     * sleepy time
+     * @param length duration for thread to pause
+     */
+    private static void sleep(int length) {
+        try {
+            Thread.sleep(length);
+        } catch (InterruptedException e) {
+            // ignore it
+        }
+    }
+
     public static void main (String[] args) {
         // initialize debug stream
         Deb.initialize("game");
 
         // quit if bad arguments
         Deb.ug.println("args provided: " + Arrays.toString(args));
+        
         if (args.length !=  4 && args.length != 8) {
             usage(1);
         }
@@ -45,88 +53,88 @@ public class Game {
         // Connect to players
         Messenger hermes = new Messenger(args);
 
-        // Instantiate Players array
-        Deb.ug.println("instantiating Players array");
-        players = new Player[numPlayers];
-        int wallsEach = 20 / players.length;
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(("player_" + i), wallsEach);
-        }
+        // Instantiate Players
+        Deb.ug.println("instantiating Players...");
+        for ( int i = 0; i < numPlayers; i++ )
+            players.add(new Player(i, WALL_POOL / numPlayers));
 
         // Instantiate GameBoard
-        Deb.ug.println("instantiating GameBoard");
+        Deb.ug.println("instantiating GameBoard...");
         GameBoard board = new GameBoard(players);
-        Deb.ug.println("players array: " + Arrays.toString(players));
+        Deb.ug.println("players array: " + Arrays.toString(players.toArray()));
 
         // tell all move servers who the players are
-        hermes.broadcastPlayers(players);
+        hermes.broadcastPlayers(players.toArray(new Player[players.size()]));
 
         // Start up the display
-        Deb.ug.println("starting GameBoardFrame");
+        Deb.ug.println("starting GameBoardFrame...");
         GameBoardFrame frame = new GameBoardFrame(board);
-
-        // Initialize current player to player 0 (index 0)
-        Player currentPlayer = players[0];
 
         // loop will need to check for a victory condition
         Deb.ug.println("beginning main loop");
         while (true) {
+            // Get current player
+            Player currentPlayer = players.peek();
+
             // Get move from player
             Deb.ug.println("requesting move from player: " + 
                            currentPlayer.getName());
             String response = hermes.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 
-            // Validate move
-            boolean legal = GameEngine.validate(board, currentPlayer, 
-                                                response);
-
-            if (legal) {
-                Deb.ug.println("move legal");
-                // Parse the move string to a square location
+            // Validate if the move is legal and make the move on the board
+            // else boot the player for trying to make an illegal move
+            /*
+            if ( GameEngine.validateMove ( board,currentPlayer,response ) ) {
+                Deb.ug.println("legal move");
                 Square destination = GameEngine.getSquare(board,response);
-                // move player on board, broadcast move
                 board.move(currentPlayer, destination);
                 hermes.broadcastWent(currentPlayer, response);
             } else {
-                // if illegal, remove player & broadcast boot to other players
                 Deb.ug.println("illegal move attempted");
                 board.removePlayer(currentPlayer);
+                players.remove();
                 hermes.broadcastBoot(currentPlayer);
-                players[currentPlayer.getPlayerNo()] = null;
             }
-        
+            */
+
+            Square[] moveSquares = GameEngine.validate(board,currentPlayer, response);
+            if(moveSquares.length == 1) {
+                Deb.ug.println("legal move");
+                Square destination = GameEngine.getSquare(board,response);
+                board.move(currentPlayer, moveSquares[0]);
+                hermes.broadcastWent(currentPlayer, response);
+            }
+            else if(moveSquares.length == 2) {
+            }
+            else {
+                Deb.ug.println("illegal move attempted");
+                board.removePlayer(currentPlayer);
+                players.remove();
+                hermes.broadcastBoot(currentPlayer);
+            }
+            
             // Update the graphical board
             frame.update(board);
 
-            // Retrieve a possibly winning player
+            // Retrieve a possibly winning player and broadcast if winner found
             Player winner = GameEngine.getWinner(board, players);
             if (winner != null) {
-                // If the retrieved player is a winner, display and exit loop
                 hermes.broadcastVictor(winner);
                 break;
             }
 
-            //...the game is still going, get the next player and continue
-            
-            // Get next player's turn 
-            currentPlayer = GameEngine.nextPlayer(currentPlayer.getPlayerNo(), players);
- 
-            // Sleepy time
-            sleep(200);
-        }
+            // Shuffle queue
+            players.add(players.remove());
 
-        hermes.closeAllStreams(players);
+            sleep(200); // sleepy time
+
+        }//-----END OF LOOP-----
+
+        hermes.closeAllStreams(players.toArray(new Player[players.size()]));
+
         // pause board for two seconds before ending
         sleep(2000);
         System.exit(0);
-    }
-
-    private static void sleep(int length) {
-        try {
-            Thread.sleep(length);
-        } catch (InterruptedException e) {
-            // ignore it
-        }
     }
 }

@@ -1,18 +1,105 @@
-if you have never run gradle, you might have to install it. run:
+README file for teams' Quoridor Project
 
-./gradlew
+    Contributors:
+        Eric Cavanagh
+        Montana Earle
+        Scott Forbes
+        Tylor Lehman
+        Dan Soucy
+        Collin Walling
 
-it should say downloading gradle..................
-afterward you can run 
+    Contents
+        01: How to run the game
+        02: Gradle Help
+        03: Tips
 
-./gradlew build 
-./gradlew clean
+--------------------------------------------------------------------------
 
-the first builds the whole project (including running any tests)
-the second removes the build.
+[01] How to run the game:
 
-after you have built the code, run the following:
+    1. After running gradle to build the class files, navigate from within
+         the teams.git root to:
 
-java -cp build/libs/quoridorschmoridor.jar Main
+                ./build/classes/main
 
-for an example of running a program.
+    2. Start up at least two UserServers (in different terminals), give
+         them unique port numbers
+
+                java UserServer 1234
+
+
+    3. Run Game in another terminal. Give it the port-host of at least two 
+         other UserServers
+                
+                java Game localhost 1234 localhost 5678
+
+
+         You can also start a 4-player game using a similar setup
+
+                java Game localhost 1234 Whiteface 5678 \
+                          Gothics 9012 Redfield 3456
+
+
+         Note that the \ just means to continue the command onto the
+         next line. You do not need to do this.
+
+    4. Play the game! You have to input moves via the terminal that is
+         running the respective UserServer
+
+         An example move for player 0 is V-B (moves down)
+
+         Use the labels printed on the graphic display to guide your
+         movements
+
+--------------------------------------------------------------------------
+
+[02] Gradle Help:
+
+    1. If you have never run gradle, you might have to install it. run:
+
+                ./gradlew
+
+
+    2. It should say downloading gradle..................
+         afterward you can run 
+
+                ./gradlew build 
+                ./gradlew clean
+
+
+         The first builds the whole project (including running any tests),
+         the second removes the build.
+
+    3. After you have built the code, run the following:
+
+                java -cp build/libs/quoridorschmoridor.jar Main
+
+
+         for an example of running a program.
+
+--------------------------------------------------------------------------
+
+[03] Tips
+
+    1. Easy gradle build function
+
+        add this to your .bashrc or .zshrc :
+
+                function gb() {
+                    pushd . > /dev/null
+                    # you might have to adjust this line below
+                    cd "$HOME/405/teams/" > /dev/null
+                    ./gradlew build "$@"
+                    popd > /dev/null
+                }
+
+
+        you can now type gb from any directory to build the project!
+          also you can pass arguments to gb like this: gb clean
+
+    2. Run class files from anywhere
+
+        this will allow you to run any of your class files for our project
+          regardless of what directory you are currently in
+
+                export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"

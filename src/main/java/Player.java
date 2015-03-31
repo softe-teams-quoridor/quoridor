@@ -1,25 +1,22 @@
 /* Player.java - CIS405 - teams
- * Last Edit: March 13, 2015
- * _______________________________________________________ 
+ * Last Edit: March 20, 2015
+ * ____________________________________________________________________________
  *
- * represents the data of a player of the game, such
- *   as the player's name, number of walls, and the player's
- *   location on the gameboard
+ * represents the data of a player of the game, such as the player's name,
+ *   number of walls, and the player's location on the gameboard
  * 
- * ----------------------- METHODS -----------------------
+ * --------------------------------- METHODS ----------------------------------
  * 
- * Player()              --> constructor
- * int getPlayerNo()     --> returns the player number
- * Sqaure getLoc()       --> returns the square the player occupies
- * void setLoc(Square)   --> sets the player's location on a square
- * String getName()      --> returns the player's name
- * int getNumWalls()     --> returns number of walls
- * boolean mayPlaceWall()--> decrements numWalls if player has > 0 walls
- * void resetPlayerNos() --> resets numAssign to zero
- * 
+ * Player(int,int)        --> constructs player with an ID and wall count
+ * Player(int,string,int) --> constructs player with ID, name, and wall count
+ * int getPlayerNo()      --> returns the player number
+ * String getName()       --> returns the player's name
+ * int getNumWalls()      --> returns number of walls
+ * boolean mayPlaceWall() --> returns if a player has walls that they may place
+ * boolean placeWall()    --> decrements numWalls if player can place a wall
+ *
  * Considerations
  *     
- *     Tuesday (2/17)
  *      Is getNumWalls() needed if we're checking for the number of walls
  *      within method placeWall()? - Cavanagh, Walling (2/16)
  *     
@@ -31,37 +28,37 @@
  */
 
 class Player {
-
-    // Data Members
+    
     private String playerName = "";    // player's name
-//     private Square pawnLoc;            // player's pawn location
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
-    private static int numAssign = 0;  // for assigning playerNo
+
+    //*************************************************************************
 
     /**
-     * instantiates a player object
-     * @param playerName = name of the player
-     * @param startLoc   = starting square on the gameboard
-     * @param numWalls   = number of walls this player has to start with
-     */
-    /*
-    public Player(String playerName, Square startLoc, int numWalls) {
-        this.playerName = playerName;
-        this.pawnLoc    = startLoc;
-        this.numWalls   = numWalls;
-        this.playerNo = numAssign;
-        numAssign++;
+      * constructs a player object with a name based on pno
+      * @param pno player number
+      * @param numWalls number of walls the player is given
+      */
+    public Player(int pno, int numWalls) {
+        this(pno, "player_" + pno, numWalls);
     } 
-    */
 
-    public Player(String playerName, int numWalls) {
+    //*************************************************************************
+
+    /**
+      * constructs a player object with a specfic name
+      * @param pno player number
+      * @param playerName name of player
+      * @param numWalls number of walls the player is given
+      */
+    public Player(int pno, String playerName, int numWalls) {
         this.playerName = playerName;
-//         this.pawnLoc    = startLoc;
-        this.numWalls   = numWalls;
-        this.playerNo = numAssign;
-        numAssign++;
+        this.numWalls = numWalls;
+        this.playerNo = pno;
     } 
+
+    //*************************************************************************
 
     /**
       * returns the player's number
@@ -71,36 +68,7 @@ class Player {
         return playerNo;
     }
 
-    /*
-    /** 
-      * returns the square that the player's pawn is occupying
-      * @return = returns a square
-    public Square getLoc() {
-        return pawnLoc; 
-    }
-
-    /** 
-      * returns the x coordinate of the square the pawn is on
-      * @return = returns an int
-    public int getX() {
-        return pawnLoc.getX(); 
-    }
-
-    /** 
-      * returns the y coordinate of the square the pawn is on
-      * @return = returns an int
-    public int getY() {
-        return pawnLoc.getY(); 
-    }
-
-
-    /**
-      * sets the player's location
-      * @param sqr square to set player to
-    public void setLoc(Square sqr) {
-        pawnLoc = sqr;
-    }
-      */
+    //*************************************************************************
 
     /**
       * returns the player's name
@@ -109,6 +77,8 @@ class Player {
     public String getName() {
         return playerName;
     }
+
+    //*************************************************************************
 
     // Consider if this is needed when we start to implement wall placement
     // possibly useful for display if we wanna show walls in the hand
@@ -120,24 +90,27 @@ class Player {
         return numWalls;
     }
 
-    /**
-      * @return true if this player has any walls left to place
-      * side-effect: decrements the number of walls this player has
-      */    
-    public boolean mayPlaceWall() {
-        if (numWalls > 0) {
-            numWalls--;
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //*************************************************************************
 
     /**
-      * resets the current assignment number to zero
-      * useful for a move server to reset the count of players after each game
-      */
-    public static void resetPlayerNos() {
-        numAssign = 0;
+      * Checks to see if the player can place a wall
+      * @return true if this player has any walls left to place     
+      */    
+    private boolean mayPlaceWall() {
+        return(numWalls != 0);        
     }
+
+    //*************************************************************************
+
+    /**
+      * Decrements the number of walls if possible
+      * @return true if walls have been decremented, false otherwise
+      */
+    public boolean placeWall() {
+        if(mayPlaceWall()) {
+            numWalls--;
+            return true;
+        }
+        return false;
+    } 
 }

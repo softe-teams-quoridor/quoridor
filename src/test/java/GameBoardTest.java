@@ -6,105 +6,109 @@ import org.junit.Before;
 
 public class GameBoardTest {
 
+    private static final int NUM_PLAYERS = 4;
+    GameBoard board;
+    Player [] players;
+    int walls;
+    @Before
+    public void beef() throws Exception {
+        players = new Player[NUM_PLAYERS];
+        walls = 20 / NUM_PLAYERS;
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            players[i] = new Player(i, walls);
+        
+        assertNotNull("players should not be null", players);
+        board = new GameBoard(players);
+        assertNotNull("board should not be null!", board);
+        assert(players.length == NUM_PLAYERS);
+    }
+
     @Test
     public void testAddPlayer() {
-        Player [] players = new Player[2];
-        players[0] = new Player("0", 0);
-        players[1] = new Player("1", 0);
-
-        GameBoard b = new GameBoard(players);
-
-        b.addPlayer(players[0], 1, 1);
-        assertEquals(b.getPlayer(1,1), players[0]);
-    }
-    
-    /*    
-    @Test
-    public void testGameBoard() {
-    
-        GameBoard b = new GameBoard();
-        assertFalse(b.isOccupied(1,1));
+        board.addPlayer(players[0], 1, 1);
+        assertEquals(board.getPlayer(1,1), players[0]);
     }
 
     @Test
-    public void testGameBoardIsOccupiedOnEmptyBoard() {
-        GameBoard b = new GameBoard();
+    public void testValidLoc() throws Exception {
+        for(int i = 0; i < 9; i++)
+            for(int j = 0; j < 9; j++)
+                assertTrue(board.validLoc(i,j));
+        assertFalse(board.validLoc(10,12));
+    }
+    
 
+    @Test
+    public void testGameBoardIsOccupied() {
+        assertTrue(board.isOccupied(4,0));
+        assertTrue(board.isOccupied(4,8));
+
+        if(NUM_PLAYERS == 4) {
+            assertTrue(board.isOccupied(0,4));
+            assertTrue(board.isOccupied(4,8));
+        }
+
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            board.removePlayer(players[i]);
+        
+        // Test on empty board
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ )
-                assertFalse(b.isOccupied(i,j));
+                assertFalse(board.isOccupied(i,j));
     }
 
-    @Test
-    public void testGameBoardIsOccupiedOnFullBoard() {
-        GameBoard b = new GameBoard();
-        /*
-        for ( int i = 0; i < 9; i++ )
-            for ( int j = 0; j < 9; j++ ) {
-//                 b.addPlayer(new Player("CDEMST", new Square(i,j),0));
-                // this test doesn t even make sense??? why we are making a 
-                // new square in the board AFTER initializing all the squares??
-                // in the GameBoard Constructor
-                assertTrue(b.isOccupied(i,j));
-                how this ever worked at all is such a mystery to me
-            }
-        
-    }
+
 
     @Test
     public void testGameBoardSquares() {
-        GameBoard b = new GameBoard();
-        
-        
         for ( int i = 0; i < 9; i++ )
-            for ( int j = 0; j < 9; j++ ) 
-                assertTrue( b.getSquare(i,j).equals(new Square(i,j)));
-        
+            for ( int j = 0; j < 9; j++ ) {
+                assertEquals(board.getSquare(i,j).getX(), i);
+                assertEquals(board.getSquare(i,j).getY(), j);
+            }
     }
 
 
     @Test
     public void testGameBoardGetNULLPlayer() {
-        GameBoard b = new GameBoard();
 
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            board.removePlayer(players[i]);
+        
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ ) 
-                assertEquals(b.getPlayer(i,j), null);
+                assertEquals(board.getPlayer(i,j), null);
     }
+    
     
     @Test
     public void testAddAndGetPlayer() {
-        GameBoard b = new GameBoard();
-        Player p = new Player("CDEMST", b.getSquare(1,1), 0);
-//          making addPlayer private, anybody know how to work around this?
-        // fixed it! PROTECTED
-        b.addPlayer(p);
-        assertEquals(b.getPlayer(1,1), p);
+        assertEquals(board.getPlayer(4,0), players[0]);
     }
 
+    
     @Test
     public void testMovePlayer() {
-        GameBoard b = new GameBoard();
-        Player p = new Player("farple", b.getSquare(5,5), 0);
-        b.addPlayer(p); 
-        // we make a new square here? wtf
-//         b.move(p, new Square(2,3));
-        b.move(p, b.getSquare(2,3));
-         why can't i make this pass
-        assertTrue(b.isOccupied(2,3));
-        
-        assertTrue(!b.isOccupied(5,5));        
+        board.move(players[0],board.getSquare(4,1));
+        assertEquals(players[0],board.getPlayer(4,1));        
     }
 
+    
     @Test
-    public void testBootPlayer() {
-        GameBoard b = new GameBoard();
-        Player p = new Player("bootMe", b.getSquare(2,2), 0);
-        b.addPlayer(p);
-        assertTrue(b.isOccupied(2,2));
-        // removePlayer is bootPlayer
-        b.removePlayer(p);
-        assertTrue(!b.isOccupied(2,2));
+    public void testRemovePlayer() {
+        board.removePlayer(players[0]);
+        assertNull(board.getPlayer(4,0));
     }
-    */
+    
+
+    @Test
+    public void testSetUpIntialPosition() throws Exception {
+        assertEquals(board.getPlayerLoc(players[0]), board.getSquare(4,0));
+        assertEquals(board.getPlayerLoc(players[1]), board.getSquare(4,8));
+        if(NUM_PLAYERS == 4) {
+            assertEquals(board.getPlayerLoc(players[2]), board.getSquare(0,4));
+            assertEquals(board.getPlayerLoc(players[3]), board.getSquare(8,4));
+        }
+    }
+    
 }

@@ -7,10 +7,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class UserServer {
+public class AIServer {
     private static boolean SERVER_DISPLAY = false;
-    private static final Scanner keyboard = new Scanner(System.in);
     private static int portNumber;
+    private static final MoveServer ai = new AI_LeftRight();
 
     public static void usage(int error) {
         // display usage information then exit and return failure
@@ -19,14 +19,14 @@ public class UserServer {
     }
 
     public static void main(String[] args) {
+        Deb.initialize("aiserver");
+
         // process command-line arguments
         try {
             portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) { // NumberFormatException, ArrayIndexOutOfBounds
             usage(1);
         }
-
-        Deb.initialize("userserver_" + portNumber);
 
         // process optional command-line --display argument 
         Deb.ug.println(Arrays.toString(args));
@@ -101,8 +101,6 @@ public class UserServer {
             players[i] = new Player(i, wallsEach);
         }
         GameBoard board = new GameBoard(players);
-//         GameBoard board = new GameBoard();
-//         board.setupInitialPosition(players);
         Player currentPlayer = players[0];
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
@@ -116,7 +114,7 @@ public class UserServer {
             Deb.ug.println("received: " + clientMessage);
             words = clientMessage.split(" ");
             if (clientMessage.equals("GO?")) {
-                String move = getMove(board, currentPlayer);
+                String move = ai.getMove();
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
@@ -151,20 +149,5 @@ public class UserServer {
         Deb.ug.println("game over");
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
-    }
-
-    private static String getMove(GameBoard b, Player p) {
-        System.out.print(">> ");
-        String move = keyboard.nextLine().trim();
-        System.out.println("move: " + move);
-        if (GameEngine.validateMove(b, p, move)) {
-            return move;
-        }
-        System.out.println("that looks illegal; are you sure?");
-        String confirm = keyboard.nextLine();
-        if (confirm.equals("y")) {
-            return move;
-        }
-        return getMove(b, p);
     }
 }

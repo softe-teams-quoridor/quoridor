@@ -18,10 +18,10 @@
  * Square()                   --> constructor
  * int getX()                 --> returns the x coordinate
  * int getY()                 --> returns the y coordinate
- * @DEPRECATE Player getPlayer()      --> returns player on the square
- * @DEPRECATE void addPlayer(Player)  --> assigns a Player obj to this square
- * @DEPRECATE void removePlayer()     --> removes a Player obj from this square
- * @DEPRECATE boolean vacant()        --> returns true if no player on this square
+ * Player getPlayer()         --> returns player on the square
+ * void addPlayer(Player)     --> assigns a Player obj to this square
+ * void removePlayer()        --> removes a Player obj from this square
+ * boolean vacant()           --> returns true if no player on this square
  * boolean isOccupied()       --> returns if the square is occupied by a player
  * void placeWallRight(bool)  --> places a the right-side wall
  * void placeWallBottom(bool) --> places the bottom-side wall
@@ -30,53 +30,51 @@
  */
 
 public class Square {
-    // Data members
-    private Player occupant;  //@deprecate Replace with isOccupied
-    boolean isOccupied;       // replaces above determines if a player is on this square
-    private int row;          // the Y coordinate of this square
+
     private int col;          // the X coordinate of this square
+    private int row;          // the Y coordinate of this square
+    private Player occupant;  // player on this square
     private Wall rightWall;   // right wall
     private Wall bottomWall;  // bottom wall
 
+    //*************************************************************************
+
     /** 
       * instantiates a square object
-      * teams can we make this constructor private?? only the gameboard should make squares
-      *
-      * ^ I should slap whoever said this :) - Walling
-      */
+      * @param x column coordinate
+      * @param y row coordinate
+     */
     public Square(int x, int y) {
         col = x;
         row = y;
-        occupant   = null;  //@deprecate
-        isOccupied = false; //replaces above
+        occupant   = null;
         rightWall  = null;
         bottomWall = null;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
-      * returns the x coordinate of this square
+      * returns the x (col) coordinate of this square
       * @return the column number
       */
     public int getX() {
         return col;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
-      * returns the y coordinate of this square
+      * returns the y (row) coordinate of this square
       * @return the row number
       */
     public int getY() {
         return row;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
-      * @deprecated As of Quoridor release 1.0, replaced by isOccupied()
       * returns the player object occupying this square
       * @return player object occupying this square
       */
@@ -84,83 +82,89 @@ public class Square {
         return occupant;
     }
 
-    //*************************************************************************    
- 
-    /** @deprecated As of Quoridor release 1.0
+    //*************************************************************************
+
+    /**
       * adds a player to the square
       * @param p player to add to the square
       */
-    public void addPlayer(Player p) {
-        occupant = p;
+    public void addPlayer(Player player) {
+        occupant = player;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
-    /** @deprecated As of Quoridor release 1.0
+    /** 
       * removes a player from the square
       */
     public void removePlayer() {
         occupant = null;
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
-    /** @deprecated As of Quoridor release 1.0, replaced by isOccupied() 
-      * @return false if the Sqaure is occupied
+    /** 
+      * Observes if this square is occupied by a player object
+      * @return false if the Square is occupied
       */
     public boolean vacant() {
         return (occupant == null);
     }
 
-    //*************************************************************************    
-
-    /**
-      * returns if this square is claimed to be occupied
-      * @return true if occupied; false otherwise
-      */
-    public boolean isOccupied() {
-        return isOccupied;
-    }
-
-    //*************************************************************************    
+    //*************************************************************************
 
     /** 
      * places a wall on the bottom of this square
      * @param start is this is the top (true) or bottom (false) of a wall?
      */
     public void placeWallRight(boolean isStart) {
-        if ( rightWall != null )
+        if (!hasWallRight())
             rightWall = new Wall(isStart);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * places a wall on the right on this square
       * @param start is this is the left (true) or right (false) of a wall?
       */
     public void placeWallBottom(boolean isStart) {
-        if ( bottomWall != null )
+        if (!hasWallBottom())
             bottomWall = new Wall(isStart);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns if the right wall is a start piece or end piece
       * @return returns if wall starts or ends
       */
     public boolean hasWallRight() {
-        return (rightWall != null) ? true : false;
+        return (rightWall != null);
     }
 
-    //*************************************************************************    
+    //*************************************************************************
 
     /**
       * returns if the bottom wall is a start piece or end piece
       * @return returns if wall starts or ends
       */
     public boolean hasWallBottom() {
-        return (bottomWall != null) ? true : false;
+        return (bottomWall != null);
+    }
+
+    //*************************************************************************
+
+    /**
+      * returns true if the sqaures equal
+      * @return true if the sqaures are equal false otherwise
+      */
+    // Maybe should also check walls? probably?
+    // I'll add that later
+    // Eric can't spell, lol
+    public boolean equals(Square square) {
+        if(this.getX() == square.getX() && this.getY() == square.getY())
+            return true;
+        return false;
     }
 }

@@ -1,10 +1,16 @@
-[ ] make GameBoard.addPlayer private
-[ ] make GameEngine.checkVictory check if only one player is left
+Pre-release Objectives
+[-] make GameBoard.addPlayer private
+[X] make GameEngine.checkVictory check if only one player is left
 [X] make GameEngine.validate check for a possible jump-move
-[ ] discuss how we're going to demo our project for Monday!
+[X] discuss how we're going to demo our project for release 1.0!
 [X] make GameBoardFrame not steal focus
 
-After 1.0
-[ ] ensure a player has a clear path from their position to their victory row
+1.0 Objectives
+[X] refactor code
+[ ] ensure a player has a clear path from their position to their victory 
+      row
+[X] parse walls
 [ ] place walls
 [ ] update validate to check for wall obstruction
+[ ] make GameBoard.addPlayer private
+

@@ -1,5 +1,5 @@
 /* GameBoard.java - CIS405 - teams
- * Last Edit: March 16, 2015
+ * Last Edit: March 29, 2015
  * ____________________________________________________________________________
  *
  * GameBoard object to represent a 9x9 grid for the Quoridor game. This handles
@@ -19,6 +19,8 @@
  * void setupInitialPosition(Player []) --> sets initial player locations
  */
 
+import java.util.Queue;
+
 public class GameBoard {
 
     // Constants
@@ -31,18 +33,43 @@ public class GameBoard {
         
     //*************************************************************************
 
-    /** 
+    /** @deprecated use the constructor that takes a queue instead 
      * constructs the GameBoard by instantiating the array of squares
      */
     public GameBoard(Player [] players) {
+        assert (players.length == 2 || players.length == 4);
+        // Instantiate squares array, setting X and Y to i and j respectively
         squares = new Square[COLUMNS][ROWS];
         for(int i = 0; i < COLUMNS; i++){
             for (int j = 0; j < ROWS; j++){
                 squares[i][j] = new Square(i, j);
             }
         }
-        this.playerLocs = new Square[players.length];
-        setupInitialPosition2(players);
+        // Instantiate player location array
+        playerLocs = new Square[players.length];
+        // Initialize player positions
+        setupInitialPosition(players);
+    }
+
+    //*************************************************************************
+
+    /** 
+     * constructs the GameBoard by instantiating the array of squares
+     * @param players queue of players to be given a start location
+     */
+    public GameBoard(Queue<Player> players) {
+        assert (players.size() == 2 || players.size() == 4);
+        // Instantiate squares array, setting X and Y to i and j respectively
+        squares = new Square[COLUMNS][ROWS];
+        for(int i = 0; i < COLUMNS; i++){
+            for (int j = 0; j < ROWS; j++){
+                squares[i][j] = new Square(i, j);
+            }
+        }
+        // Instantiate player location array
+        playerLocs = new Square[players.size()];
+        // Initialize player positions
+        setupInitialPosition(players);
     }
 
     //*************************************************************************
@@ -75,7 +102,6 @@ public class GameBoard {
     //*************************************************************************
 
     /**
-     * @deprecated squares should no longer refer to a player
      * gets a player at a given location
      * @param x the column of the board
      * @param y the row of the gameboard
@@ -86,10 +112,6 @@ public class GameBoard {
     }
 
     //*************************************************************************
-
-//    public Player getPlayer(int playerNo) {
-
-  //  }
 
     /**
      * adds a player to the given location
@@ -124,7 +146,7 @@ public class GameBoard {
      * @param y the row of the gameboard
      * @return true if location is on board, false otherwise
      */
-    private boolean validLoc(int x, int y) {
+    protected boolean validLoc(int x, int y) {
         return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
     }
 
@@ -143,12 +165,31 @@ public class GameBoard {
 
     //*************************************************************************
 
-    /**
+    public void placeWall (Square first, Square second ) {
+        
+        // Horz
+        if(first.getX() == second.getX()) {
+            first.placeWallRight(true);
+            second.placeWallRight(false); 
+        }
+        //Vert
+        else {
+            first.placeWallBottom(true);
+            second.placeWallBottom(false); 
+        }
+
+        squares[first.getX()][first.getY()] = first;
+        squares[second.getX()][second.getY()] = second;
+    }
+
+    //*************************************************************************
+
+    /** @deprecated use setup that takes in a queue instead
      * initializes the players in their appropriate start locations
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
      * @param players array of players to initialize
      */
-    public void setupInitialPosition2(Player [] players) {
+    public void setupInitialPosition(Player [] players) {
         // Test to ensure that the Player array is 2 or 4
         assert (players.length == 2 || players.length == 4);
         
@@ -159,18 +200,42 @@ public class GameBoard {
             int x = colInd & 15;
             int y = rowInd & 15;
 
+            assert (validLoc(x, y));
             this.addPlayer(players[i], x, y);
+            assert (i >= 0 && i < this.playerLocs.length);
             this.playerLocs[i] = getSquare(x, y);
             colInd = colInd >> 4;
             rowInd = rowInd >> 4;
         }
     }
 
+    //*************************************************************************
+
+    /**
+     * initializes the players in their appropriate start locations
+     * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
+     * @param players queue of players to initialize
+     */
+    public void setupInitialPosition(Queue<Player> players) {
+        int colInd = 32836; // collin dalling
+        int rowInd = 17536;
+
+        for ( Player p : players ) {  
+            int x = colInd & 15;
+            int y = rowInd & 15;
+
+            this.addPlayer(p, x, y);
+            this.playerLocs[p.getPlayerNo()] = getSquare(x, y);
+            
+            colInd = colInd >> 4;
+            rowInd = rowInd >> 4;
+        }
+    }
+
+    //*************************************************************************
+
     public Square getPlayerLoc(Player player) {
         return playerLocs[player.getPlayerNo()];
     }
-
-    public Square getPlayerLoc(int playerNo) {
-        return playerLocs[playerNo];
-    }
+    
 }

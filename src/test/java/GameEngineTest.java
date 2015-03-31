@@ -7,17 +7,23 @@ import org.junit.Before;
 
 public class GameEngineTest {
 
-/*
-    GameEngine ge;
+    private static final int NUM_PLAYERS = 2;
+
     GameBoard board;
-    Player p1, p2;
+    Player [] players;
+    int walls;
     @Before
     public void beef() throws Exception {
-        ge = new GameEngine();
-        assertNotNull("ge should not be null!", ge);
-        board = new GameBoard();
+        players = new Player[NUM_PLAYERS];
+        walls = 20 / NUM_PLAYERS;
+        for(int i = 0; i < NUM_PLAYERS; i++)
+            players[i] = new Player(i, walls);
+        assertNotNull("players should not be null", players);
+
+        board = new GameBoard(players);
         assertNotNull("board should not be null!", board);
     }
+
 
     @Test
     public void testToNumerals() throws Exception {
@@ -32,6 +38,7 @@ public class GameEngineTest {
         assertEquals("IX",   GameEngine.toNumerals(8));
         assertEquals("@@@@@@@@@@@@@@", GameEngine.toNumerals(11));
     }
+
 
     @Test
     public void testFromNumerals() throws Exception {
@@ -48,6 +55,7 @@ public class GameEngineTest {
         assertEquals(-1, GameEngine.fromNumerals("arbitrary string"));
     }
 
+
     @Test
     public void testToLetters() throws Exception {
         assertEquals('A', GameEngine.toLetters(0));
@@ -62,6 +70,7 @@ public class GameEngineTest {
         assertEquals('Z', GameEngine.toLetters(9));
     }
 
+
     @Test
     public void testFromLetters() throws Exception {
         //assertEquals(0, GameEngine.fromLetters(""));
@@ -73,32 +82,110 @@ public class GameEngineTest {
         assertEquals(-1, GameEngine.fromLetters(';'));
     }
 
+    
     @Test
     public void testMakePlayer() throws Exception {
-        p1 = new Player("tylEr", board.getSquare(4, 0), 10);
-        p2 = new Player("tylAr", board.getSquare(4, 8), 10);
-        assertNotNull("p1 null?", p1);
-        assertNotNull("p2 null?", p2);
+        assertNotNull("p1 null?", players[0]);
+        assertNotNull("p2 null?", players[1]);
     }
 
+
     @Test
-    public void testParseMove() throws Exception {
-        board = new GameBoard();
-        p1 = new Player("tylUr", board.getSquare(3, 6), 10);
-        assertTrue(ge.parseMove(board, "III-G"));
+    public void testParseMove() throws Exception {      
+        //Test all possible moves! 
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                assertTrue(GameEngine.parseMove((GameEngine.toNumerals(i) 
+                                + "-" + GameEngine.toLetters(j))));
+            }
+        }
+
+        //Test some impossible moves :)
+        assertFalse(GameEngine.parseMove("IIII-A"));
+        assertFalse(GameEngine.parseMove("A-II"));
+        assertFalse(GameEngine.parseMove("X-T"));
+        assertFalse(GameEngine.parseMove("hello"));
+        assertFalse(GameEngine.parseMove("Brian C. Ladd"));
     }
+
+    
+    @Test
+    public void testParseWallOnInsertingHorizontalWalls() throws Exception {
+        // Test all horizontal wall strings
+        // Iterate through rows
+        for ( int r = 0; r < 8; r++ )
+            // Iterate through columns, except last
+            for ( int c = 0; c < 8; c++ ) {
+                String wall = "(" + GameEngine.toNumerals(c)   + "-"
+                                  + GameEngine.toLetters(r)    + ","
+                                  + GameEngine.toNumerals(c+1) + "-"
+                                  + GameEngine.toLetters(r)    + ")";
+                assertTrue ( GameEngine.parseWall ( wall ) ); 
+            }
+
+        // Test invalid horizontals here
+    }
+
+
+    @Test
+    public void testParseWallOnInsertingVerticalWalls() throws Exception {
+        // Test all vertical wall strings
+        // Iterate through columns
+        for ( int c = 0; c < 8; c++ )
+            // Iterate through rows, except last
+            for ( int r = 0; r < 8; r++ ) {
+                String wall = "(" + GameEngine.toNumerals(c)   + "-"
+                                  + GameEngine.toLetters(r)    + ","
+                                  + GameEngine.toNumerals(c+1) + "-"
+                                  + GameEngine.toLetters(r)    + ")";
+                assertTrue ( GameEngine.parseWall ( wall ) ); 
+            }
+
+        // Test invalid verticals here
+    }
+
 
     @Test
     public void testGetSquare() throws Exception {
-        Square sq = ge.getSquare(board, "III-G");
+        Square sq = GameEngine.getSquare(board, "III-G");
         assertEquals(sq, board.getSquare(2, 6));
     }
 
+
     @Test
-    public void testValidate() throws Exception {
-        board = new GameBoard();
-        p1 = new Player("semi-collin",board.getSquare(4,0), 10);
-        
+    public void testvalidateMove() throws Exception {
+       // Make sure you can only move one space 
+       assertTrue(GameEngine.validateMove(board,players[0],"V-B"));
+       assertTrue(GameEngine.validateMove(board,players[0],"VI-A"));
+       assertTrue(GameEngine.validateMove(board,players[0],"IV-A"));
+       assertFalse(GameEngine.validateMove(board,players[0],"I-D"));
     }
-    */
+
+    @Test
+    public void testGetWinner() throws Exception {
+        assertNull(GameEngine.getWinner(board, players));
+        board.move(players[1],board.getSquare(3,8));
+        for(int i = 1; i < 9; i++)
+            board.move(players[0],board.getSquare(4,i));   
+        assertNotNull(GameEngine.getWinner(board, players));
+    
+    }
+
+
+    @Test
+    public void testNextPlayer() throws Exception {
+        // Go through each players turn twice
+        assertEquals(players[1],GameEngine.nextPlayer(0,players));
+        
+        if(NUM_PLAYERS == 4) {
+            assertEquals(players[2],GameEngine.nextPlayer(1,players));
+            assertEquals(players[3],GameEngine.nextPlayer(2,players));
+            assertEquals(players[0],GameEngine.nextPlayer(3,players));
+        }
+        else {
+            assertEquals(players[0],GameEngine.nextPlayer(1,players));
+        }
+            
+
+    }
 }
