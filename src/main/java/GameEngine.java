@@ -369,7 +369,25 @@ public class GameEngine {
        }
        return false;
     } // i don't understand this and i'm grumpy about it
-      // I added more comments and I can offer to explain it if you'd like :)
+      // I added more comments and I can offer to explain it if you'd like :k)
+
+    public static Square [] validate( GameBoard board, Player player, String move) {
+        
+        Square [] validSquares;
+        //Check for move
+        if(move.charAt(0) != '(') {
+            validSquares = new Square[1];
+            validSquares[0] = parseMove(board, move);
+            if(validateMove(board,board.getPlayerLoc(player), 
+                            validSquares[0],-1,0))
+               return validSquares; 
+        } 
+       //else if(move.charAt(0) == '(') {
+                
+       //}
+        return null;
+        //Check for wall placement
+    }
 
     //*************************************************************************
 

@@ -84,6 +84,7 @@ public class Game {
 
             // Validate if the move is legal and make the move on the board
             // else boot the player for trying to make an illegal move
+            /*
             if ( GameEngine.validateMove ( board,currentPlayer,response ) ) {
                 Deb.ug.println("legal move");
                 Square destination = GameEngine.getSquare(board,response);
@@ -95,7 +96,24 @@ public class Game {
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
             }
+            */
 
+            Square[] moveSquares = GameEngine.validate(board,currentPlayer, response);
+            if(moveSquares.length == 1) {
+                Deb.ug.println("legal move");
+                Square destination = GameEngine.getSquare(board,response);
+                board.move(currentPlayer, moveSquares[0]);
+                hermes.broadcastWent(currentPlayer, response);
+            }
+            else if(moveSquares.length == 2) {
+            }
+            else {
+                Deb.ug.println("illegal move attempted");
+                board.removePlayer(currentPlayer);
+                players.remove();
+                hermes.broadcastBoot(currentPlayer);
+            }
+            
             // Update the graphical board
             frame.update(board);
 
