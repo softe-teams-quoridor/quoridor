@@ -141,4 +141,8 @@ public class GameBoardFrame extends JFrame{
     	    }
     	    return someLabel;
     }
+    
+    private void victoryMessage(String PlayerName){
+    	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
+    }
 }
