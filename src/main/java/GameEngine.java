@@ -86,44 +86,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /** @deprecated use parseMove that returns a Square instead 
-     *  returns true if the string represents a possibly legal move
-     *  i.e. the string is of the correct format
-     *   FIXME: this currently breaks if you input a wall-placing move
-     * @param board
-     * @param move: a string representing a move
-     */
-    // can we make this private? we have it now protected
-    protected static boolean parseMove(String move) {
-        move = move.trim();
-        String [] strs = move.split("-");
-        if (strs.length == 1) {
-            // no '-' in the string; this move is a wall placement
-            return false; // walls are not implemented yet
-        } 
-        else if (strs.length == 2) {
-            // one '-' in the string; this is a possible pawn movement
-            if (move.length() > 6) {
-                return false; // longest square is VIII-A 
-            }
-            if (strs[1].length() != 1) {
-                return false; // reject strings like "I-AHI"
-            }
-            int x = fromNumerals(strs[0]);
-            int y = fromLetters(strs[1].charAt(0));
-            if (x == -1 || y == -1) {
-                return false; // at least one of the halves of the move string 
-                              // could not be parsed 
-            }
-            return true;
-        } 
-        // yeah, anything else is not allowed
-        return false;
-    }
-
-    //*************************************************************************
-
-    /** !!!!NEEDS TESTING!!!!
+    /**
       * parses an input player move and returns a square from the board if it
       *   is valid 
       * @param board the board to get a square from
@@ -223,71 +186,6 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /** @deprecated use the one that returns a Square array instead
-      * @param move the string to parse
-      */
-    protected static boolean parseWall ( String move ) {
-        move = move.trim();
-        // (V-A, V-B)
-
-        // Reject any move that does not start and end with parenthesis
-        if ( !move.startsWith("(") && !move.endsWith(")") )
-            return false;
-
-        String[] commaSep = move.split(",");
-        // [0] == (V-A
-        // [1] == V-B)
-
-        // Make sure the string array has only 2 elements
-        if ( commaSep.length != 2 )
-            return false;
-
-        // Remove parentheses
-        commaSep[0] = commaSep[0].replace ( "(", "" );
-        commaSep[1] = commaSep[1].replace ( ")", "" );
-        // [0] == V-A
-        // [1] == V-B
-       
-        commaSep[0] = commaSep[0].trim();
-        String[] firstW = commaSep[0].split("-");
-        // [0] == V
-        // [1] == A
-        commaSep[1] = commaSep[1].trim();
-        String[] secndW = commaSep[1].split("-");
-        // [0] == V
-        // [1] == B
-
-        // Make sure the two string arrays have only 2 elements
-        if ( firstW.length != 2 && secndW.length != 2 )
-            return false;
-
-        int firstX = fromNumerals ( firstW[0] );
-        int firstY = fromLetters  ( firstW[1].charAt(0) );
-        // X == 4
-        // Y == 0
-        int secndX = fromNumerals ( secndW[0] );
-        int secndY = fromLetters  ( secndW[1].charAt(0) );
-        // X == 4
-        // Y == 1
-
-        // Check if the conversions returned an erroneous value
-        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
-            return false;
-
-        // Check if the second location is to the RIGHT of the first,
-        //  or if it BELOW the first
-        // also make sure if horizontal, we don't place on the bottom row
-        //  and make sure if vertical, we don't place on the right-most row
-        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
-             firstY+1 == secndY && firstX == secndX && firstX != 8) {
-            return true;
-             }
-        
-        return false;
-    }
-
-    //*************************************************************************
-
     /**
       * returns true if the string represents a legal move on that gameboard
       * @param board GameBoard object to move on
@@ -316,7 +214,7 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, inc. of player clustering
       * @return true if move is valid, false otherwise 
      */
-    private static boolean validateMove ( GameBoard board, Square currLoc, 
+    protected static boolean validateMove ( GameBoard board, Square currLoc, 
                                 Square dest, int dontCheckMe, int numJumps ) {
         int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
@@ -346,6 +244,7 @@ public class GameEngine {
                 // Confirms if there is a wall obstructing the direction we
                 //   want to check for our destination
                 // Note: 0 = down, 1 = right, 2 = up, 3 = left
+               
                 switch ( i ) {
                     // If we encounter a wall, continue to the next iteration
                     case 0: if ( currLoc.hasWallBottom() ) continue; break;
@@ -354,7 +253,7 @@ public class GameEngine {
                     case 3: if ( checkLoc.hasWallRight() ) continue; break;
                     default: break; //assertion here maybe?
                 }
-                //*/
+                //
 
 
                 // If checkLoc is adjacent and where we want to go...
@@ -372,93 +271,36 @@ public class GameEngine {
     } // i don't understand this and i'm grumpy about it
       // I added more comments and I can offer to explain it if you'd like :k)
 
+    //*************************************************************************
+    // FIXME: DOCUMNENT ME!!!
     public static Square [] validate( GameBoard board, Player player, String move) {
         
         Square [] validSquares;
-        //Check for move
+
+        //Check for a move
         if(move.charAt(0) != '(') {
-            System.out.println("MOVE");
             validSquares = new Square[1];
             validSquares[0] = parseMove(board, move);
             if(validSquares == null)
                 System.out.println("null");
             if(validateMove(board,board.getPlayerLoc(player), 
                             validSquares[0],-1,0)) {
-                System.out.println("valid");
                 return validSquares; 
             }
-        } 
+        }
+        // Wall Placement 
         else if(move.charAt(0) == '(') {
-            System.out.println("wall");
             validSquares = parseWall(board, move);
-            if(true) // this will be validatewall
+            if(true /*GameEngine.validateWall(board, validSquares)*/) // Always returns true for now
                 return validSquares;
         }
-
-        System.out.println("fjkhdlhfjdk");
+        // Invalid Move-String
         return null;
-        //check for wall placement
+        
     }
 
-    public static boolean validateWall () {
+    protected static boolean validateWall (GameBoard board, Square[] wallSquares ) {
         return true;
-    }
-
-    //*************************************************************************
-
-    /** @deprecated this method is redunant, parseMove now gets the square
-     * returns a square on the board that we want to move to
-     * FIXME: this currently breaks if you input a wall-placing move
-     * @param board GameBoard object to retrieve a square from
-     * @param move a string representing a legal move
-     * @return a square on the board
-     */
-    public static Square getSquare(GameBoard board, String move) {
-        // TESTME 
-        String [] strs = move.split("-");
-        if (strs.length == 1) {
-            // no '-' in the string; this move is a wall placement
-            System.exit(101); // walls are not implemented yet
-            return null; // lol unreachable
-        } else if (strs.length == 2) {
-            int x = fromNumerals(strs[0]);
-            int y = fromLetters(strs[1].charAt(0));
-            return board.getSquare(x, y);
-        } else {
-            // yeah, anything else is not allowed
-            // this should never happen, because the move string passed to this
-            // function should have already been checked for the correct format
-            return null;
-        }
-    }
-
-    //*************************************************************************
-
-    /** @deprecated use the version that utilizes a queue of players instead
-     * @param board GameBoard to check
-     * @param players array of players to check if they have won
-     * @return a player if that player has won the game, null otherwise
-     */
-    public static Player getWinner(GameBoard board, Player[] players) {
-        // Check if there is only one player left
-        Player lastStanding = getLastPlayerStanding(players);
-        if (lastStanding != null)
-            return lastStanding;
-
-        // Check if one of the players have met the traditional victory
-        // condition
-        if (players[0] != null && board.getPlayerLoc(players[0]).getY() == 8)
-            return players[0];
-        if (players[1] != null && board.getPlayerLoc(players[1]).getY() == 0)
-            return players[1];
-        if (players.length == 4) {
-            if (players[2]!=null && board.getPlayerLoc(players[2]).getX() == 8)
-                return players[2];
-            if (players[3]!=null && board.getPlayerLoc(players[3]).getX() == 0)
-                return players[3];
-        }
-        // No player has won, return null
-        return null;
     }
 
     //*************************************************************************
@@ -488,56 +330,8 @@ public class GameEngine {
         }
         // No player has won, return null
         return null;
-    }
+    }   
 
-    //*************************************************************************
-
-    /** @deprecated getWinner can now check if there is only one player left 
-     * checks if there is only one player remaining
-     * @param players the array of players in the game
-     * @return the last player remaining or null if more players exist
-     */
-    private static Player getLastPlayerStanding(Player [] players) {
-        int nullPlayerCount = 0; // keeps count of the null players
-        int playerFound = 0;     // used to index a player in the array
-
-        // Check if we only have one player
-        for (int i = 0; i < players.length; i++) {
-            // Count the null players in the array
-            if ( players[i] == null )
-                nullPlayerCount++;
-            // Keep track of a player if one is found to be returned
-            else 
-                playerFound = i;
-        }
-        // If there are 3 null players, return the only player left
-        return ( nullPlayerCount == players.length -1 )
-            ? players[playerFound] 
-            : null;
-    }
-
-    //*************************************************************************
-
-    /** @deprecated use Game.java now handles queue shuffling
-     * returns the next active player
-     * @param current the current player number
-     * @param players the players array
-     * @return the next available player
-     */
-    public static Player nextPlayer(int current, Player [] players) {
-        int nextP = (current + 1) % players.length; // index of player array
-        // Iterate through player array, skipping null players
-        while ( nextP != current ) {
-            if (players[nextP] != null)
-                return players[nextP];
-            nextP = (nextP + 1) % players.length;
-        }
-        //@DEBUGGING
-        Deb.ug.println("GameEngine.nextPlayer: " + 
-                       "cannot get next player; no more players");
-        // No players left
-        return null;
-    }
 
     //*************************************************************************
 

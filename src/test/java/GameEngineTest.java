@@ -4,20 +4,23 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import java.util.*;
 
 public class GameEngineTest {
 
     private static final int NUM_PLAYERS = 2;
 
     GameBoard board;
-    Player [] players;
+    Queue<Player> players;
     int walls;
+    
     @Before
     public void beef() throws Exception {
-        players = new Player[NUM_PLAYERS];
+        players = new LinkedList<Player>();
         walls = 20 / NUM_PLAYERS;
-        for(int i = 0; i < NUM_PLAYERS; i++)
-            players[i] = new Player(i, walls);
+        for(int i = 0; i < NUM_PLAYERS; i++) {
+            players.add(new Player(i, walls));
+        }
         assertNotNull("players should not be null", players);
 
         board = new GameBoard(players);
@@ -85,8 +88,9 @@ public class GameEngineTest {
     
     @Test
     public void testMakePlayer() throws Exception {
-        assertNotNull("p1 null?", players[0]);
-        assertNotNull("p2 null?", players[1]);
+        assertNotNull("p1 null?", players.peek());
+        players.add(players.remove());
+        assertNotNull("p2 null?", players.peek());
     }
 
 
@@ -147,91 +151,52 @@ public class GameEngineTest {
         assertNull(GameEngine.parseWall(board, "(Collin-Keyboard,PretendTo-Type)"));
         //Board Walls
         assertNull(GameEngine.parseWall(board, "(IX-A,IX-B)"));
-        assertNull(GameEngine.parseWall(board, "(I-I,II-I"));
-
-        
-    }   
-
-    
-    @Test
-    public void testParseWallOnInsertingHorizontalWalls() throws Exception {
-        // Test all horizontal wall strings
-        // Iterate through rows
-        for ( int r = 0; r < 8; r++ )
-            // Iterate through columns, except last
-            for ( int c = 0; c < 8; c++ ) {
-                String wall = "(" + GameEngine.toNumerals(c)   + "-"
-                                  + GameEngine.toLetters(r)    + ","
-                                  + GameEngine.toNumerals(c+1) + "-"
-                                  + GameEngine.toLetters(r)    + ")";
-                // FIXME
-                //assertEquals(GameEngine.parseWall(board,wall), board.getSquare(c,r)); 
-            }
-
-        // Test invalid horizontals here
+        assertNull(GameEngine.parseWall(board, "(I-I,II-I"));   
     }
 
-
-    // FIXME
-    @Test
-    public void testParseWallOnInsertingVerticalWalls() throws Exception {
-        // Test all vertical wall strings
-        // Iterate through columns
-        for ( int c = 0; c < 8; c++ )
-            // Iterate through rows, except last
-            for ( int r = 0; r < 8; r++ ) {
-                String wall = "(" + GameEngine.toNumerals(c)   + "-"
-                                  + GameEngine.toLetters(r)    + ","
-                                  + GameEngine.toNumerals(c+1) + "-"
-                                  + GameEngine.toLetters(r)    + ")";
-                assertTrue ( GameEngine.parseWall ( wall ) ); 
-            }
-
-        // Test invalid verticals here
-    }
-
-
-    @Test
-    public void testGetSquare() throws Exception {
-        Square sq = GameEngine.getSquare(board, "III-G");
-        assertEquals(sq, board.getSquare(2, 6));
-    }
-
-
-    @Test
-    public void testvalidateMove() throws Exception {
+    @Test //FIXME Add test to check for walls
+    public void testValidateMove() throws Exception {
        // Make sure you can only move one space 
-       assertTrue(GameEngine.validateMove(board,players[0],"V-B"));
-       assertTrue(GameEngine.validateMove(board,players[0],"VI-A"));
-       assertTrue(GameEngine.validateMove(board,players[0],"IV-A"));
-       assertFalse(GameEngine.validateMove(board,players[0],"I-D"));
+       assertTrue(GameEngine.validateMove(board,players.peek(),"V-B"));
+       assertTrue(GameEngine.validateMove(board,players.peek(),"VI-A"));
+       assertTrue(GameEngine.validateMove(board,players.peek(),"IV-A"));
+       assertFalse(GameEngine.validateMove(board,players.peek(),"I-D"));
     }
+    /*
+    @Test
+    public void testValidateWall() throws Exception {
+        Square [] squares = new Square[2];
+        // Set a wall at (II-A,II-B)
+        squares[0] = board.getSquare(1,1);
+        squares[1] = board.getSquare(1,2);
+        board.placeWall(squares[0],squares[2]);
+        // Try and place a wall at (II-A,III-A)
+        squares[1] = board.getSquare(2,1); 
+        assertFalse(GameEngine.validateWall(board, squares));
+    }
+    */
 
     @Test
     public void testGetWinner() throws Exception {
+        // Make sure there isn't a winner yet
         assertNull(GameEngine.getWinner(board, players));
-        board.move(players[1],board.getSquare(3,8));
-        for(int i = 1; i < 9; i++)
-            board.move(players[0],board.getSquare(4,i));   
-        assertNotNull(GameEngine.getWinner(board, players));
-    
-    }
 
+        // Move player 2 out of the way
+        players.add(players.remove());
+        board.move(players.peek(),board.getSquare(3,8));
 
-    @Test
-    public void testNextPlayer() throws Exception {
-        // Go through each players turn twice
-        assertEquals(players[1],GameEngine.nextPlayer(0,players));
+        // Set player 1 to the head of the queue
+        players.add(players.remove());
+
+        if(players.peek().getPlayerNo() != 0) {
+            players.add(players.remove());
+            players.add(players.remove());
+        }
         
-        if(NUM_PLAYERS == 4) {
-            assertEquals(players[2],GameEngine.nextPlayer(1,players));
-            assertEquals(players[3],GameEngine.nextPlayer(2,players));
-            assertEquals(players[0],GameEngine.nextPlayer(3,players));
-        }
-        else {
-            assertEquals(players[0],GameEngine.nextPlayer(1,players));
-        }
-            
+        //Move player 1 to a winner pos
+        for(int i = 1; i < 9; i++)
+            board.move(players.peek(),board.getSquare(4,i));
 
+        assertNotNull(GameEngine.getWinner(board, players));
     }
 }
