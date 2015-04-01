@@ -168,14 +168,14 @@ public class GameBoard {
     public void placeWall (Square first, Square second ) {
         
         // Horz
-        if(first.getX() == second.getX()) {
-            first.placeWallRight(true);
-            second.placeWallRight(false); 
+        if(first.getY() == second.getY()) {
+            first.placeWallBottom(true);
+            second.placeWallBottom(false); 
         }
         //Vert
         else {
-            first.placeWallBottom(true);
-            second.placeWallBottom(false); 
+            first.placeWallRight(true);
+            second.placeWallRight(false); 
         }
 
         squares[first.getX()][first.getY()] = first;

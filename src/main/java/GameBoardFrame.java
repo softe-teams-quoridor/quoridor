@@ -133,12 +133,16 @@ public class GameBoardFrame extends JFrame{
     	    if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
     	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
     	    }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 3, 1, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 6, 1, Color.BLACK));
     	    }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 3, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 6, Color.BLACK));
     	    }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 3, 3, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 6, 6, Color.BLACK));
     	    }
     	    return someLabel;
+    }
+    
+    private void victoryMessage(String PlayerName){
+    	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
     }
 }

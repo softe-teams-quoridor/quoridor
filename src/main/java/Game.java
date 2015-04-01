@@ -97,23 +97,25 @@ public class Game {
                 hermes.broadcastBoot(currentPlayer);
             }
             */
-
+            //*
             Square[] moveSquares = GameEngine.validate(board,currentPlayer, response);
-            if(moveSquares.length == 1) {
-                Deb.ug.println("legal move");
-                Square destination = GameEngine.getSquare(board,response);
-                board.move(currentPlayer, moveSquares[0]);
-                hermes.broadcastWent(currentPlayer, response);
-            }
-            else if(moveSquares.length == 2) {
-            }
-            else {
+            if(moveSquares == null) {
                 Deb.ug.println("illegal move attempted");
                 board.removePlayer(currentPlayer);
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
             }
-            
+            else if(moveSquares.length == 1) {
+                Deb.ug.println("legal move");
+                board.move(currentPlayer, moveSquares[0]);
+                hermes.broadcastWent(currentPlayer, response);
+            }
+            else if(moveSquares.length == 2) {
+                Deb.ug.println("legal wall");
+                board.placeWall(moveSquares[0],moveSquares[1]);
+                hermes.broadcastWent(currentPlayer,response);
+            }
+            //*/
             // Update the graphical board
             frame.update(board);
 

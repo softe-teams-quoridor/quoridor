@@ -167,4 +167,12 @@ public class Square {
             return true;
         return false;
     }
+
+    public Wall getWallRight() {
+        return rightWall;
+    }
+
+    public Wall getWallBottom() {
+        return bottomWall;
+    }
 }

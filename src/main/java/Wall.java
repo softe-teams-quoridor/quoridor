@@ -25,7 +25,7 @@ public class Wall{
         START, END 
     }
 
-    private boolean isStart; // is this wall is a beginning or end piece?
+    private boolean start; // is this wall is a beginning or end piece?
     private Orientation direction; 
 
     //*************************************************************************
@@ -35,7 +35,7 @@ public class Wall{
      * @param start indicates if the wall piece is a start or end piece 
      */                 
     public Wall(boolean start){
-        isStart = start;
+        this.start = start;
     }
 
     //*************************************************************************
@@ -54,8 +54,8 @@ public class Wall{
      * returns whether this wall is the start or end point
      * @return true if wall piece is the start-half, false if end-half
      */
-    public boolean getIsStart() {
-        return isStart;
+    public boolean isStart() {
+        return start;
     }
 
     //*************************************************************************

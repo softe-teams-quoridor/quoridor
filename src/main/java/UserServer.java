@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.*;
 
 public class UserServer {
     private static boolean SERVER_DISPLAY = false;
@@ -95,15 +96,18 @@ public class UserServer {
             Deb.ug.println("expected PLAYERS from client");
             return;
         }
-        Player [] players = new Player[numPlayers];
+
+//        Player [] players = new Player[numPlayers];
+        Queue<Player> players = new LinkedList<Player>();
         int wallsEach = 20 / numPlayers;
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player(i, wallsEach);
+//            players[i] = new Player(i, wallsEach);
+            players.add(new Player(i, wallsEach));
         }
         GameBoard board = new GameBoard(players);
 //         GameBoard board = new GameBoard();
 //         board.setupInitialPosition(players);
-        Player currentPlayer = players[0];
+        Player currentPlayer = players.peek();
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
             frame = new GameBoardFrame(board);
@@ -121,12 +125,19 @@ public class UserServer {
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
             } else if (words[0].equals("WENT")) {
-                Square destination = GameEngine.getSquare(board, words[2]);
+//                Square destination = GameEngine.getSquare(board, words[2]);
+                Square[] destination = GameEngine.validate(board,currentPlayer,words[2]);
                 assert (currentPlayer != null);
-                board.move(currentPlayer, destination);
-                currentPlayer = 
-                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(), 
-                                          players);
+                if(destination.length == 1) {
+                    board.move(currentPlayer, destination[0]);
+                }
+                else if (destination.length == 2) { 
+                    board.placeWall(destination[0], destination[1]);
+                }
+                players.add(players.remove());
+                currentPlayer = players.peek();
+//                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(), 
+//                                          players);
             } else if (words[0].equals("BOOT")) {
                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
@@ -134,10 +145,11 @@ public class UserServer {
                                currentPlayer.getName());
                 Deb.ug.println("currentPlayer.getPlayerNo()" + 
                                 currentPlayer.getPlayerNo());
-                players[currentPlayer.getPlayerNo()] = null;
-                currentPlayer = 
-                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
-                                          players);
+//                players[currentPlayer.getPlayerNo()] = null;
+                players.remove();
+                currentPlayer = players.peek();
+//                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
+//                                          players);
             } else if (words[0].equals("VICTOR")) {
                 System.out.println("somebody won!");
             } else {
@@ -157,7 +169,13 @@ public class UserServer {
         System.out.print(">> ");
         String move = keyboard.nextLine().trim();
         System.out.println("move: " + move);
-        if (GameEngine.validateMove(b, p, move)) {
+        Square[] squares = GameEngine.validate(b, p, move);
+        /*
+        if (GameEngine.validateMove(b, p, move) || GameEngine.validateWall()) {
+            return move;
+        }
+        */
+        if(squares != null) {
             return move;
         }
         System.out.println("that looks illegal; are you sure?");
