@@ -69,7 +69,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setText("    " + row);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
         
-        //Fills frame with blue Squares if unoccupied 
+        //Fills frame with GREY Squares if unoccupied 
         for (int i = 1; i < 10; i++){
             if (!board.isOccupied(i-1,rownum-1)){ //Tylor Changed this
                 JLabel labelblue = new JLabel();
@@ -132,13 +132,20 @@ public class GameBoardFrame extends JFrame{
     private JLabel setBoarder(JLabel someLabel,Square tSquare){
     	    if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
     	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
+    	    	    
     	    }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 6, 1, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 0, 1, Color.BLACK),
+    	    	    	    BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
+    	    	    
     	    }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 6, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 1, 0, Color.BLACK),
+    	    	    	    BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
+    	    	    
     	    }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 6, 6, Color.BLACK));
+    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1,0,0,Color.BLACK),
+    	    	    	    BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
     	    }
+    	    
     	    return someLabel;
     }
     
