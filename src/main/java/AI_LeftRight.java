@@ -1,4 +1,4 @@
-public class AI_LeftRight implements MoveServer {
+public class AI_LeftRight implements QuoridorAI {
     private boolean direction; 
     public AI_LeftRight() {
         direction = false;
