@@ -162,19 +162,21 @@ public class GameEngineTest {
        assertTrue(GameEngine.validateMove(board,players.peek(),"IV-A"));
        assertFalse(GameEngine.validateMove(board,players.peek(),"I-D"));
     }
-    /*
+    
+    
     @Test
     public void testValidateWall() throws Exception {
         Square [] squares = new Square[2];
         // Set a wall at (II-A,II-B)
         squares[0] = board.getSquare(1,1);
         squares[1] = board.getSquare(1,2);
-        board.placeWall(squares[0],squares[2]);
+        board.placeWall(squares[0],squares[1]);
         // Try and place a wall at (II-A,III-A)
         squares[1] = board.getSquare(2,1); 
         assertFalse(GameEngine.validateWall(board, squares));
     }
-    */
+    
+    
 
     @Test
     public void testGetWinner() throws Exception {

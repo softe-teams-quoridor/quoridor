@@ -282,7 +282,7 @@ public class GameEngine {
             validSquares = new Square[1];
             validSquares[0] = parseMove(board, move);
             if(validSquares == null)
-                System.out.println("null");
+                return null;
             if(validateMove(board,board.getPlayerLoc(player), 
                             validSquares[0],-1,0)) {
                 return validSquares; 
@@ -291,7 +291,10 @@ public class GameEngine {
         // Wall Placement 
         else if(move.charAt(0) == '(') {
             validSquares = parseWall(board, move);
-            if(true /*GameEngine.validateWall(board, validSquares)*/) // Always returns true for now
+            if(validSquares == null) {
+                return null;
+            }
+            if(GameEngine.validateWall(board, validSquares)) // Always returns true for now
                 return validSquares;
         }
         // Invalid Move-String
@@ -299,8 +302,36 @@ public class GameEngine {
         
     }
 
+    // FIXME Document me
     protected static boolean validateWall (GameBoard board, Square[] wallSquares ) {
-        return true;
+        if(wallSquares[0].getY() == wallSquares[1].getY()) {
+            if(wallSquares[0].getWallBottom() == null &&
+               wallSquares[0].getWallRight() == null) {
+                if(wallSquares[1].getWallBottom() == null) {
+                    return true;
+                } 
+            } 
+            else if(wallSquares[0].getWallRight() != null) {
+                if(!wallSquares[0].getWallRight().isStart() && 
+                    wallSquares[1].getWallBottom() == null) {
+                    return true;
+                }
+            }
+        }
+        else
+            if(wallSquares[0].getWallBottom() == null &&
+               wallSquares[0].getWallRight() == null) {
+               if(wallSquares[1].getWallRight() == null) {
+                   return true;
+               }
+            }
+            else if(wallSquares[0].getWallBottom() != null) {
+                if(!wallSquares[0].getWallBottom().isStart() &&
+                    wallSquares[1].getWallRight() == null) {
+                    return true;
+                }
+            }
+        return false;
     }
 
     //*************************************************************************
