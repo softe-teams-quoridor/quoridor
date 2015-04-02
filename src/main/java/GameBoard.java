@@ -33,26 +33,6 @@ public class GameBoard {
         
     //*************************************************************************
 
-    /** @deprecated use the constructor that takes a queue instead 
-     * constructs the GameBoard by instantiating the array of squares
-     */
-    public GameBoard(Player [] players) {
-        assert (players.length == 2 || players.length == 4);
-        // Instantiate squares array, setting X and Y to i and j respectively
-        squares = new Square[COLUMNS][ROWS];
-        for(int i = 0; i < COLUMNS; i++){
-            for (int j = 0; j < ROWS; j++){
-                squares[i][j] = new Square(i, j);
-            }
-        }
-        // Instantiate player location array
-        playerLocs = new Square[players.length];
-        // Initialize player positions
-        setupInitialPosition(players);
-    }
-
-    //*************************************************************************
-
     /** 
      * constructs the GameBoard by instantiating the array of squares
      * @param players queue of players to be given a start location
@@ -73,8 +53,21 @@ public class GameBoard {
     }
 
     //*************************************************************************
-
+    
     /**
+     * Checks the location to see if it is actually on the board
+     * @param x the column of the board
+     * @param y the row of the gameboard
+     * @return true if location is on board, false otherwise
+     */
+    private boolean validLoc(int x, int y) {
+        return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
+    }
+
+    //*************************************************************************
+
+
+    /** @deprecated use getPlayer to see if the location is occupied
      * Checks to see if a cell/square is occupied
      * @param x the column of the board
      * @param y the row of the gameboard
@@ -124,7 +117,7 @@ public class GameBoard {
      * @param p the player to add
      * @param two ints: coordinates on a game board
      */
-    protected void addPlayer(Player player, int x, int y) {
+    private void addPlayer(Player player, int x, int y) {
         assert (validLoc(x, y));
         squares[x][y].addPlayer(player);
         assert (player != null);
@@ -135,6 +128,7 @@ public class GameBoard {
 
     /**
      * removes a player from the given location
+     * this is used for making a player move and for booting a player
      * @param player the player to remove
      */
     public void removePlayer(Player player) {
@@ -145,19 +139,7 @@ public class GameBoard {
     }
 
     //*************************************************************************
-
-    /**
-     * Checks the location to see if it is actually on the board
-     * @param x the column of the board
-     * @param y the row of the gameboard
-     * @return true if location is on board, false otherwise
-     */
-    protected boolean validLoc(int x, int y) {
-        return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
-    }
-
-    //*************************************************************************
-
+    
     /**
      * moves a player to the given location
      * @param player the player object
@@ -166,7 +148,7 @@ public class GameBoard {
     public void move(Player player, Square newSqr) {
         assert (validLoc(newSqr.getX(), newSqr.getY()));
         removePlayer(player);
-        this.addPlayer(player, newSqr.getX(), newSqr.getY());
+        addPlayer(player, newSqr.getX(), newSqr.getY());
     }
 
     //*************************************************************************
@@ -190,39 +172,12 @@ public class GameBoard {
 
     //*************************************************************************
 
-    /** @deprecated use setup that takes in a queue instead
-     * initializes the players in their appropriate start locations
-     * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
-     * @param players array of players to initialize
-     */
-    public void setupInitialPosition(Player [] players) {
-        // Test to ensure that the Player array is 2 or 4
-        assert (players.length == 2 || players.length == 4);
-        
-        int colInd = 32836; // collin dalling
-        int rowInd = 17536;
-
-        for ( int i = 0; i < players.length; i++ ) {
-            int x = colInd & 15;
-            int y = rowInd & 15;
-
-            assert (validLoc(x, y));
-            this.addPlayer(players[i], x, y);
-            assert (i >= 0 && i < this.playerLocs.length);
-            this.playerLocs[i] = getSquare(x, y);
-            colInd = colInd >> 4;
-            rowInd = rowInd >> 4;
-        }
-    }
-
-    //*************************************************************************
-
     /**
      * initializes the players in their appropriate start locations
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
      * @param players queue of players to initialize
      */
-    public void setupInitialPosition(Queue<Player> players) {
+    private void setupInitialPosition(Queue<Player> players) {
         int colInd = 32836; // collin dalling
         int rowInd = 17536;
 
