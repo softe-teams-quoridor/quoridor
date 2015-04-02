@@ -1,5 +1,4 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: March 29, 2015
  * ____________________________________________________________________________
  *
  * used for game rules and validation. capable of converting numeral/character
@@ -10,26 +9,27 @@
  * 
  * --------------------------------- METHODS ----------------------------------
  *
+ * PUBLIC:
+ *
  * String toNumerals(int)    --> converts int to a numeral 
  * int fromNumerals(String)  --> converts string(numeral) to an int
  * char toLetters(int)       --> converts int to a letter ex 0 -> A
  * int fromLetters(char)     --> conversions between ints and numerals/letters
- * boolean parseMove(String) --> returns if the move string is valid
- * boolean parseWall(String) --> returns if the wall placement string is valid
- * boolean validate(GameBoard, String)  
+ * boolean validate(GameBoard, Player, String)  
  *                           --> returns if string represents a legal move
- * Sqaure getSquare(GameBoard, String) 
- *                           --> constructs a square based on the move string
  * Player getWinner(GameBoard,Players[])
  *                           --> checks if a player has won the game 
- * Player nextPlayer(int, Player[])      
- *                           --> returns the next player available
- *
- * ----------------------------- PRIVATE METHODS ------------------------------
- *
- * Player getLastPlayerStanding(Player[])
- *                           --> returns if a player is the last one alive
+ * PROTECTED:
  * 
+ * Square parseMove(GameBoard, String) 
+ *                           --> returns the square to move to if valid, null otherwise
+ * Square[] parseWall(GameBoard, String) 
+ *                           --> returns the squares of the wall if valid, null otherwise
+ * boolean validateMove(GameBoard, Square, Square,int ,int) 
+ *                           --> returns true if the move is valid
+ * boolean validateWall(GameBoard, Square[])
+ *                           --> returns true if the wall is valid
+ *
  */
 
 import java.util.Queue;
@@ -44,6 +44,7 @@ public class GameEngine {
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
+      * @return the string of the numeral
       */
     public static String toNumerals(int x) {
         return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
@@ -54,6 +55,7 @@ public class GameEngine {
     /**
       * converts a roman numeral to an integer
       * @param str: string to convert
+      * @return the number of the numeral
       */
     public static int fromNumerals(String str) {
         for (int i = 0; i < numerals.length; i++) {
@@ -69,6 +71,7 @@ public class GameEngine {
     /**
       * converts an int to a char A-I
       * @param x: integer to convert to a numeral
+      * @return the char from the number of the column
       */
     public static char toLetters(int x) {
         return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
@@ -79,6 +82,7 @@ public class GameEngine {
     /**
       * converts a character to an integer value
       * @param ch: character to convert
+      * @return the number of the column from the char
       */
     public static int fromLetters(char ch) {
         return (ch < 'A' || 'I' < ch) ? -1 : (ch - 'A');
@@ -187,21 +191,6 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-      * returns true if the string represents a legal move on that gameboard
-      * @param board GameBoard object to move on
-      * @param p Player object requesting the move
-      * @param move String that contains the move destination
-      */
-    public static boolean validateMove ( GameBoard b, Player p, String move ) {
-        Square moveSquare = parseMove ( b, move );
-        return ( moveSquare != null ) ?
-            validateMove ( b, b.getPlayerLoc(p), moveSquare, -1, 0 ) 
-            : false;
-    }
-
-    //*************************************************************************
-
-    /**
       * validates a user move by checking for walls that might be obstructing
       *   the direction we want to jump to, checking if the destination is
       *   a square adjacent to the player's current location, or if the dest is
@@ -272,63 +261,98 @@ public class GameEngine {
       // I added more comments and I can offer to explain it if you'd like :k)
 
     //*************************************************************************
-    // FIXME: DOCUMNENT ME!!!
+    
+    /** 
+      * This is now the only validate method called by the game and the 
+      *    move servers, it will find out if the move-string is a move
+      *    or a wall placement.
+      * @param board the board currently in play
+      * @param player the current players turn
+      * @param move the move-string sent from the game or move servers
+      * @return a square array of length 1 if a move or 2 if a wall
+      */
     public static Square [] validate( GameBoard board, Player player, String move) {
         
+        // The square array to return
         Square [] validSquares;
 
         //Check for a move
         if(move.charAt(0) != '(') {
             validSquares = new Square[1];
+            // Check the move-string to see if it is valid
             validSquares[0] = parseMove(board, move);
-            if(validSquares == null)
+            if(validSquares == null) // the move-string was invalid
                 return null;
-            if(validateMove(board,board.getPlayerLoc(player), 
+            // Check to make sure the move is valid
+            if(validateMove(board,board.getPlayerLoc(player),
                             validSquares[0],-1,0)) {
                 return validSquares; 
             }
         }
         // Wall Placement 
-        else if(move.charAt(0) == '(') {
+        else {
+            // Check to see if the player has enough walls
             if(player.getNumWalls() == 0) {
                 return null;
             }
+            // Check to see if the move-string was valid
             validSquares = parseWall(board, move);
             if(validSquares == null) {
                 return null;
             }
+            // Check to see if the wall placement is valid
             if(GameEngine.validateWall(board, validSquares))
                 return validSquares;
         }
-        // Invalid Move-String
+
+        // (Should never happen) unexpected string
         return null;
         
     }
 
-    // FIXME Document me
-    protected static boolean validateWall (GameBoard board, Square[] wallSquares ) {
+    //*************************************************************************
+
+    /** 
+      * This will validate a wall placement it checks it make sure that there
+      *   there is no wall conflicting the new wall, Will eventually make sure 
+      *   that there is a valid path for all players 
+      * @param board the gameboard in play
+      * @param wallSquares the squares where the wall is being placed
+      * @return true if the wall placement is valid, false otherwise
+      */
+    protected static boolean validateWall(GameBoard board, Square[] wallSquares ) {
+        // Hoizontal wall
         if(wallSquares[0].getY() == wallSquares[1].getY()) {
+            // If the first square is unoccupied (no walls)
             if(wallSquares[0].getWallBottom() == null &&
                wallSquares[0].getWallRight() == null) {
+                // Check for intersect
                 if(wallSquares[1].getWallBottom() == null) {
                     return true;
                 } 
-            } 
+            }
+            // the square has a wall but its vertical 
             else if(wallSquares[0].getWallRight() != null) {
+                // Check for intersect
                 if(!wallSquares[0].getWallRight().isStart() && 
                     wallSquares[1].getWallBottom() == null) {
                     return true;
                 }
             }
         }
+        // Vertical wall
         else
+            // If the first square is unoccupied (no walls)
             if(wallSquares[0].getWallBottom() == null &&
                wallSquares[0].getWallRight() == null) {
+                // Check for intersect
                if(wallSquares[1].getWallRight() == null) {
                    return true;
                }
             }
+            // the square has a wall but its horziontal
             else if(wallSquares[0].getWallBottom() != null) {
+                // Check for intersect
                 if(!wallSquares[0].getWallBottom().isStart() &&
                     wallSquares[1].getWallRight() == null) {
                     return true;

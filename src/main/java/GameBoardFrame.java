@@ -113,7 +113,7 @@ public class GameBoardFrame extends JFrame{
         labels[0].setOpaque(true);
         labels[0].setBackground(new Color(255, 255, 255));
         labels[0].setPreferredSize(new Dimension(100, 70));
-        labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n" + 
+        labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n " + 
                           "p1 " + board.getPlayer(1).getNumWalls());
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
