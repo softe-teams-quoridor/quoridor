@@ -44,6 +44,7 @@ public class GameEngine {
     /** 
       * converts an int to a string of roman numerals
       * @param x: integer to convert to a numeral
+      * @return the string of the numeral
       */
     public static String toNumerals(int x) {
         return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
@@ -54,6 +55,7 @@ public class GameEngine {
     /**
       * converts a roman numeral to an integer
       * @param str: string to convert
+      * @return the number from the numberal
       */
     public static int fromNumerals(String str) {
         for (int i = 0; i < numerals.length; i++) {
@@ -69,6 +71,7 @@ public class GameEngine {
     /**
       * converts an int to a char A-I
       * @param x: integer to convert to a numeral
+      * @return the char of the row
       */
     public static char toLetters(int x) {
         return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
@@ -79,6 +82,7 @@ public class GameEngine {
     /**
       * converts a character to an integer value
       * @param ch: character to convert
+      * @return the number from the char
       */
     public static int fromLetters(char ch) {
         return (ch < 'A' || 'I' < ch) ? -1 : (ch - 'A');
@@ -120,6 +124,7 @@ public class GameEngine {
       *   if the action is valid
       * @param board board to getSquares from
       * @param move the string to parse
+      * @return the Square array of the two walls in play
       */
     protected static Square[] parseWall ( GameBoard board, String move ) {
         move = move.trim();
@@ -185,6 +190,7 @@ public class GameEngine {
     }
 
     //*************************************************************************
+    
 
     /**
       * returns true if the string represents a legal move on that gameboard
@@ -193,11 +199,16 @@ public class GameEngine {
       * @param move String that contains the move destination
       */
     public static boolean validateMove ( GameBoard b, Player p, String move ) {
+                
+        // Do we need this?
+        // don't we call this somewhere else?
         Square moveSquare = parseMove ( b, move );
+
         return ( moveSquare != null ) ?
             validateMove ( b, b.getPlayerLoc(p), moveSquare, -1, 0 ) 
             : false;
     }
+    
 
     //*************************************************************************
 
@@ -271,18 +282,31 @@ public class GameEngine {
     } // i don't understand this and i'm grumpy about it
       // I added more comments and I can offer to explain it if you'd like :k)
 
-    //*************************************************************************
-    // FIXME: DOCUMNENT ME!!!
-    public static Square [] validate( GameBoard board, Player player, String move) {
+     //*************************************************************************
+
+    /** 
+      * This is now the only validate called by game and the move servers.
+      *    This figures out if it's a move or wall placement then checks the
+      *    the string to make sure it is valid and then makes sure the acutal
+      *    move or wall placement is valid on the board)
+      * @param board is the GameBoard to check on
+      * @param player is the current player whose turn it is
+      * @param move the move-string (The actul move)
+      * @return the array of squares, 1 for move and 2 for wall
+      */
+    public static Square[] validate(GameBoard board, Player player, String move) {
         
-        Square [] validSquares;
+        Square[] validSquares;
 
         //Check for a move
         if(move.charAt(0) != '(') {
             validSquares = new Square[1];
+            // Get the square if the is string is in the proper format
             validSquares[0] = parseMove(board, move);
+            // String was invalid
             if(validSquares == null)
                 return null;
+            // String was valid check to see if it valid move
             if(validateMove(board,board.getPlayerLoc(player), 
                             validSquares[0],-1,0)) {
                 return validSquares; 
@@ -290,8 +314,14 @@ public class GameEngine {
         }
         // Wall Placement 
         else if(move.charAt(0) == '(') {
+
+            if(player.getNumWalls() == 0) {
+                return null;
+            }
+            // Get the squares if the string is in the proper format
             validSquares = parseWall(board, move);
-            if(validSquares == null || player.getNumWalls() == 0) {
+            // String was in =
+            if(validSquares == null) { 
                 return null;
             }
             if(GameEngine.validateWall(board, validSquares))
