@@ -154,6 +154,7 @@ public class GameEngineTest {
         assertNull(GameEngine.parseWall(board, "(I-I,II-I"));   
     }
 
+    /*
     @Test //FIXME Add test to check for walls
     public void testValidateMove() throws Exception {
        // Make sure you can only move one space 
@@ -162,7 +163,7 @@ public class GameEngineTest {
        assertTrue(GameEngine.validateMove(board,players.peek(),"IV-A"));
        assertFalse(GameEngine.validateMove(board,players.peek(),"I-D"));
     }
-    
+    */
     
     @Test
     public void testValidateWall() throws Exception {
