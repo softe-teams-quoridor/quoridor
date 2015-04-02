@@ -113,6 +113,7 @@ public class Game {
             else if(moveSquares.length == 2) {
                 Deb.ug.println("legal wall");
                 board.placeWall(moveSquares[0],moveSquares[1]);
+                currentPlayer.useWall();
                 hermes.broadcastWent(currentPlayer,response);
             }
             //*/

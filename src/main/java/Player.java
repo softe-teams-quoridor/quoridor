@@ -106,7 +106,7 @@ class Player {
       * Decrements the number of walls if possible
       * @return true if walls have been decremented, false otherwise
       */
-    public boolean placeWall() {
+    public boolean useWall() {
         if(mayPlaceWall()) {
             numWalls--;
             return true;

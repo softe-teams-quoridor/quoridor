@@ -133,6 +133,7 @@ public class UserServer {
                 }
                 else if (destination.length == 2) { 
                     board.placeWall(destination[0], destination[1]);
+                    currentPlayer.useWall();
                 }
                 players.add(players.remove());
                 currentPlayer = players.peek();

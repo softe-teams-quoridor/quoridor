@@ -48,16 +48,16 @@ public class PlayerTest {
     }
 
     @Test
-    public void placeWallTest() throws Exception {
+    public void useWallTest() throws Exception {
         
         // Place all walls for all players
         for(int i = 0; i < NUM_PLAYERS; i++)
             for(int j = 0; j < walls; j++)
-                assertTrue(players[i].placeWall());
+                assertTrue(players[i].useWall());
 
         // check to make sure all players cannot place walls
         for(int i = 0; i < NUM_PLAYERS; i++)
-            assertFalse(players[i].placeWall());
+            assertFalse(players[i].useWall());
     
     }
 

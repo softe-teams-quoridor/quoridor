@@ -291,10 +291,10 @@ public class GameEngine {
         // Wall Placement 
         else if(move.charAt(0) == '(') {
             validSquares = parseWall(board, move);
-            if(validSquares == null) {
+            if(validSquares == null || player.getNumWalls() == 0) {
                 return null;
             }
-            if(GameEngine.validateWall(board, validSquares)) // Always returns true for now
+            if(GameEngine.validateWall(board, validSquares))
                 return validSquares;
         }
         // Invalid Move-String
