@@ -154,16 +154,16 @@ public class GameEngineTest {
         assertNull(GameEngine.parseWall(board, "(I-I,II-I"));   
     }
 
-    /*
-    @Test //FIXME Add test to check for walls
+    
+    @Test
     public void testValidateMove() throws Exception {
        // Make sure you can only move one space 
-       assertTrue(GameEngine.validateMove(board,players.peek(),"V-B"));
-       assertTrue(GameEngine.validateMove(board,players.peek(),"VI-A"));
-       assertTrue(GameEngine.validateMove(board,players.peek(),"IV-A"));
-       assertFalse(GameEngine.validateMove(board,players.peek(),"I-D"));
+       assertNotNull(GameEngine.validate(board,players.peek(),"V-B"));
+       assertNotNull(GameEngine.validate(board,players.peek(),"VI-A"));
+       assertNotNull(GameEngine.validate(board,players.peek(),"IV-A"));
+       assertNull(GameEngine.validate(board,players.peek(),"I-D"));
     }
-    */
+    
     
     @Test
     public void testValidateWall() throws Exception {
@@ -175,6 +175,17 @@ public class GameEngineTest {
         // Try and place a wall at (II-A,III-A)
         squares[1] = board.getSquare(2,1); 
         assertFalse(GameEngine.validateWall(board, squares));
+    }
+
+    @Test
+    public void testValidate() throws Exception {
+        Square[] squares = new Square[2];
+        squares[0] = board.getSquare(4,0);
+        squares[1] = board.getSquare(5,0);
+        board.placeWall(squares[0],squares[1]);
+
+        assertNull(GameEngine.validate(board,players.peek(),"V-B"));
+        assertNull(GameEngine.validate(board,players.peek(),"(V-A,V-B)"));
     }
     
     
