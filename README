@@ -48,6 +48,9 @@ README file for teams' Quoridor Project
 
          An example move for player 0 is V-B (moves down)
 
+         An example wall for any player is (IV-D, V-D), which places
+         a horizontal wall starting at IV-D and ending at V-D
+
          Use the labels printed on the graphic display to guide your
          movements
 
