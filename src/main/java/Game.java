@@ -5,7 +5,9 @@
  * implements the GameEngine and Messenger to create and run the game Quoridor
  */
 
-import java.util.*;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Arrays;
 
 public class Game {
 
@@ -84,20 +86,6 @@ public class Game {
 
             // Validate if the move is legal and make the move on the board
             // else boot the player for trying to make an illegal move
-            /*
-            if ( GameEngine.validateMove ( board,currentPlayer,response ) ) {
-                Deb.ug.println("legal move");
-                Square destination = GameEngine.getSquare(board,response);
-                board.move(currentPlayer, destination);
-                hermes.broadcastWent(currentPlayer, response);
-            } else {
-                Deb.ug.println("illegal move attempted");
-                board.removePlayer(currentPlayer);
-                players.remove();
-                hermes.broadcastBoot(currentPlayer);
-            }
-            */
-            //*
             Square[] moveSquares = GameEngine.validate(board,currentPlayer, response);
             if(moveSquares == null) {
                 Deb.ug.println("illegal move attempted");
@@ -116,7 +104,6 @@ public class Game {
                 currentPlayer.useWall();
                 hermes.broadcastWent(currentPlayer,response);
             }
-            //*/
             // Update the graphical board
             frame.update(board);
 
@@ -126,7 +113,6 @@ public class Game {
                 hermes.broadcastVictor(winner);
                 break;
             }
-
             // Shuffle queue
             players.add(players.remove());
 

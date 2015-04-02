@@ -97,16 +97,12 @@ public class UserServer {
             return;
         }
 
-//        Player [] players = new Player[numPlayers];
         Queue<Player> players = new LinkedList<Player>();
         int wallsEach = 20 / numPlayers;
         for (int i = 0; i < numPlayers; i++) {
-//            players[i] = new Player(i, wallsEach);
             players.add(new Player(i, wallsEach));
         }
         GameBoard board = new GameBoard(players);
-//         GameBoard board = new GameBoard();
-//         board.setupInitialPosition(players);
         Player currentPlayer = players.peek();
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
@@ -125,7 +121,6 @@ public class UserServer {
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
             } else if (words[0].equals("WENT")) {
-//                Square destination = GameEngine.getSquare(board, words[2]);
                 Square[] destination = GameEngine.validate(board,currentPlayer,words[2]);
                 assert (currentPlayer != null);
                 if(destination.length == 1) {
@@ -137,8 +132,6 @@ public class UserServer {
                 }
                 players.add(players.remove());
                 currentPlayer = players.peek();
-//                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(), 
-//                                          players);
             } else if (words[0].equals("BOOT")) {
                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
@@ -146,11 +139,8 @@ public class UserServer {
                                currentPlayer.getName());
                 Deb.ug.println("currentPlayer.getPlayerNo()" + 
                                 currentPlayer.getPlayerNo());
-//                players[currentPlayer.getPlayerNo()] = null;
                 players.remove();
                 currentPlayer = players.peek();
-//                    GameEngine.nextPlayer(currentPlayer.getPlayerNo(),
-//                                          players);
             } else if (words[0].equals("VICTOR")) {
                 System.out.println("somebody won!");
             } else {
@@ -171,11 +161,6 @@ public class UserServer {
         String move = keyboard.nextLine().trim();
         System.out.println("move: " + move);
         Square[] squares = GameEngine.validate(b, p, move);
-        /*
-        if (GameEngine.validateMove(b, p, move) || GameEngine.validateWall()) {
-            return move;
-        }
-        */
         if(squares != null) {
             return move;
         }
