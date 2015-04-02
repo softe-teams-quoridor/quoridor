@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class AIServer {
+public class AIServer extends MoveServer {
     private static boolean SERVER_DISPLAY = false;
     private static int portNumber;
-    private static final MoveServer ai = new AI_LeftRight();
+    private static final QuoridorAI ai = new AI_LeftRight();
 
     public static void usage(int error) {
         // display usage information then exit and return failure
