@@ -24,8 +24,8 @@ import java.util.Queue;
 public class GameBoard {
 
     // Constants
-    private static final int COLUMNS = 9; // X
-    private static final int ROWS = 9;    // Y
+    public static final int COLUMNS = 9; // X
+    public static final int ROWS = 9;    // Y
 
     // Data Members
     private Square [][] squares;  // The cells of the GameBoard
@@ -113,6 +113,17 @@ public class GameBoard {
     //*************************************************************************
 
     /**
+      * gets the player's location
+      * @param player the player we want the location from
+      * @return the player's location
+      */
+    public Square getPlayerLoc(Player player) {
+        return playerLocs[player.getPlayerNo()];
+    }
+
+    //*************************************************************************
+
+    /**
      * adds a player to the given location
      * @param p the player to add
      * @param two ints: coordinates on a game board
@@ -174,7 +185,7 @@ public class GameBoard {
 
     /**
      * initializes the players in their appropriate start locations
-     * Player0 to (4,0); Player1 to (4,8); Player2 to (0,i4); Player3 to (8,4)
+     * Player0 to (4,0); Player1 to (4,8); Player2 to (0,4); Player3 to (8,4)
      * @param players queue of players to initialize
      */
     private void setupInitialPosition(Queue<Player> players) {
@@ -185,8 +196,8 @@ public class GameBoard {
             int x = colInd & 15;
             int y = rowInd & 15;
 
-            this.addPlayer(p, x, y);
-            this.playerLocs[p.getPlayerNo()] = getSquare(x, y);
+            addPlayer(p, x, y);
+            playerLocs[p.getPlayerNo()] = getSquare(x, y);
             
             colInd = colInd >> 4;
             rowInd = rowInd >> 4;
@@ -194,9 +205,5 @@ public class GameBoard {
     }
 
     //*************************************************************************
-
-    public Square getPlayerLoc(Player player) {
-        return playerLocs[player.getPlayerNo()];
-    }
     
 }

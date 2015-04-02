@@ -49,25 +49,61 @@ public class GameBoardTest {
 */
     /* Ensures all squares have been properly assigned coordinates */
     @Test
-    public void testGameBoardSquares() {
+    public void testGetSquares() throws Exception {
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ ) {
                 assertEquals(board.getSquare(i,j).getX(), i);
                 assertEquals(board.getSquare(i,j).getY(), j);
             }
     }
-/*
-    @Test
-    public void testGameBoardGetNULLPlayer() {
 
-        for(int i = 0; i < NUM_PLAYERS; i++)
-            board.removePlayer(players[i]);
-        
-        for ( int i = 0; i < 9; i++ )
-            for ( int j = 0; j < 9; j++ ) 
+    
+    /* Ensures we can retrieve a player's start location based on coordinates*/
+    @Test
+    public void testGetPlayerLocWithXYFromStartLocs() throws Exception {
+        // Test p0
+        assertEquals(board.getPlayer(4,0),players.peek());
+        // Shuffle; test p1
+        players.add(players.remove());
+        assertEquals(board.getPlayer(4,8),players.peek());
+        // Shuffle; test p2
+        players.add(players.remove());
+        assertEquals(board.getPlayer(0,4),players.peek());
+        // Shuffle; test p3
+        players.add(players.remove());
+        assertEquals(board.getPlayer(8,4),players.peek());
+    }
+
+    
+    /* Ensures we can retrieve a player's start location based on player num */
+    @Test
+    public void testGetPlayerLocWithPNOFromStartLocs() throws Exception {
+        // Test p0
+        assertEquals(board.getPlayer(players.peek().getPlayerNo()),players.peek());
+        // Shuffle; test p1
+        players.add(players.remove());
+        assertEquals(board.getPlayer(players.peek().getPlayerNo()),players.peek());
+        // Shuffle; test p2
+        players.add(players.remove());
+        assertEquals(board.getPlayer(players.peek().getPlayerNo()),players.peek());
+        // Shuffle; test p3
+        players.add(players.remove());
+        assertEquals(board.getPlayer(players.peek().getPlayerNo()),players.peek());
+    }
+
+    /* Ensures that getPlayer can return null */
+    @Test
+    public void testGetPlayerReturnsNull() throws Exception {
+        // Remove all players from the queue
+        for(int i = 0; i < NUM_PLAYERS; i++) {
+            board.removePlayer(players.peek());
+            players.remove();
+        } 
+        for ( int i = 0; i < GameBoard.COLUMNS; i++ )
+            for ( int j = 0; j < GameBoard.ROWS; j++ ) 
                 assertEquals(board.getPlayer(i,j), null);
     }
-    
+    /*
     
     @Test
     public void testAddAndGetPlayer() {
