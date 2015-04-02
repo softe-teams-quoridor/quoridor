@@ -290,8 +290,11 @@ public class GameEngine {
         }
         // Wall Placement 
         else if(move.charAt(0) == '(') {
+            if(player.getNumWalls() == 0) {
+                return null;
+            }
             validSquares = parseWall(board, move);
-            if(validSquares == null || player.getNumWalls() == 0) {
+            if(validSquares == null) {
                 return null;
             }
             if(GameEngine.validateWall(board, validSquares))

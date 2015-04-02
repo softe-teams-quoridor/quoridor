@@ -38,7 +38,7 @@ public class GameBoardFrame extends JFrame{
     
     //Constructs the gameboard and makes it visible
     private void draw(GameBoard board){
-        topLayer();
+        topLayer(board);
         rows(board);
         gameboard.pack();
         gameboard.setFocusableWindowState(false);	//prevents window from
@@ -85,7 +85,6 @@ public class GameBoardFrame extends JFrame{
         }
     }
     
-    
     //Changes the color of the squares that contain a player and shows 
     //the player name
     private void printPlayerLabel(Player p, Square tSquare){
@@ -107,14 +106,15 @@ public class GameBoardFrame extends JFrame{
     }
 
     // prints out I-IX labels
-    private void topLayer() {
+    private void topLayer(GameBoard board) {
         JLabel [] labels = new JLabel[10];
         // This bit will print a blank for the first spot
         labels[0] = new JLabel();
         labels[0].setOpaque(true);
-        labels[0].setBackground(new Color(30, 0, 0));
+        labels[0].setBackground(new Color(255, 255, 255));
         labels[0].setPreferredSize(new Dimension(100, 70));
-        labels[0].setText("    ");
+        labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n" + 
+                          "p1 " + board.getPlayer(1).getNumWalls());
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
         for (int i = 1; i < 10; i++) {
