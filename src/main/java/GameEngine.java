@@ -127,8 +127,8 @@ public class GameEngine {
       * @param move the string to parse
       */
     protected static Square[] parseWall ( GameBoard board, String move ) {
-        move = move.trim();
-        // (V-A, V-B)
+        move = move.replaceAll("\\s+", "");
+        // (V-A,V-B)
 
         // Reject any move that does not start and end with parenthesis
         if ( !move.startsWith("(") || !move.endsWith(")") )
@@ -141,18 +141,16 @@ public class GameEngine {
         // Make sure the string array has only 2 elements
         if ( commaSep.length != 2 )
             return null;
-
+        
         // Remove parentheses
         commaSep[0] = commaSep[0].replace ( "(", "" );
         commaSep[1] = commaSep[1].replace ( ")", "" );
         // [0] == V-A
         // [1] == V-B
        
-        commaSep[0] = commaSep[0].trim();
         String[] firstW = commaSep[0].split("-");
         // [0] == V
         // [1] == A
-        commaSep[1] = commaSep[1].trim();
         String[] secndW = commaSep[1].split("-");
         // [0] == V
         // [1] == B
@@ -185,7 +183,6 @@ public class GameEngine {
             wallSquares[1] = board.getSquare ( secndX, secndY );
             return wallSquares; 
         }
-        
         return null;
     }
 
