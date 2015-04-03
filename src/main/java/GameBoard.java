@@ -105,9 +105,9 @@ public class GameBoard {
     }
 
     public Player getPlayer(int pno) {
-        if(pno >= 0 && pno < playerLocs.length) 
-            return squares[playerLocs[pno].getX()][playerLocs[pno].getY()].getPlayer();
-        return null; // If the player number is invalid
+        return (pno >= 0 && pno < playerLocs.length) ? 
+            playerLocs[pno].getPlayer() : null; // If the player number is invalid
+            //return squares[playerLocs[pno].getX()][playerLocs[pno].getY()].getPlayer();
     }
 
     //*************************************************************************

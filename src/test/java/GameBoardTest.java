@@ -45,16 +45,16 @@ public class GameBoardTest {
     /* Ensures we can retrieve a player's start location based on coordinates*/
     @Test
     public void testGetPlayerLocWithXYFromStartLocs() throws Exception {
-        // Test p0
+        // test p0
         assertEquals(board.getPlayer(4,0),players.peek());
-        // Shuffle; test p1
-        players.add(players.remove());
+        // test p1
+        players.remove();
         assertEquals(board.getPlayer(4,8),players.peek());
-        // Shuffle; test p2
-        players.add(players.remove());
+        // test p2
+        players.remove();
         assertEquals(board.getPlayer(0,4),players.peek());
-        // Shuffle; test p3
-        players.add(players.remove());
+        // test p3
+        players.remove();
         assertEquals(board.getPlayer(8,4),players.peek());
     }
     
@@ -107,6 +107,13 @@ public class GameBoardTest {
             for ( int j = 0; j < GameBoard.ROWS; j++ ) 
                 assertNull(board.getPlayer(i,j));
     }
+  /* 
+    @Test
+    public void testMovingAPlayerOnTheBoard() throws Exception {
+        assertEquals(board.getPlayer(players.peek()), players.peek());
+        board.move(players.peek(), new Square(0,0));  
+    } 
+    */
     /*
     
     @Test
@@ -120,18 +127,6 @@ public class GameBoardTest {
         board.move(players[0],board.getSquare(4,1));
         assertEquals(players[0],board.getPlayer(4,1));        
     }
-
     
-    
-
-    @Test
-    public void testSetUpIntialPosition() throws Exception {
-        assertEquals(board.getPlayerLoc(players[0]), board.getSquare(4,0));
-        assertEquals(board.getPlayerLoc(players[1]), board.getSquare(4,8));
-        if(NUM_PLAYERS == 4) {
-            assertEquals(board.getPlayerLoc(players[2]), board.getSquare(0,4));
-            assertEquals(board.getPlayerLoc(players[3]), board.getSquare(8,4));
-        }
-    }
-*/    
+*/
 }
