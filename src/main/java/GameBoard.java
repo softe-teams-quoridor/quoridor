@@ -1,22 +1,30 @@
 /* GameBoard.java - CIS405 - teams
- * Last Edit: March 29, 2015
+ * Last Edit: April 3, 2015
  * ____________________________________________________________________________
  *
  * GameBoard object to represent a 9x9 grid for the Quoridor game. This handles
- * operations such as checking if a set of coordinates is valid, adding,
- * removing, and moving a player, and initializing start locations.
+ *   operations such as checking if a set of coordinates is valid, adding,
+ *   removing, and moving a player, and initializing start locations.
  *
- * ------------------------------- METHODS ------------------------------------
+ * --------------------------------- METHODS ----------------------------------
+ *
+ * PUBLIC:
  *
  * GameBoard()                   --> Default Constructor 
- * boolean isOccupied(int, int)  --> returns if player is at given location 
- * Square getSquare(int, int)    --> returns a square at a given location
- * Player getPlayer(int, int)    --> returns a player at the given location
+ * boolean isOccupied(int,int)   --> returns if player is at given location 
+ * Square getSquare(int,int)     --> returns a square at a given location
+ * Player getPlayer(int,int)     --> returns a player from the board array
+ * Player getPlayer(int)         --> returns a player from the location array
+ * Square getPlayerLoc(Player)   --> returns the current location of the player
+ * void placeWall(Square,Square) --> places a wall on the board
+ * void removePlayer(Player)     --> removes a player from the given location
+ * void move(Player,Square)      --> moves a player from one square to another
+ *
+ * PRIVATE:
+ *
  * void addPlayer(Player)        --> adds a player to a given location
- * void removePlayer(Player)   --> removes a player from the given location
  * boolean validLoc(int, int)    --> returns if coordinates are within bounds
- * void move(Player, Square)     --> moves a player from one square to another
- * void setupInitialPosition(Player []) --> sets initial player locations
+ * void setupInitialPositions(Player []) --> sets initial player locations
  */
 
 import java.util.Queue;
@@ -30,11 +38,12 @@ public class GameBoard {
     // Data Members
     private Square [][] squares;  // The cells of the GameBoard
     private Square [] playerLocs; // locations of the players on the board
-        
+
     //*************************************************************************
 
     /** 
-     * constructs the GameBoard by instantiating the array of squares
+     * constructs the GameBoard by instantiating the array of squares and
+     * initializing player locations
      * @param players queue of players to be given a start location
      */
     public GameBoard(Queue<Player> players) {
@@ -49,23 +58,10 @@ public class GameBoard {
         // Instantiate player location array
         playerLocs = new Square[players.size()];
         // Initialize player positions
-        setupInitialPosition(players);
+        setupInitialPositions(players);
     }
 
     //*************************************************************************
-    
-    /**
-     * Checks the location to see if it is actually on the board
-     * @param x the column of the board
-     * @param y the row of the gameboard
-     * @return true if location is on board, false otherwise
-     */
-    private boolean validLoc(int x, int y) {
-        return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
-    }
-
-    //*************************************************************************
-
 
     /** @deprecated use getPlayer to see if the location is occupied
      * Checks to see if a cell/square is occupied
@@ -124,15 +120,23 @@ public class GameBoard {
     //*************************************************************************
 
     /**
-     * adds a player to the given location
-     * @param p the player to add
-     * @param two ints: coordinates on a game board
-     */
-    private void addPlayer(Player player, int x, int y) {
-        assert (validLoc(x, y));
-        squares[x][y].addPlayer(player);
-        assert (player != null);
-        playerLocs[player.getPlayerNo()] = squares[x][y];
+      * places a wall on the board
+      * @param first the starting wall location
+      * @param second the ending wall location
+      */
+    public void placeWall (Square first, Square second ) {
+        // Horz
+        if(first.getY() == second.getY()) {
+            first.placeWallBottom(true);
+            second.placeWallBottom(false); 
+        }
+        // Vert
+        else {
+            first.placeWallRight(true);
+            second.placeWallRight(false); 
+        }
+        squares[first.getX()][first.getY()] = first;
+        squares[second.getX()][second.getY()] = second;
     }
 
     //*************************************************************************
@@ -150,7 +154,7 @@ public class GameBoard {
     }
 
     //*************************************************************************
-    
+
     /**
      * moves a player to the given location
      * @param player the player object
@@ -164,21 +168,28 @@ public class GameBoard {
 
     //*************************************************************************
 
-    public void placeWall (Square first, Square second ) {
-        
-        // Horz
-        if(first.getY() == second.getY()) {
-            first.placeWallBottom(true);
-            second.placeWallBottom(false); 
-        }
-        //Vert
-        else {
-            first.placeWallRight(true);
-            second.placeWallRight(false); 
-        }
+    /**
+     * adds a player to the given location
+     * @param p the player to add
+     * @param two ints: coordinates on a game board
+     */
+    private void addPlayer(Player player, int x, int y) {
+        assert (validLoc(x, y));
+        squares[x][y].addPlayer(player);
+        assert (player != null);
+        playerLocs[player.getPlayerNo()] = squares[x][y];
+    }
 
-        squares[first.getX()][first.getY()] = first;
-        squares[second.getX()][second.getY()] = second;
+    //*************************************************************************
+
+    /**
+     * Checks the location to see if it is actually on the board
+     * @param x the column of the board
+     * @param y the row of the gameboard
+     * @return true if location is on board, false otherwise
+     */
+    private boolean validLoc(int x, int y) {
+        return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
     }
 
     //*************************************************************************
@@ -188,7 +199,7 @@ public class GameBoard {
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,4); Player3 to (8,4)
      * @param players queue of players to initialize
      */
-    private void setupInitialPosition(Queue<Player> players) {
+    private void setupInitialPositions(Queue<Player> players) {
         int colInd = 32836; // collin dalling
         int rowInd = 17536;
 
@@ -205,5 +216,5 @@ public class GameBoard {
     }
 
     //*************************************************************************
-    
+
 }
