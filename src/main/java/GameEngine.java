@@ -1,4 +1,5 @@
 /* GameEngine.java - CIS405 - teams
+ * Last Edit: April 3, 2015
  * ____________________________________________________________________________
  *
  * used for game rules and validation. capable of converting numeral/character
@@ -130,7 +131,7 @@ public class GameEngine {
         // (V-A, V-B)
 
         // Reject any move that does not start and end with parenthesis
-        if ( !move.startsWith("(") && !move.endsWith(")") )
+        if ( !move.startsWith("(") || !move.endsWith(")") )
             return null;
 
         String[] commaSep = move.split(",");
