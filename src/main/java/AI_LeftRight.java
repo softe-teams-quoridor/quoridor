@@ -12,4 +12,8 @@ public class AI_LeftRight implements QuoridorAI {
             return "V-A";
         }
     }
+
+    public void reset() {
+        direction = false;
+    }
 }

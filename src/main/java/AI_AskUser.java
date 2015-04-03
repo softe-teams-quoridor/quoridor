@@ -23,4 +23,8 @@ public class AI_AskUser implements QuoridorAI {
         }
         return getMove(board, player);
     }
+    
+    public void reset() {
+        // does this need to do anything? 
+    }
 }

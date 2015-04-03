@@ -11,9 +11,7 @@ import java.util.LinkedList;
 
 public abstract class MoveServer {
     private static boolean SERVER_DISPLAY = false;
-//     private static final Scanner keyboard = new Scanner(System.in);
     private static QuoridorAI ai = null;
-    
     private static int portNumber;
 
     public static void usage(int error) {
@@ -22,7 +20,7 @@ public abstract class MoveServer {
         System.exit(error);
     }
 
-    public static void main(String[] args) {
+    public static void parseArgs(String[] args) {
         // process command-line arguments
         if (args.length < 2) {
             usage(1);
@@ -30,29 +28,36 @@ public abstract class MoveServer {
         try {
             portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) { // NumberFormatException, ArrayIndexOutOfBounds
-            usage(1);
+            usage(2);
         }
 
+        // process AI mode
         if (args[1].equals("user")) {
             ai = new AI_AskUser();
-            SERVER_DISPLAY = true;
+            SERVER_DISPLAY = true; // the player will want to see a board!
         } else if (args[1].equals("lr")) {
             ai = new AI_LeftRight();
         } else {
-             usage(2);
+             usage(3);
         }
-        Deb.initialize("moveserver_" + ai +  "_" + portNumber);
         assert (ai != null);
 
-        // process optional command-line --display argument 
+        Deb.initialize("moveserver_" + ai +  "_" + portNumber);
         Deb.ug.println(Arrays.toString(args));
-        if (args.length == 2) {
-            Deb.ug.println("two args detected ");
+
+        // process optional command-line --display argument 
+        if (args.length == 3) {
+            Deb.ug.println("three args detected ");
             if (args[1].equals("-d") || args[1].equals("--display")) {
                 Deb.ug.println("enabling display");
                 SERVER_DISPLAY = true;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        // parseArgs and initialize debug
+        parseArgs(args);
 
         ServerSocket server = null;
         Socket currClient = null;
@@ -72,6 +77,7 @@ public abstract class MoveServer {
 
         while (true) {
             playGame(currClient);
+            ai.reset();
             try {
                 Deb.ug.println("closing connection");
                 currClient.close();
@@ -190,11 +196,4 @@ public abstract class MoveServer {
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
     }
-
-    // something goes here
-    /*
-    public static String getMove(GameBoard b, Player p) {
-        return "FIXME";
-    }
-    */
 }
