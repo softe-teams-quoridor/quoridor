@@ -11,8 +11,8 @@ import java.util.LinkedList;
 
 public class AIServer extends MoveServer {
     private static boolean SERVER_DISPLAY = false;
-    private static int portNumber;
     private static final QuoridorAI ai = new AI_LeftRight();
+    private static int portNumber;
 
     public static void usage(int error) {
         // display usage information then exit and return failure
@@ -21,14 +21,14 @@ public class AIServer extends MoveServer {
     }
 
     public static void main(String[] args) {
-        Deb.initialize("aiserver");
-
         // process command-line arguments
         try {
             portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) { // NumberFormatException, ArrayIndexOutOfBounds
             usage(1);
         }
+
+        Deb.initialize("aiserver_" + portNumber);
 
         // process optional command-line --display argument 
         Deb.ug.println(Arrays.toString(args));

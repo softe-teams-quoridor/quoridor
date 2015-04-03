@@ -6,9 +6,10 @@ import java.net.Socket;
 
 import java.util.Scanner;
 import java.util.Arrays;
-import java.util.*;
+import java.util.Queue;
+import java.util.LinkedList;
 
-public class UserServer {
+public class UserServer extends MoveServer {
     private static boolean SERVER_DISPLAY = false;
     private static final Scanner keyboard = new Scanner(System.in);
     private static int portNumber;
