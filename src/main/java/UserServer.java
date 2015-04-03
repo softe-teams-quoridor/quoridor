@@ -114,13 +114,15 @@ public class UserServer {
             clientMessage = hermes.nextLine();
             System.out.println("received: " + clientMessage);
             Deb.ug.println("received: " + clientMessage);
+            
             words = clientMessage.split(" ");
             if (clientMessage.equals("GO?")) {
                 String move = getMove(board, currentPlayer);
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
-            } else if (words[0].equals("WENT")) {
+            } else if (clientMessage.contains("WENT")) {
+            //else if (words[0].equals("WENT")) {
                 Square[] destination = GameEngine.validate(board,currentPlayer,words[2]);
                 assert (currentPlayer != null);
                 if(destination.length == 1) {
@@ -132,7 +134,8 @@ public class UserServer {
                 }
                 players.add(players.remove());
                 currentPlayer = players.peek();
-            } else if (words[0].equals("BOOT")) {
+            } else if (clientMessage.contains("BOOT")) {
+            //else if (words[0].equals("BOOT")) {
                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
                 Deb.ug.println("currentPlayer.getName()" +
@@ -141,7 +144,8 @@ public class UserServer {
                                 currentPlayer.getPlayerNo());
                 players.remove();
                 currentPlayer = players.peek();
-            } else if (words[0].equals("VICTOR")) {
+            } else if (clientMessage.contains("VICTOR")) {
+            //else if (words[0].equals("VICTOR")) {
                 System.out.println("somebody won!");
             } else {
                 System.out.println("unknown message from client");
