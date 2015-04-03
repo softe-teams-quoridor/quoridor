@@ -13,7 +13,7 @@ public class Game {
 
     private static int numPlayers;     // how many players are in the game
     private static final int WALL_POOL = 20; // total collection of walls
-    private static Queue<Player> players = new LinkedList<Player>(); // players
+    private static final Queue<Player> players = new LinkedList<Player>();
 
     /**
      * prints a friendly message and exits
