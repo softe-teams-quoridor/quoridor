@@ -1,5 +1,5 @@
 /* Player.java - CIS405 - teams
- * Last Edit: March 20, 2015
+ * Last Edit: April 3rd, 2015
  * ____________________________________________________________________________
  *
  * represents the data of a player of the game, such as the player's name,
@@ -13,18 +13,7 @@
  * String getName()       --> returns the player's name
  * int getNumWalls()      --> returns number of walls
  * boolean mayPlaceWall() --> returns if a player has walls that they may place
- * boolean placeWall()    --> decrements numWalls if player can place a wall
- *
- * Considerations
- *     
- *      Is getNumWalls() needed if we're checking for the number of walls
- *      within method placeWall()? - Cavanagh, Walling (2/16)
- *     
- *      Depending on what the object that implements the game rules does,
- *      we may want placeWall() to be a boolean method and return false
- *      if the player cannot place any more walls - Walling (2/16)
- *
- *     oh yeah that's way better
+ * boolean useWall()    --> decrements numWalls if player can place a wall
  */
 
 class Player {
