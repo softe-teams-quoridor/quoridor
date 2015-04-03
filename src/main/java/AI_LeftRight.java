@@ -4,7 +4,7 @@ public class AI_LeftRight implements QuoridorAI {
         direction = false;
     }
 
-    public String getMove() {
+    public String getMove(GameBoard _, Player p) {
         direction = (! direction);
         if (direction) {
             return "IV-A";

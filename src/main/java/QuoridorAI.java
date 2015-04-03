@@ -1,3 +1,3 @@
 public interface QuoridorAI {
-    String getMove();
+    String getMove(GameBoard b, Player p);
 }

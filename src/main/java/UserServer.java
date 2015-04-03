@@ -1,3 +1,6 @@
+/* don't use this any more 
+ * instead, see MoveServer and AI_AskUser
+ */
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -9,11 +12,12 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class UserServer extends MoveServer {
+public class UserServer {
     private static boolean SERVER_DISPLAY = false;
     private static final Scanner keyboard = new Scanner(System.in);
     private static int portNumber;
 
+    /*
     public static void usage(int error) {
         // display usage information then exit and return failure
         System.err.println("usage: java UserServer <port> [--display]");
@@ -71,6 +75,7 @@ public class UserServer extends MoveServer {
             }
         }
     }
+     */
 
     private static void playGame(Socket currClient) {
         ServerMessenger hermes = new ServerMessenger(currClient);
@@ -176,7 +181,8 @@ public class UserServer extends MoveServer {
         hermes.closeStreams();
     }
 
-    private static String getMove(GameBoard b, Player p) {
+//     private static String getMove(GameBoard b, Player p) {
+    public static String getMove(GameBoard b, Player p) {
         System.out.print(">> ");
         String move = keyboard.nextLine().trim();
         System.out.println("move: " + move);

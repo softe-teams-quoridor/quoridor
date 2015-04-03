@@ -1,3 +1,4 @@
+/* don't use this any more */
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -9,11 +10,12 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class AIServer extends MoveServer {
+public class AIServer {
     private static boolean SERVER_DISPLAY = false;
     private static final QuoridorAI ai = new AI_LeftRight();
     private static int portNumber;
 
+    /*
     public static void usage(int error) {
         // display usage information then exit and return failure
         System.err.println("usage: java UserServer <port> [--display]");
@@ -71,6 +73,7 @@ public class AIServer extends MoveServer {
             }
         }
     }
+    */
 
     private static void playGame(Socket currClient) {
         ServerMessenger hermes = new ServerMessenger(currClient);
@@ -97,11 +100,10 @@ public class AIServer extends MoveServer {
             Deb.ug.println("expected PLAYERS from client");
             return;
         }
-//        Player [] players = new Player[numPlayers];
+
         Queue<Player> players = new LinkedList<Player>();
         int wallsEach = 20 / numPlayers;
         for (int i = 0; i < numPlayers; i++) {
-//            players[i] = new Player(i, wallsEach);
             players.add(new Player(i, wallsEach));
         }
         GameBoard board = new GameBoard(players);
@@ -118,7 +120,8 @@ public class AIServer extends MoveServer {
             Deb.ug.println("received: " + clientMessage);
             words = clientMessage.split(" ");
             if (clientMessage.equals("GO?")) {
-                String move = ai.getMove();
+//                 String move = ai.getMove();
+                String move = ai.getMove(board, currentPlayer);
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
