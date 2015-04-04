@@ -53,7 +53,7 @@ public class Game {
         Deb.ug.println("number of players: " + numPlayers);
 
         // Connect to players
-        Messenger hermes = new Messenger(args);
+        ClientMessenger hermes = new ClientMessenger(args);
 
         // Instantiate Players
         Deb.ug.println("instantiating Players...");

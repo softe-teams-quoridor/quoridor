@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public abstract class MoveServer {
+public class MoveServer {
     private static boolean SERVER_DISPLAY = false;
     private static QuoridorAI ai = null;
     private static int portNumber;

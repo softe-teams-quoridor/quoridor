@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Messenger {
+public class ClientMessenger {
     private PrintStream [] outStreams; // these should both have the
     private Scanner     [] inStreams;  // same length as players
     private int        [] ports;
@@ -24,7 +24,7 @@ public class Messenger {
      * parses command-line arguments
      * populates the hosts, ports, inStreams, outStreams arrays
      */
-    public Messenger(String [] args) {
+    public ClientMessenger(String [] args) {
         int numPlayers = args.length/2;
         this.ports = new int[numPlayers];
         this.hosts = new String[numPlayers];

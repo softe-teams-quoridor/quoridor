@@ -216,7 +216,7 @@ public class GameBoard {
         int colInd = 32836; // collin dalling
         int rowInd = 17536;
 
-        for ( Player p : players ) {  
+        for ( Player p : players ) {
             int x = colInd & 15;
             int y = rowInd & 15;
 
