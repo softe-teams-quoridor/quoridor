@@ -109,6 +109,7 @@ public class GameBoardFrame extends JFrame{
 
     // prints out I-IX labels
     private void topLayer(GameBoard board) {
+        assert (board != null);
         JLabel [] labels = new JLabel[10];
         // This bit will print a blank for the first spot
         labels[0] = new JLabel();
@@ -116,27 +117,15 @@ public class GameBoardFrame extends JFrame{
         labels[0].setBackground(new Color(255, 255, 255));
         labels[0].setPreferredSize(new Dimension(100, 70));
 
-        assert (board != null);
         // display the number of walls for each player
         String labelText = "";
-        Deb.ug.println("HEEERE");
         for (int i = 0; i < numPlayers; i++) {
-            Deb.ug.println("i is: " + i);
             Player p = board.getPlayer(i);
             if (p != null) {
-                Deb.ug.println("p is: " + p.toString());
-            } else {
-                Deb.ug.println("p null");
+                labelText += "p" + i + " " + p.getNumWalls() + "\n ";
+//                 labelText += p.getName() + " " + p.getNumWalls() + "\n ";
             }
-            if (p == null) {
-                continue;
-            }
-//             labelText += p.getName() + " " + p.getNumWalls() + "\n ";
-            labelText += "p" + i + " " + p.getNumWalls() + "\n ";
         }
-
-//         labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n " + 
-//                           "p1 " + board.getPlayer(1).getNumWalls());
         labels[0].setText(labelText);
 
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
