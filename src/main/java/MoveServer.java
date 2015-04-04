@@ -34,7 +34,7 @@ public abstract class MoveServer {
         // process AI mode
         if (args[1].equals("user")) {
             ai = new AI_AskUser();
-            SERVER_DISPLAY = true; // the player will want to see a board!
+//             SERVER_DISPLAY = true; // the player will want to see a board!
         } else if (args[1].equals("lr")) {
             ai = new AI_LeftRight();
         } else {
