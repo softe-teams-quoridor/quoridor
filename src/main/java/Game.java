@@ -121,7 +121,7 @@ public class Game {
 
         }//-----END OF LOOP-----
 
-        hermes.closeAllStreams(players.toArray(new Player[players.size()]));
+        hermes.closeAllStreams(players);
 
         // pause board for two seconds before ending
         sleep(2000);

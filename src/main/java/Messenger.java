@@ -8,12 +8,14 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import java.util.Queue;
+import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Messenger {
-    public PrintStream [] outStreams; // these should both have the
-    public Scanner     [] inStreams;  // same length as players
+    private PrintStream [] outStreams; // these should both have the
+    private Scanner     [] inStreams;  // same length as players
     private int        [] ports;
     private String     [] hosts; 
 
@@ -121,17 +123,29 @@ public class Messenger {
     }
 
     private void closeStreams(int playerNo) {
+        assert (outStreams[playerNo] != null);
+        assert (inStreams [playerNo] != null);
         outStreams[playerNo].close();
         outStreams[playerNo] = null;
         inStreams[playerNo].close();
         inStreams[playerNo] = null;
     }
 
+    /*
     public void closeAllStreams(Player [] players) {
         for (int i = 0; i < players.length; i++) {
             if (players[i] != null) {
                 closeStreams(i);
             }
+        }
+    }
+    */
+
+    public void closeAllStreams(Queue<Player> players) {
+        for (Player p = players.remove(); 
+             ! players.isEmpty(); p = players.remove()) {
+            assert (p != null);
+            closeStreams(p.getPlayerNo());
         }
     }
 }
