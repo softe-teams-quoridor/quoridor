@@ -93,17 +93,18 @@ public class Game {
                 board.removePlayer(currentPlayer);
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
-            }
-            else if (moveSquares.length == 1) { // legal pawn move
-                Deb.ug.println("legal move");
-                board.move(currentPlayer, moveSquares[0]);
+            } else { // legal move
+                if (moveSquares.length == 1) { // legal pawn move
+                    Deb.ug.println("legal move");
+                    board.move(currentPlayer, moveSquares[0]);
+                } else { // legal wall placement
+                    assert (moveSquares.length == 2);
+                    Deb.ug.println("legal wall");
+                    board.placeWall(moveSquares[0], moveSquares[1]);
+                    currentPlayer.useWall();
+                }
                 hermes.broadcastWent(currentPlayer, response);
-            }
-            else if (moveSquares.length == 2) { // legal wall placement
-                Deb.ug.println("legal wall");
-                board.placeWall(moveSquares[0], moveSquares[1]);
-                currentPlayer.useWall();
-                hermes.broadcastWent(currentPlayer,response);
+                players.add(players.remove()); // Shuffle queue
             }
             // Update the graphical board
             frame.update(board);
@@ -114,8 +115,6 @@ public class Game {
                 hermes.broadcastVictor(winner);
                 break;
             }
-            // Shuffle queue
-            players.add(players.remove());
 
             sleep(200); // sleepy time
 

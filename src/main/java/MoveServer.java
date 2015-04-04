@@ -42,7 +42,7 @@ public abstract class MoveServer {
         }
         assert (ai != null);
 
-        Deb.initialize("moveserver_" + ai +  "_" + portNumber);
+        Deb.initialize("moveserver_" + args[1] +  "_" + portNumber);
         Deb.ug.println(Arrays.toString(args));
 
         // process optional command-line --display argument 
@@ -172,12 +172,12 @@ public abstract class MoveServer {
                 currentPlayer = players.peek();
             // BOOT --> current player is no longer player or has been kicked
             } else if (clientMessage.contains("BOOT")) {
+                Deb.ug.println("currentPlayer.getName() " +
+                               currentPlayer.getName());
+                Deb.ug.println("currentPlayer.getPlayerNo() " + 
+                                currentPlayer.getPlayerNo());
                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
-                Deb.ug.println("currentPlayer.getName()" +
-                               currentPlayer.getName());
-                Deb.ug.println("currentPlayer.getPlayerNo()" + 
-                                currentPlayer.getPlayerNo());
                 players.remove();
                 currentPlayer = players.peek();
             // VICTOR --> a player has won the game
