@@ -182,7 +182,7 @@ public abstract class MoveServer {
                 currentPlayer = players.peek();
             // VICTOR --> a player has won the game
             } else if (clientMessage.contains("VICTOR")) {
-                System.out.println("somebody won!");
+                System.out.println(words[1] + " won!");
             // ??? --> who the heck knows what happend?
             } else {
                 System.out.println("unknown message from client");
