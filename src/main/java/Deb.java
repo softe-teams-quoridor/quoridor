@@ -14,5 +14,21 @@ public class Deb {
             ug = System.err;
         }
     }
+
+    /* 
+       // alternate, maybe better implementation
+    public static PrintStream stream;
+    
+    public Deb(String name) {
+        try {
+            stream = new PrintStream(name + "_debug");
+        } catch (FileNotFoundException e) {
+            stream = System.err;
+        }
+    }
+    public void ug(String line) {
+        stream.println(line);
+    }
+    */
 }
 
