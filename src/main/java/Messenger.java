@@ -131,16 +131,6 @@ public class Messenger {
         inStreams[playerNo] = null;
     }
 
-    /*
-    public void closeAllStreams(Player [] players) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i] != null) {
-                closeStreams(i);
-            }
-        }
-    }
-    */
-
     public void closeAllStreams(Queue<Player> players) {
         for (Player p = players.remove(); 
              ! players.isEmpty(); p = players.remove()) {

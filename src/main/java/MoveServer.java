@@ -152,24 +152,28 @@ public abstract class MoveServer {
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
+
             // WENT --> a player made a move, update internal board
             } else if (clientMessage.contains("WENT")) {
                 assert (currentPlayer != null);
                 Square[] destination;
                 // if wall move, handle accordingly
                 if ( wall != null ) {
-                    destination = GameEngine.validate(board,currentPlayer,wall);
+                    destination = GameEngine.validate(board, currentPlayer, 
+                                                      wall);
                     board.placeWall(destination[0], destination[1]);
                     currentPlayer.useWall();
                 }
                 // else it is a player move
                 else {    
-                    destination = GameEngine.validate(board,currentPlayer,words[2]);
+                    destination = GameEngine.validate(board, currentPlayer,
+                                                      words[2]);
                     board.move(currentPlayer, destination[0]);
                 }
                 // shuffle players
                 players.add(players.remove());
                 currentPlayer = players.peek();
+
             // BOOT --> current player is no longer player or has been kicked
             } else if (clientMessage.contains("BOOT")) {
                 Deb.ug.println("currentPlayer.getName() " +
@@ -180,9 +184,11 @@ public abstract class MoveServer {
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();
+
             // VICTOR --> a player has won the game
             } else if (clientMessage.contains("VICTOR")) {
                 System.out.println(words[1] + " won!");
+
             // ??? --> who the heck knows what happend?
             } else {
                 System.out.println("unknown message from client");
