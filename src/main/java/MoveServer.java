@@ -127,7 +127,7 @@ public abstract class MoveServer {
         Player currentPlayer = players.peek();
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
-            frame = new GameBoardFrame(board);
+            frame = new GameBoardFrame(board, numPlayers);
         }
 
         /* handle different types of messages the client might send */

@@ -75,6 +75,7 @@ public class AIServer {
     }
     */
 
+    /*
     private static void playGame(Socket currClient) {
         ServerMessenger hermes = new ServerMessenger(currClient);
         System.out.println("Connection from " + currClient);
@@ -113,7 +114,9 @@ public class AIServer {
             frame = new GameBoardFrame(board);
         }
 
+        */
         /* handle different types of messages the client might send */
+    /*
         while (hermes.hasNextLine()) {
             clientMessage = hermes.nextLine();
             System.out.println("received: " + clientMessage);
@@ -166,4 +169,5 @@ public class AIServer {
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
     }
+    */
 }

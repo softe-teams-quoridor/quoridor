@@ -70,7 +70,7 @@ public class Game {
 
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");
-        GameBoardFrame frame = new GameBoardFrame(board);
+        GameBoardFrame frame = new GameBoardFrame(board, numPlayers);
 
         // loop will need to check for a victory condition
         Deb.ug.println("beginning main loop");
@@ -86,21 +86,22 @@ public class Game {
 
             // Validate if the move is legal and make the move on the board
             // else boot the player for trying to make an illegal move
-            Square[] moveSquares = GameEngine.validate(board,currentPlayer, response);
-            if(moveSquares == null) {
+            Square[] moveSquares = GameEngine.validate(board, currentPlayer, 
+                                                       response);
+            if (moveSquares == null) { // no legal move
                 Deb.ug.println("illegal move attempted");
                 board.removePlayer(currentPlayer);
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
             }
-            else if(moveSquares.length == 1) {
+            else if (moveSquares.length == 1) { // legal pawn move
                 Deb.ug.println("legal move");
                 board.move(currentPlayer, moveSquares[0]);
                 hermes.broadcastWent(currentPlayer, response);
             }
-            else if(moveSquares.length == 2) {
+            else if (moveSquares.length == 2) { // legal wall placement
                 Deb.ug.println("legal wall");
-                board.placeWall(moveSquares[0],moveSquares[1]);
+                board.placeWall(moveSquares[0], moveSquares[1]);
                 currentPlayer.useWall();
                 hermes.broadcastWent(currentPlayer,response);
             }

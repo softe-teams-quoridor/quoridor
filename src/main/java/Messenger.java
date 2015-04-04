@@ -102,7 +102,7 @@ public class Messenger {
     }
 
     public void broadcastBoot(Player player) {
-        Deb.ug.println("booting player" + player.getName());
+        Deb.ug.println("booting player: " + player.getName());
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
                 outStreams[i].println("BOOT " + player.getName());

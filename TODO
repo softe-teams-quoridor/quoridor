@@ -13,5 +13,5 @@ Pre-release Objectives
 [X] place walls
 [X] update validate to check for wall obstruction
 [X] make GameBoard.addPlayer private
-[ ] fix bug in GameBoard.getPlayer
+[X] fix bug in GameBoard.getPlayer
 [ ] make MoveServer close the frame after a game ends

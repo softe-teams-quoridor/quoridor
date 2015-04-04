@@ -10,9 +10,11 @@ import java.io.*;
 public class GameBoardFrame extends JFrame{
 
     private JFrame gameboard;
+    private int numPlayers;
 
     //constructs JFrame
-    public GameBoardFrame(GameBoard board){
+    public GameBoardFrame(GameBoard board, int numPlayers) {
+        this.numPlayers = numPlayers;
 
         //initialize JFrame
         gameboard = new JFrame("Quoridor");
@@ -113,8 +115,30 @@ public class GameBoardFrame extends JFrame{
         labels[0].setOpaque(true);
         labels[0].setBackground(new Color(255, 255, 255));
         labels[0].setPreferredSize(new Dimension(100, 70));
-        labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n " + 
-                          "p1 " + board.getPlayer(1).getNumWalls());
+
+        assert (board != null);
+        // display the number of walls for each player
+        String labelText = "";
+        Deb.ug.println("HEEERE");
+        for (int i = 0; i < numPlayers; i++) {
+            Deb.ug.println("i is: " + i);
+            Player p = board.getPlayer(i);
+            if (p != null) {
+                Deb.ug.println("p is: " + p.toString());
+            } else {
+                Deb.ug.println("p null");
+            }
+            if (p == null) {
+                continue;
+            }
+//             labelText += p.getName() + " " + p.getNumWalls() + "\n ";
+            labelText += "p" + i + " " + p.getNumWalls() + "\n ";
+        }
+
+//         labels[0].setText("p0 " + board.getPlayer(0).getNumWalls() + "\n " + 
+//                           "p1 " + board.getPlayer(1).getNumWalls());
+        labels[0].setText(labelText);
+
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
         for (int i = 1; i < 10; i++) {

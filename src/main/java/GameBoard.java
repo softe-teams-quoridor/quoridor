@@ -100,9 +100,22 @@ public class GameBoard {
         return validLoc(x,y) ? squares[x][y].getPlayer() : null;
     }
 
+    /**
+     * gets a player by their player number
+     * this returns null if pno is greater than 3 or less than 0
+     * also returns null if the player with that number has been booted
+     * @param pno the number of the player you want
+     * @return the player of that number or null
+     */
     public Player getPlayer(int pno) {
-        return (pno >= 0 && pno < playerLocs.length) ? 
-            playerLocs[pno].getPlayer() : null; // If the player number is invalid
+        assert (pno >= 0 && pno < playerLocs.length);
+        if (playerLocs[pno] == null) {
+            return null; // this player has been booted
+        }
+//         return (pno >= 0 && pno < playerLocs.length) 
+//             ? playerLocs[pno].getPlayer() 
+//             : null; // If the player number is invalid
+        return playerLocs[pno].getPlayer();
             //return squares[playerLocs[pno].getX()][playerLocs[pno].getY()].getPlayer();
     }
 
@@ -124,7 +137,7 @@ public class GameBoard {
       * @param first the starting wall location
       * @param second the ending wall location
       */
-    public void placeWall (Square first, Square second ) {
+    public void placeWall (Square first, Square second) {
         // Horz
         if(first.getY() == second.getY()) {
             first.placeWallBottom(true);

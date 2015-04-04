@@ -77,6 +77,7 @@ public class UserServer {
     }
      */
 
+    /*
     private static void playGame(Socket currClient) {
         ServerMessenger hermes = new ServerMessenger(currClient);
         System.out.println("Connection from " + currClient);
@@ -116,6 +117,7 @@ public class UserServer {
         }
 
         /* handle different types of messages the client might send */
+    /*
         while (hermes.hasNextLine()) {
             clientMessage = hermes.nextLine();
             System.out.println("received: " + clientMessage);
@@ -197,4 +199,5 @@ public class UserServer {
         }
         return getMove(b, p);
     }
+    */
 }
