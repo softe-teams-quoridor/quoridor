@@ -106,3 +106,13 @@ README file for teams' Quoridor Project
           regardless of what directory you are currently in
 
                 export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"
+
+    3. better git log
+        
+        configure git alias:
+        
+            git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+        then 
+
+            git lg
