@@ -1,5 +1,4 @@
 /* Player.java - CIS405 - teams
- * Last Edit: April 3rd, 2015
  * ____________________________________________________________________________
  *
  * represents the data of a player of the game, such as the player's name,
@@ -13,11 +12,11 @@
  * String getName()       --> returns the player's name
  * int getNumWalls()      --> returns number of walls
  * boolean mayPlaceWall() --> returns if a player has walls that they may place
- * boolean useWall()    --> decrements numWalls if player can place a wall
+ * void useWall()         --> decrements numWalls
  */
 
 class Player {
-    
+
     private String playerName = "";    // player's name
     private int numWalls;              // number of walls
     private int playerNo;              // unique player I.D. between 0 and 3
