@@ -11,7 +11,6 @@ public class AI_AskUser implements QuoridorAI {
     public String getMove(GameBoard board, Player player) {
         System.out.print(">> ");
         String move = keyboard.nextLine().trim();
-        System.out.println("move: " + move);
         Square[] squares = GameEngine.validate(board, player, move);
         if(squares != null) {
             return move;
