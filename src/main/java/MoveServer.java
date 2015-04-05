@@ -16,7 +16,7 @@ public class MoveServer {
 
     public static void usage(int error) {
         // display usage information then exit and return failure
-        System.err.println("usage: java UserServer <port> <mode> [--display]");
+        System.err.println("usage: java MoveServer <port> <mode> [--display]");
         System.exit(error);
     }
 
@@ -34,7 +34,6 @@ public class MoveServer {
         // process AI mode
         if (args[1].equals("user")) {
             ai = new AI_AskUser();
-//             SERVER_DISPLAY = true; // the player will want to see a board!
         } else if (args[1].equals("lr")) {
             ai = new AI_LeftRight();
         } else {
@@ -132,40 +131,36 @@ public class MoveServer {
 
         /* handle different types of messages the client might send */
         while (hermes.hasNextLine()) {
-            clientMessage = hermes.nextLine();
+            System.out.println("currentPlayer: " + currentPlayer.getName());
+            clientMessage = hermes.nextLine().trim();
             System.out.println("received: " + clientMessage);
             Deb.ug.println("received: " + clientMessage);
 
             words = clientMessage.split(" ");
-            
-            String wall = null;
-            // See if the client message contains a wall move
-            if ( clientMessage.contains("(") && clientMessage.contains(")") ) {
-                wall = clientMessage.substring(clientMessage.indexOf("("),
-                                               clientMessage.indexOf(")")+1);
-            }            
+            System.out.println("words: " + Arrays.toString(words));
 
             // GO? --> get a move from the player
-            if (clientMessage.contains("GO?")) {
+            if (clientMessage.startsWith("GO?")) {
                 String move = ai.getMove(board, currentPlayer);
-//                 String move = ai.getMove();
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
 
             // WENT --> a player made a move, update internal board
-            } else if (clientMessage.contains("WENT")) {
+            } else if (clientMessage.startsWith("WENT")) {
                 assert (currentPlayer != null);
                 Square[] destination;
-                // if wall move, handle accordingly
-                if ( wall != null ) {
+                
+                // See if this is a wall move
+                if (words[2].startsWith("(") && clientMessage.contains(")")) {
+                    String wall = 
+                        clientMessage.substring(clientMessage.indexOf("("),
+                                                clientMessage.indexOf(")")+1);
                     destination = GameEngine.validate(board, currentPlayer, 
                                                       wall);
                     board.placeWall(destination[0], destination[1]);
                     currentPlayer.useWall();
-                }
-                // else it is a player move
-                else {    
+                } else { // it is a player move
                     destination = GameEngine.validate(board, currentPlayer,
                                                       words[2]);
                     board.move(currentPlayer, destination[0]);
@@ -175,18 +170,16 @@ public class MoveServer {
                 currentPlayer = players.peek();
 
             // BOOT --> current player is no longer player or has been kicked
-            } else if (clientMessage.contains("BOOT")) {
-                Deb.ug.println("currentPlayer.getName() " +
-                               currentPlayer.getName());
-                Deb.ug.println("currentPlayer.getPlayerNo() " + 
-                                currentPlayer.getPlayerNo());
+            } else if (clientMessage.startsWith("BOOT")) {
+                Deb.ug.println("currPlayer name " + currentPlayer.getName());
+                Deb.ug.println("currPlayer no " + currentPlayer.getPlayerNo());
                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();
 
             // VICTOR --> a player has won the game
-            } else if (clientMessage.contains("VICTOR")) {
+            } else if (clientMessage.startsWith("VICTOR")) {
                 System.out.println(words[1] + " won!");
 
             // ??? --> who the heck knows what happend?
