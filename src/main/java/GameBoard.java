@@ -63,8 +63,7 @@ public class GameBoard {
 
     //*************************************************************************
 
-    /** @deprecated use getPlayer to see if the location is occupied
-     * Checks to see if a cell/square is occupied
+    /** Checks to see if a cell/square is occupied
      * @param x the column of the board
      * @param y the row of the gameboard
      * @return true if the cell is occupied, false otherwise
@@ -72,8 +71,9 @@ public class GameBoard {
      */
     public boolean isOccupied(int x, int y) {
         // Check for valid location
-        assert (validLoc(x,y));
-        return (! squares[x][y].vacant());
+        assert (validLoc(x, y));
+//         return (! squares[x][y].vacant());
+        return (this.getPlayer(x, y) != null);
     }
 
     //*************************************************************************
