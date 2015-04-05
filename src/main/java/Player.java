@@ -85,21 +85,18 @@ class Player {
       * Checks to see if the player can place a wall
       * @return true if this player has any walls left to place     
       */    
-    private boolean mayPlaceWall() {
-        return(numWalls != 0);        
+    public boolean mayPlaceWall() {
+        return (numWalls > 0);        
     }
 
     //*************************************************************************
 
     /**
-      * Decrements the number of walls if possible
-      * @return true if walls have been decremented, false otherwise
+      * Decrements the number of walls
+      * explodes if this player has no walls
       */
-    public boolean useWall() {
-        if(mayPlaceWall()) {
-            numWalls--;
-            return true;
-        }
-        return false;
+    public void useWall() {
+        assert (mayPlaceWall());
+        numWalls--;
     } 
 }

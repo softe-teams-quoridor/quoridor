@@ -60,13 +60,15 @@ public class PlayerTest {
         // Place all walls for all players
         for(int i = 0; i < NUM_PLAYERS; i++)
             for(int j = 0; j < walls; j++) {
-                assertTrue(players.peek().useWall());
+//                 assertTrue(players.peek().useWall());
+                assertTrue(players.peek().mayPlaceWall());
+                players.peek().useWall();
                 players.add(players.remove());
             }
 
         // check to make sure all players cannot place walls
         for(int i = 0; i < NUM_PLAYERS; i++) {
-            assertFalse(players.peek().useWall());
+            assertFalse(players.peek().mayPlaceWall());
             players.add(players.remove());
         }
     
