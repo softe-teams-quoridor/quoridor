@@ -15,3 +15,13 @@ Pre-release Objectives
 [X] make GameBoard.addPlayer private
 [X] fix bug in GameBoard.getPlayer
 [ ] make MoveServer close the frame after a game ends
+    -- montana, tylor: MoveServer runs a loop waiting for connections. when 
+       a display client connects to it, it starts up its playGame logic.
+       with the --display argument passed to it, it will show its own display
+       of what's going on so a viewer can watch (or in the case of AI_AskUser, 
+       the player can make moves). the problem is that it will start a new 
+       GameBoardFrame with each call to playGame. GameBoardFrame will need a
+       method or something to close the window when the game ends. please help!
+       -dan <3
+
+[ ] remove deprecated stuff

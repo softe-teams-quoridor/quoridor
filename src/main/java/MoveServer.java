@@ -201,5 +201,8 @@ public class MoveServer {
         Deb.ug.println("game over");
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
+        if (SERVER_DISPLAY) {
+            // FIXME: close the display
+        }
     }
 }
