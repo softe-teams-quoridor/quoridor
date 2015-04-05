@@ -118,3 +118,12 @@ README file for teams' Quoridor Project
             git lg
 
     4. gitk
+
+    5. other gradle build options
+
+            gb javadoc
+                outputs html files in build/docs/javadoc/
+
+            gb jar
+                does exactly what it says on the tin (uh...)
+
