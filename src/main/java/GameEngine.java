@@ -290,7 +290,7 @@ public class GameEngine {
         // Wall Placement 
         else {
             // Check to see if the player has enough walls
-            if(player.getNumWalls() == 0) {
+            if (! player.mayPlaceWall()) {
                 return null;
             }
             // Check to see if the move-string was valid
