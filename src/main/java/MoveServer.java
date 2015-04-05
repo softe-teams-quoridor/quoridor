@@ -149,22 +149,14 @@ public class MoveServer {
             // WENT --> a player made a move, update internal board
             } else if (clientMessage.startsWith("WENT")) {
                 assert (currentPlayer != null);
-                Square[] destination;
-                
-                // See if this is a wall move
-                if (words[2].startsWith("(") && clientMessage.contains(")")) {
-                    String wall = 
-                        clientMessage.substring(clientMessage.indexOf("("),
-                                                clientMessage.indexOf(")")+1);
-                    destination = GameEngine.validate(board, currentPlayer, 
-                                                      wall);
-                    board.placeWall(destination[0], destination[1]);
-                    currentPlayer.useWall();
-                } else { // it is a player move
-                    destination = GameEngine.validate(board, currentPlayer,
-                                                      words[2]);
-                    board.move(currentPlayer, destination[0]);
-                }
+                assert (currentPlayer.getName().equals(words[1]));
+
+                // move is a string like "V-A" or "(V-A, V-B)"
+                // add 6 to the player's name's length to compensate for
+                // "WENT" plus 2 spaces
+                String move = clientMessage.substring(6 + words[1].length());
+                GameEngine.playTurn(move, currentPlayer, board);
+
                 // shuffle players
                 players.add(players.remove());
                 currentPlayer = players.peek();

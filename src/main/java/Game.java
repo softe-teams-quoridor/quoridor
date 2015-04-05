@@ -94,6 +94,8 @@ public class Game {
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
             } else { // legal move
+                // FIXME /*
+//                 GameEngine.playTurn(response.substring(3), currentPlayer, board); 
                 if (moveSquares.length == 1) { // legal pawn move
                     Deb.ug.println("legal move");
                     board.move(currentPlayer, moveSquares[0]);
@@ -103,6 +105,7 @@ public class Game {
                     board.placeWall(moveSquares[0], moveSquares[1]);
                     currentPlayer.useWall();
                 }
+                // */ end of FIXME
                 hermes.broadcastWent(currentPlayer, response);
                 players.add(players.remove()); // Shuffle queue
             }

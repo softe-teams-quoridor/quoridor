@@ -391,4 +391,26 @@ public class GameEngine {
 
     //*************************************************************************
 
+    /**
+     * abstracts the functionality of moving pawns and placing walls
+     * @param player the player who is about to make the move 
+     * @param move a string representing a pawn move or wall placement
+     * @param board the board
+     */
+    public static void playTurn(String move, Player player, GameBoard board) {
+        System.out.println("playTurn saw " + move);
+
+        Square[] destination;
+        // See if this is a wall move
+        if (move.startsWith("(")) {
+            assert (move.endsWith(")")); // this will be a problem if the
+                                         // display client is non-conformant
+            destination = GameEngine.validate(board, player, move);
+            board.placeWall(destination[0], destination[1]);
+            player.useWall();
+        } else { // it is a player move
+            destination = GameEngine.validate(board, player, move);
+            board.move(player, destination[0]);
+        }
+    }
 }
