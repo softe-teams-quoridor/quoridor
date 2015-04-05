@@ -210,7 +210,6 @@ public class GameEngineTest {
         //Move player 1 to a winner pos
         for(int i = 1; i < 9; i++)
             board.move(players.peek(),board.getSquare(4,i));
-
         assertNotNull(GameEngine.getWinner(board, players));
     }
 }
