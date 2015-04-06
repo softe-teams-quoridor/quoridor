@@ -204,8 +204,6 @@ public class MoveServer {
         hermes.closeStreams();
         if (SERVER_DISPLAY) {
             // close the display
-            // FIXME: this terminates the moveserver. 
-            // can we close the window but keep the server running?
             Deb.ug.println("closing display");
         	frame.closeWindow();
         }

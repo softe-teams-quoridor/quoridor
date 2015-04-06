@@ -164,6 +164,7 @@ public class GameBoardFrame extends JFrame{
     
     	//closes the GameBoardFrame.Could also use dispose method.
     public void closeWindow(){
+        gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
     
