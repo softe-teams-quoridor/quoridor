@@ -82,16 +82,15 @@ public class ClientMessenger {
         return response.substring(3).trim();
     }
 
-    public void broadcastPlayers(Player [] players) {
-        assert (players.length == outStreams.length);
-        for (int i = 0; i < outStreams.length; i++) {
-            if (outStreams[i] != null) {
-                outStreams[i].print("PLAYERS ");
-                for (Player playa : players) {
-                    outStreams[i].print(playa.getName() + " ");
-                }
-                outStreams[i].println();
+    public void broadcastPlayers(Queue<Player> players) {
+        assert (players.size() == outStreams.length);
+        for (Player p : players) {
+            int i = p.getPlayerNo();
+            outStreams[i].print("PLAYERS ");
+            for (Player playa : players) {
+                outStreams[i].print(playa.getName() + " ");
             }
+            outStreams[i].println();
         }
     }
 
