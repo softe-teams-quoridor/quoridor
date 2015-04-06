@@ -29,6 +29,7 @@ Pre-release Objectives
 
 [ ] make squares on the frame big enough to show entire names
 [X] prettify the wall display on the GameBoardFrame
+[ ] make MoveServer close the board if the client quits unexpectedly
 
 [ ] remove deprecated stuff
 [ ] restore mostly good assertions in MoveServer
