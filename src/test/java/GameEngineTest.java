@@ -266,7 +266,7 @@ public class GameEngineTest {
         result[1] = board.getSquare(6,5);
         result[2] = board.getSquare(5,4);
         result[3] = board.getSquare(5,6);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,5)));
     }
     

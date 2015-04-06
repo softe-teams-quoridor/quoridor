@@ -34,6 +34,7 @@
  */
 
 import java.util.Queue;
+import java.util.LinkedList;
 
 public class GameEngine {
 
@@ -420,6 +421,37 @@ public class GameEngine {
      * @param board the board
      */
     public static boolean existsPath(Player player, GameBoard board) {
+        assert (player.getPlayerNo() == 1); // for now, only doing player 1
+        // reachable keeps track of all squares that can be visited
+        boolean[][] reachable = new boolean[GameBoard.COLUMNS][GameBoard.ROWS];
+        for (int i = 0; i < GameBoard.COLUMNS; i++) {
+            for (int j = 0; j < GameBoard.ROWS; j++) {
+                reachable[i][j] = false;
+            }
+        }
+        Square currentSquare = board.getPlayerLoc(player);
+        reachable[currentSquare.getX()][currentSquare.getY()] = true;
         return true;
     }
+
+    /** should return an array containing all the squares that are reachable
+     * in one step.
+     * FIXME: it might make sense to add possible squares that can be reached 
+     * in one step by jumping over another player
+     * @param player the player who is about to make the move 
+     * @param board the board
+     */
+    public static Square [] reachableAdjacentSquares(GameBoard b, Square sq) {
+        LinkedList<Square> squares = new LinkedList<Square>(); 
+        int x = sq.getX();
+        int y = sq.getY();
+//         if (x !=     // borders
+        // also handle walls
+        squares.add(b.getSquare(x-1, y));
+        squares.add(b.getSquare(x+1, y));
+        squares.add(b.getSquare(x, y-1));
+        squares.add(b.getSquare(x, y+1));
+        return squares.toArray(new Square[0]);
+    }
+
 }
