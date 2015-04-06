@@ -414,4 +414,12 @@ public class GameEngine {
             board.move(player, board.getSquare(move));
         }
     }
+
+    /** should return true if there is any path from a player to their goal
+     * @param player the player who is about to make the move 
+     * @param board the board
+     */
+    public static boolean existsPath(Player player, GameBoard board) {
+        return true;
+    }
 }

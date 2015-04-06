@@ -212,4 +212,10 @@ public class GameEngineTest {
             board.move(players.peek(),board.getSquare(4,i));
         assertNotNull(GameEngine.getWinner(board, players));
     }
+
+    @Test
+    public void testExistsPath() throws Exception {
+        assertTrue(GameEngine.existsPath(players.peek(), board));
+    }
+    
 }
