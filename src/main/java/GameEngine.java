@@ -400,16 +400,14 @@ public class GameEngine {
     public static void playTurn(String move, Player player, GameBoard board) {
         System.out.println("playTurn saw " + move);
 
-        Square[] destination;
+        Square[] destination = GameEngine.validate(board, player, move);
         // See if this is a wall move
         if (move.startsWith("(")) {
             assert (move.endsWith(")")); // this will be a problem if the
                                          // display client is non-conformant
-            destination = GameEngine.validate(board, player, move);
             board.placeWall(destination[0], destination[1]);
             player.useWall();
         } else { // it is a player move
-            destination = GameEngine.validate(board, player, move);
             board.move(player, destination[0]);
         }
     }
