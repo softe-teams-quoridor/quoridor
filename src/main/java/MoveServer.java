@@ -139,12 +139,16 @@ public class MoveServer {
             words = clientMessage.split(" ");
             System.out.println("words: " + Arrays.toString(words));
 
-            // GO? --> get a move from the player
+            // GO? --> get a move from this server
             if (clientMessage.startsWith("GO?")) {
                 String move = ai.getMove(board, currentPlayer);
                 System.out.println("move: " + move);
                 Deb.ug.println("sending: " + move);
                 hermes.go(move);
+                // don't update frame or shuffle players here, because the 
+                // client is about to send us a WENT with our move and we'll 
+                // take care of that stuff then
+                continue;
 
             // WENT --> a player made a move, update internal board
             } else if (clientMessage.startsWith("WENT")) {

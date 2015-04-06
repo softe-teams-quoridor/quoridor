@@ -218,6 +218,7 @@ public class GameEngine {
 
             // Retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
+                                              currLoc.getY() + y);
 
             // Modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
@@ -402,11 +403,13 @@ public class GameEngine {
         Square[] destination = GameEngine.validate(board, player, move);
         // See if this is a wall move
         if (move.startsWith("(")) {
+            Deb.ug.println("playTurn: legal wall");
             assert (move.endsWith(")")); // this will be a problem if the
                                          // display client is non-conformant
             board.placeWall(destination[0], destination[1]);
             player.useWall();
         } else { // it is a player move
+            Deb.ug.println("playTurn: legal move");
 //             board.move(player, destination[0]);
             board.move(player, board.getSquare(move));
         }
