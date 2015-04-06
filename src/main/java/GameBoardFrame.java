@@ -163,7 +163,7 @@ public class GameBoardFrame extends JFrame{
     }
     
     	//closes the GameBoardFrame.Could also use dispose method.
-    private void closeWindow(){
+    public void closeWindow(){
     	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
     
