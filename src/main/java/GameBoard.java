@@ -88,6 +88,20 @@ public class GameBoard {
         return validLoc(x,y) ? squares[x][y] : null;
     }
 
+    /**
+     * gets the square specified
+     * @param a string representing a square, e.g. IV-D
+     * @return the square object
+     */
+    public Square getSquare(String square) {
+        String [] separated = square.trim().split("-");
+        assert (separated.length == 2);
+        int x = GameEngine.fromNumerals(separated[0]);
+        assert (separated[1].length() == 1);
+        int y = GameEngine.fromLetters(separated[1].charAt(0));
+        return getSquare(x, y);
+    }
+
     //*************************************************************************
 
     /**
