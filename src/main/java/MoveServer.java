@@ -203,6 +203,7 @@ public class MoveServer {
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
         if (SERVER_DISPLAY) {
+        	frame.closeWindow();
             // FIXME: close the display
         }
     }
