@@ -141,13 +141,13 @@ public class GameEngine {
         // Make sure the string array has only 2 elements
         if ( commaSep.length != 2 )
             return null;
-        
+
         // Remove parentheses
         commaSep[0] = commaSep[0].replace ( "(", "" );
         commaSep[1] = commaSep[1].replace ( ")", "" );
         // [0] == V-A
         // [1] == V-B
-       
+
         String[] firstW = commaSep[0].split("-");
         // [0] == V
         // [1] == A
@@ -215,10 +215,10 @@ public class GameEngine {
             // Calculate the x and y offsets
             int x = ((direction & 8)  >> 3) * Integer.signum(direction);
             int y = ((direction & 16) >> 4) * Integer.signum(direction);
-            
+
             // Retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
-                                              currLoc.getY() + y);
+
             // Modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
 
@@ -259,7 +259,7 @@ public class GameEngine {
       // I added more comments and I can offer to explain it if you'd like :k)
 
     //*************************************************************************
-    
+
     /** 
       * This is now the only validate method called by the game and the 
       *    move servers, it will find out if the move-string is a move
@@ -270,7 +270,7 @@ public class GameEngine {
       * @return a square array of length 1 if a move or 2 if a wall
       */
     public static Square [] validate( GameBoard board, Player player, String move) {
-        
+
         // The square array to return
         Square [] validSquares;
 
@@ -388,7 +388,6 @@ public class GameEngine {
         return null;
     }   
 
-
     //*************************************************************************
 
     /**
@@ -398,7 +397,7 @@ public class GameEngine {
      * @param board the board
      */
     public static void playTurn(String move, Player player, GameBoard board) {
-        System.out.println("playTurn saw " + move);
+        Deb.ug.println("playTurn saw " + move);
 
         Square[] destination = GameEngine.validate(board, player, move);
         // See if this is a wall move
@@ -408,7 +407,8 @@ public class GameEngine {
             board.placeWall(destination[0], destination[1]);
             player.useWall();
         } else { // it is a player move
-            board.move(player, destination[0]);
+//             board.move(player, destination[0]);
+            board.move(player, board.getSquare(move));
         }
     }
 }
