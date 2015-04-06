@@ -41,6 +41,9 @@ class Player {
       * @param numWalls number of walls the player is given
       */
     public Player(int pno, String playerName, int numWalls) {
+        assert (playerName != null);
+        assert (numWalls == 0 || numWalls == 5 || numWalls == 10);
+        assert (pno >= 0 && pno < 4);
         this.playerName = playerName;
         this.numWalls = numWalls;
         this.playerNo = pno;
