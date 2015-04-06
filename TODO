@@ -14,7 +14,7 @@ Pre-release Objectives
 [X] update validate to check for wall obstruction
 [X] make GameBoard.addPlayer private
 [X] fix bug in GameBoard.getPlayer
-[ ] make MoveServer close the frame after a game ends
+[X] make MoveServer close the frame after a game ends
     -- montana, tylor: MoveServer runs a loop waiting for connections. when 
        a display client connects to it, it starts up its playGame logic.
        with the --display argument passed to it, it will show its own display
@@ -23,9 +23,12 @@ Pre-release Objectives
        GameBoardFrame with each call to playGame. GameBoardFrame will need a
        method or something to close the window when the game ends. please help!
        -dan <3
+       Probably done. :)
+            -Tylor
+       
 
 [ ] make squares on the frame big enough to show entire names
-[ ] prettify the wall display on the GameBoardFrame
+[X] prettify the wall display on the GameBoardFrame
 
 [ ] remove deprecated stuff
 [ ] restore mostly good assertions in MoveServer
