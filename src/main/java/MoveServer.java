@@ -96,7 +96,7 @@ public class MoveServer {
         System.out.println("Connection from " + currClient);
         Deb.ug.println("Connection from " + currClient);
 
-        hermes.identify("teams_" + portNumber);
+        hermes.identify("teams_" + portNumber + ai.toString());
 
         String clientMessage = null;
 

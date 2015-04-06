@@ -38,4 +38,8 @@ public class AI_LeftRight implements QuoridorAI {
     public void reset() {
         goLeft = false;
     }
+
+    public String toString() {
+        return "leftright";
+    }
 }

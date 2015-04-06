@@ -26,4 +26,9 @@ public class AI_AskUser implements QuoridorAI {
     public void reset() {
         // does this need to do anything? 
     }
+
+    public String toString() {
+        System.out.print("what is your name? ");
+        return keyboard.nextLine().trim();
+    }
 }

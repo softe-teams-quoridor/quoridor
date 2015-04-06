@@ -4,4 +4,9 @@ public interface QuoridorAI {
 
     /* reset an ai to its initial state; used for starting a new game */
     void reset(); 
+
+    /* used in names 
+     * don't make this return anything longer than 10 characters though LOOOOL
+     */
+    String toString();
 }
