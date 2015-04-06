@@ -42,12 +42,12 @@ public class MoveServer {
         assert (ai != null);
 
         Deb.initialize("moveserver_" + args[1] +  "_" + portNumber);
-        Deb.ug.println(Arrays.toString(args));
+        Deb.ug.println("args: " + Arrays.toString(args));
 
         // process optional command-line --display argument 
         if (args.length == 3) {
-            Deb.ug.println("three args detected ");
-            if (args[1].equals("-d") || args[1].equals("--display")) {
+            Deb.ug.println("three args detected");
+            if (args[2].equals("-d") || args[2].equals("--display")) {
                 Deb.ug.println("enabling display");
                 SERVER_DISPLAY = true;
             }
@@ -203,8 +203,11 @@ public class MoveServer {
         System.out.println("Server closing connection from " + currClient);
         hermes.closeStreams();
         if (SERVER_DISPLAY) {
+            // close the display
+            // FIXME: this terminates the moveserver. 
+            // can we close the window but keep the server running?
+            Deb.ug.println("closing display");
         	frame.closeWindow();
-            // FIXME: close the display
         }
     }
 }
