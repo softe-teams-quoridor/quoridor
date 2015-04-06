@@ -24,4 +24,9 @@ Pre-release Objectives
        method or something to close the window when the game ends. please help!
        -dan <3
 
+[ ] make squares on the frame big enough to show entire names
+[ ] prettify the wall display on the GameBoardFrame
+
 [ ] remove deprecated stuff
+[ ] restore mostly good assertions in MoveServer
+[ ] make AIs identify themselves
