@@ -69,7 +69,52 @@ public class ClientMessenger {
         }
     }
 
+    public String [] getNames() {
+        String [] result = new String[inStreams.length];
+        for (int i = 0; i < inStreams.length; i++) {
+            if (! inStreams[i].hasNextLine()) {
+                // the connection has been closed! we should boot them...
+                result[i] = null;
+                continue;
+            } 
+            String line = inStreams[i].nextLine();
+            if (! line.startsWith("MOVE-SERVER ")) {
+                // non conformant, again, we should boot them...
+                result[i] = null;
+                continue;
+            }
+            result[i] = line.substring(12);
+        }
+        return result;
+    }
+
+
+
+    /** sends PLAYERS message to all servers to inform them the 
+     * names and order of the players
+     * @param players the queue of players
+     */ 
+    public void broadcastPlayers(Queue<Player> players) {
+        assert (players.size() == outStreams.length);
+        for (Player p : players) {
+            int i = p.getPlayerNo();
+            if (outStreams[i] == null) {
+                continue;
+            }
+            outStreams[i].print("PLAYERS ");
+            for (Player playa : players) {
+                outStreams[i].print(playa.getName() + " ");
+            }
+            outStreams[i].println();
+        }
+    }
+
     public String requestMove(Player player) {
+        /*
+        if (outStreams[player.getPlayerNo()] == null) {
+            return "B-O-O-T-M-E"; // no connection to the server!
+        }
+        */
         outStreams[player.getPlayerNo()].println("GO?");
         if (! inStreams[player.getPlayerNo()].hasNextLine()) {
             return "B-O-O-T-M-E"; // no response from the server!
@@ -80,18 +125,6 @@ public class ClientMessenger {
             return "B-O-O-T-M-E"; // response must begin with GO
         }
         return response.substring(3).trim();
-    }
-
-    public void broadcastPlayers(Queue<Player> players) {
-        assert (players.size() == outStreams.length);
-        for (Player p : players) {
-            int i = p.getPlayerNo();
-            outStreams[i].print("PLAYERS ");
-            for (Player playa : players) {
-                outStreams[i].print(playa.getName() + " ");
-            }
-            outStreams[i].println();
-        }
     }
 
     public void broadcastWent(Player player, String move) {
