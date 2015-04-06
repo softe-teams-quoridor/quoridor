@@ -268,6 +268,33 @@ public class GameEngineTest {
         result[3] = board.getSquare(5,6);
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,5)));
+        result[0] = board.getSquare(0,5);
+        result[1] = board.getSquare(2,5);
+        result[2] = board.getSquare(1,4);
+        result[3] = board.getSquare(1,6);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(1,5)));
+        result = new Square[3];
+        result[0] = board.getSquare(1,5);
+        result[1] = board.getSquare(0,4);
+        result[2] = board.getSquare(0,6);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(0,5)));
+        result[0] = board.getSquare(7,5);
+        result[1] = board.getSquare(8,4);
+        result[2] = board.getSquare(8,6);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(8,5)));
+        result[0] = board.getSquare(3,8);
+        result[1] = board.getSquare(5,8);
+        result[2] = board.getSquare(4,7);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(4,8)));
+        result[0] = board.getSquare(3,0);
+        result[1] = board.getSquare(5,0);
+        result[2] = board.getSquare(4,1);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(4,0)));
     }
     
 }

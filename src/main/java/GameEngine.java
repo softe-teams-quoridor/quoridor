@@ -445,12 +445,19 @@ public class GameEngine {
         LinkedList<Square> squares = new LinkedList<Square>(); 
         int x = sq.getX();
         int y = sq.getY();
-//         if (x !=     // borders
         // also handle walls
-        squares.add(b.getSquare(x-1, y));
-        squares.add(b.getSquare(x+1, y));
-        squares.add(b.getSquare(x, y-1));
-        squares.add(b.getSquare(x, y+1));
+        if (x != 0) { // borders
+            squares.add(b.getSquare(x-1, y));
+        }
+        if (x != 8) { // borders
+            squares.add(b.getSquare(x+1, y));
+        }
+        if (y != 0) { // borders
+            squares.add(b.getSquare(x, y-1));
+        }
+        if (y != 8) { // borders
+            squares.add(b.getSquare(x, y+1));
+        }
         return squares.toArray(new Square[0]);
     }
 
