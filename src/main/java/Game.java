@@ -63,7 +63,8 @@ public class Game {
         // Instantiate GameBoard
         Deb.ug.println("instantiating GameBoard...");
         GameBoard board = new GameBoard(players);
-        Deb.ug.println("players array: " + Arrays.toString(players.toArray()));
+//         Deb.ug.println("players array: " + Arrays.toString(players.toArray()));
+        Deb.ug.println("players queue: " + players.toString());
 
         // tell all move servers who the players are
         hermes.broadcastPlayers(players.toArray(new Player[players.size()]));
