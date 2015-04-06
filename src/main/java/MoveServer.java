@@ -96,6 +96,8 @@ public class MoveServer {
         System.out.println("Connection from " + currClient);
         Deb.ug.println("Connection from " + currClient);
 
+        hermes.identify("teams_" + portNumber);
+
         String clientMessage = null;
 
         if (! hermes.hasNextLine()) {
@@ -137,7 +139,7 @@ public class MoveServer {
             Deb.ug.println("received: " + clientMessage);
 
             words = clientMessage.split(" ");
-            System.out.println("words: " + Arrays.toString(words));
+            Deb.ug.println("words: " + Arrays.toString(words));
 
             // GO? --> get a move from this server
             if (clientMessage.startsWith("GO?")) {
@@ -153,7 +155,12 @@ public class MoveServer {
             // WENT --> a player made a move, update internal board
             } else if (clientMessage.startsWith("WENT")) {
                 assert (currentPlayer != null);
-                assert (currentPlayer.getName().equals(words[1]));
+                // this assertion fails when the display client boots
+                // players at the beginning of the game for a bad name.
+                // you know, like a name that has `fuck' in it or something.
+                // in other cases this assertion should hold...
+                // can we keep it somehow?
+//                 assert (currentPlayer.getName().equals(words[1]));
 
                 // move is a string like "V-A" or "(V-A, V-B)"
                 // add 6 to the player's name's length to compensate for
@@ -169,7 +176,12 @@ public class MoveServer {
             } else if (clientMessage.startsWith("BOOT")) {
                 Deb.ug.println("currPlayer name " + currentPlayer.getName());
                 Deb.ug.println("currPlayer no " + currentPlayer.getPlayerNo());
-                assert words[1].equals(currentPlayer.getName());
+                // this assertion fails when the display client boots
+                // players at the beginning of the game for a bad name.
+                // you know, like a name that has `fuck' in it or something.
+                // in other cases this assertion should hold...
+                // can we keep it somehow?
+//                 assert words[1].equals(currentPlayer.getName());
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();

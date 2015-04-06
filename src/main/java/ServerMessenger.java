@@ -26,6 +26,13 @@ public class ServerMessenger {
         }
     }
 
+    /* tells the display client what our ROCKIN name is
+    * @param a string that we send to identify us
+     */
+    public void identify(String name) {
+        outStream.println("MOVE-SERVER " + name);
+    }
+
     public void go(String move) {
         outStream.println("GO " + move);
     }
