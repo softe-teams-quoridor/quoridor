@@ -162,6 +162,12 @@ public class GameBoardFrame extends JFrame{
     	    return someLabel;
     }
     
+    	//closes the GameBoardFrame.Could also use dispose method.
+    private void closeWindow(){
+    	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
+    }
+    
+    
     private void victoryMessage(String PlayerName){
     	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
     }
