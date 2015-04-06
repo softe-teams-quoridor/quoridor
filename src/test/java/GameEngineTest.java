@@ -214,8 +214,10 @@ public class GameEngineTest {
     }
 
     @Test
-    public void testExistsPath() throws Exception {
+    public void testExistsPathPlayer1() throws Exception {
+        players.remove();
         Player p = players.peek();
+        assertEquals(1, p.getPlayerNo());
         assertTrue(GameEngine.existsPath(p, board));
         board.placeWall(board.getSquare("I-D"), board.getSquare("II-D"));
         assertTrue(GameEngine.existsPath(p, board));
@@ -231,6 +233,7 @@ public class GameEngineTest {
         assertTrue(GameEngine.existsPath(p, board));
         board.placeWall(board.getSquare("VIII-E"), board.getSquare("IX-E"));
 
+        /*
         // a wall has been made across the middle
         assertFalse(GameEngine.existsPath(p, board));
         board.move(p, board.getSquare("II-G"));
@@ -253,6 +256,18 @@ public class GameEngineTest {
         assertTrue(GameEngine.existsPath(p, board));
         board.move(p, board.getSquare("VIII-D"));
         assertTrue(GameEngine.existsPath(p, board));
+        */
+    }
+
+    @Test
+    public void testReachableAdjacentSquares() throws Exception {
+        Square [] result = new Square[4];
+        result[0] = board.getSquare(4,5);
+        result[1] = board.getSquare(6,5);
+        result[2] = board.getSquare(5,4);
+        result[3] = board.getSquare(5,6);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(
+                                                board.getSquare(5,5)));
     }
     
 }
