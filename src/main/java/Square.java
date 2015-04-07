@@ -175,4 +175,8 @@ public class Square {
     public Wall getWallBottom() {
         return bottomWall;
     }
+
+    public String toString() {
+        return "Square @ (" + col + "," + row + ")";
+    }
 }
