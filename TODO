@@ -7,8 +7,9 @@ Pre-release Objectives
 
 1.0 Objectives
 [X] refactor code
-[ ] ensure a player has a clear path from their position to their victory 
+[X] ensure a player has a clear path from their position to their victory 
       row
+[ ] --> follow up: do this for players other than player 1
 [X] parse walls
 [X] place walls
 [X] update validate to check for wall obstruction
@@ -33,4 +34,4 @@ Pre-release Objectives
 
 [ ] remove deprecated stuff
 [ ] restore mostly good assertions in MoveServer
-[ ] make AIs identify themselves
+[X] make AIs identify themselves
