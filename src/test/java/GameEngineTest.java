@@ -295,6 +295,16 @@ public class GameEngineTest {
         result[2] = board.getSquare(4,1);
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,0)));
+        
+        // walls
+        board.placeWall(board.getSquare(4,0), board.getSquare(4,1));
+        // now we shouldn't be able to move to 5,0 aka VI-A
+        result = new Square[2];
+        result[0] = board.getSquare(3,0);
+        result[1] = board.getSquare(4,1);
+        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+                                                board.getSquare(4,0)));
+
     }
     
 }
