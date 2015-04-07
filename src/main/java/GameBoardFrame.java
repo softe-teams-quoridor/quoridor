@@ -56,19 +56,6 @@ public class GameBoardFrame extends JFrame{
         gameboard.setFocusableWindowState(true);	//autofocusing
     }
     
-    /** dan's version: with colours for visited squares!!
-     * Constructs the gameboard and makes it visible
-     */
-    private void draw(GameBoard board, boolean [][] visited) {
-        topLayer(board);
-        rows(board, visited);
-        gameboard.pack();
-        gameboard.setFocusableWindowState(false);	//prevents window from
-        gameboard.setVisible(true);					
-        gameboard.setFocusableWindowState(true);	//autofocusing
-    }
-
-    
     /** dan's version: with colours for specific squares!!
      * Constructs the gameboard and makes it visible
      */
@@ -93,22 +80,6 @@ public class GameBoardFrame extends JFrame{
         row("G", 7, board);
         row("H", 8, board);
         row("I", 9, board);
-    }
-
-
-    /** dan's version: with colours for visited squares!!
-     * creates rows A-I
-     */
-    private void rows(GameBoard board, boolean [][] visited) {
-        row("A", 1, board, visited[0]);
-        row("B", 2, board, visited[1]);
-        row("C", 3, board, visited[2]);
-        row("D", 4, board, visited[3]);
-        row("E", 5, board, visited[4]);
-        row("F", 6, board, visited[5]);
-        row("G", 7, board, visited[6]);
-        row("H", 8, board, visited[7]);
-        row("I", 9, board, visited[8]);
     }
 
     /** dan's version: with colours for specific squares!!
@@ -200,43 +171,6 @@ public class GameBoardFrame extends JFrame{
             }
         }
     }
-
-
-    /** dan's version: with colours for visited squares!!
-     * creates a row
-     */
-    private void row(String row, int rownum, GameBoard board, boolean [] vis) {
-        JLabel labelblank = new JLabel();
-        labelblank.setOpaque(true);
-        labelblank.setBackground(new Color(150, 0, 0));
-        labelblank.setPreferredSize(new Dimension(100, 70));
-        labelblank.setText("    " + row);
-        gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
-        
-        //Fills frame with GREY Squares if unoccupied 
-        for (int i = 1; i < 10; i++){
-            if (!board.isOccupied(i-1,rownum-1)){ //Tylor Changed this
-                JLabel labelblue = new JLabel();
-                labelblue.setOpaque(true);
-                labelblue.setBackground(new Color(140, 130, 130));
-                labelblue.setPreferredSize(new Dimension(100, 70));
-                //labelblue.setBorder(BorderFactory.createLineBorder(Color.black));
-                labelblue=setBoarder(labelblue,board.getSquare(i-1,rownum-1));			//Untested
-                gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
-            } else if (vis[rownum]) {
-                JLabel labelblue = new JLabel();
-                labelblue.setOpaque(true);
-                labelblue.setBackground(new Color(240, 230, 230));
-                labelblue.setPreferredSize(new Dimension(100, 70));
-                labelblue=setBoarder(labelblue,board.getSquare(i-1,rownum-1));
-                gameboard.getContentPane().add(labelblue, BorderLayout.CENTER);
-
-            } else {
-                printPlayerLabel(board.getPlayer(i-1,rownum-1), board.getSquare(i-1,rownum-1));//And this.
-            }
-        }
-    }
-
 
     //Changes the color of the squares that contain a player and shows 
     //the player name
