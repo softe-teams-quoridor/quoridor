@@ -477,17 +477,17 @@ public class GameEngine {
         int y = sq.getY();
 
         // each square can be blocked by either of two things: borders && walls
-        if (x != 0 && (! b.getSquare(x-1, y).hasWallRight())) {
-            squares.add(b.getSquare(x-1, y));
-        }
-        if (x != 8 && !sq.hasWallRight()) {
-            squares.add(b.getSquare(x+1, y));
-        }
         if (y != 0 && (! b.getSquare(x, y-1).hasWallBottom())) {
             squares.add(b.getSquare(x, y-1));
         }
         if (y != 8 && !sq.hasWallBottom()) {
             squares.add(b.getSquare(x, y+1));
+        }
+        if (x != 0 && (! b.getSquare(x-1, y).hasWallRight())) {
+            squares.add(b.getSquare(x-1, y));
+        }
+        if (x != 8 && !sq.hasWallRight()) {
+            squares.add(b.getSquare(x+1, y));
         }
         return squares.toArray(new Square[0]);
     }
