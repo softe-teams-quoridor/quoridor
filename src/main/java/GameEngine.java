@@ -34,6 +34,7 @@
  */
 
 import java.util.Queue;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class GameEngine {
@@ -431,13 +432,42 @@ public class GameEngine {
         }
         Square currentSquare = board.getPlayerLoc(player);
         reachable[currentSquare.getX()][currentSquare.getY()] = true;
-        return true;
+        return existsPathRecurse(board, player.getPlayerNo(), 
+                                 currentSquare, reachable);
     }
 
-    /** should return an array containing all the squares that are reachable
+    /** inner recursive lopo for existsPath
+     */
+    private static boolean existsPathRecurse(GameBoard board, int pno,
+//                                              Square [] squares,
+                                             Square square,
+                                             boolean[][] visited) {
+        assert (pno == 1); // for now, only doing player 1
+        int x, y;
+        Square [] squares = reachableAdjacentSquares(board, square);
+        for (Square sq : squares) {
+            x = sq.getX();
+            y = sq.getY();
+            System.out.println("checking square: (" + x + ", " + y + ")");
+            if (y == 0) {
+                return true; // player 1 has reached the top rank!
+            }
+            if (visited[x][y]) {
+                System.out.println("been here!");
+                continue;
+            }
+            visited[x][y] = true;
+            if (existsPathRecurse(board, pno, sq, visited)) {
+                return true;
+            };
+        }
+        return false;
+    }
+
+    /** return an array containing all the squares that are reachable
      * in one step.
      * FIXME: it might make sense to add possible squares that can be reached 
-     * in one step by jumping over another player
+     * in one step by jumping over another player, iono
      * @param player the player who is about to make the move 
      * @param board the board
      */
@@ -445,20 +475,20 @@ public class GameEngine {
         LinkedList<Square> squares = new LinkedList<Square>(); 
         int x = sq.getX();
         int y = sq.getY();
-        // also handle walls
-        if (x != 0) { // borders
+
+        // each square can be blocked by either of two things: borders && walls
+        if (x != 0 && (! b.getSquare(x-1, y).hasWallRight())) {
             squares.add(b.getSquare(x-1, y));
         }
-        if (x != 8) { // borders
+        if (x != 8 && !sq.hasWallRight()) {
             squares.add(b.getSquare(x+1, y));
         }
-        if (y != 0) { // borders
+        if (y != 0 && (! b.getSquare(x, y-1).hasWallBottom())) {
             squares.add(b.getSquare(x, y-1));
         }
-        if (y != 8) { // borders
+        if (y != 8 && !sq.hasWallBottom()) {
             squares.add(b.getSquare(x, y+1));
         }
         return squares.toArray(new Square[0]);
     }
-
 }
