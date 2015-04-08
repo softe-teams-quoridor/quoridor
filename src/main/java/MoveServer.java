@@ -36,6 +36,10 @@ public class MoveServer {
             ai = new AI_AskUser();
         } else if (args[1].equals("lr")) {
             ai = new AI_LeftRight();
+        } else if (args[1].equals("rd")) {
+            ai = new AI_RollDice();
+        } else if (args[1].equals("fcrd")) {
+            ai = new AI_FlipCoinRollDice();
         } else {
              usage(3);
         }
