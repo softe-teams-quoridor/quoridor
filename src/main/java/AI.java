@@ -31,7 +31,12 @@ public class AI implements QuoridorAI{
     }
 
     private Square choose(int playerno){
-	if(playerno == 0)
+        // ===== TEMP FIX =====
+        int y=0; int x=0;
+        // ==== gradle would not build!
+    
+    
+        if(playerno == 0)
 	    y++;
 	else if(playerno == 1)
 	    y--;
