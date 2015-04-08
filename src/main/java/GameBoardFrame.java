@@ -82,7 +82,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setOpaque(true);
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
-        labelblank.setText("    " + GameEngine.toNumerals(row));
+        labelblank.setText("    " + GameEngine.toLetters(row));
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
         
         //Fills frame with GREY Squares if unoccupied 
@@ -109,7 +109,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setOpaque(true);
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
-        labelblank.setText("    " + GameEngine.toNumerals(row));
+        labelblank.setText("    " + GameEngine.toLetters(row));
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
 
         //Fills frame with GREY Squares if unoccupied 
