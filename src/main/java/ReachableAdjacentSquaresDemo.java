@@ -28,7 +28,7 @@ public class ReachableAdjacentSquaresDemo {
         GameBoard board = new GameBoard(players);
 
         // Start up the display
-        GameBoardFrame frame = new GameBoardFrame(board, numPlayers);
+        GameBoardFrame frame = new GameBoardFrame(board, players);
         frame.update(board);
 
         /** TESTING ONLY */
