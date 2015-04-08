@@ -162,15 +162,27 @@ public class GameBoardFrame extends JFrame{
         labels[0].setPreferredSize(new Dimension(100, 70));
 
         // display the number of walls for each player
-        String labelText = "";
-        for (int i = 0; i < numPlayers; i++) {
-            Player p = board.getPlayer(i);
-            if (p != null) {
-                labelText += "p" + i + " " + p.getNumWalls() + "\n ";
-//                 labelText += p.getName() + " " + p.getNumWalls() + "\n ";
-            }
+        // Tylor changed and maybe broke this part.
+        //String labelText = "";
+        if (numPlayers==2){
+        	labels[0].setLayout(new GridLayout(2,1));
+        }else{
+        	labels[0].setLayout(new GridLayout(4,1));
         }
-        labels[0].setText(labelText);
+        
+        	for(int i=0; i< numPlayers; i++){
+        		Player p=board.getPlayer(i);
+        		JLabel onePlayerWall=new JLabel("    P"+i+" "+ p.getNumWalls());
+        		labels[0].add(onePlayerWall);
+        }
+        //for (int i = 0; i < numPlayers; i++) {
+        //    Player p = board.getPlayer(i);
+        //    if (p != null) {
+        //        labelText += "p" + i + " " + p.getNumWalls() + "\n ";
+        //        labelText += p.getName() + " " + p.getNumWalls() + "\n ";
+        //    }
+        //}
+        //labels[0].setText(labelText);
 
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
