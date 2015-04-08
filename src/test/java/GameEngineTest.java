@@ -214,6 +214,55 @@ public class GameEngineTest {
     }
 
     @Test
+    public void testExistsPathPlayer0() throws Exception {
+        Player p = players.peek();
+        assertEquals(0, p.getPlayerNo());
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("I-D"), board.getSquare("II-D"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("III-D"), board.getSquare("IV-D"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("V-D"), board.getSquare("VI-D"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("VIII-D"), board.getSquare("VIII-E"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.placeWall(board.getSquare("VIII-E"), board.getSquare("IX-E"));
+
+        // a wall has been made across the middle
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("III-C"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("IX-D"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("I-A"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("I-B"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("III-D"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("IX-D"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("IX-E"));
+        assertFalse(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("VIII-D"));
+        assertFalse(GameEngine.existsPath(p, board));
+
+        // put the player on the other side of the great wall
+        board.move(p, board.getSquare("II-G"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("IX-I"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("I-I"));
+        assertTrue(GameEngine.existsPath(p, board));
+        board.move(p, board.getSquare("VIII-E"));
+        assertTrue(GameEngine.existsPath(p, board));
+    }
+
+    @Test
     public void testExistsPathPlayer1() throws Exception {
         players.remove();
         Player p = players.peek();

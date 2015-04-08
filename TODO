@@ -9,7 +9,7 @@ Pre-release Objectives
 [X] refactor code
 [X] ensure a player has a clear path from their position to their victory 
       row
-[ ] --> follow up: do this for players other than player 1
+[X] --> follow up: do this for players other than player 1
 [X] parse walls
 [X] place walls
 [X] update validate to check for wall obstruction

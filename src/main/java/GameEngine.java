@@ -422,7 +422,6 @@ public class GameEngine {
      * @param board the board
      */
     public static boolean existsPath(Player player, GameBoard board) {
-        assert (player.getPlayerNo() == 1); // for now, only doing player 1
         // reachable keeps track of all squares that can be visited
         boolean[][] reachable = new boolean[GameBoard.COLUMNS][GameBoard.ROWS];
         for (int i = 0; i < GameBoard.COLUMNS; i++) {
@@ -439,18 +438,22 @@ public class GameEngine {
     /** inner recursive lopo for existsPath
      */
     private static boolean existsPathRecurse(GameBoard board, int pno,
-//                                              Square [] squares,
                                              Square square,
                                              boolean[][] visited) {
-        assert (pno == 1); // for now, only doing player 1
         int x, y;
         Square [] squares = reachableAdjacentSquares(board, square);
         for (Square sq : squares) {
             x = sq.getX();
             y = sq.getY();
             System.out.println("checking square: (" + x + ", " + y + ")");
-            if (y == 0) {
+            if (pno == 0 && y == 8) {
+                return true; // player 0 has reached the bottom rank!
+            } else if (pno == 1 && y == 0) {
                 return true; // player 1 has reached the top rank!
+            } else if (pno == 2 && x == 8) {
+                return true; // player 2 has reached right side!
+            } else if (pno == 3 && x == 0) {
+                return true; // player 3 has reached left side!
             }
             if (visited[x][y]) {
                 System.out.println("been here!");
