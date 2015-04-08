@@ -37,7 +37,7 @@ public class GameBoardFrame extends JFrame{
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
 	    //print out win
-	    JOptionPane.showMessageDialog(gameboard, p.getName() + "HAS WON!!!");
+	    JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
 	    closeWindow();
         } else{
 	    gameboard.getContentPane().removeAll();
