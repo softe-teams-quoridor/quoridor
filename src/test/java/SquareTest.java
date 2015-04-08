@@ -64,6 +64,8 @@ public class SquareTest {
     public void testEquals() throws Exception {
         Square square2 = new Square(3,5);
         assertTrue(square.equals(square2));
+        square2 = new Square(7,5);
+        assertFalse(square.equals(square2));
     }
 
     @Test
@@ -82,5 +84,16 @@ public class SquareTest {
 
 	square.placeWallRight(false);
 	assertTrue(square.hasWallRight());
+    }
+
+    @Test
+    public void testSquareToString() throws Exception {
+        assertEquals(square.toString(), "IV-F");
+        square = new Square(6,2);
+        assertEquals(square.toString(), "VII-C");
+        square = new Square(0,8);
+        assertEquals(square.toString(), "I-I");
+        square = new Square(8,0);
+        assertEquals(square.toString(), "IX-A");
     }
 }
