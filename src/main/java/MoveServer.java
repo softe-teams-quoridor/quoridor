@@ -40,6 +40,8 @@ public class MoveServer {
             ai = new AI_RollDice();
         } else if (args[1].equals("fcrd")) {
             ai = new AI_FlipCoinRollDice();
+        }else if (args[1].equals("ai")) {
+            ai = new AI();
         } else {
              usage(3);
         }
