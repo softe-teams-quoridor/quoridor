@@ -177,6 +177,7 @@ public class Square {
     }
 
     public String toString() {
-        return "Square @ (" + col + "," + row + ")";
+//         return "Square @ (" + col + "," + row + ")";
+        return GameEngine.toNumerals(col) + "-" + GameEngine.toLetters(row);
     }
 }
