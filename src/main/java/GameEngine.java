@@ -446,6 +446,10 @@ public class GameEngine {
             x = sq.getX();
             y = sq.getY();
             System.out.println("checking square: (" + x + ", " + y + ")");
+            if (visited[x][y]) {
+                System.out.println("been here!");
+                continue;
+            }
             if (pno == 0 && y == 8) {
                 return true; // player 0 has reached the bottom rank!
             } else if (pno == 1 && y == 0) {
@@ -454,10 +458,6 @@ public class GameEngine {
                 return true; // player 2 has reached right side!
             } else if (pno == 3 && x == 0) {
                 return true; // player 3 has reached left side!
-            }
-            if (visited[x][y]) {
-                System.out.println("been here!");
-                continue;
             }
             visited[x][y] = true;
             if (existsPathRecurse(board, pno, sq, visited)) {
