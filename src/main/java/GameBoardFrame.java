@@ -10,11 +10,13 @@ public class GameBoardFrame extends JFrame{
 
     private JFrame gameboard;
     private int numPlayers;
+    private Queue<Player> players;
 
     //constructs JFrame
-    public GameBoardFrame(GameBoard board, int numPlayers) {
-        this.numPlayers = numPlayers;
-
+    public GameBoardFrame(GameBoard board, Queue<Player> players) {
+        numPlayers = players.size();
+        this.players = players;
+	  
         //initialize JFrame
         gameboard = new JFrame("Quoridor");
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,16 +34,30 @@ public class GameBoardFrame extends JFrame{
     
     //Removes contents of frame and calls draw in order to update
     public void update(GameBoard board){
-        gameboard.getContentPane().removeAll();
-        draw(board);
+        Player p = GameEngine.getWinner(board, players);
+        if(p != null){
+	    //print out win
+	    JOptionPane.showMessageDialog(gameboard, p.getName() + "HAS WON!!!");
+	    closeWindow();
+        } else{
+	    gameboard.getContentPane().removeAll();
+	    draw(board);
+	}
     }
     
     /** dan's version: with colours for specific squares!!
      * Removes contents of frame and calls draw in order to update
      */
     public void update(GameBoard board, Square [] reachable){
-        gameboard.getContentPane().removeAll();
-        draw(board, reachable);
+        Player p = GameEngine.getWinner(board, players);
+        if(p != null){
+	    //print out win
+	    JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+	    closeWindow();
+        } else{
+	    gameboard.getContentPane().removeAll();
+	    draw(board, reachable);
+	}
     }
 
     //Constructs the gameboard and makes it visible
@@ -138,7 +154,6 @@ public class GameBoardFrame extends JFrame{
      * the player name
      */
     private void printPlayerLabel(Player p, JLabel label) {
-        JLabel label = new JLabel();
         label.setBackground(new Color(230, 200, 200)); 
         label.setText("     " + p.getName());
         label.setPreferredSize(new Dimension(100, 70));
@@ -220,7 +235,7 @@ public class GameBoardFrame extends JFrame{
     }
     
     
-    private void victoryMessage(String PlayerName){
-    	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
-    }
+//     private void victoryMessage(String PlayerName){
+//     	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
+//     }
 }
