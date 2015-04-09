@@ -15,39 +15,61 @@ public class AI implements QuoridorAI{
 	int y = current.getY();
 	
 	//get recheable squares from our location
-	Square [] reachable = GameEngine.reachableAdjacentSquares(b, current);
+	Square[] reacheable = GameEngine.reachableAdjacentSquares(b, current);
+	Square[] secondChoice = new Square[reacheable.length];
+	int index = 0;
+	
 	int playerno = p.getPlayerNo();
-
-	Square newLoc = choose(playerno);
-	
-	if(b.isOccupied(x,y))
-	    newLoc = null;
-	
-	for(int i = 0; i < reachable.length; i++)
-	    if(reachable[i].equals(newLoc))
-		 return newLoc.toString();
-	
-	return reachable[0].toString();
-    }
-
-    private Square choose(int playerno){
-        // ===== TEMP FIX =====
-        int y=0; int x=0;
-        // ==== gradle would not build!
-    
-    
-        if(playerno == 0)
+		
+	if(playerno == 0){
+	    for(int i = 0; i < reacheable.length; i++)
+		if(reacheable[i].getY() < y){
+		    secondChoice[index] = reacheable[i];
+		    index++;
+		    reacheable[i] = null;
+		}
 	    y++;
-	else if(playerno == 1)
+	}else if(playerno == 1){	
+	    for(int i = 0; i < reacheable.length; i++)
+		if(reacheable[i].getY() > y){
+		    secondChoice[index] = reacheable[i];
+		    index++;
+		    reacheable[i] = null;
+		}
 	    y--;
-	else if(playerno == 2)
+	}else if(playerno == 2){	
+	    for(int i = 0; i < reacheable.length; i++)
+		if(reacheable[i].getX() < x){
+		    secondChoice[index] = reacheable[i];
+		    index++;
+		    reacheable[i] = null;
+		}
 	    x++;
-	else
+	}else{	
+	    for(int i = 0; i < reacheable.length; i++)
+		if(reacheable[i].getX() > x){
+		    secondChoice[index] = reacheable[i];
+		    index++;
+		    reacheable[i] = null;
+		}
 	    x--;
+	}
 	
-	return new Square(x,y);
+	Square newLoc = new Square(x,y);
+	
+	for(int i = 0; i < reacheable.length; i++){
+	    if(reacheable[i] != null && reacheable[i].equals(newLoc))
+		 return newLoc.toString();
+	}
+	
+	for(int i = 0; i < reacheable.length; i++){
+	    if(reacheable[i] != null)
+		 return newLoc.toString();
+	}
+	
+	return secondChoice[0].toString();
     }
-    
+
     /* reset an ai to its initial state; used for starting a new game */
     public void reset(){}
 
