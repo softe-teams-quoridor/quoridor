@@ -61,6 +61,23 @@ public class GameBoard {
         setupInitialPositions(players);
     }
 
+    public GameBoard(GameBoard board) {
+        this.playerLocs = board.playerLocs;
+        this.squares = board.squares;
+    }
+
+    //*************************************************************************
+
+    public int numPlayersRemaining() {
+        int c = 0;
+        for(int i = 0; i < playerLocs.length; i++) {
+            if(playerLocs[i] != null) {
+                c++;
+            }
+        }
+        return c;
+    }
+
     //*************************************************************************
 
     /** Checks to see if a cell/square is occupied
@@ -87,6 +104,7 @@ public class GameBoard {
     public Square getSquare(int x, int y) {
         return validLoc(x,y) ? squares[x][y] : null;
     }
+
 
     /**
      * gets the square specified

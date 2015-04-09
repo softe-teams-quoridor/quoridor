@@ -329,7 +329,7 @@ public class GameEngine {
                wallSquares[0].getWallRight() == null) {
                 // Check for intersect
                 if(wallSquares[1].getWallBottom() == null) {
-                    return true;
+                    return checkAllPlayersPaths(board, wallSquares);
                 } 
             }
             // the square has a wall but its vertical 
@@ -337,7 +337,7 @@ public class GameEngine {
                 // Check for intersect
                 if(!wallSquares[0].getWallRight().isStart() && 
                     wallSquares[1].getWallBottom() == null) {
-                    return true;
+                    return checkAllPlayersPaths(board, wallSquares);
                 }
             }
         }
@@ -348,7 +348,7 @@ public class GameEngine {
                wallSquares[0].getWallRight() == null) {
                 // Check for intersect
                if(wallSquares[1].getWallRight() == null) {
-                   return true;
+                   return checkAllPlayersPaths(board, wallSquares);
                }
             }
             // the square has a wall but its horziontal
@@ -356,7 +356,7 @@ public class GameEngine {
                 // Check for intersect
                 if(!wallSquares[0].getWallBottom().isStart() &&
                     wallSquares[1].getWallRight() == null) {
-                    return true;
+                    return checkAllPlayersPaths(board,wallSquares);
                 }
             }
         return false;
@@ -493,5 +493,29 @@ public class GameEngine {
             squares.add(b.getSquare(x+1, y));
         }
         return squares.toArray(new Square[0]);
+    }
+
+    private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) {
+        
+        
+        GameBoard board2 = new GameBoard(board);
+/*
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                board2.setSquare(board.getSquare(i,j));
+            }
+        }
+
+*/
+        board2.placeWall(wallSquares[0],wallSquares[1]);
+        
+        
+        for(int i = 0; i < board.numPlayersRemaining(); i++) {
+            if(!GameEngine.existsPath(board.getPlayer(i), board2)) {
+                return false;
+            }
+        }
+        return true;
+        
     }
 }
