@@ -26,6 +26,7 @@ public class PathTreeNodeTest{
 	assertNull("down should be initialized as null", node.getDown());
 	assertNull("left should be initialized as null", node.getLeft());
 	assertNull("right should be initialized as null", node.getRight());
+	assertNotNull("location should never be null!", node.getLocation());
     }
     
     /* check that setUp adds a node */
