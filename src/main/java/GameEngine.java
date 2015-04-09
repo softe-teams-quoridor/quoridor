@@ -406,6 +406,8 @@ public class GameEngine {
         }
     }
 
+    //*************************************************************************
+
     /** should return true if there is any path from a player to their goal
      * @param player the player who is about to make the move 
      * @param board the board
@@ -423,6 +425,8 @@ public class GameEngine {
         return existsPathRecurse(board, player.getPlayerNo(), 
                                  currentSquare, reachable);
     }
+
+    //*************************************************************************
 
     /** inner recursive lopo for existsPath
      */
@@ -456,6 +460,8 @@ public class GameEngine {
         return false;
     }
 
+    //*************************************************************************
+
     /** return an array containing all the squares that are reachable
      * in one step.
      * FIXME: it might make sense to add possible squares that can be reached 
@@ -464,7 +470,9 @@ public class GameEngine {
      * @param board the board
      */
     public static Square [] reachableAdjacentSquares(GameBoard b, Square sq) {
-        LinkedList<Square> squares = new LinkedList<Square>(); 
+        return reachableAdjacentSquares(b,sq,0,-1);
+        
+        /*    LinkedList<Square> squares = new LinkedList<Square>(); 
         int x = sq.getX();
         int y = sq.getY();
 
@@ -481,10 +489,14 @@ public class GameEngine {
         if (x != 8 && !sq.hasWallRight()) {
             squares.add(b.getSquare(x+1, y));
         }
-        return squares.toArray(new Square[0]);
+        return squares.toArray(new Square[0]);*/
     }
 
+    //*************************************************************************
 
+    /**
+      * DOCUMENTME
+      */
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
         // Place the theoritcal wall
         board.placeWall(wallSquares[0],wallSquares[1]); 
@@ -499,7 +511,8 @@ public class GameEngine {
         
     }
 
-    
+    //*************************************************************************
+
     /**
       * retrieves all possible locations that can be moved to from the
       *   given current locations 
@@ -509,19 +522,18 @@ public class GameEngine {
       * @param numJumps flag to prevent a 4th jump, inc. of player clustering
       * @return returns an array of squares to jump to 
      */
-    protected static Square[] reachableAdjacentSquares ( GameBoard board, 
+    private static Square[] reachableAdjacentSquares ( GameBoard board, 
         Square currLoc, int dontCheckMe, int numJumps ) {
-        
         List<Square> squareList = new LinkedList<Square>();
         int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
-            // This is the order in which we check for adjacencies:
-            //    ITERATION         COORDINATES
-            //  i = 0 -> down   |  x = 0;  y = 1
-            //  i = 1 -> right  |  x = 1;  y = 0
-            //  i = 2 -> up     |  x = 0;  y = -1
-            //  i = 3 -> left   |  x = -1; y = 0
-            //  ---------------------------------
+            /* This is the order in which we check for adjacencies:
+                   ITERATION        COORDINATES
+                i = 0 -> down   |  x =  0; y =  1
+                i = 1 -> right  |  x =  1; y =  0
+                i = 2 -> up     |  x =  0; y = -1
+                i = 3 -> left   |  x = -1; y =  0
+                --------------------------------- */
             // Calculate the x and y offsets
             int x = ((direction & 8)  >> 3) * Integer.signum(direction);
             int y = ((direction & 16) >> 4) * Integer.signum(direction);
@@ -544,19 +556,21 @@ public class GameEngine {
                 // If the spot is occupied, this isn't our third jump, and the
                 // adjacent spot to check isn't the spot we were just in, add
                 // those locations to the array
-                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe ) {
-                    Square[] adjToPlayer = reachableAdjacentSquares(board, checkLoc, (i+2)%4, numJumps++);
+                if ( !checkLoc.vacant() && i != dontCheckMe && numJumps < 3 ) {
+                    // Get the squares from the adjacent player
+                    Square[] adjToPlayer = reachableAdjacentSquares(board,
+                                           checkLoc, (i+2)%4, numJumps++);
+                    // Add the adjacent player's squares to the list
                     for ( int j = 0; j < adjToPlayer.length; j++ )
                         squareList.add(adjToPlayer[j]);
-                } else {
-                    // just add the square to the list
+                } 
+                // just add the square to the list
+                else 
                     squareList.add(checkLoc);
-                }
             }
-       }
+       }//---END for loop---
         return squareList.toArray(new Square[squareList.size()]);
-    } // i don't understand this and i'm grumpy about it
-      // I added more comments and I can offer to explain it if you'd like :k)
+    }
 
-}
+}//---END GameEngine---
 
