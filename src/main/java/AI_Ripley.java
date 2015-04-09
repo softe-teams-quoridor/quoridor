@@ -1,10 +1,13 @@
 /* AI_Ripley.java - CIS405 - teams
- * Version: 0.1 <-- I probably won't keep up with this
+ * Version: 0.2 <-- I probably won't keep up with this
  * Last Modified: April 8th
  * ____________________________________________________________________________
  *
  *      current version will assume AI is player 0; there is currently no
  *      transpositioning of walls and other player movements
+ *
+ *      Ripley doesn't know how to behave as player1,2, or 3 yet. 
+ *      expect fuck ups if you set him as those players
  *
  *      Note: Future versions of Ripley will need to know which player it is so
  *       it can transpose its moves and placements accordingly
@@ -53,6 +56,12 @@ public class AI_Ripley implements QuoridorAI {
       * return a move string, be it a player move or wall placement
       */
     public String getMove(GameBoard board, Player p) {
+        // the first thing we want to do is to update the virtual
+        // board based on what has changed with the GameBoard
+        // -- this will require receiving the previous move(s) from
+        //    the other players so we can make an appropriate adjustment,
+        //    otherwise ripley will have to rebuild a new virtualBoard
+        //    from scratch and iterate through the GameBoard... bleh!
         // Directional compass
         /*
                        Y-1
@@ -77,7 +86,8 @@ public class AI_Ripley implements QuoridorAI {
         int possibleLocIndex = 0;
         for ( int i = 0; i < compareValues.length; i++ ) {
             if ( compareValues[possibleLocIndex] > compareValues[i] )
-                possibleLocIndex = i;
+                possibleLocIndex = i; 
+            // ^ consider randomly choosing a direction if values are equal
         }
         // alright, we have the direction we want to go in!
         // update ripley's current position
@@ -166,12 +176,25 @@ public class AI_Ripley implements QuoridorAI {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
+      * on a wall placement, increment all appropriate virtual board values to 
+      * indicate an increase of distance to the goal
+      */
+    private void rippleUp() {
+        // pp: virtualBoard depth index ( if made into 3D array )
+        //     -- OR --
+        //     virtualBoard to update, if we have a separate 2D array for each
+        //     the two indices we need to update
+    }
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    /**
       * makes a decision if the AI should move forward or place wall based on
       * every player's relative distance to their respective goal
       */
     private void decide() {
         // Unsure of type and parameters right now
-        // true move, false wall?
+        // true = move, false = wall?
         // if currentLocationVal > anyoneElsesVal
         //      (return false) place a wall!
         // else
