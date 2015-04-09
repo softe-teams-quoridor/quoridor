@@ -155,7 +155,7 @@ public class Game {
                 board.removePlayer(currentPlayer);
                 players.remove();
                 hermes.broadcastBoot(currentPlayer);
-            } else { // legal move
+            } else { // legal move 
                 GameEngine.playTurn(response, currentPlayer, board); 
                 hermes.broadcastWent(currentPlayer, response);
                 players.add(players.remove()); // Shuffle queue

@@ -176,6 +176,14 @@ public class Square {
         return bottomWall;
     }
 
+    public void removeWallRight() {
+        rightWall = null;
+    }
+
+    public void removeWallBottom() {
+        bottomWall = null;
+    }
+
     public String toString() {
 //         return "Square @ (" + col + "," + row + ")";
         return GameEngine.toNumerals(col) + "-" + GameEngine.toLetters(row);

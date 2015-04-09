@@ -61,11 +61,6 @@ public class GameBoard {
         setupInitialPositions(players);
     }
 
-    public GameBoard(GameBoard board) {
-        this.playerLocs = board.playerLocs;
-        this.squares = board.squares;
-    }
-
     //*************************************************************************
 
     public int numPlayersRemaining() {
@@ -104,7 +99,8 @@ public class GameBoard {
     public Square getSquare(int x, int y) {
         return validLoc(x,y) ? squares[x][y] : null;
     }
-
+    
+    //*************************************************************************
 
     /**
      * gets the square specified
@@ -131,6 +127,8 @@ public class GameBoard {
     public Player getPlayer(int x, int y) {
         return validLoc(x,y) ? squares[x][y].getPlayer() : null;
     }
+
+    //*************************************************************************
 
     /**
      * gets a player by their player number
@@ -182,6 +180,23 @@ public class GameBoard {
         }
         squares[first.getX()][first.getY()] = first;
         squares[second.getX()][second.getY()] = second;
+    }
+
+    //*************************************************************************
+
+    public void removeWall(Square[] wallSquares) {
+        if(wallSquares[0].getY() == wallSquares[1].getY()) {
+            wallSquares[0].removeWallBottom();
+            wallSquares[1].removeWallBottom();
+        }
+        else {
+            wallSquares[0].removeWallRight();
+            wallSquares[1].removeWallRight();
+        }
+
+        squares[wallSquares[0].getX()][wallSquares[0].getY()] = wallSquares[0];
+        squares[wallSquares[1].getX()][wallSquares[1].getY()] = wallSquares[1];
+
     }
 
     //*************************************************************************

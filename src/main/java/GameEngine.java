@@ -290,7 +290,8 @@ public class GameEngine {
                 return null;
             }
             // Check to see if the wall placement is valid
-            if(GameEngine.validateWall(board, validSquares))
+            if(GameEngine.validateWall(board, validSquares) 
+                    && checkAllPlayersPaths(board, validSquares))
                 return validSquares;
         }
 
@@ -484,26 +485,16 @@ public class GameEngine {
     }
 
 
-    private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) {
-        
-        
-        GameBoard board2 = new GameBoard(board);
-/*
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                board2.setSquare(board.getSquare(i,j));
-            }
-        }
-
-*/
-        board2.placeWall(wallSquares[0],wallSquares[1]);
-        
-        
+    private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
+        // Place the theoritcal wall
+        board.placeWall(wallSquares[0],wallSquares[1]); 
         for(int i = 0; i < board.numPlayersRemaining(); i++) {
-            if(!GameEngine.existsPath(board.getPlayer(i), board2)) {
+            if(!GameEngine.existsPath(board.getPlayer(i), board)) {
+                board.removeWall(wallSquares);
                 return false;
             }
         }
+        board.removeWall(wallSquares);
         return true;
         
     }
