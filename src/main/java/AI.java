@@ -64,7 +64,7 @@ public class AI implements QuoridorAI{
 	
 	for(int i = 0; i < reacheable.length; i++){
 	    if(reacheable[i] != null)
-		 return newLoc.toString();
+		 return reacheable[i].toString();
 	}
 	
 	return secondChoice[0].toString();
