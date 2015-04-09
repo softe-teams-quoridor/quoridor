@@ -22,10 +22,21 @@ README file for teams' Quoridor Project
 
                 ./build/classes/main
 
-    2. Start up at least two UserServers (in different terminals), give
-         them unique port numbers
+    2. Start up at least two MoveServers (in different terminals), give
+         them unique port numbers and a user type
 
-                java UserServer 1234
+                java MoveServer 1234 user
+
+         ========================================================
+         =                   VALID USER TYPES                   =
+         ========================================================
+         = user         --> human player                        =
+         = lr           --> simple AI that moves left and right =
+         = rd           --> simple AI that makes random moves   =
+         = fcrd         --> flip coin roll dice                 =
+         = ai           --> Montana's AI                        =
+         = rip          --> Ripley                              =
+         ======================================================== 
 
 
     3. Run Game in another terminal. Give it the port-host of at least two 

@@ -470,7 +470,7 @@ public class GameEngine {
      * @param board the board
      */
     public static Square [] reachableAdjacentSquares(GameBoard b, Square sq) {
-        return reachableAdjacentSquares(b,sq,0,-1);
+        return reachableAdjacentSquares(b,sq,-1,0);
         
         /*    LinkedList<Square> squares = new LinkedList<Square>(); 
         int x = sq.getX();
@@ -565,7 +565,7 @@ public class GameEngine {
                         squareList.add(adjToPlayer[j]);
                 } 
                 // just add the square to the list
-                else 
+                if ( checkLoc.vacant() ) 
                     squareList.add(checkLoc);
             }
        }//---END for loop---
