@@ -75,6 +75,23 @@ public class ReachableAdjacentSquaresDemo {
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 
 
+        // Test neighbor's adjacent squares
+        board.move(p, board.getSquare("II-B"));
+        squa = board.getPlayerLoc(p);
+        sqs = GameEngine.reachableAdjacentSquares(board, squa);
+        frame.update(board, sqs);
+        try { Thread.sleep(1000); } catch (Exception e) { } 
+
+        players.add(players.remove());
+        Player p2 = players.peek();
+
+        board.move(p2, board.getSquare("II-C"));
+        squa = board.getPlayerLoc(p2);
+        sqs = GameEngine.reachableAdjacentSquares(board, squa);
+        frame.update(board, sqs);
+        try { Thread.sleep(1000); } catch (Exception e) { } 
+
+
 //         System.out.println(Arrays.toString(sqs));
         /** END OF TESTING ONLY */
     }
