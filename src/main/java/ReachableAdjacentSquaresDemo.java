@@ -86,7 +86,7 @@ public class ReachableAdjacentSquaresDemo {
         Player p2 = players.peek();
 
         board.move(p2, board.getSquare("II-C"));
-        squa = board.getPlayerLoc(p2);
+        squa = board.getPlayerLoc(p);
         sqs = GameEngine.reachableAdjacentSquares(board, squa);
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 
