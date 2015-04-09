@@ -19,6 +19,7 @@
  * void placeWall(Square,Square) --> places a wall on the board
  * void removePlayer(Player)     --> removes a player from the given location
  * void move(Player,Square)      --> moves a player from one square to another
+ * Square[] findShortestPath(Player)--> returns an array of squares that are the shortest path
  *
  * PRIVATE:
  *
@@ -274,4 +275,20 @@ public class GameBoard {
             rowInd = rowInd >> 4;
         }
     }
+    
+    //*************************************************************************
+    
+    /**
+     * finds the shortest path on the board to the win condition of a player
+     * @param player player whose shortest path you wish to find
+     * @return Square[] the shortest path to win
+     */
+     public Square[] findShortestPath(Player p){
+	Square [] shortest = new Square [81];
+	//this is a work in progress
+	
+	
+	
+	return shortest;
+     }
 }
