@@ -24,7 +24,7 @@ public class ExistsPathDemo {
         GameBoard board = new GameBoard(players);
 
         // Start up the display
-        frame = new GameBoardFrame(board, numPlayers);
+        frame = new GameBoardFrame(board, players);
         frame.update(board);
 
         /** TESTING ONLY */

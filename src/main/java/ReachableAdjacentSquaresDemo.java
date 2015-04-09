@@ -28,11 +28,12 @@ public class ReachableAdjacentSquaresDemo {
         GameBoard board = new GameBoard(players);
 
         // Start up the display
-        GameBoardFrame frame = new GameBoardFrame(board, numPlayers);
+        GameBoardFrame frame = new GameBoardFrame(board, players);
         frame.update(board);
 
         /** TESTING ONLY */
-        players.remove();
+//        players.remove();
+        // removing a player from a 2 player game invokes the victory screen
         Player p = players.peek();
 
         Square squa = board.getPlayerLoc(p);

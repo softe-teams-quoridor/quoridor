@@ -40,6 +40,8 @@ public class MoveServer {
             ai = new AI_RollDice();
         } else if (args[1].equals("fcrd")) {
             ai = new AI_FlipCoinRollDice();
+        }else if (args[1].equals("ai")) {
+            ai = new AI();
         } else {
              usage(3);
         }
@@ -132,7 +134,7 @@ public class MoveServer {
         Player currentPlayer = players.peek();
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
-            frame = new GameBoardFrame(board, numPlayers);
+            frame = new GameBoardFrame(board, players);
         }
 
         /* handle different types of messages the client might send */

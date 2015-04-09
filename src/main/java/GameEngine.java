@@ -36,6 +36,7 @@
 import java.util.Queue;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GameEngine {
 
@@ -213,28 +214,18 @@ public class GameEngine {
             //  i = 1 -> right  |  x = 1;  y = 0
             //  i = 2 -> up     |  x = 0;  y = -1
             //  i = 3 -> left   |  x = -1; y = 0
-
+            //  ---------------------------------
             // Calculate the x and y offsets
             int x = ((direction & 8)  >> 3) * Integer.signum(direction);
             int y = ((direction & 16) >> 4) * Integer.signum(direction);
-
             // Retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
                                               currLoc.getY() + y);
-
             // Modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
 
             //It is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
-
-
-                // NEEDS TESTING
-                //* [Hint: remove one of the slashes to comment this piece out]
-                // Confirms if there is a wall obstructing the direction we
-                //   want to check for our destination
-                // Note: 0 = down, 1 = right, 2 = up, 3 = left
-               
                 switch ( i ) {
                     // If we encounter a wall, continue to the next iteration
                     case 0: if ( currLoc.hasWallBottom() ) continue; break;
@@ -243,9 +234,6 @@ public class GameEngine {
                     case 3: if ( checkLoc.hasWallRight() ) continue; break;
                     default: break; //assertion here maybe?
                 }
-                //
-
-
                 // If checkLoc is adjacent and where we want to go...
                 if ( checkLoc.vacant() && checkLoc == dest )
                     return true;
@@ -329,7 +317,7 @@ public class GameEngine {
                wallSquares[0].getWallRight() == null) {
                 // Check for intersect
                 if(wallSquares[1].getWallBottom() == null) {
-                    return checkAllPlayersPaths(board, wallSquares);
+                    return true;
                 } 
             }
             // the square has a wall but its vertical 
@@ -337,7 +325,7 @@ public class GameEngine {
                 // Check for intersect
                 if(!wallSquares[0].getWallRight().isStart() && 
                     wallSquares[1].getWallBottom() == null) {
-                    return checkAllPlayersPaths(board, wallSquares);
+                    return true;
                 }
             }
         }
@@ -348,7 +336,7 @@ public class GameEngine {
                wallSquares[0].getWallRight() == null) {
                 // Check for intersect
                if(wallSquares[1].getWallRight() == null) {
-                   return checkAllPlayersPaths(board, wallSquares);
+                   return true;
                }
             }
             // the square has a wall but its horziontal
@@ -356,7 +344,7 @@ public class GameEngine {
                 // Check for intersect
                 if(!wallSquares[0].getWallBottom().isStart() &&
                     wallSquares[1].getWallRight() == null) {
-                    return checkAllPlayersPaths(board,wallSquares);
+                    return true;
                 }
             }
         return false;
@@ -495,6 +483,7 @@ public class GameEngine {
         return squares.toArray(new Square[0]);
     }
 
+
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) {
         
         
@@ -518,4 +507,65 @@ public class GameEngine {
         return true;
         
     }
+
+    
+    /**
+      * retrieves all possible locations that can be moved to from the
+      *   given current locations 
+      * @param board GameBoard to validate a move on
+      * @param currLoc the square we are checking adjacent squares from
+      * @param dontCheckMe flag to prevent recursing to a previous location
+      * @param numJumps flag to prevent a 4th jump, inc. of player clustering
+      * @return returns an array of squares to jump to 
+     */
+    protected static Square[] reachableAdjacentSquares ( GameBoard board, 
+        Square currLoc, int dontCheckMe, int numJumps ) {
+        
+        List<Square> squareList = new LinkedList<Square>();
+        int direction = 86; // we use bit shifting to get the coordinates
+        for ( int i = 0; i < 4; i++ ) {
+            // This is the order in which we check for adjacencies:
+            //    ITERATION         COORDINATES
+            //  i = 0 -> down   |  x = 0;  y = 1
+            //  i = 1 -> right  |  x = 1;  y = 0
+            //  i = 2 -> up     |  x = 0;  y = -1
+            //  i = 3 -> left   |  x = -1; y = 0
+            //  ---------------------------------
+            // Calculate the x and y offsets
+            int x = ((direction & 8)  >> 3) * Integer.signum(direction);
+            int y = ((direction & 16) >> 4) * Integer.signum(direction);
+            // Retrieve an adjacent square to compare
+            Square checkLoc = board.getSquare(currLoc.getX() + x,
+                                              currLoc.getY() + y);
+            // Modify bits for the next iteration
+            direction = Integer.rotateRight(direction,1);
+
+            //It is possible to check for a square that is outside of the board
+            if ( checkLoc != null ) {
+                switch ( i ) {
+                    // If we encounter a wall, continue to the next iteration
+                    case 0: if ( currLoc.hasWallBottom() ) continue; break;
+                    case 1: if ( currLoc.hasWallRight()  ) continue; break;
+                    case 2: if ( checkLoc.hasWallBottom()) continue; break;
+                    case 3: if ( checkLoc.hasWallRight() ) continue; break;
+                    default: break; //assertion here maybe?
+                }
+                // If the spot is occupied, this isn't our third jump, and the
+                // adjacent spot to check isn't the spot we were just in, add
+                // those locations to the array
+                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe ) {
+                    Square[] adjToPlayer = reachableAdjacentSquares(board, checkLoc, (i+2)%4, numJumps++);
+                    for ( int j = 0; j < adjToPlayer.length; j++ )
+                        squareList.add(adjToPlayer[j]);
+                } else {
+                    // just add the square to the list
+                    squareList.add(checkLoc);
+                }
+            }
+       }
+        return squareList.toArray(new Square[squareList.size()]);
+    } // i don't understand this and i'm grumpy about it
+      // I added more comments and I can offer to explain it if you'd like :k)
+
 }
+
