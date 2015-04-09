@@ -129,4 +129,9 @@ public class GameBoardTest {
     }
     
 */
+    /* check that this returns not null when this is called*/
+    @Test
+    public void testShortestPath() throws Exception{
+	assertNotNull("findShortestPath() should always return a path!", board.findShortestPath(players.peek()));
+    }
 }
