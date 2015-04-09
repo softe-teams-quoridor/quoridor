@@ -20,6 +20,10 @@ public class AI_Ripley implements QuoridorAI {
       */
     public AI_Ripley () {
         // fill array with integer values
+        virtualBoard = new int[GameBoard.COLUMNS][GameBoard.ROWS];
+        for ( int x = 0; x < GameBoard.COLUMNS; x++ )
+            for ( int y = 0; y < GameBoard.ROWS; y++ )
+                virtualBoard[x][y] = 8 - y;
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -56,6 +60,21 @@ public class AI_Ripley implements QuoridorAI {
       */
     public String toString() {
         return "Ripley";
+    }
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    /** 
+      * prints a string representation of the virtualBoard
+      * -- used primarily for testing
+      */
+    public void printVirtualBoard() {
+        for ( int y = 0; y < GameBoard.ROWS; y++ ) {
+            System.out.println();
+            for ( int x = 0; x < GameBoard.COLUMNS; x++ )
+                System.out.print(virtualBoard[x][y] + " ");
+        }
+        System.out.println();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
