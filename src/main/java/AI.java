@@ -29,7 +29,7 @@ public class AI implements QuoridorAI{
 		    reacheable[i] = null;
 		}
 	    y++;
-	}else if(playerno == 1){
+	}else if(playerno == 1){	
 	    for(int i = 0; i < reacheable.length; i++)
 		if(reacheable[i].getY() > y){
 		    secondChoice[index] = reacheable[i];
@@ -37,7 +37,7 @@ public class AI implements QuoridorAI{
 		    reacheable[i] = null;
 		}
 	    y--;
-	}else if(playerno == 2){
+	}else if(playerno == 2){	
 	    for(int i = 0; i < reacheable.length; i++)
 		if(reacheable[i].getX() < x){
 		    secondChoice[index] = reacheable[i];
@@ -45,7 +45,7 @@ public class AI implements QuoridorAI{
 		    reacheable[i] = null;
 		}
 	    x++;
-	}else{
+	}else{	
 	    for(int i = 0; i < reacheable.length; i++)
 		if(reacheable[i].getX() > x){
 		    secondChoice[index] = reacheable[i];
@@ -62,7 +62,12 @@ public class AI implements QuoridorAI{
 		 return newLoc.toString();
 	}
 	
-	return reacheable[0].toString();
+	for(int i = 0; i < reacheable.length; i++){
+	    if(reacheable[i] != null)
+		 return newLoc.toString();
+	}
+	
+	return secondChoice[0].toString();
     }
 
     /* reset an ai to its initial state; used for starting a new game */
