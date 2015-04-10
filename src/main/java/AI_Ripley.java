@@ -20,9 +20,7 @@ public class AI_Ripley implements QuoridorAI {
     private final int Y = 1;
 
     private int[][] virtualBoard;
-    // may need three more 2D int arrays, so we can have one for each player
-    // ... or perhaps a 3D array with the depth = numPlayers... ouch
-    
+    // use a 3D array in the future, using depth as a board for each player 
     private int[] currPos;
     // consider as a 2D array in the future, 2 x numPlayers
 
@@ -39,6 +37,14 @@ public class AI_Ripley implements QuoridorAI {
         currPos = new int[2];
         currPos[X] = 4; 
         currPos[Y] = 0;
+    }
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    private void resetBoard() {
+        for ( int x = 0; x < GameBoard.COLUMNS; x++ )
+            for ( int y = 0; y < GameBoard.ROWS; y++ )
+                virtualBoard[x][y] = 8 - y;
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -108,16 +114,19 @@ public class AI_Ripley implements QuoridorAI {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
-      * resets the AI (might not do anything)
+      * resets the AI 
       */
     public void reset() {
-        // This may or may not do anything meaningful
+        resetBoard();
+        currPos = new int[2];
+        currPos[X] = 4; 
+        currPos[Y] = 0;
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
-      * this needs to return the name of this AI
+      * returns the name of this AI
       */
     public String toString() {
         return "Ripley";
@@ -179,11 +188,30 @@ public class AI_Ripley implements QuoridorAI {
       * on a wall placement, increment all appropriate virtual board values to 
       * indicate an increase of distance to the goal
       */
-    private void rippleUp() {
+    private void ripple(GameBoard gameBoard) {
         // pp: virtualBoard depth index ( if made into 3D array )
         //     -- OR --
         //     virtualBoard to update, if we have a separate 2D array for each
         //     the two indices we need to update
+        
+        // reset the board
+        resetBoard();
+        // iterate through the board, column-wise left-to-right
+        for ( int y = 0; y < GameBoard.ROWS; y++ )
+            for ( int x = 0; x < GameBoard.COLUMNS; x++ ) {
+                
+            }
+
+        // if horizontal wall detected, rippleUp()
+    }
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    private void rippleUp(GameBoard board, int x, int y) {
+        if ( y < GameBoard.ROWS && y >= 0 ) {
+            virtualBoard[x][y]++;
+            rippleUp(board,x,y--);
+        }
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
