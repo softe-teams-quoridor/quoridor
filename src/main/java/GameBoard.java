@@ -310,6 +310,29 @@ public class GameBoard {
       */
      public PathTreeNode buildTree0(Square current){
 	PathTreeNode root = new PathTreeNode(current);
+	while (current.getY() < 8){
+	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
+	    for (int i = 0; i < adjacent.length; i++){
+		Square temp = adjacent[i];
+		if(temp.getY() > current.getY()){
+		    root.setDown(new PathTreeNode(temp));
+		    current = root.getDown().getLocation();
+		    buildTree2(current);
+		    Square[] go = new Square[1];
+		    go[0] = adjacent [i];
+		    adjacent = go;
+		}else if(temp.getX() > current.getX()){
+		    root.setRight(new PathTreeNode(temp));
+		    buildTree2(root.getRight().getLocation());
+		}else if(temp.getY() < current.getY()){
+		    root.setUp(new PathTreeNode(temp));
+		    buildTree2(root.getUp().getLocation());
+		}else{ 
+		    root.setLeft(new PathTreeNode(temp));
+		    buildTree2(root.getLeft().getLocation());
+		}
+	    }
+	}
 	return root;
      }
      
@@ -321,6 +344,29 @@ public class GameBoard {
       */
      public PathTreeNode buildTree1(Square current){
 	PathTreeNode root = new PathTreeNode(current);
+	while (current.getY() > 0){
+	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
+	    for (int i = 0; i < adjacent.length; i++){
+		Square temp = adjacent[i];
+		if(temp.getY() < current.getY()){
+		    root.setUp(new PathTreeNode(temp));
+		    current = root.getUp().getLocation();
+		    buildTree2(current);
+		    Square[] go = new Square[1];
+		    go[0] = adjacent [i];
+		    adjacent = go;
+		}else if(temp.getX() > current.getX()){
+		    root.setRight(new PathTreeNode(temp));
+		    buildTree2(root.getRight().getLocation());
+		}else if(temp.getX() < current.getX()){
+		    root.setLeft(new PathTreeNode(temp));
+		    buildTree2(root.getLeft().getLocation());
+		}else{ 
+		    root.setDown(new PathTreeNode(temp));
+		    buildTree2(root.getDown().getLocation());
+		}
+	    }
+	}
 	return root;
      }
      
@@ -332,6 +378,32 @@ public class GameBoard {
       */
      public PathTreeNode buildTree2(Square current){
 	PathTreeNode root = new PathTreeNode(current);
+	while (current.getX() < 8){
+	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
+	    for (int i = 0; i < adjacent.length; i++){
+		Square temp = adjacent[i];
+		    
+ 		if(temp.getX() > current.getX()){
+		    root.setRight(new PathTreeNode(temp));
+		    current = root.getRight().getLocation();
+ 		    buildTree2(current);
+ 		    Square[] go = new Square[1];
+		    go[0] = adjacent [i];
+		    adjacent = go;
+ 		}else if(temp.getX() < current.getX()){
+ 		    root.setLeft(new PathTreeNode(temp));
+ 		    buildTree2(root.getLeft().getLocation());
+ 		}else if(temp.getY() < current.getY()){
+ 		    root.setUp(new PathTreeNode(temp));
+ 		    buildTree2(root.getUp().getLocation());
+ 		}else{ 
+ 		    root.setDown(new PathTreeNode(temp));
+ 		    buildTree2(root.getDown().getLocation());
+ 		}
+	    }
+	    
+	}
+	
 	return root;
      }
      
@@ -343,6 +415,30 @@ public class GameBoard {
       */
      public PathTreeNode buildTree3(Square current){
 	PathTreeNode root = new PathTreeNode(current);
+	while (current.getX() > 0){
+	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
+	    for (int i = 0; i < adjacent.length; i++){
+		Square temp = adjacent[i];
+		if(temp.getX() < current.getX()){
+		    root.setLeft(new PathTreeNode(temp));
+		    current = root.getLeft().getLocation();
+		    buildTree2(current);
+		    Square[] go = new Square[1];
+		    go[0] = adjacent [i];
+		    adjacent = go;
+		}else if(temp.getX() > current.getX()){
+		    root.setRight(new PathTreeNode(temp));
+		    buildTree2(root.getRight().getLocation());
+		}else if(temp.getY() < current.getY()){
+		    root.setUp(new PathTreeNode(temp));
+		    buildTree2(root.getUp().getLocation());
+		}else{ 
+		    root.setDown(new PathTreeNode(temp));
+		    buildTree2(root.getDown().getLocation());
+		}
+	    }
+	    
+	}
 	return root;
      }
 }
