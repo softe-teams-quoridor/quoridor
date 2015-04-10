@@ -208,12 +208,13 @@ public class AI_Ripley implements QuoridorAI {
                 // if horizontal wall detected, rippleUp()
                 if ( gameBoard.getSquare(x,y).hasWallBottom() ) {
                     // initial ripple
-                    virtualBoard[x][y]++;
+                    //virtualBoard[x][y]++;
                     // ^ ripple upwards
                     rippleUp(gameBoard, 
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
-                             x,y-1);
+                             x,y);
                     // < ripple left
+                    rippleLeft(gameBoard,x,y);
                     // > ripple right
                     // note: we never ripple down!
                 }
@@ -260,8 +261,24 @@ public class AI_Ripley implements QuoridorAI {
             }
     }
 
+    /**
+      * recursively increments the left side of a row on the virtualBoard from
+      *   the start point denoted by parametes x and y
+      * @param gameBoard game board to check for walls on
+      * @param x column to look at
+      * @param y row to look at
+      */
     private void rippleLeft(GameBoard gameBoard, int x, int y) {
-        // if the value @ index to the left is equal, inc and rippleUp
+        // x is within bounds of the board && we don't run into a vertical wall
+        // && the left value is equal to the original value
+        if ( x < GameBoard.COLUMNS && x >= 0 &&
+             !gameBoard.getSquare(x,y).hasWallRight() &&
+             virtualBoard[x][y] == virtualBoard[x+1][y] ) {
+                // ripple up
+                rippleUp(gameBoard, 
+                         gameBoard.getSquare(x,y).getWallBottom().isStart(),
+                         x, y);
+             }
     }
     
     private void rippleRight(GameBoard gameBoard, int x, int y) {
@@ -296,8 +313,19 @@ public class AI_Ripley implements QuoridorAI {
         rip.printVirtualBoard();
 
         System.out.println("Adding a wall to the board...");
-        Square first = board.getSquare("V-C");
-        Square secnd = board.getSquare("VI-C");
+        Square first = board.getSquare("III-C");
+        Square secnd = board.getSquare("IV-C");
+        board.placeWall(first,secnd);
+
+        System.out.println("Rippling...");
+        rip.ripple(board);
+
+        System.out.println("Board after ripple");
+        rip.printVirtualBoard();
+
+        System.out.println("Adding a neighboring wall...");
+        first = board.getSquare("V-C");
+        secnd = board.getSquare("VI-C");
         board.placeWall(first,secnd);
 
         System.out.println("Rippling...");
