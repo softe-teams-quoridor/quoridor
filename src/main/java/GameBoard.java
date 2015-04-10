@@ -291,14 +291,16 @@ public class GameBoard {
 	PathTreeNode root;
 	
 	if(playerNo == 0)
-	    root = buildTree0(current);
+	    root = buildTree0(current, 0);
 	else if(playerNo == 1)
-	    root = buildTree1(current);
+	    root = buildTree1(current, 0);
 	else if(playerNo == 2)
-	    root = buildTree2(current);
+	    root = buildTree2(current, 0);
 	else
-	    root = buildTree3(current);
-	    
+	    root = buildTree3(current, 0);
+	
+	
+	
 	return shortest;
      }
      
@@ -308,28 +310,28 @@ public class GameBoard {
       * builds the path tree with player 0's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree0(Square current){
-	PathTreeNode root = new PathTreeNode(current);
+     public PathTreeNode buildTree0(Square current, int i){
+	PathTreeNode root = new PathTreeNode(current, i);
 	while (current.getY() < 8){
 	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int i = 0; i < adjacent.length; i++){
-		Square temp = adjacent[i];
+	    for (int j = 0; j < adjacent.length; j++){
+		Square temp = adjacent[j];
 		if(temp.getY() > current.getY()){
-		    root.setDown(new PathTreeNode(temp));
+		    root.setDown(new PathTreeNode(temp, i++));
 		    current = root.getDown().getLocation();
-		    buildTree2(current);
+		    buildTree2(current, i++);
 		    Square[] go = new Square[1];
-		    go[0] = adjacent [i];
+		    go[0] = adjacent [j];
 		    adjacent = go;
 		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp));
-		    buildTree2(root.getRight().getLocation());
+		    root.setRight(new PathTreeNode(temp, i++));
+		    buildTree2(root.getRight().getLocation(), i++);
 		}else if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp));
-		    buildTree2(root.getUp().getLocation());
+		    root.setUp(new PathTreeNode(temp, i++));
+		    buildTree2(root.getUp().getLocation(), i++);
 		}else{ 
-		    root.setLeft(new PathTreeNode(temp));
-		    buildTree2(root.getLeft().getLocation());
+		    root.setLeft(new PathTreeNode(temp, i++));
+		    buildTree2(root.getLeft().getLocation(), i++);
 		}
 	    }
 	}
@@ -342,28 +344,28 @@ public class GameBoard {
       * builds the path tree with player 1's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree1(Square current){
-	PathTreeNode root = new PathTreeNode(current);
+     public PathTreeNode buildTree1(Square current, int i){
+	PathTreeNode root = new PathTreeNode(current,i);
 	while (current.getY() > 0){
 	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int i = 0; i < adjacent.length; i++){
-		Square temp = adjacent[i];
+	    for (int j = 0; j < adjacent.length; j++){
+		Square temp = adjacent[j];
 		if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp));
+		    root.setUp(new PathTreeNode(temp, i++));
 		    current = root.getUp().getLocation();
-		    buildTree2(current);
+		    buildTree2(current, i++);
 		    Square[] go = new Square[1];
-		    go[0] = adjacent [i];
+		    go[0] = adjacent [j];
 		    adjacent = go;
 		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp));
-		    buildTree2(root.getRight().getLocation());
+		    root.setRight(new PathTreeNode(temp, i++));
+		    buildTree2(root.getRight().getLocation(), i++);
 		}else if(temp.getX() < current.getX()){
-		    root.setLeft(new PathTreeNode(temp));
-		    buildTree2(root.getLeft().getLocation());
+		    root.setLeft(new PathTreeNode(temp, i++));
+		    buildTree2(root.getLeft().getLocation(), i++);
 		}else{ 
-		    root.setDown(new PathTreeNode(temp));
-		    buildTree2(root.getDown().getLocation());
+		    root.setDown(new PathTreeNode(temp, i++));
+		    buildTree2(root.getDown().getLocation(), i++);
 		}
 	    }
 	}
@@ -376,29 +378,29 @@ public class GameBoard {
       * builds the path tree with player 2's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree2(Square current){
-	PathTreeNode root = new PathTreeNode(current);
+     public PathTreeNode buildTree2(Square current, int i){
+	PathTreeNode root = new PathTreeNode(current, i);
 	while (current.getX() < 8){
 	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int i = 0; i < adjacent.length; i++){
-		Square temp = adjacent[i];
+	    for (int j = 0; j < adjacent.length; j++){
+		Square temp = adjacent[j];
 		    
  		if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp));
+		    root.setRight(new PathTreeNode(temp, i++));
 		    current = root.getRight().getLocation();
- 		    buildTree2(current);
+ 		    buildTree2(current, i++);
  		    Square[] go = new Square[1];
-		    go[0] = adjacent [i];
+		    go[0] = adjacent [j];
 		    adjacent = go;
  		}else if(temp.getX() < current.getX()){
- 		    root.setLeft(new PathTreeNode(temp));
- 		    buildTree2(root.getLeft().getLocation());
+ 		    root.setLeft(new PathTreeNode(temp, i++));
+ 		    buildTree2(root.getLeft().getLocation(), i++);
  		}else if(temp.getY() < current.getY()){
- 		    root.setUp(new PathTreeNode(temp));
- 		    buildTree2(root.getUp().getLocation());
+ 		    root.setUp(new PathTreeNode(temp, i++));
+ 		    buildTree2(root.getUp().getLocation(), i++);
  		}else{ 
- 		    root.setDown(new PathTreeNode(temp));
- 		    buildTree2(root.getDown().getLocation());
+ 		    root.setDown(new PathTreeNode(temp, i++));
+ 		    buildTree2(root.getDown().getLocation(), i++);
  		}
 	    }
 	    
@@ -413,28 +415,28 @@ public class GameBoard {
       * builds the path tree with player 3's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree3(Square current){
-	PathTreeNode root = new PathTreeNode(current);
+     public PathTreeNode buildTree3(Square current, int i){
+	PathTreeNode root = new PathTreeNode(current, i++);
 	while (current.getX() > 0){
 	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int i = 0; i < adjacent.length; i++){
-		Square temp = adjacent[i];
+	    for (int j = 0; j < adjacent.length; j++){
+		Square temp = adjacent[j];
 		if(temp.getX() < current.getX()){
-		    root.setLeft(new PathTreeNode(temp));
+		    root.setLeft(new PathTreeNode(temp, i++));
 		    current = root.getLeft().getLocation();
-		    buildTree2(current);
+		    buildTree2(current, i++);
 		    Square[] go = new Square[1];
-		    go[0] = adjacent [i];
+		    go[0] = adjacent [j];
 		    adjacent = go;
 		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp));
-		    buildTree2(root.getRight().getLocation());
+		    root.setRight(new PathTreeNode(temp, i++));
+		    buildTree2(root.getRight().getLocation(), i++);
 		}else if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp));
-		    buildTree2(root.getUp().getLocation());
+		    root.setUp(new PathTreeNode(temp, i++));
+		    buildTree2(root.getUp().getLocation(), i++);
 		}else{ 
-		    root.setDown(new PathTreeNode(temp));
-		    buildTree2(root.getDown().getLocation());
+		    root.setDown(new PathTreeNode(temp, i++));
+		    buildTree2(root.getDown().getLocation(), i++);
 		}
 	    }
 	    
