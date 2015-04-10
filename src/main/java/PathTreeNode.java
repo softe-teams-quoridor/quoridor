@@ -5,13 +5,19 @@ public class PathTreeNode{
     private PathTreeNode left;
     private PathTreeNode right;
     private Square location;
+    private int i;
     
-    public PathTreeNode(Square s){
+    public PathTreeNode(Square s, int i){
 	up = null;
 	down = null;
 	left = null;
 	right = null;
 	location = s;
+	this.i = i;
+    }
+    
+    public int getNum(){
+	return i;
     }
     
     public PathTreeNode getUp(){
