@@ -153,6 +153,14 @@ public class Square {
         return (bottomWall != null);
     }
 
+    public Wall getWallBottom() {
+        return (hasWallBottom) ? bottomWall : null;
+    }
+
+    public Wall getWallRight() {
+        return (hasWallRight) ? rightWall : null;
+    }
+
     //*************************************************************************
 
     /**
