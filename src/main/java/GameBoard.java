@@ -290,16 +290,16 @@ public class GameBoard {
 	int playerNo = p.getPlayerNo();
 	Square current = getPlayerLoc(p);
 	
-	PathTreeNode root;
+	PathTreeNode root = new PathTreeNode(current, 0);
 	
 	if(playerNo == 0)
-	    root = buildTree0(current, 0);
+	    root = buildTree0(root);
 	else if(playerNo == 1)
-	    root = buildTree1(current, 0);
+	    root = buildTree1(root);
 	else if(playerNo == 2)
-	    root = buildTree2(current, 0);
+	    root = buildTree2(root);
 	else
-	    root = buildTree3(current, 0);
+	    root = buildTree3(root);
 	
 	
 	return iteratePath(root);
@@ -311,132 +311,214 @@ public class GameBoard {
       * @param PathTreeNode root of tree
       * @return Square[] list of path
       */
-     
-      
      public Square[] iteratePath(PathTreeNode root){
-	Square[] s = new Square[81];	
-	int i = 0;
-	while(next(root)!=null){
-	    Square temp = next(root);
-	    s[i] = temp;
-	    i++;
-	    if(root.getLeft()!=null && root.getLeft().getLocation().equals(temp))
-		root = root.getLeft();
-	    else if(root.getUp()!=null && root.getUp().getLocation().equals(temp))
-		root = root.getUp();
-	    else if(root.getDown()!= null && root.getDown().getLocation().equals(temp))
-		root = root.getDown();
-	    else 
-		root = root.getRight();    
+	Square[] path = new Square[81];
+	
+	while(root.firstAdjFromHere != null){
+	    
 	}
-	return s;
      }
+
+     //************************************************************************
      
-     private Square next(PathTreeNode root){
-	PathTreeNode [] possible = new PathTreeNode[4];
+     /**
+      * builds the path tree with player 0's win condition
+      * @param PathTreeNode where we start from
+      * @return PathTreeNode this is the root of the tree
+      */
+     public PathTreeNode buildTree0(PathTreeNode root){
 	
-	possible[0] = root.getLeft();
-	possible[1] = root.getRight();
-	possible[2] = root.getUp();
-	possible[3] = root.getDown();
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
 	
-	PathTreeNode[] least = new PathTreeNode[2];
-	int value = -1;
-	for(int i = 0; i<4; i++){
-	    if(possible[i]!=null){
-		value = possible[i].getNum();
-		least[0] = possible[i];
-	    }
+	reach = adjustFor0(reach);
+	
+	return buildTree0(root, 0, reach);
+     } 
+     
+     //************************************************************************
+     
+     /**
+      * recursive loop for buildTree0
+      * @param PathtreeNode root where we are building from 
+      * @param integer that doesnt really do anything
+      * @param Square[] reachable squares from the root
+      * @return PathTreeNode root of built tree
+      */
+     private PathTreeNode buildTree0(PathTreeNode root, int i, Square[] reachable){
+	if ( root == null)
+	    return;
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor0(reach);
+	if(reach == null)
+	    return;
+	    
+	if(GameEngine.reachableAdjacentSquares(this, reach[0]).length != 0){
+	    root.firstAdjFromHere = buildTree0(reach[0], i++, reach);
 	}
 	
-	if(value == -1)
-	    return null;
-	return least[0].getLocation();
+	for(int i = 0; i < reachable.length; i++){
+	    reachable[i] = reachable[i+1];
+	}
 	
-// 	for(int i = 1; i<4; i++){
-// 	    if(possible[i].getNum() < value)
-// 		least[0] = possible[i];
-// 	    if(possible[i].getNum() == value)
-// 		least[1] = possible[i];
-// 	}
-// 	
-// 	if(least[1] != null && least[0].getNum() < least[1].getNum())
-// 	    least[1] = null;
-// 	
-// 	Square[] done = new Square[2];
-// 	done[0] = least[0].getLocation();
-// 	if(least[1]!=null)
-// 	    done[1] = least[1].getLocation();
-// 	
-// 	return done;
+	root.nextAdjFromParent = buildTree0(reachable[0], i++, reachable);
      }
      
      //************************************************************************
      
      /**
-      * builds the path tree with player 0's win condition
-      * @return PathTreeNode this is the root of the tree
+      * adjusts which squares get priority for player 0
+      * @param Square[] the reachable square
+      * @return Square[] the prioritied reachable squares
       */
-     public PathTreeNode buildTree0(Square current, int i){
-	PathTreeNode root = new PathTreeNode(current, i);
-	while (current.getY() < 8){
-	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int j = 0; j < adjacent.length; j++){
-		Square temp = adjacent[j];
-		if(temp.getY() > current.getY()){
-		    root.setDown(new PathTreeNode(temp, i));
-		    current = root.getDown().getLocation();
-		    buildTree2(current, i);
-		    Square[] go = new Square[1];
-		    go[0] = adjacent [j];
-		    adjacent = go;
-		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, i++));
-		    buildTree2(root.getRight().getLocation(), i++);
-		}else if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp, (i+=2)));
-		    buildTree2(root.getUp().getLocation(), (i+=2));
-		}else{ 
-		    root.setLeft(new PathTreeNode(temp, i++));
-		    buildTree2(root.getLeft().getLocation(), i++);
+     private Square[] adjustFor0(Square [] reach){
+     
+	Square current = b.getPlayerLoc(p);
+	int x = current.getX();
+	int y = current.getY();
+	 
+	Square[] secondChoice = new Square[reach.length];
+	int index = 0;
+	 
+	for(int i = 0; i < reach.length; i++){
+	    for(int i = 0; i < reach.length; i++){
+		if(reach[i].getY() < y){
+		    secondChoice[index] = reach[i];
+		    index++;
+		    for(int g = i; g < reachable.length; g++){
+			reachable[g] = reachable[g+1];
+		    }
 		}
 	    }
 	}
-	return root;
-     }
+	y++;
+	
+	Square newLoc = new Square(x,y);
+	
+	int done = 0;
+	if( y == 8)
+	    done++;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] != null && reach[i].equals(newLoc)){
+		 reach = new Square[1];
+		 reach[0] = newLoc;
+		 if(done>0)
+		    return null;
+		 return reach;
+	    }
+	}
+	
+	int j = 0;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] == null)
+		j++;
+	}
+	
+	if(j == (reach.length))
+	    return secondChoice;
+	
+	return reach;
      
+     }
      //************************************************************************
      
      /**
       * builds the path tree with player 1's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree1(Square current, int i){
-	PathTreeNode root = new PathTreeNode(current,i);
-	while (current.getY() > 0){
-	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int j = 0; j < adjacent.length; j++){
-		Square temp = adjacent[j];
-		if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp, i));
-		    current = root.getUp().getLocation();
-		    buildTree2(current, i);
-		    Square[] go = new Square[1];
-		    go[0] = adjacent [j];
-		    adjacent = go;
-		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, i++));
-		    buildTree2(root.getRight().getLocation(), i++);
-		}else if(temp.getX() < current.getX()){
-		    root.setLeft(new PathTreeNode(temp, i++));
-		    buildTree2(root.getLeft().getLocation(), i++);
-		}else{ 
-		    root.setDown(new PathTreeNode(temp, (i+=2)));
-		    buildTree2(root.getDown().getLocation(), (i+=2));
-		}
+    public PathTreeNode buildTree1(PathTreeNode root){
+	
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor1(reach);
+	
+	return buildTree1(root, 0, reach);
+     } 
+     
+     //************************************************************************
+     
+     /**
+      * recursive loop for buildTree1
+      * @param PathtreeNode root where we are building from 
+      * @param integer that doesnt really do anything
+      * @param Square[] reachable squares from the root
+      * @return PathTreeNode root of built tree
+      */
+     private PathTreeNode buildTree1(PathTreeNode root, int i, Square[] reachable){
+	if ( root == null)
+	    return;
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor1(reach);
+	if(reach == null)
+	    return;
+	if(GameEngine.reachableAdjacentSquares(this, reach[0]).length != 0){
+	    root.firstAdjFromHere = buildTree1(reach[0], i++, reach);
+	}
+	
+	for(int i = 0; i < reachable.length; i++){
+	    reachable[i] = reachable[i+1];
+	}
+	
+	root.nextAdjFromParent = buildTree1(reachable[0], i++, reachable);
+     }
+     
+     //************************************************************************
+     
+     /**
+      * adjusts which squares get priority for player 1
+      * @param Square[] the reachable square
+      * @return Square[] the prioritied reachable squares
+      */
+     private Square[] adjustFor1(Square [] reach){
+     
+	Square current = b.getPlayerLoc(p);
+	int x = current.getX();
+	int y = current.getY();
+	 
+	Square[] secondChoice = new Square[reach.length];
+	int index = 0;
+	
+	for(int i = 0; i < reach.length; i++)
+	    if(reach[i].getY() > y){
+		secondChoice[index] = reach[i];
+		index++;
+		for(int g = i; g < reach.length; g++){
+			reach[g] = reach[g+1];
+		    }
+	    }
+	y--;
+	
+	Square newLoc = new Square(x,y);
+	
+	int done = 0;
+	if( y == 0)
+	    done++;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] != null && reach[i].equals(newLoc)){
+		 reach = new Square[1];
+		 reach[0] = newLoc;
+		 if(done>0)
+		    return null;
+		 return reach;
 	    }
 	}
-	return root;
+	
+	int j = 0;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] == null)
+		j++;
+	}
+	
+	if(j == (reach.length))
+	    return secondChoice;
+	
+	return reach;
+     
      }
      
      //************************************************************************
@@ -445,35 +527,97 @@ public class GameBoard {
       * builds the path tree with player 2's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree2(Square current, int i){
-	PathTreeNode root = new PathTreeNode(current, i);
-	while (current.getX() < 8){
-	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int j = 0; j < adjacent.length; j++){
-		Square temp = adjacent[j];
-		    
- 		if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, i));
-		    current = root.getRight().getLocation();
- 		    buildTree2(current, i);
- 		    Square[] go = new Square[1];
-		    go[0] = adjacent [j];
-		    adjacent = go;
- 		}else if(temp.getX() < current.getX()){
- 		    root.setLeft(new PathTreeNode(temp, (i+=2)));
- 		    buildTree2(root.getLeft().getLocation(), (i+=2));
- 		}else if(temp.getY() < current.getY()){
- 		    root.setUp(new PathTreeNode(temp, i++));
- 		    buildTree2(root.getUp().getLocation(), i++);
- 		}else{ 
- 		    root.setDown(new PathTreeNode(temp, i++));
- 		    buildTree2(root.getDown().getLocation(), i++);
- 		}
-	    }
-	    
+     public PathTreeNode buildTree2(PathTreeNode root){
+	
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor2(reach);
+	
+	return buildTree2(root, 0, reach);
+     } 
+     
+     //************************************************************************
+     
+     /**
+      * recursive loop for buildTree2
+      * @param PathtreeNode root where we are building from 
+      * @param integer that doesnt really do anything
+      * @param Square[] reachable squares from the root
+      * @return PathTreeNode root of built tree
+      */
+     private PathTreeNode buildTree2(PathTreeNode root, int i, Square[] reachable){
+	if ( root == null)
+	    return;
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor2(reach);
+	if(reach == null)
+	    return;
+	if(GameEngine.reachableAdjacentSquares(this, reach[0]).length != 0){
+	    root.firstAdjFromHere = buildTree2(reach[0], i++, reach);
 	}
 	
-	return root;
+	for(int i = 0; i < reachable.length; i++){
+	    reachable[i] = reachable[i+1];
+	}
+	
+	root.nextAdjFromParent = buildTree2(reachable[0], i++, reachable);
+     }
+     
+     //************************************************************************
+     
+     /**
+      * adjusts which squares get priority for player 2
+      * @param Square[] the reachable square
+      * @return Square[] the prioritied reachable squares
+      */
+     private Square[] adjustFor2(Square [] reach){
+     
+	Square current = b.getPlayerLoc(p);
+	int x = current.getX();
+	int y = current.getY();
+	 
+	Square[] secondChoice = new Square[reach.length];
+	int index = 0;
+	for(int i = 0; i < reach.length; i++)
+	    if(reach[i].getX() < x){
+		secondChoice[index] = reach[i];
+		index++;
+		for(int g = i; g < reach.length; g++){
+		    reach[g] = reach[g+1];
+		}
+	    }
+	x++;
+	
+	
+	Square newLoc = new Square(x,y);
+	
+	int done = 0;
+	if( x == 8)
+	    done++;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] != null && reach[i].equals(newLoc)){
+		 reach = new Square[1];
+		 reach[0] = newLoc;
+		 if(done>0)
+		    return null;
+		 return reach;
+	    }
+	}
+	
+	int j = 0;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] == null)
+		j++;
+	}
+	
+	if(j == (reach.length))
+	    return secondChoice;
+	
+	return reach;
+     
      }
      
      //************************************************************************
@@ -482,32 +626,98 @@ public class GameBoard {
       * builds the path tree with player 3's win condition
       * @return PathTreeNode this is the root of the tree
       */
-     public PathTreeNode buildTree3(Square current, int i){
-	PathTreeNode root = new PathTreeNode(current, i++);
-	while (current.getX() > 0){
-	    Square [] adjacent = GameEngine.reachableAdjacentSquares(this, current);
-	    for (int j = 0; j < adjacent.length; j++){
-		Square temp = adjacent[j];
-		if(temp.getX() < current.getX()){
-		    root.setLeft(new PathTreeNode(temp, i));
-		    current = root.getLeft().getLocation();
-		    buildTree2(current, i);
-		    Square[] go = new Square[1];
-		    go[0] = adjacent [j];
-		    adjacent = go;
-		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, (i+=2)));
-		    buildTree2(root.getRight().getLocation(),(i+=2));
-		}else if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp, i++));
-		    buildTree2(root.getUp().getLocation(), i++);
-		}else{ 
-		    root.setDown(new PathTreeNode(temp, i++));
-		    buildTree2(root.getDown().getLocation(), i++);
+     public PathTreeNode buildTree3(PathTreeNode root){
+	
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor3(reach);
+	
+	return buildTree3(root, 0, reach);
+     } 
+     
+     //************************************************************************
+     
+     /**
+      * recursive loop for buildTree3
+      * @param PathtreeNode root where we are building from 
+      * @param integer that doesnt really do anything
+      * @param Square[] reachable squares from the root
+      * @return PathTreeNode root of built tree
+      */
+     private PathTreeNode buildTree3(PathTreeNode root, int i, Square[] reachable){
+	if ( root == null)
+	    return;
+	Square [] reach = GameEngine.reachableAdjacentSquares(this, root.location);
+	
+	reach = adjustFor3(reach);
+	if(reach == null)
+	    return;
+	if(GameEngine.reachableAdjacentSquares(this, reach[0]).length != 0){
+	    root.firstAdjFromHere = buildTree3(reach[0], i++, reach);
+	}
+	
+	for(int i = 0; i < reachable.length; i++){
+	    reachable[i] = reachable[i+1];
+	}
+	
+	root.nextAdjFromParent = buildTree3(reachable[0], i++, reachable);
+     }
+     
+     
+     //************************************************************************
+     
+     /**
+      * adjusts which squares get priority for player 3
+      * @param Square[] the reachable square
+      * @return Square[] the prioritied reachable squares
+      */
+     private Square[] adjustFor3(Square [] reach){
+     
+	Square current = b.getPlayerLoc(p);
+	int x = current.getX();
+	int y = current.getY();
+	 
+	Square[] secondChoice = new Square[reach.length];
+	int index = 0;
+	for(int i = 0; i < reach.length; i++)
+	    if(reach[i].getX() > x){
+		secondChoice[index] = reach[i];
+		index++;
+		for(int g = i; g < reach.length; g++){
+			reach[g] = reach[g+1];
 		}
 	    }
-	    
+	x--;
+	
+	
+	Square newLoc = new Square(x,y);
+	
+	int done = 0;
+	if( x == 0)
+	    done++;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] != null && reach[i].equals(newLoc)){
+		 reach = new Square[1];
+		 reach[0] = newLoc;
+		 if(done>0)
+		    return null;
+		 return reach;
+	    }
 	}
-	return root;
+	
+	int j = 0;
+	
+	for(int i = 0; i < reach.length; i++){
+	    if(reach[i] == null)
+		j++;
+	}
+	
+	if(j == (reach.length))
+	    return secondChoice;
+	
+	return reach;
+     
      }
+    
 }
