@@ -285,10 +285,64 @@ public class GameBoard {
      */
      public Square[] findShortestPath(Player p){
 	Square [] shortest = new Square [81];
-	//this is a work in progress
+	int playerNo = p.getPlayerNo();
+	Square current = getPlayerLoc(p);
 	
+	PathTreeNode root;
 	
-	
+	if(playerNo == 0)
+	    root = buildTree0(current);
+	else if(playerNo == 1)
+	    root = buildTree1(current);
+	else if(playerNo == 2)
+	    root = buildTree2(current);
+	else
+	    root = buildTree3(current);
+	    
 	return shortest;
+     }
+     
+     //************************************************************************
+     
+     /**
+      * builds the path tree with player 0's win condition
+      * @return PathTreeNode this is the root of the tree
+      */
+     public PathTreeNode buildTree0(Square current){
+	PathTreeNode root = new PathTreeNode(current);
+	return root;
+     }
+     
+     //************************************************************************
+     
+     /**
+      * builds the path tree with player 1's win condition
+      * @return PathTreeNode this is the root of the tree
+      */
+     public PathTreeNode buildTree1(Square current){
+	PathTreeNode root = new PathTreeNode(current);
+	return root;
+     }
+     
+     //************************************************************************
+     
+     /**
+      * builds the path tree with player 2's win condition
+      * @return PathTreeNode this is the root of the tree
+      */
+     public PathTreeNode buildTree2(Square current){
+	PathTreeNode root = new PathTreeNode(current);
+	return root;
+     }
+     
+     //************************************************************************
+     
+     /**
+      * builds the path tree with player 3's win condition
+      * @return PathTreeNode this is the root of the tree
+      */
+     public PathTreeNode buildTree3(Square current){
+	PathTreeNode root = new PathTreeNode(current);
+	return root;
      }
 }
