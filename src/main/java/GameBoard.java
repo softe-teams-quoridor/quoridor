@@ -313,9 +313,14 @@ public class GameBoard {
       */
      public Square[] iteratePath(PathTreeNode root){
 	Square[] path = new Square[81];
+	int index = 0;
+	
+	//This just needs to find which branch of tree is shortest....
 	
 	while(root.firstAdjFromHere != null){
-	    
+	    while(root.nextAdjFromParent != null){
+		
+	    }
 	}
      }
 
