@@ -140,9 +140,9 @@ public class GameBoardTest {
     @Test
     public void testBuildTree() throws Exception{
 	Square sq = new Square(1,1);
-	assertNotNull("There should always be a path tree", board.buildTree0(sq));
-	assertNotNull("There should always be a path tree", board.buildTree1(sq));
-	assertNotNull("There should always be a path tree", board.buildTree2(sq));
-	assertNotNull("There should always be a path tree", board.buildTree3(sq));
+	assertNotNull("There should always be a path tree", board.buildTree0(sq, 0));
+	assertNotNull("There should always be a path tree", board.buildTree1(sq, 0));
+	assertNotNull("There should always be a path tree", board.buildTree2(sq, 0));
+	assertNotNull("There should always be a path tree", board.buildTree3(sq, 0));
     }
 }
