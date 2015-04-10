@@ -14,6 +14,10 @@
  *
  */
 
+// FOR TESTING ONLY
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class AI_Ripley implements QuoridorAI {
 
     private final int X = 0;
@@ -188,7 +192,8 @@ public class AI_Ripley implements QuoridorAI {
       * on a wall placement, increment all appropriate virtual board values to 
       * indicate an increase of distance to the goal
       */
-    private void ripple(GameBoard gameBoard) {
+    //PUBLIC FOR TESTING ONLY -- REVERT TO PRIVATE
+    public void ripple(GameBoard gameBoard) {
         // pp: virtualBoard depth index ( if made into 3D array )
         //     -- OR --
         //     virtualBoard to update, if we have a separate 2D array for each
@@ -199,19 +204,31 @@ public class AI_Ripley implements QuoridorAI {
         // iterate through the board, column-wise left-to-right
         for ( int y = 0; y < GameBoard.ROWS; y++ )
             for ( int x = 0; x < GameBoard.COLUMNS; x++ ) {
-                
+                // if horizontal wall detected, rippleUp()
+                if ( gameBoard.getSquare(x,y).hasWallBottom() ) {
+                    // initial ripple
+                    virtualBoard[x][y]++;
+                    // ripple upwards
+                    rippleUp(gameBoard, gameBoard.getSquare(x,y).getWallBottom().isStart(),x,y-1);
+                    // ripple left
+                    // ripple right
+                }
             }
 
-        // if horizontal wall detected, rippleUp()
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    private void rippleUp(GameBoard board, int x, int y) {
-        if ( y < GameBoard.ROWS && y >= 0 ) {
-            virtualBoard[x][y]++;
-            rippleUp(board,x,y--);
-        }
+    private void rippleUp(GameBoard gameBoard, boolean wallType, int x, int y) {
+        if ( y < GameBoard.ROWS && y >= 0 )
+            if ( gameBoard.getSquare(x,y).hasWallBottom() &&
+                 gameBoard.getSquare(x,y).getWallBottom().isStart() == wallType ) {
+                // do nothing
+                return;
+            } else {
+                virtualBoard[x][y]++;
+                rippleUp(gameBoard,wallType,x,y-1);
+            }
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -229,4 +246,26 @@ public class AI_Ripley implements QuoridorAI {
         //      (return true) I mean... I guess we can just move forward?
     }
 
+
+    public static void main(String[] args) {
+        AI_Ripley rip = new AI_Ripley();
+        Queue<Player> ps = new LinkedList<Player>();
+        ps.add(new Player(0,"whoCares",1000));
+        ps.add(new Player(1,"iDont",2000000));
+        GameBoard board = new GameBoard(ps);
+
+        System.out.println("Initial board");
+        rip.printVirtualBoard();
+
+        System.out.println("Adding a wall to the board...");
+        Square first = board.getSquare("V-C");
+        Square secnd = board.getSquare("VI-C");
+        board.placeWall(first,secnd);
+
+        System.out.println("Rippling...");
+        rip.ripple(board);
+
+        System.out.println("Board after ripple");
+        rip.printVirtualBoard();
+    }
 }
