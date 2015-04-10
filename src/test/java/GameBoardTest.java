@@ -145,4 +145,6 @@ public class GameBoardTest {
 	assertNotNull("There should always be a path tree", board.buildTree2(sq, 0));
 	assertNotNull("There should always be a path tree", board.buildTree3(sq, 0));
     }
+    
+    /*check that the paths returned are actually the ones we want*/
 }
