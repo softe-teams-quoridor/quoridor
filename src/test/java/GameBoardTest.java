@@ -134,4 +134,15 @@ public class GameBoardTest {
     public void testShortestPath() throws Exception{
 	assertNotNull("findShortestPath() should always return a path!", board.findShortestPath(players.peek()));
     }
+    
+    /*check that the buildTree methods never return null. There is always a 
+      possible move*/
+    @Test
+    public void testBuildTree() throws Exception{
+	Square sq = new Square(1,1);
+	assertNotNull("There should always be a path tree", board.buildTree0(sq));
+	assertNotNull("There should always be a path tree", board.buildTree1(sq));
+	assertNotNull("There should always be a path tree", board.buildTree2(sq));
+	assertNotNull("There should always be a path tree", board.buildTree3(sq));
+    }
 }
