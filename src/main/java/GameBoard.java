@@ -19,6 +19,7 @@
  * void placeWall(Square,Square) --> places a wall on the board
  * void removePlayer(Player)     --> removes a player from the given location
  * void move(Player,Square)      --> moves a player from one square to another
+ * Do not trust:
  * Square[] findShortestPath(Player)--> returns an array of squares that are the shortest path
  *
  * PRIVATE:
@@ -278,13 +279,14 @@ public class GameBoard {
     
     //*************************************************************************
     
+    //DO NOT TRUST THIS METHOD YET!!
+    
     /**
      * finds the shortest path on the board to the win condition of a player
      * @param player player whose shortest path you wish to find
      * @return Square[] the shortest path to win
      */
      public Square[] findShortestPath(Player p){
-	Square [] shortest = new Square [81];
 	int playerNo = p.getPlayerNo();
 	Square current = getPlayerLoc(p);
 	
@@ -300,8 +302,73 @@ public class GameBoard {
 	    root = buildTree3(current, 0);
 	
 	
+	return iteratePath(root);
+     }
+     
+     //************************************************************************
+     /**
+      * finds the shortest path based on the built tree
+      * @param PathTreeNode root of tree
+      * @return Square[] list of path
+      */
+     
+      
+     public Square[] iteratePath(PathTreeNode root){
+	Square[] s = new Square[81];	
+	int i = 0;
+	while(next(root)!=null){
+	    Square temp = next(root);
+	    s[i] = temp;
+	    i++;
+	    if(root.getLeft()!=null && root.getLeft().getLocation().equals(temp))
+		root = root.getLeft();
+	    else if(root.getUp()!=null && root.getUp().getLocation().equals(temp))
+		root = root.getUp();
+	    else if(root.getDown()!= null && root.getDown().getLocation().equals(temp))
+		root = root.getDown();
+	    else 
+		root = root.getRight();    
+	}
+	return s;
+     }
+     
+     private Square next(PathTreeNode root){
+	PathTreeNode [] possible = new PathTreeNode[4];
 	
-	return shortest;
+	possible[0] = root.getLeft();
+	possible[1] = root.getRight();
+	possible[2] = root.getUp();
+	possible[3] = root.getDown();
+	
+	PathTreeNode[] least = new PathTreeNode[2];
+	int value = -1;
+	for(int i = 0; i<4; i++){
+	    if(possible[i]!=null){
+		value = possible[i].getNum();
+		least[0] = possible[i];
+	    }
+	}
+	
+	if(value == -1)
+	    return null;
+	return least[0].getLocation();
+	
+// 	for(int i = 1; i<4; i++){
+// 	    if(possible[i].getNum() < value)
+// 		least[0] = possible[i];
+// 	    if(possible[i].getNum() == value)
+// 		least[1] = possible[i];
+// 	}
+// 	
+// 	if(least[1] != null && least[0].getNum() < least[1].getNum())
+// 	    least[1] = null;
+// 	
+// 	Square[] done = new Square[2];
+// 	done[0] = least[0].getLocation();
+// 	if(least[1]!=null)
+// 	    done[1] = least[1].getLocation();
+// 	
+// 	return done;
      }
      
      //************************************************************************
@@ -317,9 +384,9 @@ public class GameBoard {
 	    for (int j = 0; j < adjacent.length; j++){
 		Square temp = adjacent[j];
 		if(temp.getY() > current.getY()){
-		    root.setDown(new PathTreeNode(temp, i++));
+		    root.setDown(new PathTreeNode(temp, i));
 		    current = root.getDown().getLocation();
-		    buildTree2(current, i++);
+		    buildTree2(current, i);
 		    Square[] go = new Square[1];
 		    go[0] = adjacent [j];
 		    adjacent = go;
@@ -327,8 +394,8 @@ public class GameBoard {
 		    root.setRight(new PathTreeNode(temp, i++));
 		    buildTree2(root.getRight().getLocation(), i++);
 		}else if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp, i++));
-		    buildTree2(root.getUp().getLocation(), i++);
+		    root.setUp(new PathTreeNode(temp, (i+=2)));
+		    buildTree2(root.getUp().getLocation(), (i+=2));
 		}else{ 
 		    root.setLeft(new PathTreeNode(temp, i++));
 		    buildTree2(root.getLeft().getLocation(), i++);
@@ -351,9 +418,9 @@ public class GameBoard {
 	    for (int j = 0; j < adjacent.length; j++){
 		Square temp = adjacent[j];
 		if(temp.getY() < current.getY()){
-		    root.setUp(new PathTreeNode(temp, i++));
+		    root.setUp(new PathTreeNode(temp, i));
 		    current = root.getUp().getLocation();
-		    buildTree2(current, i++);
+		    buildTree2(current, i);
 		    Square[] go = new Square[1];
 		    go[0] = adjacent [j];
 		    adjacent = go;
@@ -364,8 +431,8 @@ public class GameBoard {
 		    root.setLeft(new PathTreeNode(temp, i++));
 		    buildTree2(root.getLeft().getLocation(), i++);
 		}else{ 
-		    root.setDown(new PathTreeNode(temp, i++));
-		    buildTree2(root.getDown().getLocation(), i++);
+		    root.setDown(new PathTreeNode(temp, (i+=2)));
+		    buildTree2(root.getDown().getLocation(), (i+=2));
 		}
 	    }
 	}
@@ -386,15 +453,15 @@ public class GameBoard {
 		Square temp = adjacent[j];
 		    
  		if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, i++));
+		    root.setRight(new PathTreeNode(temp, i));
 		    current = root.getRight().getLocation();
- 		    buildTree2(current, i++);
+ 		    buildTree2(current, i);
  		    Square[] go = new Square[1];
 		    go[0] = adjacent [j];
 		    adjacent = go;
  		}else if(temp.getX() < current.getX()){
- 		    root.setLeft(new PathTreeNode(temp, i++));
- 		    buildTree2(root.getLeft().getLocation(), i++);
+ 		    root.setLeft(new PathTreeNode(temp, (i+=2)));
+ 		    buildTree2(root.getLeft().getLocation(), (i+=2));
  		}else if(temp.getY() < current.getY()){
  		    root.setUp(new PathTreeNode(temp, i++));
  		    buildTree2(root.getUp().getLocation(), i++);
@@ -422,15 +489,15 @@ public class GameBoard {
 	    for (int j = 0; j < adjacent.length; j++){
 		Square temp = adjacent[j];
 		if(temp.getX() < current.getX()){
-		    root.setLeft(new PathTreeNode(temp, i++));
+		    root.setLeft(new PathTreeNode(temp, i));
 		    current = root.getLeft().getLocation();
-		    buildTree2(current, i++);
+		    buildTree2(current, i);
 		    Square[] go = new Square[1];
 		    go[0] = adjacent [j];
 		    adjacent = go;
 		}else if(temp.getX() > current.getX()){
-		    root.setRight(new PathTreeNode(temp, i++));
-		    buildTree2(root.getRight().getLocation(), i++);
+		    root.setRight(new PathTreeNode(temp, (i+=2)));
+		    buildTree2(root.getRight().getLocation(),(i+=2));
 		}else if(temp.getY() < current.getY()){
 		    root.setUp(new PathTreeNode(temp, i++));
 		    buildTree2(root.getUp().getLocation(), i++);
