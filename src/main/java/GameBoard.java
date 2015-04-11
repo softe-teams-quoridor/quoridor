@@ -169,15 +169,15 @@ public class GameBoard {
       * @param second the ending wall location
       */
     public void placeWall (Square first, Square second) {
-        // Horz
+        // Horiz
         if(first.getY() == second.getY()) {
-            first.placeWallBottom(true);
-            second.placeWallBottom(false); 
+            first.placeWallBottom(Wall.HORIZ_LEFT);
+            second.placeWallBottom(Wall.HORIZ_RIGHT); 
         }
         // Vert
         else {
-            first.placeWallRight(true);
-            second.placeWallRight(false); 
+            first.placeWallRight(Wall.VERT_TOP);
+            second.placeWallRight(Wall.VERT_BOT); 
         }
         squares[first.getX()][first.getY()] = first;
         squares[second.getX()][second.getY()] = second;
