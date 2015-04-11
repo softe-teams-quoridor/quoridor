@@ -143,6 +143,7 @@ public class GameEngine {
         if ( !move.startsWith("(") || !move.endsWith(")") )
             return null;
 
+        // Separate the string by any commas
         String[] commaSep = move.split(",");
         // [0] == (V-A
         // [1] == V-B)
@@ -164,10 +165,10 @@ public class GameEngine {
         if ( wallSquares[0] == null && wallSquares[1] == null )
             return null;
     
-        // Check if the second location is to the RIGHT of the first,
-        //  or if it BELOW the first
-        // also make sure if horizontal, we don't place on the bottom row
-        //  and make sure if vertical, we don't place on the right-most row
+        // Check:
+        //  if the second location is to the RIGHT of or BELOW the first
+        //  if horizontal, we don't place on the bottom-most row
+        //  if vertical, we don't place on the right-most column
         if ( wallSquares[0].getX()+1 == wallSquares[1].getX() &&
              wallSquares[0].getY()   == wallSquares[1].getY() &&
              wallSquares[0].getY()   != 8                     ||
@@ -193,7 +194,6 @@ public class GameEngine {
       *     @return a square array of length 1 if a move or 2 if a wall
       */
     public static Square [] validate( GameBoard board, Player player, String move) {
-
         // The square array to return
         Square [] validSquares;
 
@@ -229,21 +229,20 @@ public class GameEngine {
 
         // (Should never happen) unexpected string
         return null;
-        
     }
 
     /**
-      * validates a user move by checking for walls that might be obstructing
-      *   the direction we want to jump to, checking if the destination is
-      *   a square adjacent to the player's current location, or if the dest is
-      *   adjacent to another player (who is adjacent to the player making the 
-      *   move)
-      * @param board GameBoard to validate a move on
-      * @param currLoc the square we are checking adjacent squares from
-      * @param dest the square we wish to move to
-      * @param dontCheckMe flag to prevent recursing to a previous location
-      * @param numJumps flag to prevent a 4th jump, inc. of player clustering
-      * @return true if move is valid, false otherwise 
+      * Validates a user move by checking for walls that might be obstructing
+      * the direction we want to jump to, checking if the destination is a
+      * Square adjacent to the player's current location, or if the destination
+      * is adjacent to another player (who is adjacent to the player making the 
+      * move).
+      *     @param board GameBoard to validate a move on
+      *     @param currLoc the square we are checking adjacent squares from
+      *     @param dest the square we wish to move to
+      *     @param dontCheckMe flag to prevent recursing to a previous location
+      *     @param numJumps flag to prevent a 4th jump, inc. of player clustering
+      *     @return true if move is valid, false otherwise 
      */
     protected static boolean validateMove ( GameBoard board, Square currLoc, 
                                 Square dest, int dontCheckMe, int numJumps ) {
@@ -290,18 +289,14 @@ public class GameEngine {
     } // i don't understand this and i'm grumpy about it
       // I added more comments and I can offer to explain it if you'd like :k)
 
-    //*************************************************************************
-
-    
-    //*************************************************************************
-
     /** 
-      * This will validate a wall placement it checks it make sure that there
-      *   there is no wall conflicting the new wall, Will eventually make sure 
-      *   that there is a valid path for all players 
-      * @param board the gameboard in play
-      * @param wallSquares the squares where the wall is being placed
-      * @return true if the wall placement is valid, false otherwise
+      * Validates a Wall placement by checking that there is no Wall existing
+      * conflicting with the placement of a new Wall and that the new Wall 
+      * placement does not disable a Player from establishing a path from their
+      * current location to their respective goal location. 
+      *     @param board GameBoard to check for placement and pathing
+      *     @param wallSquares the Squares where the Wall is being placed
+      *     @return if the Wall placement was successful
       */
     protected static boolean validateWall(GameBoard board, Square[] wallSquares ) {
         // Hoizontal wall
@@ -347,16 +342,17 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-     * find a possible winner 
-     * @param board GameBoard to check
-     * @param players array of players to check if they have won
-     * @return a player if that player has won the game, null otherwise
-     */
+      * Cycles through the Player Queue to check if any Player has reached
+      * their respective goal location. If only one Player remains in the
+      * queue, that Player has won by default. 
+      *     @param board GameBoard to check
+      *     @param players Queue of Players to check if they have won
+      *     @return a Player has won the game or null if no one has won yet
+      */
     public static Player getWinner(GameBoard board, Queue<Player> players) {
         // Check if there is only one player left
         if ( players.size() == 1 )
             return players.peek();
-
         // Check if one of the players have met the traditional victory
         // condition
         for ( Player p : players ) {
@@ -384,6 +380,15 @@ public class GameEngine {
     public static void playTurn(String move, Player player, GameBoard board) {
         Deb.ug.println("playTurn saw " + move);
 
+        /*TODO: could we make this a boolean and do the following?
+                - return false if destination == null (the moves were invalid)
+                - make a Wall move if destination.length == 2 and return true
+                - make a pawn move otherwise and return true
+
+                the display client and/or move servers can handle the case
+                where this method returns false
+        */
+        
         Square[] destination = GameEngine.validate(board, player, move);
         // See if this is a wall move
         if (move.startsWith("(")) {
@@ -462,16 +467,16 @@ public class GameEngine {
     }
 
     /**
-      * retrieves all possible locations that can be moved to from the
-      *   given current locations 
-      * @param board GameBoard to validate a move on
-      * @param currLoc the square we are checking adjacent squares from
-      * @param dontCheckMe flag to prevent recursing to a previous location
-      * @param numJumps flag to prevent a 4th jump, inc. of player clustering
-      * @return returns an array of squares to jump to 
+      * Retrieves all locations that are reachable from the given location
+      *     @param board GameBoard to retrieve Squares from
+      *     @param currLoc the Square we are checking adjacencies from
+      *     @param dontCheckMe flag to prevent recursing to a previous location
+      *     @param numJumps flag to prevent a 4th jump
+      *     @return an array of Squares adjacent to currLoc
      */
     private static Square[] reachableAdjacentSquares ( GameBoard board, 
         Square currLoc, int dontCheckMe, int numJumps ) {
+
         List<Square> squareList = new LinkedList<Square>();
         int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
