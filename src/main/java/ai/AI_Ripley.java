@@ -202,20 +202,17 @@ public class AI_Ripley implements QuoridorAI {
     public void ripple(GameBoard gameBoard) {
         // reset the board
         resetBoard();
-        // iterate through the board, column-wise left-to-right
+        // iterate through the board, row-wise
         for ( int y = 0; y < GameBoard.ROWS; y++ ) {
             for ( int x = 0; x < GameBoard.COLUMNS; x++ ) {
                 // if horizontal wall detected, rippleUp()
                 if ( gameBoard.getSquare(x,y).hasWallBottom() ) {
-                    // initial ripple
-                    //virtualBoard[x][y]++;
                     // ^ ripple upwards
                     rippleUp(gameBoard, 
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x,y);
                     // < ripple left
                     rippleLeft(gameBoard,x,y);
-                    // > ripple right
                     // note: we never ripple down!
                 }
                 //TODO:
@@ -269,6 +266,35 @@ public class AI_Ripley implements QuoridorAI {
       * @param y row to look at
       */
     private void rippleLeft(GameBoard gameBoard, int x, int y) {
+
+        /*
+           rework this: since we are reading in the board from left-right up-down,
+           ripple left should recursively count the number of wall-squares to the
+           left of a start-piece - stopping when we reach a Square without a 
+           bottom wall or when we hit a vertical wall. when we reach this, increment
+           the square we are at, then return the sum-1 and stop once we reach 0
+
+           rippleRight will do the same thing, starting from an end-piece and going
+           right
+
+           these will be called after an entire row has been processed from the
+           GameBoard to the virtualBoard, then another check will be done to
+
+                                    === scratch that ===
+
+           1. process a row from the GameBoard to the virtualBoard
+           2. create a sub array size of row (initialize all to -1?)
+           3. iterate through the row of the GameBoard
+                a. if we find a wall, start from the end piece.
+                b. if the next two Squares to the right have an end piece, add
+                    the starting end piece and the next square coordinate
+                    to the sub array
+                c. do the same with the end piece from the next two squares over
+           4. rippleUp all squares in the sub array
+
+           * we can disregard vertical walls in this case *
+        */
+
         // x is within bounds of the board && we don't run into a vertical wall
         // && the left value is equal to the original value
         if ( x < GameBoard.COLUMNS && x >= 0 &&
