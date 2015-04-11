@@ -54,8 +54,6 @@ public class GameEngine {
         return (x < 0 || 8 < x) ? "@@@@@@@@@@@@@@" : numerals[x];
     }
 
-    //*************************************************************************
-
     /**
       * converts a roman numeral to an integer
       * @param str: string to convert
@@ -80,8 +78,6 @@ public class GameEngine {
     public static char toLetters(int x) {
         return (x < 0 || 8 < x) ? 'Z' : ((char)(x + 'A'));
     }
-
-    //*************************************************************************
 
     /**
       * converts a character to an integer value
@@ -124,10 +120,20 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-      * parses a player input wall action and returns an array of two squares
-      *   if the action is valid
-      * @param board board to getSquares from
-      * @param move the string to parse
+      * Parses a Player input move-String to determine if it follows the 
+      * appropriate format of a Wall placement. A proper Wall placement
+      * must go as follows:
+      *                           (x1-y1,x2-y2)
+      *
+      * Where x1-y1 is the coordinate pair for the starting piece, and
+      * x2-y2 is the coordinate pair for the ending piece. The x values
+      * must be a roman numeral, and the y values must be a character.
+      *     @param board GameBoard to retrieve Squares from
+      *     @param move the String to parse
+      *     @return an array of Squares that denote where a Wall can be placed 
+      *     @see GameBoard
+      *     @see Square
+      *     @see Wall
       */
     protected static Square[] parseWall ( GameBoard board, String move ) {
         move = move.replaceAll("\\s+", "");
@@ -151,45 +157,80 @@ public class GameEngine {
         // [0] == V-A
         // [1] == V-B
 
-        String[] firstW = commaSep[0].split("-");
-        // [0] == V
-        // [1] == A
-        String[] secndW = commaSep[1].split("-");
-        // [0] == V
-        // [1] == B
+        Square[] wallSquares = new Square[2];
+        wallSquares[0] = parseMove(board,commaSep[0]);
+        wallSquares[1] = parseMove(board,commaSep[1]);
 
-        // Make sure the two string arrays have only 2 elements
-        if ( firstW.length != 2 && secndW.length != 2 )
+        if ( wallSquares[0] == null && wallSquares[1] == null )
             return null;
-
-        int firstX = fromNumerals ( firstW[0] );
-        int firstY = fromLetters  ( firstW[1].charAt(0) );
-        // X == 4
-        // Y == 0
-        int secndX = fromNumerals ( secndW[0] );
-        int secndY = fromLetters  ( secndW[1].charAt(0) );
-        // X == 4
-        // Y == 1
-
-        // Check if the conversions returned an erroneous value
-        if ( firstX == -1 || firstY == -1 || secndX == -1 || secndY == -1 )
-            return null;
-
+    
         // Check if the second location is to the RIGHT of the first,
         //  or if it BELOW the first
         // also make sure if horizontal, we don't place on the bottom row
         //  and make sure if vertical, we don't place on the right-most row
-        if ( firstX+1 == secndX && firstY == secndY && firstY != 8 ||
-             firstY+1 == secndY && firstX == secndX && firstX != 8) {
-            Square[] wallSquares = new Square[2];
-            wallSquares[0] = board.getSquare ( firstX, firstY );
-            wallSquares[1] = board.getSquare ( secndX, secndY );
-            return wallSquares; 
-        }
+        if ( wallSquares[0].getX()+1 == wallSquares[1].getX() &&
+             wallSquares[0].getY()   == wallSquares[1].getY() &&
+             wallSquares[0].getY()   != 8                     ||
+             wallSquares[0].getY()+1 == wallSquares[1].getY() &&
+             wallSquares[0].getX()   == wallSquares[1].getX() &&
+             wallSquares[0].getX()   != 8                       ) 
+            return wallSquares;
+
         return null;
     }
 
     //*************************************************************************
+
+    /** 
+      * Validates a given Player's move String. A valid move-String for a pawn
+      * advancement must follow the format of parseMove and must be a reachable
+      * location. Likewise, a valid Wall-String must follow the format of
+      * parseWall and both pieces must be touching the board and not
+      * intersecting another Wall.
+      *     @param board the board currently in play
+      *     @param player the current players turn
+      *     @param move the move-string sent from the game or move servers
+      *     @return a square array of length 1 if a move or 2 if a wall
+      */
+    public static Square [] validate( GameBoard board, Player player, String move) {
+
+        // The square array to return
+        Square [] validSquares;
+
+        //Check for a move
+        if(move.charAt(0) != '(') {
+            validSquares = new Square[1];
+            // Check the move-string to see if it is valid
+            validSquares[0] = parseMove(board, move);
+            if(validSquares == null) // the move-string was invalid
+                return null;
+            // Check to make sure the move is valid
+            if(validateMove(board,board.getPlayerLoc(player),
+                            validSquares[0],-1,0)) {
+                return validSquares; 
+            }
+        }
+        // Wall Placement 
+        else {
+            // Check to see if the player has enough walls
+            if (! player.mayPlaceWall()) {
+                return null;
+            }
+            // Check to see if the move-string was valid
+            validSquares = parseWall(board, move);
+            if(validSquares == null) {
+                return null;
+            }
+            // Check to see if the wall placement is valid
+            if(GameEngine.validateWall(board, validSquares) 
+                    && checkAllPlayersPaths(board, validSquares))
+                return validSquares;
+        }
+
+        // (Should never happen) unexpected string
+        return null;
+        
+    }
 
     /**
       * validates a user move by checking for walls that might be obstructing
@@ -251,55 +292,7 @@ public class GameEngine {
 
     //*************************************************************************
 
-    /** 
-      * This is now the only validate method called by the game and the 
-      *    move servers, it will find out if the move-string is a move
-      *    or a wall placement.
-      * @param board the board currently in play
-      * @param player the current players turn
-      * @param move the move-string sent from the game or move servers
-      * @return a square array of length 1 if a move or 2 if a wall
-      */
-    public static Square [] validate( GameBoard board, Player player, String move) {
-
-        // The square array to return
-        Square [] validSquares;
-
-        //Check for a move
-        if(move.charAt(0) != '(') {
-            validSquares = new Square[1];
-            // Check the move-string to see if it is valid
-            validSquares[0] = parseMove(board, move);
-            if(validSquares == null) // the move-string was invalid
-                return null;
-            // Check to make sure the move is valid
-            if(validateMove(board,board.getPlayerLoc(player),
-                            validSquares[0],-1,0)) {
-                return validSquares; 
-            }
-        }
-        // Wall Placement 
-        else {
-            // Check to see if the player has enough walls
-            if (! player.mayPlaceWall()) {
-                return null;
-            }
-            // Check to see if the move-string was valid
-            validSquares = parseWall(board, move);
-            if(validSquares == null) {
-                return null;
-            }
-            // Check to see if the wall placement is valid
-            if(GameEngine.validateWall(board, validSquares) 
-                    && checkAllPlayersPaths(board, validSquares))
-                return validSquares;
-        }
-
-        // (Should never happen) unexpected string
-        return null;
-        
-    }
-
+    
     //*************************************************************************
 
     /** 
@@ -401,7 +394,6 @@ public class GameEngine {
             player.useWall();
         } else { // it is a player move
             Deb.ug.println("playTurn: legal move");
-//             board.move(player, destination[0]);
             board.move(player, board.getSquare(move));
         }
     }
@@ -425,8 +417,6 @@ public class GameEngine {
         return existsPathRecurse(board, player.getPlayerNo(), 
                                  currentSquare, reachable);
     }
-
-    //*************************************************************************
 
     /** inner recursive lopo for existsPath
      */
@@ -464,54 +454,12 @@ public class GameEngine {
 
     /** return an array containing all the squares that are reachable
      * in one step.
-     * FIXME: it might make sense to add possible squares that can be reached 
-     * in one step by jumping over another player, iono
      * @param player the player who is about to make the move 
      * @param board the board
      */
     public static Square [] reachableAdjacentSquares(GameBoard b, Square sq) {
         return reachableAdjacentSquares(b,sq,-1,0);
-        
-        /*    LinkedList<Square> squares = new LinkedList<Square>(); 
-        int x = sq.getX();
-        int y = sq.getY();
-
-        // each square can be blocked by either of two things: borders && walls
-        if (y != 0 && (! b.getSquare(x, y-1).hasWallBottom())) {
-            squares.add(b.getSquare(x, y-1));
-        }
-        if (y != 8 && !sq.hasWallBottom()) {
-            squares.add(b.getSquare(x, y+1));
-        }
-        if (x != 0 && (! b.getSquare(x-1, y).hasWallRight())) {
-            squares.add(b.getSquare(x-1, y));
-        }
-        if (x != 8 && !sq.hasWallRight()) {
-            squares.add(b.getSquare(x+1, y));
-        }
-        return squares.toArray(new Square[0]);*/
     }
-
-    //*************************************************************************
-
-    /**
-      * DOCUMENTME
-      */
-    private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
-        // Place the theoritcal wall
-        board.placeWall(wallSquares[0],wallSquares[1]); 
-        for(int i = 0; i < board.numPlayersRemaining(); i++) {
-            if(!GameEngine.existsPath(board.getPlayer(i), board)) {
-                board.removeWall(wallSquares);
-                return false;
-            }
-        }
-        board.removeWall(wallSquares);
-        return true;
-        
-    }
-
-    //*************************************************************************
 
     /**
       * retrieves all possible locations that can be moved to from the
@@ -572,6 +520,27 @@ public class GameEngine {
        }//---END for loop---
         return squareList.toArray(new Square[squareList.size()]);
     }
+    
+    //*************************************************************************
 
+    /**
+      * DOCUMENTME
+      */
+    private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
+        // Place the theoritcal wall
+        board.placeWall(wallSquares[0],wallSquares[1]); 
+        for(int i = 0; i < board.numPlayersRemaining(); i++) {
+            if(!GameEngine.existsPath(board.getPlayer(i), board)) {
+                board.removeWall(wallSquares);
+                return false;
+            }
+        }
+        board.removeWall(wallSquares);
+        return true;
+        
+    }
+
+    //*************************************************************************
+    
 }//---END GameEngine---
 
