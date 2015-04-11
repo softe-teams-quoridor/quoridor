@@ -3,8 +3,8 @@
  * ____________________________________________________________________________
  *
  * Represents a single cell of a GameBoard grid. It contains a column and row
- * (or X and Y coordinates), a player that is occupying the square, and the 
- * presence of a right and a bottom wall.
+ *  (or X and Y coordinates), a Player object that is occupying (or assigned to) 
+ *  the Square, and the presence of a right and a bottom Wall object.
  *
  *  Wall Placement Visual                   Note: "column and x" and 
  *       _________                                "row and y" are
@@ -17,21 +17,21 @@
  * --------------------------------- METHODS ----------------------------------
  *
  * Square(int,int)            --> constructor; assigns column and row
- * int getX()                 --> returns the x coordinate
- * int getY()                 --> returns the y coordinate
+ * int getX()                 --> returns the x coordinate (returns col)
+ * int getY()                 --> returns the y coordinate (returns row)
  * Player getPlayer()         --> returns a Player object or null
  * void addPlayer(Player)     --> assigns a Player object
  * void removePlayer()        --> removes a Player object
- * boolean vacant()           --> returns if a player on this square or false
- * void placeWallRight(bool)  --> assigns the right wall object
- * void placeWallBottom(bool) --> assigns the bottom wall object
- * boolean hasWallRight()     --> returns if the right wall is present or null
- * boolean hasWallBottom()    --> returns if the bottom wall is present or null
- * Wall getWallRight()        --> returns the right wall object
- * Wall getWallBottom()       --> returns the bottom wall object
- * void removeWallRight()     --> removes the right wall object
- * boolean equals(Square)     --> returns the equality of two squares
- * String toString()          --> returns the string rep. of this square
+ * boolean vacant()           --> returns if a Player is occupying this Square
+ * void placeWallRight(bool)  --> assigns the right Wall object
+ * void placeWallBottom(bool) --> assigns the bottom Wall object
+ * boolean hasWallRight()     --> returns if the right Wall is present or null
+ * boolean hasWallBottom()    --> returns if the bottom Wall is present or null
+ * Wall getWallRight()        --> returns the right Wall object
+ * Wall getWallBottom()       --> returns the bottom Wall object
+ * void removeWallRight()     --> removes the right Wall object
+ * boolean equals(Square)     --> returns the equality of this and another Square
+ * String toString()          --> returns the string rep. of this Square
  */
 
 public class Square {
@@ -43,11 +43,12 @@ public class Square {
     private Wall bottomWall;  // bottom Wall
 
     /** 
-      * Instantiates a square object by assigning the column and row values to
+      * Instantiates a Square object by assigning the column and row values to
       * the given parameters x and y, respectively. All other fields are
       * assigned to null; use the appropriate mutators to assign these fields.
       *     @param x column "coordinate"
       *     @param y row "coordinate"
+      *     @see GameBoard
      */
     public Square(int x, int y) {
         col = x;
@@ -107,8 +108,8 @@ public class Square {
       * Returns if this Square is occupied by a Player object.
       *     @return if the Square is occupied
       */
-    public boolean vacant() {
-        return (occupant == null);
+    public boolean isOccupied() {
+        return (occupant != null);
     }
 
     //*************************************************************************

@@ -235,12 +235,12 @@ public class GameEngine {
                     default: break; //assertion here maybe?
                 }
                 // If checkLoc is adjacent and where we want to go...
-                if ( checkLoc.vacant() && checkLoc == dest )
+                if ( !checkLoc.isOccupied() && checkLoc == dest )
                     return true;
                 // If the spot is occupied, this isn't our third jump, and the
                 // adjacent spot to check isn't the spot we were just in, check
                 // if our destination could possibly be adjacent to that player
-                if ( !checkLoc.vacant() && numJumps !=3 && i != dontCheckMe  
+                if ( checkLoc.isOccupied() && i != dontCheckMe && numJumps < 3
                     && validateMove (board,checkLoc,dest,(i+2)%4,numJumps+1) )
                     return true;
             }
@@ -556,7 +556,7 @@ public class GameEngine {
                 // If the spot is occupied, this isn't our third jump, and the
                 // adjacent spot to check isn't the spot we were just in, add
                 // those locations to the array
-                if ( !checkLoc.vacant() && i != dontCheckMe && numJumps < 3 ) {
+                if ( checkLoc.isOccupied() && i != dontCheckMe && numJumps < 3 ) {
                     // Get the squares from the adjacent player
                     Square[] adjToPlayer = reachableAdjacentSquares(board,
                                            checkLoc, (i+2)%4, numJumps++);
@@ -565,7 +565,8 @@ public class GameEngine {
                         squareList.add(adjToPlayer[j]);
                 } 
                 // just add the square to the list
-                if ( checkLoc.vacant() ) 
+                //if ( !checkLoc.isOccupied() ) 
+                else
                     squareList.add(checkLoc);
             }
        }//---END for loop---

@@ -44,9 +44,9 @@ public class SquareTest {
 
     @Test
     public void testVacant() throws Exception {
-        assertTrue(square.vacant());
+        assertFalse(square.isOccupied());
         square.addPlayer(player);
-        assertFalse(square.vacant());
+        assertTrue(square.isOccupied());
     }
 
     @Test

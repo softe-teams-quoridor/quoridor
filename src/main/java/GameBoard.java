@@ -86,7 +86,6 @@ public class GameBoard {
     public boolean isOccupied(int x, int y) {
         // Check for valid location
         assert (validLoc(x, y));
-//         return (! squares[x][y].vacant());
         return (this.getPlayer(x, y) != null);
     }
 
