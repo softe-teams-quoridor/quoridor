@@ -1,39 +1,40 @@
 /* Wall.java - CIS405 - teams
- * Last Edit: March 21, 2015
+ * Last Edit: April 10, 2015
  * ____________________________________________________________________________
  *
- * consider merging this object with Square.java
+ * Serves as the Wall obstacle that is placed on a Square. Walls block a Player
+ *  object from advancing on the GameBoard.
+ *  
+ *  A Square with a Wall has one of three values: 
+ *      null ---- (no wall present)
+ *      true ---- (this is the beginning-half)
+ *      false --- (this is the ending-half)
  *
- * a wall that is placed on a gameboard square. a square with a wall has either
- *  of three values: null (no wall present), START (this is the beginning-half
- *  of a wall piece, or END (this is the ending-half of a wall piece)
- *
- * for valid wall placement, a two squares should be given a new wall, one 
- *  being passed START, and one being passed END
+ * For a valid wall placement, two Square objects should be given a new Wall
+ *  object, one being passed true to denote it as the starting half, and one
+ *  being passed false to denote it as the ending half.
  *
  * --------------------------------- METHODS ----------------------------------
  *
- * Wall(bool)                 --> constructor using boolean
- * Wall(Orientation)          --> constructor using Orientation enum
- * boolean getIsStart()       --> returns if this wall is a start or end piece
- * Orientation getOrientation --> returns the orientation direction of the wall
+ * Wall(bool)              --> constructor; boolean determines if start or end
+ * boolean isStart()       --> returns if this wall is the starting half
+ * boolean isEnd()         --> returns if this wall is the ending half
  */
 
 public class Wall{
 
-    public enum Orientation {
-        START, END 
-    }
-
-    private boolean start; // is this wall is a beginning or end piece?
-    private Orientation direction; 
+    private boolean start; // is this Wall is a beginning or ending half?
 
     //*************************************************************************
 
     /**
-     * instantiates a Wall object
-     * @param start indicates if the wall piece is a start or end piece 
-     */                 
+      * Instantiates a Wall object. Parameter start denotes if this Wall
+      * half is the starting piece (the top part of a vertical or right Wall,
+      * or the left part of a horizontal or bottom Wall) or the ending piece
+      * (the bottom part of a vertical or right Wall, or the right part of a
+      * horizontal or bottom Wall).
+      *     @param start indicates if the wall piece is a start or end piece 
+      */                 
     public Wall(boolean start){
         this.start = start;
     }
@@ -41,30 +42,19 @@ public class Wall{
     //*************************************************************************
 
     /**
-     * instantiates a Wall object
-     * @param direction indicates if the wall piece is a start or end piece 
-     */                 
-    public Wall ( Orientation direction ) {
-        this.direction = direction;
-    }
-
-    //*************************************************************************
-
-    /**
-     * returns whether this wall is the start or end point
-     * @return true if wall piece is the start-half, false if end-half
-     */
+      * Returns if this Wall is the start half.
+      *     @return if this Wall object the starting half
+      */
     public boolean isStart() {
         return start;
     }
 
-    //*************************************************************************
-
     /**
-     * returns whether this wall is the start or end point
-     * @return the Orientation direction enum
-     */
-    public Orientation getOrientation ( ) {
-        return direction;
+      * Returns if this Wall is the end half.
+      *     @return if this Wall object the ending half
+      */
+    public boolean isEnd() {
+        return !start;
     }
+
 }
