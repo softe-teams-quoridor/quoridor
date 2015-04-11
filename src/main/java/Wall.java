@@ -23,6 +23,11 @@
 
 public class Wall{
 
+    public final boolean TOP   = true;
+    public final boolean BOT   = false;
+    public final boolean LEFT  = true;
+    public final boolean RIGht = false;
+
     private boolean start; // is this Wall is a beginning or ending half?
 
     //*************************************************************************
