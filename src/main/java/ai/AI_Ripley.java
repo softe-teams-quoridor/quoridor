@@ -29,7 +29,7 @@ public class AI_Ripley implements QuoridorAI {
     // consider as a 2D array in the future, 2 x numPlayers
 
     public Deb deb;
-
+    // used for debugging
 
     /**
       * constructs Ripley's virtualBoard and other deliciousness
@@ -265,26 +265,31 @@ public class AI_Ripley implements QuoridorAI {
     private int[] calculateRow(GameBoard gameBoard, int y) {
         int[] fromLeft  = countSquaresFromLeft (gameBoard,y);
         int[] fromRight = countSquaresFromRight(gameBoard,y);
-        int[] row = new int[GameBoard.COLUMNS];
-        int rightInd = GameBoard.ROWS-1;
-        int leftInd = 0;
+        int[] row = new int[GameBoard.COLUMNS]; // calculated row
+        int rightInd = GameBoard.ROWS-1;        // right-most index
+        int leftInd = 0;                        // left-most index
+        // If there is a wall against the right-most edge of the game board,
+        //  get the values from right-to-left
         if ( fromLeft[GameBoard.COLUMNS-1] > 0 )
             for ( ; fromLeft[rightInd] != 0; rightInd--)
                 row[rightInd] = fromLeft[rightInd];
+        // If there is a wall against the left-most edge of the game board,
+        //  get the values from left-to-right
         if ( fromRight[0] > 0 )
             for ( ; fromRight[leftInd] != 0; leftInd++ )
                 row[leftInd] = fromRight[leftInd];
-
+        // Get the smallest at each index of the remaining values from both 
+        //  arrays
         for ( int i = leftInd; i < rightInd; i++ )
             if ( fromLeft[i] > fromRight[i] )
-                //fromLeft[i] = fromRight[i];
                 row[i] = fromRight[i];
             else
                 row[i] = fromLeft[i];
-        //return fromLeft;
         return row;
     }
 
+    /* sum of walls on squares from left-to-right. sum resets when a square
+       without a bottom wall is encountered */
     private int[] countSquaresFromLeft(GameBoard gameBoard, int y) {
         int[] fromLeft = new int[GameBoard.ROWS];
         int ct = 0;
@@ -297,6 +302,8 @@ public class AI_Ripley implements QuoridorAI {
         return fromLeft;
     }
 
+    /* sum of walls on squares from right-to-left. sum resets when a square
+       without a bottom wall is encountered */
     private int[] countSquaresFromRight(GameBoard gameBoard, int y) {
         int[] fromRight = new int[GameBoard.ROWS];
         int ct = 0;
