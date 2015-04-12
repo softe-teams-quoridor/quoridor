@@ -49,7 +49,7 @@ public class AI_Ripley implements QuoridorAI {
     public AI_Ripley ( int numPlayers ) {
         // this will be completed at a later version
     }
-    
+
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
@@ -171,9 +171,8 @@ public class AI_Ripley implements QuoridorAI {
     private void updateVirtualBoard(String move) {
         // for other players, a transposition will have to take place
         // we're assuming ripley is player 0 for version 1.0
-
     }
-    
+
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
@@ -219,11 +218,12 @@ public class AI_Ripley implements QuoridorAI {
                     rippleUp(gameBoard, 
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x, y-1, rippleValues[x]);
-                }
-                //TODO:
-                // make a horizontal wall increase the values further if it
-                // is placed next to a board edge
 
+                    if ( gameBoard.getSquare(x,y).hasWallRight() ) {
+                        
+
+                    }
+                }
                 //TODO:
                 // if vertical wall
                 // vertical walls are odd, we need to check starting from
@@ -281,7 +281,7 @@ public class AI_Ripley implements QuoridorAI {
 
     /**
       * Recursively increases the values of a column on the virtualBoard from
-      * the start point, denoted by paramters x and y, by the amount given.
+      * the start point, denoted by parameters x and y, by the amount given.
       *     @param gameBoard GameBoard to check for Walls on
       *     @param wallType stop rippling if we encounter the same Wall section
       *     @param x column to look at
