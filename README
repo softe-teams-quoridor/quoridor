@@ -8,7 +8,7 @@ README file for teams' Quoridor Project
         Dan Soucy
         Collin Walling
 
-    Contents
+    Contents:
         01: How to run the game
         02: Gradle Help
         03: Tips
@@ -55,11 +55,11 @@ README file for teams' Quoridor Project
          next line. You do not need to do this.
 
     4. Play the game! You have to input moves via the terminal that is
-         running the respective UserServer
+         running the respective MoveServer
 
          An example move for player 0 is V-B (moves down)
 
-         An example wall for any player is (IV-D, V-D), which places
+         An example wall for any player is (IV-D,V-D), which places
          a horizontal wall starting at IV-D and ending at V-D
 
          Use the labels printed on the graphic display to guide your
