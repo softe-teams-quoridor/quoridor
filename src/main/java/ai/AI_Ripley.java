@@ -85,6 +85,8 @@ public class AI_Ripley implements QuoridorAI {
         */               
         // get the array of possible locations from the engine
         //TODO: encapsulate this code in some sort of "makeMove" method
+        ripple(board);
+
         Square[] possibleLocs = GameEngine.reachableAdjacentSquares(board,
                                 board.getSquare(currPos[X],currPos[Y]));
         // now, compare the distance values of our possible locations 
@@ -197,9 +199,9 @@ public class AI_Ripley implements QuoridorAI {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     /**
-      * on a wall placement, increment all appropriate virtual board values to 
+      * On a wall placement, increment all appropriate virtual board values to 
       * indicate an increase of distance to the goal
-      * @param gameBoard game board to check for walls on
+      *     @param gameBoard game board to check for walls on
       */
     //PUBLIC FOR TESTING ONLY -- REVERT TO PRIVATE
     public void ripple(GameBoard gameBoard) {
@@ -213,12 +215,11 @@ public class AI_Ripley implements QuoridorAI {
                 if ( gameBoard.getSquare(x,y).hasWallBottom() ) {
                     //initial ripple
                     virtualBoard[x][y] += rippleValues[x];
-                    
+
                     rippleUp(gameBoard, 
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x, y-1, rippleValues[x]);
                 }
-                
                 //TODO:
                 // make a horizontal wall increase the values further if it
                 // is placed next to a board edge
@@ -239,7 +240,7 @@ public class AI_Ripley implements QuoridorAI {
             }
         }
     }
-    
+
     private int[] calculateRow(GameBoard gameBoard, int y) {
         int[] fromLeft  = countSquaresFromLeft (gameBoard,y);
         int[] fromRight = countSquaresFromRight(gameBoard,y);
@@ -265,7 +266,7 @@ public class AI_Ripley implements QuoridorAI {
             else ct = 0;
         return fromLeft;
     }
-    
+
     private int[] countSquaresFromRight(GameBoard gameBoard, int y) {
         int[] fromRight = new int[GameBoard.ROWS];
         int ct = 0;
@@ -277,7 +278,7 @@ public class AI_Ripley implements QuoridorAI {
             else ct = 0;
         return fromRight;
     }
-    
+
     /**
       * Recursively increases the values of a column on the virtualBoard from
       * the start point, denoted by paramters x and y, by the amount given.
@@ -286,7 +287,8 @@ public class AI_Ripley implements QuoridorAI {
       *     @param x column to look at
       *     @param y row to look at
       */
-    private void rippleUp(GameBoard gameBoard, boolean wallType, int x, int y, int amount){
+    private void rippleUp(GameBoard gameBoard, boolean wallType, int x, int y,
+                          int amount) {
         // make sure we don't go out of bounds
         if ( y < GameBoard.ROWS && y >= 0 )
             // stop rippling if we encounter a wall that is the same section
