@@ -15,7 +15,6 @@ public class Deb {
         }
     }
 
-    /* 
        // alternate, maybe better implementation
     public static PrintStream stream;
     
@@ -29,6 +28,5 @@ public class Deb {
     public void ug(String line) {
         stream.println(line);
     }
-    */
 }
 
