@@ -149,7 +149,10 @@ public class AI_Ripley implements QuoridorAI {
         for ( int y = 0; y < GameBoard.ROWS; y++ ) {
             System.out.println();
             for ( int x = 0; x < GameBoard.COLUMNS; x++ )
-                System.out.print(virtualBoard[x][y] + " ");
+                if ( virtualBoard[x][y] < 10)
+                    System.out.print(virtualBoard[x][y] + "  ");
+                else
+                    System.out.print(virtualBoard[x][y] + " ");
         }
         System.out.println();
     }
@@ -215,15 +218,6 @@ public class AI_Ripley implements QuoridorAI {
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x, y-1, rippleValues[x]);
                 }
-                    
-                    
-                    // ^ ripple upwards
-//                    rippleUp(gameBoard, 
-//                             gameBoard.getSquare(x,y).getWallBottom().isStart(),
-//                             x,y);
-                    // < ripple left
-//                    rippleLeft(gameBoard,x,y);
-                    // note: we never ripple down!
                 
                 //TODO:
                 // make a horizontal wall increase the values further if it
@@ -257,7 +251,6 @@ public class AI_Ripley implements QuoridorAI {
         for ( int i = 0; i < GameBoard.ROWS; i++ )
             if ( fromLeft[i] > fromRight[i] )
                 fromLeft[i] = fromRight[i];
-        System.out.println();
         return fromLeft;
     }
 
@@ -286,12 +279,12 @@ public class AI_Ripley implements QuoridorAI {
     }
     
     /**
-      * recursively increments the values of a column on the virtualBoard from
-      *   the start point, denoted by paramters x and y
-      * @param gameBoard game board to check for walls on
-      * @param wallType stop rippling if we encounter the same wall section
-      * @param x column to look at
-      * @param y row to look at
+      * Recursively increases the values of a column on the virtualBoard from
+      * the start point, denoted by paramters x and y, by the amount given.
+      *     @param gameBoard GameBoard to check for Walls on
+      *     @param wallType stop rippling if we encounter the same Wall section
+      *     @param x column to look at
+      *     @param y row to look at
       */
     private void rippleUp(GameBoard gameBoard, boolean wallType, int x, int y, int amount){
         // make sure we don't go out of bounds
@@ -305,60 +298,6 @@ public class AI_Ripley implements QuoridorAI {
                 virtualBoard[x][y] += amount;
                 rippleUp(gameBoard,wallType,x,y-1,amount);
             }
-    }
-
-    /**
-      * recursively increments the left side of a row on the virtualBoard from
-      *   the start point denoted by parametes x and y
-      * @param gameBoard game board to check for walls on
-      * @param x column to look at
-      * @param y row to look at
-      */
-    private void rippleLeft(GameBoard gameBoard, int x, int y) {
-
-        /*
-           rework this: since we are reading in the board from left-right up-down,
-           ripple left should recursively count the number of wall-squares to the
-           left of a start-piece - stopping when we reach a Square without a 
-           bottom wall or when we hit a vertical wall. when we reach this, increment
-           the square we are at, then return the sum-1 and stop once we reach 0
-
-           rippleRight will do the same thing, starting from an end-piece and going
-           right
-
-           these will be called after an entire row has been processed from the
-           GameBoard to the virtualBoard, then another check will be done to
-
-                                    === scratch that ===
-
-           1. process a row from the GameBoard to the virtualBoard
-           2. create a sub array size of row (initialize all to -1?)
-           3. iterate through the row of the GameBoard
-                a. if we find a wall, start from the end piece.
-                b. if the next two Squares to the right have an end piece, add
-                    the starting end piece and the next square coordinate
-                    to the sub array
-                c. do the same with the end piece from the next two squares over
-           4. rippleUp all squares in the sub array
-
-           * we can disregard vertical walls in this case *
-        */
-
-        // x is within bounds of the board && we don't run into a vertical wall
-        // && the left value is equal to the original value
-        /*if ( x < GameBoard.COLUMNS && x >= 0 &&
-             !gameBoard.getSquare(x,y).hasWallRight() &&
-             virtualBoard[x][y] == virtualBoard[x+1][y] ) {
-                // ripple up
-                rippleUp(gameBoard, 
-                         gameBoard.getSquare(x,y).getWallBottom().isStart(),
-                         x, y);
-             }
-             */
-    }
-    
-    private void rippleRight(GameBoard gameBoard, int x, int y) {
-        // if the value @ index to the right is equal, inc and rippleUp
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -409,5 +348,27 @@ public class AI_Ripley implements QuoridorAI {
 
         System.out.println("Board after ripple");
         rip.printVirtualBoard();
+
+        System.out.println("Adding a neighboring wall...");
+        first = board.getSquare("VII-C");
+        secnd = board.getSquare("VIII-C");
+        board.placeWall(first,secnd);
+
+        System.out.println("Rippling...");
+        rip.ripple(board);
+
+        System.out.println("Board after ripple");
+        rip.printVirtualBoard();
+        System.out.println("Adding a neighboring wall...");
+        first = board.getSquare("I-C");
+        secnd = board.getSquare("II-C");
+        board.placeWall(first,secnd);
+
+        System.out.println("Rippling...");
+        rip.ripple(board);
+
+        System.out.println("Board after ripple");
+        rip.printVirtualBoard();
+
     }
 }
