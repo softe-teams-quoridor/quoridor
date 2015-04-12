@@ -28,6 +28,9 @@ public class AI_Ripley implements QuoridorAI {
     private int[] currPos;
     // consider as a 2D array in the future, 2 x numPlayers
 
+    public Deb deb;
+
+
     /**
       * constructs Ripley's virtualBoard and other deliciousness
       */
@@ -39,6 +42,9 @@ public class AI_Ripley implements QuoridorAI {
         currPos = new int[2];
         currPos[X] = 4; 
         currPos[Y] = 0;
+
+        //@@DEBUGGING
+        deb = new Deb("ripley");
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -67,8 +73,6 @@ public class AI_Ripley implements QuoridorAI {
       * return a move string, be it a player move or wall placement
       */
     public String getMove(GameBoard board, Player p) {
-        // the first thing we want to do is to update the virtual
-        // board based on what has changed with the GameBoard
         // -- this will require receiving the previous move(s) from
         //    the other players so we can make an appropriate adjustment,
         //    otherwise ripley will have to rebuild a new virtualBoard
@@ -83,40 +87,55 @@ public class AI_Ripley implements QuoridorAI {
                         v
                        Y+1
         */               
-        // get the array of possible locations from the engine
         //TODO: encapsulate this code in some sort of "makeMove" method
+        
+        // the first thing we want to do is to update the virtual
+        // board based on what has changed with the GameBoard
+        deb.ug("Updating board...");
+        
         ripple(board);
 
-        Square[] possibleLocs = GameEngine.reachableAdjacentSquares(board,
-                                board.getSquare(currPos[X],currPos[Y]));
-        // now, compare the distance values of our possible locations 
-        int[] compareValues = new int[possibleLocs.length];
-        for ( int i = 0; i < possibleLocs.length; i++ )  {
-            int x = possibleLocs[i].getX();
-            int y = possibleLocs[i].getY();
-            compareValues[i] = virtualBoard[x][y];
+        //@@DEBUGGING
+        deb.ug(printVirtualBoard());
+
+        // get the array of possible locations from the engine
+        Square[] reachableLocs = GameEngine.reachableAdjacentSquares(board,
+                                 board.getSquare(currPos[X],currPos[Y]));
+        // now, get a listing of the distance values of our possible locations 
+
+        //@@DEBUGGING
+        deb.ug("Currently at: " + board.getSquare(currPos[X],currPos[Y]).toString());
+        deb.ug("Reachable Vals:");
+
+        int[] reachableVals = new int[reachableLocs.length];
+        for ( int i = 0; i < reachableLocs.length; i++ )  {
+            int x = reachableLocs[i].getX();
+            int y = reachableLocs[i].getY();
+            reachableVals[i] = virtualBoard[x][y];
+            //@@DEBUGGING
+            deb.ug(i+"="+reachableVals[i] + " ");
         }
         // we want to go the square that has the least value
-        int possibleLocIndex = 0;
-        for ( int i = 0; i < compareValues.length; i++ ) {
-            if ( compareValues[possibleLocIndex] > compareValues[i] )
-                possibleLocIndex = i; 
+        int bestLoc = 0;
+        for ( int i = 0; i < reachableVals.length; i++ ) {
+            if ( reachableVals[bestLoc] > reachableVals[i] )
+                bestLoc = i; 
             // ^ consider randomly choosing a direction if values are equal
         }
+
+        //@@DEBUGGING
+        deb.ug("BestLoc=" + bestLoc);
+
         // alright, we have the direction we want to go in!
         // update ripley's current position
-        int x = possibleLocs[possibleLocIndex].getX();
-        int y = possibleLocs[possibleLocIndex].getY();
-        currPos[X] = x;
-        currPos[Y] = y;
+        currPos[X] = reachableLocs[bestLoc].getX();
+        currPos[Y] = reachableLocs[bestLoc].getY();
         // let's build a string and return it!
-        String move = "";
-        move = GameEngine.toNumerals(x) + "-" + GameEngine.toLetters(y);
-        return move;
 
-        // Currently ripley doesn't make any intelligent moves. It simply
-        // makes moves on the board. Wall placements are going to mess with
-        // him a bit
+        //@@DEBUGGING
+        deb.ug("Square to go to: " + reachableLocs[bestLoc].toString());
+
+        return reachableLocs[bestLoc].toString();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -147,16 +166,20 @@ public class AI_Ripley implements QuoridorAI {
       * prints a string representation of the virtualBoard
       * -- used primarily for testing
       */
-    public void printVirtualBoard() {
+    public String printVirtualBoard() {
+        String vb = "";
         for ( int y = 0; y < GameBoard.ROWS; y++ ) {
-            System.out.println();
+            //System.out.println();
+            vb = vb + "\n";
             for ( int x = 0; x < GameBoard.COLUMNS; x++ )
                 if ( virtualBoard[x][y] < 10)
-                    System.out.print(virtualBoard[x][y] + "  ");
+                    //System.out.print(virtualBoard[x][y] + "  ");
+                    vb = vb + virtualBoard[x][y] + "  ";
                 else
-                    System.out.print(virtualBoard[x][y] + " ");
+                    //System.out.print(virtualBoard[x][y] + " ");
+                    vb = vb + virtualBoard[x][y] + " ";
         }
-        System.out.println();
+        return vb;
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -168,9 +191,8 @@ public class AI_Ripley implements QuoridorAI {
       * placement - also moves ripley the boardi
       * @param move player move to update on the board
       */
-    private void updateVirtualBoard(String move) {
-        // for other players, a transposition will have to take place
-        // we're assuming ripley is player 0 for version 1.0
+    public void update(GameBoard gameBoard) {
+        ripple(gameBoard);
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -202,8 +224,7 @@ public class AI_Ripley implements QuoridorAI {
       * indicate an increase of distance to the goal
       *     @param gameBoard game board to check for walls on
       */
-    //PUBLIC FOR TESTING ONLY -- REVERT TO PRIVATE
-    public void ripple(GameBoard gameBoard) {
+    private void ripple(GameBoard gameBoard) {
         // reset the board
         resetBoard();
         // iterate through the board, row-wise
@@ -219,10 +240,10 @@ public class AI_Ripley implements QuoridorAI {
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x, y-1, rippleValues[x]);
 
-                    if ( gameBoard.getSquare(x,y).hasWallRight() ) {
+                    //if ( gameBoard.getSquare(x,y).hasWallRight() ) {
                         
 
-                    }
+                    //}
                 }
                 //TODO:
                 // if vertical wall
@@ -244,15 +265,24 @@ public class AI_Ripley implements QuoridorAI {
     private int[] calculateRow(GameBoard gameBoard, int y) {
         int[] fromLeft  = countSquaresFromLeft (gameBoard,y);
         int[] fromRight = countSquaresFromRight(gameBoard,y);
-        if ( fromLeft[GameBoard.ROWS-1]  == 8 )
-            return fromLeft;
-        if ( fromRight[0] == 8 )
-            return fromRight;
+        int[] row = new int[GameBoard.COLUMNS];
+        int rightInd = GameBoard.ROWS-1;
+        int leftInd = 0;
+        if ( fromLeft[GameBoard.COLUMNS-1] > 0 )
+            for ( ; fromLeft[rightInd] != 0; rightInd--)
+                row[rightInd] = fromLeft[rightInd];
+        if ( fromRight[0] > 0 )
+            for ( ; fromRight[leftInd] != 0; leftInd++ )
+                row[leftInd] = fromRight[leftInd];
 
-        for ( int i = 0; i < GameBoard.ROWS; i++ )
+        for ( int i = leftInd; i < rightInd; i++ )
             if ( fromLeft[i] > fromRight[i] )
-                fromLeft[i] = fromRight[i];
-        return fromLeft;
+                //fromLeft[i] = fromRight[i];
+                row[i] = fromRight[i];
+            else
+                row[i] = fromLeft[i];
+        //return fromLeft;
+        return row;
     }
 
     private int[] countSquaresFromLeft(GameBoard gameBoard, int y) {
@@ -327,7 +357,7 @@ public class AI_Ripley implements QuoridorAI {
         GameBoard board = new GameBoard(ps);
 
         System.out.println("Initial board");
-        rip.printVirtualBoard();
+        System.out.println(rip.printVirtualBoard());
 
         System.out.println("Adding a wall to the board...");
         Square first = board.getSquare("III-C");
@@ -335,10 +365,10 @@ public class AI_Ripley implements QuoridorAI {
         board.placeWall(first,secnd);
 
         System.out.println("Rippling...");
-        rip.ripple(board);
+        rip.update(board);
 
         System.out.println("Board after ripple");
-        rip.printVirtualBoard();
+        System.out.println(rip.printVirtualBoard());
 
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("V-C");
@@ -346,10 +376,10 @@ public class AI_Ripley implements QuoridorAI {
         board.placeWall(first,secnd);
 
         System.out.println("Rippling...");
-        rip.ripple(board);
+        rip.update(board);
 
         System.out.println("Board after ripple");
-        rip.printVirtualBoard();
+        System.out.println(rip.printVirtualBoard());
 
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("VII-C");
@@ -357,20 +387,21 @@ public class AI_Ripley implements QuoridorAI {
         board.placeWall(first,secnd);
 
         System.out.println("Rippling...");
-        rip.ripple(board);
+        rip.update(board);
 
         System.out.println("Board after ripple");
-        rip.printVirtualBoard();
+        System.out.println(rip.printVirtualBoard());
+
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("I-C");
         secnd = board.getSquare("II-C");
         board.placeWall(first,secnd);
 
         System.out.println("Rippling...");
-        rip.ripple(board);
+        rip.update(board);
 
         System.out.println("Board after ripple");
-        rip.printVirtualBoard();
+        System.out.println(rip.printVirtualBoard());
 
     }
 }
