@@ -149,11 +149,11 @@ public class GameBoardFrame extends JFrame{
         }
     }
 
-    /**
-     * Changes the color of the squares that contain a player and shows 
-     * the player name
-     */
-    private void printPlayerLabel(Player p, JLabel label) {
+    /** 
+     * Shows an image of a pawn in the player squares. 
+     * No more Text overlay.
+     */ 
+    private void printPlayerLabel(Player p, JLabel label) { 
     	    ImageIcon bg=new ImageIcon("./../../../images/player_4.jpg");
     	    if(p.getPlayerNo()==0){
     	    	    bg=new ImageIcon("./../../../images/player_1.jpg");
@@ -169,11 +169,11 @@ public class GameBoardFrame extends JFrame{
     	 label.setLayout(new FlowLayout());
         //label.setBackground(new Color(0, 200, 200)); 
         //label.setText("     " + p.getName());
-        	label.setOpaque(true);
-        	label.setLayout(null);
-        label.setPreferredSize(new Dimension(100, 70));
-        gameboard.getContentPane().add(label, BorderLayout.CENTER);
-    }
+        	label.setOpaque(true); 
+        	label.setLayout(null); 
+        label.setPreferredSize(new Dimension(100, 70)); 
+        gameboard.getContentPane().add(label, BorderLayout.CENTER); 
+    } 
 
 
     // prints out I-IX labels
@@ -200,14 +200,6 @@ public class GameBoardFrame extends JFrame{
         		JLabel onePlayerWall=new JLabel("    P"+i+" "+ p.getNumWalls());
         		labels[0].add(onePlayerWall);
         }
-        //for (int i = 0; i < numPlayers; i++) {
-        //    Player p = board.getPlayer(i);
-        //    if (p != null) {
-        //        labelText += "p" + i + " " + p.getNumWalls() + "\n ";
-        //        labelText += p.getName() + " " + p.getNumWalls() + "\n ";
-        //    }
-        //}
-        //labels[0].setText(labelText);
 
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
@@ -222,7 +214,8 @@ public class GameBoardFrame extends JFrame{
     }
     
     
-    //Ok team, I know one of these loops is redundant, but it was a just in case kind of thing.
+    //Sets the border around squares that have walls.
+    //makes walls show up as red compound borders.
     private JLabel setBoarder(JLabel someLabel,Square tSquare){
     	    if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
     	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
@@ -243,14 +236,9 @@ public class GameBoardFrame extends JFrame{
     	    return someLabel;
     }
     
-    	//closes the GameBoardFrame.Could also use dispose method.
+    	//closes the GameBoardFrame. Could also use dispose method.
     public void closeWindow(){
         gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
-    
-    
-//     private void victoryMessage(String PlayerName){
-//     	JOptionPane.showMessageDialog(gameboard, PlayerName+" Has won!");
-//     }
 }
