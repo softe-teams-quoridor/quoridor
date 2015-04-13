@@ -154,8 +154,14 @@ public class GameBoardFrame extends JFrame{
      * the player name
      */
     private void printPlayerLabel(Player p, JLabel label) {
-        label.setBackground(new Color(230, 200, 200)); 
-        label.setText("     " + p.getName());
+    	    ImageIcon bg=new ImageIcon("./../../../images/player_1.jpg");
+    	    label.setIcon(bg);
+    	   label.setIconTextGap(-100);
+    	 label.setLayout(new FlowLayout());
+        //label.setBackground(new Color(0, 200, 200)); 
+        //label.setText("     " + p.getName());
+        	label.setOpaque(true);
+        	label.setLayout(null);
         label.setPreferredSize(new Dimension(100, 70));
         gameboard.getContentPane().add(label, BorderLayout.CENTER);
     }
