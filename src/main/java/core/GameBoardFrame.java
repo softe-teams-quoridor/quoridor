@@ -154,9 +154,18 @@ public class GameBoardFrame extends JFrame{
      * the player name
      */
     private void printPlayerLabel(Player p, JLabel label) {
-    	    ImageIcon bg=new ImageIcon("./../../../images/player_1.jpg");
+    	    ImageIcon bg=new ImageIcon("./../../../images/player_4.jpg");
+    	    if(p.getPlayerNo()==0){
+    	    	    bg=new ImageIcon("./../../../images/player_1.jpg");
+    	    }else if(p.getPlayerNo()==1){
+    	    	    bg=new ImageIcon("./../../../images/player_2.jpg");
+    	    }else if(p.getPlayerNo()==2){
+    	    	    bg=new ImageIcon("./../../../images/player_3.jpg");
+    	    }else if(p.getPlayerNo()==3){
+    	    	    bg=new ImageIcon("./../../../images/player_4.jpg");
+    	    }
     	    label.setIcon(bg);
-    	   label.setIconTextGap(-100);
+    	   //label.setIconTextGap(-100);
     	 label.setLayout(new FlowLayout());
         //label.setBackground(new Color(0, 200, 200)); 
         //label.setText("     " + p.getName());
