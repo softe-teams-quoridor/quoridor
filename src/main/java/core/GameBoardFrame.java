@@ -25,7 +25,7 @@ public class GameBoardFrame extends JFrame{
         
 
         //creates the grid
-        GridLayout game = new GridLayout(10,12);
+        GridLayout game = new GridLayout(10,11);
         gameboard.setLayout(game);
 
         //draw the original board
@@ -98,7 +98,8 @@ public class GameBoardFrame extends JFrame{
         labelblank.setOpaque(true);
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
-        labelblank.setText("    " + GameEngine.toLetters(row));
+        labelblank.setText("" + GameEngine.toLetters(row));
+        labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
         
         //Fills frame with GREY Squares if unoccupied 
@@ -132,7 +133,8 @@ public class GameBoardFrame extends JFrame{
         labelblank.setOpaque(true);
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
-        labelblank.setText("    " + GameEngine.toLetters(row));
+        labelblank.setText(""+GameEngine.toLetters(row));
+        labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
 
         //Fills frame with GREY Squares if unoccupied 
@@ -210,7 +212,7 @@ public class GameBoardFrame extends JFrame{
         
         	for(int i=0; i< numPlayers; i++){
         		Player p=board.getPlayer(i);
-        		JLabel onePlayerWall=new JLabel("    P"+i+" "+ p.getNumWalls());
+        		JLabel onePlayerWall=new JLabel("    P"+i+1+" "+ p.getNumWalls());
         		labels[0].add(onePlayerWall);
         }
 
@@ -221,7 +223,8 @@ public class GameBoardFrame extends JFrame{
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(150, 0, 0));
             labels[i].setPreferredSize(new Dimension(100, 70));
-            labels[i].setText("    " + GameEngine.toNumerals(i-1));
+            labels[i].setText(GameEngine.toNumerals(i-1));
+            labels[i].setHorizontalAlignment(SwingConstants.CENTER);
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
         for (int i=10; i<12; i++){
