@@ -40,6 +40,7 @@ public class GameBoard {
     // Data Members
     private Square [][] squares;  // The cells of the GameBoard
     private Square [] playerLocs; // locations of the players on the board
+    private int playerTurn;
 
     //*************************************************************************
 
@@ -57,6 +58,8 @@ public class GameBoard {
                 squares[i][j] = new Square(i, j);
             }
         }
+        // Initialize player turn
+        playerTurn = 0; // player 0 always goes first
         // Instantiate player location array
         playerLocs = new Square[players.size()];
         // Initialize player positions
@@ -244,11 +247,12 @@ public class GameBoard {
     //*************************************************************************
 
     /**
-     * Checks the location to see if it is actually on the board
-     * @param x the column of the board
-     * @param y the row of the gameboard
-     * @return true if location is on board, false otherwise
-     */
+      * Validates the given coordinates to make sure they are within the bounds
+      * of the GameBoard's array.
+      *      @param x the column of the board
+      *      @param y the row of the gameboard
+      *      @return true if location is on board, false otherwise
+      */
     private boolean validLoc(int x, int y) {
         return (x >= 0 && x < COLUMNS && y >= 0 && y < ROWS);
     }
@@ -256,9 +260,9 @@ public class GameBoard {
     //*************************************************************************
 
     /**
-     * initializes the players in their appropriate start locations
+     * Initializes the Player locations to their appropriate start locations.
      * Player0 to (4,0); Player1 to (4,8); Player2 to (0,4); Player3 to (8,4)
-     * @param players queue of players to initialize
+     *      @param players queue of players to initialize
      */
     private void setupInitialPositions(Queue<Player> players) {
         int colInd = 32836; // collin dalling
@@ -277,7 +281,30 @@ public class GameBoard {
     }
     
     //*************************************************************************
-    
+
+    /**
+      * Returns the number of whichever player's turn it is.
+      *     @return the player number of the current player's turn
+      */
+    public int getCurrPlayerTurn() {
+        return playerTurn;
+    }
+
+    //*************************************************************************
+
+    /**
+      * Shuffles the Queue of Players and assigns to the board which Player's
+      * turn it is.
+      *     @param players Queue of Players to shuffle
+      */
+    public Queue<Player> getNextTurn(Queue<Player> players) {
+        players.add(players.remove());
+        playerTurn = players.peek().getPlayerNo();
+        return players;
+    }
+
+    //*************************************************************************
+
     //DO NOT TRUST THIS METHOD YET!!
     
     /**
