@@ -22,7 +22,7 @@ public class ServerMessenger {
         } catch (IOException ioe) {
             // there was a standard input/output error (lower-level from uhe)
             ioe.printStackTrace();
-            System.exit(2);
+            System.exit(8);
         }
     }
 

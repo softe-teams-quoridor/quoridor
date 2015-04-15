@@ -77,7 +77,7 @@ public class MoveServer {
         } catch (IOException ioe) {
             // there was a standard input/output error (lower-level from uhe)
             ioe.printStackTrace();
-            System.exit(2);
+            System.exit(9);
         }
         assert (server != null); 
         assert (currClient != null); 
@@ -94,7 +94,7 @@ public class MoveServer {
             } catch (IOException ioe) {
                 // there was a standard input/output error
                 ioe.printStackTrace();
-                System.exit(3);
+                System.exit(10);
             }
         }
     }
