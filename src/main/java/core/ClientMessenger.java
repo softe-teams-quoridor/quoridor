@@ -53,11 +53,15 @@ public class ClientMessenger {
                 inStreams[i] = new Scanner(socket.getInputStream());
             } catch (UnknownHostException uhe) {
                 // the host name provided could not be resolved
-                uhe.printStackTrace();
+//                 uhe.printStackTrace();
+                System.err.println("unknown host: " + hosts[i]);
                 System.exit(1);
             } catch (IOException ioe) {
                 // there was a standard input/output error (lower-level)
-                ioe.printStackTrace();
+                // probably due to no moveserver waiting on this host/port pair
+                System.err.println("no MoveServer found on " + hosts[i] + 
+                                   " on port " + ports[i]);
+//                 ioe.printStackTrace();
                 System.exit(1);
             }
         }
