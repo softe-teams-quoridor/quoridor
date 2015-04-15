@@ -118,6 +118,7 @@ public class GameBoardFrame extends JFrame{
          	 JLabel label = new JLabel();
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
+         	  label.setBackground(new Color(0, 0, 0));
          	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
          }
     }
@@ -225,6 +226,7 @@ public class GameBoardFrame extends JFrame{
         }
         for (int i=10; i<12; i++){
         labels[i]=new JLabel();
+        labels[i].setOpaque(true);
         labels[i].setBackground(new Color(150, 0, 0));
         labels[i].setPreferredSize(new Dimension(100, 70));
         gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
