@@ -25,7 +25,7 @@ public class GameBoardFrame extends JFrame{
         
 
         //creates the grid
-        GridLayout game = new GridLayout(10,10);
+        GridLayout game = new GridLayout(10,12);
         gameboard.setLayout(game);
 
         //draw the original board
@@ -114,6 +114,12 @@ public class GameBoardFrame extends JFrame{
             }
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
+        for (int i = 9; i < 11; i++) {
+         	 JLabel label = new JLabel();
+         	  label.setOpaque(true);
+         	  label.setPreferredSize(new Dimension(100, 70));
+         	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
+         }
     }
 
     /** dan's version: with colours for specific squares!!
@@ -147,6 +153,12 @@ public class GameBoardFrame extends JFrame{
 
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
+         for (int i = 9; i < 11; i++) {
+         	 JLabel label = new JLabel();
+         	  label.setOpaque(true);
+         	  label.setPreferredSize(new Dimension(100, 70));
+         	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
+         }
     }
 
     /** 
@@ -179,7 +191,7 @@ public class GameBoardFrame extends JFrame{
     // prints out I-IX labels
     private void topLayer(GameBoard board) {
         assert (board != null);
-        JLabel [] labels = new JLabel[10];
+        JLabel [] labels = new JLabel[12];
         // This bit will print a blank for the first spot
         labels[0] = new JLabel();
         labels[0].setOpaque(true);
@@ -210,6 +222,12 @@ public class GameBoardFrame extends JFrame{
             labels[i].setPreferredSize(new Dimension(100, 70));
             labels[i].setText("    " + GameEngine.toNumerals(i-1));
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
+        }
+        for (int i=10; i<12; i++){
+        labels[i]=new JLabel();
+        labels[i].setBackground(new Color(150, 0, 0));
+        labels[i].setPreferredSize(new Dimension(100, 70));
+        gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
         }
     }
     
