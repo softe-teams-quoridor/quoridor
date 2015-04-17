@@ -1,3 +1,27 @@
+/*   GameBoardFrame.java - CIS405 - teams
+ * ____________________________________________________________________________
+ *
+ *   GameBoardFrame object to construct a GUI for the Quoridor game. 
+ *
+ * --------------------------------- METHODS ----------------------------------
+ *
+ * PUBLIC:
+ *
+ * GameBoardFrame()                   --> Default Constructor 
+ * update()   					    --> Removes contents of board and updates locations 
+ * closeWindow()    			    --> Closes the window at the end of a game
+ *
+ * PRIVATE:
+ * draw()						        --> Constructs the gameboard and makes it visible
+ * row()       						--> creates a single row of the GameBoardFrame
+ * printPlayerLabel()			        --> Shows an image of a pawn in player squares
+ * topLayer()						--> draws the borders of the gridlayout
+ * JLabel setBoarder()			--> sets the borders of the  grid
+ * makeInfoPane()				--> GOING TO make an info pane on the RHS of grid
+ *
+ */
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +56,10 @@ public class GameBoardFrame extends JFrame{
         draw(board);
     }
     
+    
+    //******************************************************************************************
+    
+    
     //Removes contents of frame and calls draw in order to update
     public void update(GameBoard board){
         Player p = GameEngine.getWinner(board, players);
@@ -59,6 +87,10 @@ public class GameBoardFrame extends JFrame{
 	    draw(board, reachable);
 	}
     }
+    
+    
+    //******************************************************************************************
+    
 
     //Constructs the gameboard and makes it visible
     private void draw(GameBoard board) {
@@ -74,6 +106,10 @@ public class GameBoardFrame extends JFrame{
         gameboard.setVisible(true);					
         gameboard.setFocusableWindowState(true);	//autofocusing
     }
+    
+    
+    //***********************************************************************************
+    
     
     /** dan's version: with colours for specific squares!!
      * Constructs the gameboard and makes it visible
@@ -91,6 +127,10 @@ public class GameBoardFrame extends JFrame{
         gameboard.setVisible(true);					
         gameboard.setFocusableWindowState(true);	//autofocusing
     }
+    
+    
+    //*************************************************************************
+    
 
     //creates a row
     private void row(int row, GameBoard board) {
@@ -123,6 +163,10 @@ public class GameBoardFrame extends JFrame{
          	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
          }
     }
+    
+    
+    
+    //********************************************************************************
 
     /** dan's version: with colours for specific squares!!
      * creates a row
@@ -163,6 +207,10 @@ public class GameBoardFrame extends JFrame{
          	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
          }
     }
+    
+    
+    
+    //*********************************************************************************
 
     /** 
      * Shows an image of a pawn in the player squares. 
@@ -191,6 +239,9 @@ public class GameBoardFrame extends JFrame{
     } 
 
 
+    //*****************************************************************************
+    
+    
     // prints out I-IX labels
     private void topLayer(GameBoard board) {
         assert (board != null);
@@ -236,6 +287,8 @@ public class GameBoardFrame extends JFrame{
         }
     }
     
+    //****************************************************************************************
+    
     
     //Sets the border around squares that have walls.
     //makes walls show up as red compound borders.
@@ -259,6 +312,10 @@ public class GameBoardFrame extends JFrame{
     	    return someLabel;
     }
     
+    
+    //*******************************************************************************************
+    
+    
     	//closes the GameBoardFrame. Could also use dispose method.
     public void closeWindow(){
         gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -266,14 +323,14 @@ public class GameBoardFrame extends JFrame{
     }
     
     
-    	//List player name and how many walls that player has.
-    	//Box has thin border matching the color of player's pawn.
-    	//If it is that players turn, border is thicker and gradient-ed.
-    	//probably going to be implemented by creating a new grid
-    		//one cell wide, and four cells deep, and putting it in the 
-    		//upper left box if the info pane.
-    public void makeInfoPane(){
+    
+    //*******************************************************************************************
+    
+    
+    private  void makeInfoPane(){
+    	    GridLayout info=new GridLayout(1,4);
     	    //int pTurn=gameboard.getPlayerTurn();			//int of which player turn it is
+    	    
     	    
     }
 }
