@@ -264,4 +264,16 @@ public class GameBoardFrame extends JFrame{
         gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
+    
+    
+    	//List player name and how many walls that player has.
+    	//Box has thin border matching the color of player's pawn.
+    	//If it is that players turn, border is thicker and gradient-ed.
+    	//probably going to be implemented by creating a new grid
+    		//one cell wide, and four cells deep, and putting it in the 
+    		//upper left box if the info pane.
+    public void makeInfoPane(){
+    	    //int pTurn=gameboard.getPlayerTurn();			//int of which player turn it is
+    	    
+    }
 }
