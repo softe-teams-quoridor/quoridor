@@ -107,7 +107,24 @@ public class GameBoardTest {
             for ( int j = 0; j < GameBoard.ROWS; j++ ) 
                 assertNull(board.getPlayer(i,j));
     }
-  /* 
+
+  
+    /* Tests that getNextTurn shuffles through the queue appropriately */
+    @Test
+    public void testGetNextTurn() throws Exception { 
+        // shuffle through players 0-3
+        for ( int i = 0; i < players.size(); i++ ) {
+            assertEquals(board.getCurrPlayerTurn(), i);
+            players = board.getNextTurn(players);
+        }
+        // do it again, ensuring players are successfully shuffled
+        for ( int i = 0; i < players.size(); i++ ) {
+            assertEquals(board.getCurrPlayerTurn(), i);
+            players = board.getNextTurn(players);
+        }
+    }
+  
+    /* 
     @Test
     public void testMovingAPlayerOnTheBoard() throws Exception {
         assertEquals(board.getPlayer(players.peek()), players.peek());

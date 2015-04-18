@@ -13,7 +13,7 @@ public class Game {
 
     private static int numPlayers;     // how many players are in the game
     private static final int WALL_POOL = 20; // total collection of walls
-    private static final Queue<Player> players = new LinkedList<Player>();
+    private static Queue<Player> players = new LinkedList<Player>();
 
     /**
      * prints a friendly message and exits
@@ -117,19 +117,6 @@ public class Game {
             System.exit(0);
         }
 
-        /*
-        if (countValidNames(names) == 0) {
-            // not a single server survived the first message...
-            System.out.println("you should fix your move-servers.");
-            System.exit(0);
-        } else if (countValidNames(names) == 1) {
-            Player survivor = players.remove();
-            hermes.broadcastVictor(survivor);
-            System.out.println("by elimination, the winner is " + survivor); 
-            System.exit(0);
-        }
-        */
-
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");
         GameBoardFrame frame = new GameBoardFrame(board, players);
@@ -158,7 +145,8 @@ public class Game {
             } else { // legal move 
                 GameEngine.playTurn(response, currentPlayer, board); 
                 hermes.broadcastWent(currentPlayer, response);
-                players.add(players.remove()); // Shuffle queue
+                //players.add(players.remove()); // Shuffle queue
+                players = board.getNextTurn(players);
             }
             // Update the graphical board
             frame.update(board);
