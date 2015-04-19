@@ -103,8 +103,6 @@ public class GameBoard {
     public Square getSquare(int x, int y) {
         return validLoc(x,y) ? squares[x][y] : null;
     }
-    
-    //*************************************************************************
 
     /**
       * Returns the Square on the GameBoard at the given column (numeral) and
@@ -135,8 +133,6 @@ public class GameBoard {
     public Player getPlayer(int x, int y) {
         return validLoc(x,y) ? squares[x][y].getPlayer() : null;
     }
-
-    //*************************************************************************
 
     /**
       * Returns a Player based on their unique player number.
@@ -188,8 +184,6 @@ public class GameBoard {
         squares[second.getX()][second.getY()] = second;
     }
 
-    //*************************************************************************
-
     /**
       * Removes a Wall from the GameBoard.
       *     @param wallSquares locations of the Wall to be removed
@@ -213,6 +207,27 @@ public class GameBoard {
     //*************************************************************************
 
     /**
+      * Returns the number of whichever Player's turn it is.
+      *     @return the player number of the current player's turn
+      */
+    public int getCurrPlayerTurn() {
+        return playerTurn;
+    }
+
+    /**
+      * Shuffles the Queue of Players and assigns to the board which Player's
+      * turn it is.
+      *     @param players Queue of Players to shuffle
+      */
+    public Queue<Player> getNextTurn(Queue<Player> players) {
+        players.add(players.remove());
+        playerTurn = players.peek().getPlayerNo();
+        return players;
+    }
+
+    //*************************************************************************
+
+    /**
       * Removes a Player from the given location on the GameBoard.
       *     @param player the player to remove
       */
@@ -222,8 +237,6 @@ public class GameBoard {
         playerLocs[player.getPlayerNo()] = null;
         squares[loc.getX()][loc.getY()].removePlayer();
     }
-
-    //*************************************************************************
 
     /**
       * Relocates a Player from their current position to the new given
@@ -238,30 +251,7 @@ public class GameBoard {
         addPlayer(player, newSqr.getX(), newSqr.getY());
     }
 
-    //*************************************************************************
-
-    /**
-      * Returns the number of whichever Player's turn it is.
-      *     @return the player number of the current player's turn
-      */
-    public int getCurrPlayerTurn() {
-        return playerTurn;
-    }
-
-    //*************************************************************************
-
-    /**
-      * Shuffles the Queue of Players and assigns to the board which Player's
-      * turn it is.
-      *     @param players Queue of Players to shuffle
-      */
-    public Queue<Player> getNextTurn(Queue<Player> players) {
-        players.add(players.remove());
-        playerTurn = players.peek().getPlayerNo();
-        return players;
-    }
-
-    //*************************************************************************
+    //-------------------------------------------------------------------------
 
     /**
       * Adds a Player to the given location.
