@@ -123,29 +123,7 @@ public class GameBoardTest {
             players = board.getNextTurn(players);
         }
     }
-  
-    /* 
-    @Test
-    public void testMovingAPlayerOnTheBoard() throws Exception {
-        assertEquals(board.getPlayer(players.peek()), players.peek());
-        board.move(players.peek(), new Square(0,0));  
-    } 
-    */
-    /*
     
-    @Test
-    public void testAddAndGetPlayer() {
-        assertEquals(board.getPlayer(4,0), players[0]);
-    }
-
-    
-    @Test
-    public void testMovePlayer() {
-        board.move(players[0],board.getSquare(4,1));
-        assertEquals(players[0],board.getPlayer(4,1));        
-    }
-    
-*/
     /* check that this returns not null when this is called*/
 //     @Test
 //     public void testShortestPath() throws Exception{
