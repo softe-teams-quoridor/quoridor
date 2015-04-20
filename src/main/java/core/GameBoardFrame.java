@@ -263,7 +263,7 @@ public class GameBoardFrame extends JFrame{
         
         	for(int i=0; i< numPlayers; i++){
         		Player p=board.getPlayer(i);
-        		JLabel onePlayerWall=new JLabel("    P"+i+1+" "+ p.getNumWalls());
+        		JLabel onePlayerWall=new JLabel("    P"+(i+1)+" "+ p.getNumWalls());
         		labels[0].add(onePlayerWall);
         }
 
