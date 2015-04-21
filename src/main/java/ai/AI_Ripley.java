@@ -228,23 +228,42 @@ public class AI_Ripley implements QuoridorAI {
         // reset the board
         resetBoard();
         // iterate through the board, row-wise
-        for ( int y = 0; y < GameBoard.ROWS; y++ ) {
+        for (int y = 0; y < GameBoard.ROWS; y++) {
+            // calculate the row so we can figure out how to place walls
             int[] rippleValues = calculateRow(gameBoard,y);
-            for ( int x = 0; x < GameBoard.COLUMNS; x++ ) {
+            // "place horizontal walls" on the virtual board
+            for (int x = 0; x < GameBoard.COLUMNS; x++) {
                 // if horizontal wall detected, rippleUp()
-                if ( gameBoard.getSquare(x,y).hasWallBottom() ) {
+                if (gameBoard.getSquare(x,y).hasWallBottom()) {
                     //initial ripple
                     virtualBoard[x][y] += rippleValues[x];
-
                     rippleUp(gameBoard, 
                              gameBoard.getSquare(x,y).getWallBottom().isStart(),
                              x, y-1, rippleValues[x]);
-
-                    //if ( gameBoard.getSquare(x,y).hasWallRight() ) {
-                        
-
-                    //}
                 }
+            }
+            // "place vertical walls" on the virtual board
+            for (int x = 0; x < GameBoard.COLUMNS-1; x++) {
+                // if a right wall is present
+                if (gameBoard.getSquare(x,y).hasWallRight()) {
+                    int value = 2; // if start, increment by 2
+                    if (gameBoard.getSquare(x,y).getWallRight().isEnd())
+                        value = 4; // if end, increment by 4
+                    if (virtualBoard[x][y] > virtualBoard[x+1][y]) {
+                        //rippleLeft(x,y,value);
+                        System.out.println("left of wall is greater");
+                    }
+                    if (virtualBoard[x][y] < virtualBoard[x+1][y]) {
+                        //rippleRight(x,y,value);
+                        System.out.println("right of wall is greater");
+                    }
+                    // else, nothing should happen
+                    else
+                        System.out.println("sides are equal, no rippling");
+                }
+            }
+            
+
                 //TODO:
                 // if vertical wall
                 // vertical walls are odd, we need to check starting from
@@ -258,7 +277,6 @@ public class AI_Ripley implements QuoridorAI {
 
                 // if the start piece is next to a horizontal wall, increment
                 // it by 2. same as above, but the AI should dislike it
-            }
         }
     }
 
