@@ -11,5 +11,18 @@ public class PathTreeNode{
 	location = s;
 	this.i = i;
     }
+     
+    public int size(){
+	return size(this);
+    }
     
+    public int size(PathTreeNode this){
+	if(this.nextAdjFromParent == null && this.firstAdjFromHere == null)
+	    return 1;
+	if(this.nextAdjFromParent == null)
+	    return (1 + size(this.firstAdjFromHere));
+	if(this.firstAdjFromHere == null)
+	    return (1 + size(this.nextAdjFromParent));
+	return (1 + size(this.nextAdjFromParent) + size(this.firstAdjFromHere));
+    }
 }
