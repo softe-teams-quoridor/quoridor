@@ -129,6 +129,7 @@ public class MoveServer {
         String clientMessage;
         String [] words;
 
+        hermes.ready();
         /* handle different types of messages the client might send */
         while (hermes.hasNextLine()) {
             System.out.println("currentPlayer: " + currentPlayer.getName());

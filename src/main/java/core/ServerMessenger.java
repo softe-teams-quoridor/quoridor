@@ -39,7 +39,7 @@ public class ServerMessenger {
     }
 
     /* tells display client that this server is ready to play */
-    public void move(String move) {
+    public void ready() {
         outStream.println("MOVE");
     }
 
