@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class ServerMessenger {
     /** display client stuff **/
@@ -48,6 +49,28 @@ public class ServerMessenger {
 
     public String nextLine() {
         return inStream.nextLine();
+    }
+
+    public String [] players() {
+        if (! inStream.hasNextLine()) {
+            return null;
+        }
+        String clientMessage = inStream.nextLine();
+        assert (clientMessage != null);
+
+        String [] words = clientMessage.split(" ");
+
+        if (! words[0].equals("PLAYERS")) {
+            Deb.ug.println("expected PLAYERS from client, got: "
+                           + clientMessage);
+            return null;
+        }
+
+//         int numPlayers = words.length - 1;
+//         Deb.ug.println("numPlayers: " + numPlayers);
+//         String [] players = new String[words.length-1];
+        String [] players = Arrays.copyOfRange(words, 1, words.length);
+        return players;
     }
 
     public void closeStreams() {

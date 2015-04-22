@@ -106,31 +106,18 @@ public class MoveServer {
 
         hermes.identify("teams_" + portNumber + ai.toString());
 
-        String clientMessage = null;
-
-        if (! hermes.hasNextLine()) {
-            System.out.println("expected message from client");
-            Deb.ug.println("expected message from client");
-            return;
-        }
-        clientMessage = hermes.nextLine();
-        assert (clientMessage != null);
-
-        String [] words = clientMessage.split(" ");
-        int numPlayers = 0;
-        if (words[0].equals("PLAYERS")) {
-            numPlayers = words.length - 1;
-            Deb.ug.println("numPlayers: " + numPlayers);
-        } else {
+        String [] playerNames = hermes.players();
+        if (playerNames == null) {
             System.out.println("expected PLAYERS from client");
-            Deb.ug.println("expected PLAYERS from client");
             return;
         }
+        int numPlayers = playerNames.length;
+        Deb.ug.println("numPlayers: " + numPlayers);
 
         Queue<Player> players = new LinkedList<Player>();
         int wallsEach = 20 / numPlayers;
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(i, wallsEach));
+            players.add(new Player(i, playerNames[i], wallsEach));
         }
         GameBoard board = new GameBoard(players);
         Player currentPlayer = players.peek();
@@ -138,6 +125,9 @@ public class MoveServer {
         if (SERVER_DISPLAY) {
             frame = new GameBoardFrame(board, players);
         }
+
+        String clientMessage;
+        String [] words;
 
         /* handle different types of messages the client might send */
         while (hermes.hasNextLine()) {
