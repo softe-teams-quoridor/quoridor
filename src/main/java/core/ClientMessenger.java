@@ -93,6 +93,29 @@ public class ClientMessenger {
     }
 
 
+    /** gets MOVE message from all move servers
+     * MOVE is the message a server sends to indicate that it is ready to play
+     * blocks until receiving all messages
+     */ 
+    public void ready() {
+        for (int i = 0; i < inStreams.length; i++) {
+            if (inStreams[i] == null) {
+                Deb.ug.println("why is inStreams[" + i + "] null?");
+                /* FIXME player i should be booted, if they haven't already */
+                continue;
+            }
+            if (!inStreams[i].hasNextLine()) {
+                Deb.ug.println("inStreams[" + i + "] does not have nextline");
+                /* FIXME player i should be booted, if they haven't already */
+                continue;
+            }
+            String clientMessage = inStreams[i].nextLine();
+            if (! clientMessage.equals("MOVE")) {
+                Deb.ug.println("player " + i + " is not ready to play! :(");
+                /* FIXME player i is noncompliant and needs be booted */
+            }
+        }
+    }
 
     /** sends PLAYERS message to all servers to inform them the 
      * names and order of the players

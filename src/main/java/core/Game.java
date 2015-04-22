@@ -117,6 +117,8 @@ public class Game {
             System.exit(0);
         }
 
+        hermes.ready();
+
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");
         GameBoardFrame frame = new GameBoardFrame(board, players);
