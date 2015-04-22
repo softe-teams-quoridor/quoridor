@@ -1,15 +1,15 @@
+import java.util.Queue;
+
 public class Path extends GameBoard{
     
     public Square [] path;
     
-    public Path(Player p){
+    public Path(Player p, Queue<Player> players){
+	super(players);
 	path = findShortestPath(p);
     }
     
-       //*************************************************************************
-    
-    //DO NOT TRUST THIS METHOD YET!!
-    
+    //*************************************************************************  
     /**
      * finds the shortest path on the board to the win condition of a player
      * @param player player whose shortest path you wish to find
@@ -48,16 +48,16 @@ public class Path extends GameBoard{
 	
 	while(root.firstAdjFromHere != null || root.nextAdjFromParent != null){
 	    if(root.firstAdjFromHere == null){
-		path[index] = root.nextAdjFromParent;
-		root. = root.nextAdjFromParent;
+		path[index] = root.nextAdjFromParent.location;
+		root = root.nextAdjFromParent;
 	    }else if(root.nextAdjFromParent == null){
-		path[index] = root.firstAdjFromHere;
+		path[index] = root.firstAdjFromHere.location;
 		root = root.firstAdjFromHere;
 	    }else if(root.size(root.nextAdjFromParent) > root.size(root.firstAdjFromHere)){
-		path[index] = root.firstAdjFromHere;
+		path[index] = root.firstAdjFromHere.location;
 		root = root.firstAdjFromHere;
 	    }else{
-		path[index] = root.nextAdjFromParent;
+		path[index] = root.nextAdjFromParent.location;
 		root = root.nextAdjFromParent;
 	    }
 	    index++;
