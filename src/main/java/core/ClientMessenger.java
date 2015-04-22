@@ -97,24 +97,31 @@ public class ClientMessenger {
      * MOVE is the message a server sends to indicate that it is ready to play
      * blocks until receiving all messages
      */ 
-    public void ready() {
+//     public void ready() {
+    public boolean [] ready() {
+        boolean [] result = new boolean [inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
+            result [i] = false;
             if (inStreams[i] == null) {
                 Deb.ug.println("why is inStreams[" + i + "] null?");
-                /* FIXME player i should be booted, if they haven't already */
+                /* player i should be booted, if they haven't already */
                 continue;
-            }
-            if (!inStreams[i].hasNextLine()) {
+            } else if (!inStreams[i].hasNextLine()) {
                 Deb.ug.println("inStreams[" + i + "] does not have nextline");
-                /* FIXME player i should be booted, if they haven't already */
+                closeStreams(i);
+                /* player i should be booted, if they haven't already */
                 continue;
             }
-            String clientMessage = inStreams[i].nextLine();
-            if (! clientMessage.equals("MOVE")) {
-                Deb.ug.println("player " + i + " is not ready to play! :(");
-                /* FIXME player i is noncompliant and needs be booted */
+            if (inStreams[i].nextLine().equals("MOVE")) {
+                result[i] = true;
+                Deb.ug.println("received confirmation from player " + i);
             }
+            Deb.ug.println("player " + i + " is not ready to play! :(");
+            closeStreams(i);
+            /* FIXME player i is noncompliant and needs be booted */
+            continue;
         }
+        return result;
     }
 
     /** sends PLAYERS message to all servers to inform them the 
