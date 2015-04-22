@@ -16,13 +16,13 @@ public class PathTreeNode{
 	return size(this);
     }
     
-    public int size(PathTreeNode this){
-	if(this.nextAdjFromParent == null && this.firstAdjFromHere == null)
+    public int size(PathTreeNode p){
+	if(p.nextAdjFromParent == null && p.firstAdjFromHere == null)
 	    return 1;
-	if(this.nextAdjFromParent == null)
-	    return (1 + size(this.firstAdjFromHere));
-	if(this.firstAdjFromHere == null)
-	    return (1 + size(this.nextAdjFromParent));
-	return (1 + size(this.nextAdjFromParent) + size(this.firstAdjFromHere));
+	if(p.nextAdjFromParent == null)
+	    return (1 + size(p.firstAdjFromHere));
+	if(p.firstAdjFromHere == null)
+	    return (1 + size(p.nextAdjFromParent));
+	return (1 + size(p.nextAdjFromParent) + size(p.firstAdjFromHere));
     }
 }
