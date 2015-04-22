@@ -246,37 +246,41 @@ public class AI_Ripley implements QuoridorAI {
             for (int x = 0; x < GameBoard.COLUMNS-1; x++) {
                 // if a right wall is present
                 if (gameBoard.getSquare(x,y).hasWallRight()) {
-                    int value = 2; // if start, increment by 2
-                    if (gameBoard.getSquare(x,y).getWallRight().isEnd())
-                        value = 4; // if end, increment by 4
+                    if (gameBoard.getSquare(x,y).getWallRight().isStart()) {
+                        System.out.println("start piece");
+                        int value = 2;
+                    }
+                    else {
+                        System.out.println("end piece");
+                        int value = 4;
+                    }
                     if (virtualBoard[x][y] > virtualBoard[x+1][y]) {
                         //rippleLeft(x,y,value);
                         System.out.println("left of wall is greater");
                     }
-                    if (virtualBoard[x][y] < virtualBoard[x+1][y]) {
+                    else if (virtualBoard[x][y] < virtualBoard[x+1][y]) {
                         //rippleRight(x,y,value);
                         System.out.println("right of wall is greater");
                     }
-                    // else, nothing should happen
                     else
+                        //no rippling
                         System.out.println("sides are equal, no rippling");
                 }
             }
-            
 
-                //TODO:
-                // if vertical wall
-                // vertical walls are odd, we need to check starting from
-                // the end piece, and then the start piece
+            //TODO:
+            // if vertical wall
+            // vertical walls are odd, we need to check starting from
+            // the end piece, and then the start piece
 
-                // if the end piece is next to a horizontal wall, increment
-                // it by 4, and the loctions next to the start piece by 2.
-                // this is not necessarily the best value to inc,
-                // but it will make the AI dislike this location very much
-                // ---- skip the next case if this happens ----
+            // if the end piece is next to a horizontal wall, increment
+            // it by 4, and the loctions next to the start piece by 2.
+            // this is not necessarily the best value to inc,
+            // but it will make the AI dislike this location very much
+            // ---- skip the next case if this happens ----
 
-                // if the start piece is next to a horizontal wall, increment
-                // it by 2. same as above, but the AI should dislike it
+            // if the start piece is next to a horizontal wall, increment
+            // it by 2. same as above, but the AI should dislike it
         }
     }
 
@@ -428,5 +432,20 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Board after ripple");
         System.out.println(rip.printVirtualBoard());
 
+        System.out.println();
+        //--------------------
+        System.out.println();
+
+        System.out.println("Vertical Wall Testing");
+        System.out.println("placing a vertical wall...");
+        first = board.getSquare("V-B");
+        secnd = board.getSquare("V-C");
+        board.placeWall(first,secnd);
+
+        System.out.println("Riplling...");
+        rip.update(board);
+
+        System.out.println("Board after ripple");
+        System.out.println(rip.printVirtualBoard());
     }
 }
