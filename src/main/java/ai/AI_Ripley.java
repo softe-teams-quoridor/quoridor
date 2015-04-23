@@ -68,10 +68,6 @@ public class AI_Ripley implements QuoridorAI {
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    /**
-      * return a move string, be it a player move or wall placement
-      */
     public String getMove(GameBoard board, Player p) {
         // -- this will require receiving the previous move(s) from
         //    the other players so we can make an appropriate adjustment,
@@ -385,7 +381,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a wall to the board...");
         Square first = board.getSquare("III-C");
         Square secnd = board.getSquare("IV-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -396,7 +392,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("V-C");
         secnd = board.getSquare("VI-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -407,7 +403,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("VII-C");
         secnd = board.getSquare("VIII-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -418,7 +414,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("I-C");
         secnd = board.getSquare("II-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -429,16 +425,16 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a new row of walls...");
         first = board.getSquare("VIII-D");
         secnd = board.getSquare("IX-D");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
         first = board.getSquare("VI-D");
         secnd = board.getSquare("VII-D");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
         first = board.getSquare("IV-D");
         secnd = board.getSquare("V-D");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
         first = board.getSquare("II-D");
         secnd = board.getSquare("III-D");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -454,7 +450,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("placing a vertical wall...");
         first = board.getSquare("V-B");
         secnd = board.getSquare("V-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Riplling...");
         rip.update(board);

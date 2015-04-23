@@ -171,7 +171,7 @@ public class GameEngineTest {
         // Set a wall at (II-A,II-B)
         squares[0] = board.getSquare(1,1);
         squares[1] = board.getSquare(1,2);
-        board.placeWall(squares[0],squares[1]);
+        board.placeWall(squares);
         // Try and place a wall at (II-A,III-A)
         squares[1] = board.getSquare(2,1); 
         assertFalse(GameEngine.validateWall(board, squares));
@@ -182,7 +182,7 @@ public class GameEngineTest {
         Square[] squares = new Square[2];
         squares[0] = board.getSquare(4,0);
         squares[1] = board.getSquare(5,0);
-        board.placeWall(squares[0],squares[1]);
+        board.placeWall(squares);
 
         assertNull(GameEngine.validate(board,players.peek(),"V-B"));
         assertNull(GameEngine.validate(board,players.peek(),"(V-A,V-B)"));
@@ -218,19 +218,26 @@ public class GameEngineTest {
         Player p = players.peek();
         assertEquals(0, p.getPlayerNo());
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("I-D"), board.getSquare("II-D"));
+        board.placeWall(new Square[] {board.getSquare("I-D"), 
+                                      board.getSquare("II-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("III-D"), board.getSquare("IV-D"));
+        board.placeWall(new Square[] {board.getSquare("III-D"), 
+                                      board.getSquare("IV-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("V-D"), board.getSquare("VI-D"));
+        board.placeWall(new Square[] {board.getSquare("V-D"), 
+                                      board.getSquare("VI-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        board.placeWall(new Square[] {board.getSquare("VII-D"), 
+                                      board.getSquare("VIII-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        board.placeWall(new Square[] {board.getSquare("VII-D"), 
+                                      board.getSquare("VIII-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VIII-D"), board.getSquare("VIII-E"));
+        board.placeWall(new Square[] {board.getSquare("VIII-D"), 
+                                      board.getSquare("VIII-E")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VIII-E"), board.getSquare("IX-E"));
+        board.placeWall(new Square[] {board.getSquare("VIII-E"), 
+                                      board.getSquare("IX-E")});
 
         // a wall has been made across the middle
         assertFalse(GameEngine.existsPath(p, board));
@@ -268,19 +275,26 @@ public class GameEngineTest {
         Player p = players.peek();
         assertEquals(1, p.getPlayerNo());
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("I-D"), board.getSquare("II-D"));
+        board.placeWall(new Square[] {board.getSquare("I-D"), 
+                                      board.getSquare("II-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("III-D"), board.getSquare("IV-D"));
+        board.placeWall(new Square[] {board.getSquare("III-D"), 
+                                      board.getSquare("IV-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("V-D"), board.getSquare("VI-D"));
+        board.placeWall(new Square[] {board.getSquare("V-D"), 
+                                      board.getSquare("VI-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        board.placeWall(new Square[] {board.getSquare("VII-D"), 
+                                      board.getSquare("VIII-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VII-D"), board.getSquare("VIII-D"));
+        board.placeWall(new Square[] {board.getSquare("VII-D"), 
+                                      board.getSquare("VIII-D")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VIII-D"), board.getSquare("VIII-E"));
+        board.placeWall(new Square[] {board.getSquare("VIII-D"), 
+                                      board.getSquare("VIII-E")});
         assertTrue(GameEngine.existsPath(p, board));
-        board.placeWall(board.getSquare("VIII-E"), board.getSquare("IX-E"));
+        board.placeWall(new Square[] {board.getSquare("VIII-E"), 
+                                      board.getSquare("IX-E")});
 
         // a wall has been made across the middle
         assertFalse(GameEngine.existsPath(p, board));
@@ -344,7 +358,8 @@ public class GameEngineTest {
                                                 board.getSquare(4,0)));
         
         // walls
-        board.placeWall(board.getSquare(4,0), board.getSquare(4,1));
+        board.placeWall(new Square[] {board.getSquare(4,0), 
+                                      board.getSquare(4,1)});
         // now we shouldn't be able to move to 5,0 aka VI-A
         result = new Square[2];
         result[0] = board.getSquare(4,1);
@@ -352,7 +367,8 @@ public class GameEngineTest {
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,0)));
 
-        board.placeWall(board.getSquare(4,4), board.getSquare(5,4));
+        board.placeWall(new Square[] {board.getSquare(4,4), 
+                                      board.getSquare(5,4)});
         // now we shouldn't be able to move to 4,5 aka V-F
         result = new Square[3];
         result[0] = board.getSquare(5,4);
@@ -369,20 +385,23 @@ public class GameEngineTest {
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,5)));
 
-        board.placeWall(board.getSquare(5,4), board.getSquare(5,5));
+        board.placeWall(new Square[] {board.getSquare(5,4), 
+                                      board.getSquare(5,5)});
         result = new Square[2];
         result[0] = board.getSquare(5,3);
         result[1] = board.getSquare(4,4);
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,4)));
 
-        board.placeWall(board.getSquare(5,3), board.getSquare(6,3));
+        board.placeWall(new Square[] {board.getSquare(5,3), 
+                                      board.getSquare(6,3)});
         result = new Square[1];
         result[0] = board.getSquare(4,4);
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,4)));
 
-        board.placeWall(board.getSquare(4,3), board.getSquare(4,4));
+        board.placeWall(new Square[] {board.getSquare(4,3), 
+                                      board.getSquare(4,4)});
         // now the square 5,4 is boxed in!
         result = new Square[0];
         assertEquals(result, GameEngine.reachableAdjacentSquares(board,
