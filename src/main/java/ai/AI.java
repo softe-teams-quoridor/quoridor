@@ -21,7 +21,7 @@ public class AI implements QuoridorAI{
 	// a need to use one. move on
 	if(numWalls > 0){
 	    //check if a wall needs to be used
-	    String useWall = checkWalls();
+	    String useWall = checkWalls(b, p, current);
 	    
 	    //if null, move on
 	    if(useWall != null)
@@ -102,8 +102,70 @@ public class AI implements QuoridorAI{
     }
     
     /* check for a need to use a wall. If there is a need, 
-        return a string that says to use one. Otherwise return null */
-    public String checkWalls(){
+     * return a string that says to use one. Otherwise return null 
+     */
+    public String checkWalls(GameBoard b, Player p, Square current){
+	
+	//get which player we are
+	int playerNo = p.getPlayerNo();
+	
+	//save players distances. Start with them at -1, if 
+	//player exists the number will become positive.
+	int [] distances = new int [4];
+	for(int i = 0; i < 4; i++){
+	    distances[i] = -1;
+	}
+	
+	//for each player calculate distance to win.
+	//(this is arbitrary, doesnt account for walls 
+	// in the way of a players win.)
+	for(int i = 0; i < 4; i++){
+	    
+	    //get the player
+	    Player tempP = b.getPlayer(i);
+	    
+	    //if there is no player, continue to the next one
+	    if (tempP == null)
+		continue;
+		
+	    //otherwise get its player no.
+	    int tempNo = tempP.getPlayerNo();
+	    
+	    //and location
+	    Square tempLoc = b.getPlayerLoc(tempP);
+	    
+	    //and based on its num, calculate how far from win condition
+	    if(tempNo == 0)
+		distances[i] = (8 - tempLoc.getY());
+	    else if(tempNo == 1)
+		distances[i] = (tempLoc.getY());
+	    else if(tempNo == 2)
+		distances[i] = (8 - tempLoc.getX());
+	    else
+		distances[i] = (tempLoc.getX());
+	}
+	
+	//create a value for which player has the least distance til win
+	//and set it for the first one.
+	int leastDist = 0;
+	
+	//now, based on earlier calculations. figure out which player it is
+	for (int i = 1; i < 4; i++){
+	    if( distances[leastDist] > distances[i] )
+		leastDist = i;
+	}
+	
+	//if which player we are has the same distance, set leastDist to us
+	if(distances[playerNo] == distances[leastDist])
+	    leastDist = playerNo;
+	    
+	//if leastDist == playerNo, we do not need to use a wall. return null
+	if(leastDist == playerNo)
+	    return null;
+	    
+	//NEED TO FIGURE OUT SQUARES TO PUT WALL TO BLOCK PLAYER LEASTDIST!
+	
+	//if nothing is returned by now, no wall is to be used.
 	return null;
     }
 }
