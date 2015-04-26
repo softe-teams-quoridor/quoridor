@@ -432,7 +432,7 @@ public class GameBoard {
 	    if(reach[i].getY() < y){
 		secondChoice[index] = reach[i];
 		index++;
-		for(int g = i; g < reach.length; g++){
+		for(int g = i; g < reach.length - 1; g++){
 		    reach[g] = reach[g+1];
 		}
 	    }
@@ -531,7 +531,7 @@ public class GameBoard {
 	    if(reach[i].getY() > y){
 		secondChoice[index] = reach[i];
 		index++;
-		for(int g = i; g < reach.length; g++){
+		for(int g = i; g < reach.length - 1; g++){
 			reach[g] = reach[g+1];
 		    }
 	    }
