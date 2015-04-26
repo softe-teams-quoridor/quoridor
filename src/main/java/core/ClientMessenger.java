@@ -116,8 +116,10 @@ public class ClientMessenger {
                 result[i] = true;
                 Deb.ug.println("received confirmation from player " + i);
             }
-            Deb.ug.println("player " + i + " is not ready to play! :(");
-            closeStreams(i);
+            else {
+                Deb.ug.println("player " + i + " is not ready to play! :(");
+                closeStreams(i);
+            }
             /* FIXME player i is noncompliant and needs be booted */
             continue;
         }
@@ -144,11 +146,12 @@ public class ClientMessenger {
     }
 
     public String requestMove(Player player) {
-        /*
+        
         if (outStreams[player.getPlayerNo()] == null) {
             return "B-O-O-T-M-E"; // no connection to the server!
         }
-        */
+        
+
         outStreams[player.getPlayerNo()].println("GO?");
         if (! inStreams[player.getPlayerNo()].hasNextLine()) {
             return "B-O-O-T-M-E"; // no response from the server!

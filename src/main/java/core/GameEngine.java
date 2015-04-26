@@ -395,7 +395,7 @@ public class GameEngine {
             Deb.ug.println("playTurn: legal wall");
             assert (move.endsWith(")")); // this will be a problem if the
                                          // display client is non-conformant
-            board.placeWall(destination[0], destination[1]);
+            board.placeWall(destination);
             player.useWall();
         } else { // it is a player move
             Deb.ug.println("playTurn: legal move");
@@ -533,7 +533,7 @@ public class GameEngine {
       */
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
         // Place the theoritcal wall
-        board.placeWall(wallSquares[0],wallSquares[1]); 
+        board.placeWall(wallSquares); 
         for(int i = 0; i < board.numPlayersRemaining(); i++) {
             if(!GameEngine.existsPath(board.getPlayer(i), board)) {
                 board.removeWall(wallSquares);

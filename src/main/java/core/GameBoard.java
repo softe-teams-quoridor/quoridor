@@ -178,19 +178,19 @@ public class GameBoard {
       *     @param second the ending Wall location
       *     @see Wall
       */
-    public void placeWall (Square first, Square second) {
+    public void placeWall (Square[] wallSquares) {
         // Horiz
-        if(first.getY() == second.getY()) {
-            first.placeWallBottom(Wall.HORIZ_LEFT);
-            second.placeWallBottom(Wall.HORIZ_RIGHT); 
+        if(wallSquares[0].getY() == wallSquares[1].getY()) {
+            wallSquares[0].placeWallBottom(Wall.HORIZ_LEFT);
+            wallSquares[1].placeWallBottom(Wall.HORIZ_RIGHT); 
         }
         // Vert
         else {
-            first.placeWallRight(Wall.VERT_TOP);
-            second.placeWallRight(Wall.VERT_BOT); 
+            wallSquares[0].placeWallRight(Wall.VERT_TOP);
+            wallSquares[1].placeWallRight(Wall.VERT_BOT); 
         }
-        squares[first.getX()][first.getY()] = first;
-        squares[second.getX()][second.getY()] = second;
+        squares[wallSquares[0].getX()][wallSquares[0].getY()] = wallSquares[0];
+        squares[wallSquares[1].getX()][wallSquares[1].getY()] = wallSquares[1];
     }
 
     /**
