@@ -40,10 +40,8 @@ public class MoveServer {
             ai = new AI_RollDice();
         } else if (args[1].equals("fcrd")) {
             ai = new AI_FlipCoinRollDice();
-        } else if (args[1].equals("ai")) {
-            ai = new AI();
-        } else if (args[1].equals("path")) {
-	    ai = new AI_Path();
+        } else if (args[1].equals("idk")) {
+            ai = new AI_IDK();
         } else if (args[1].equals("rip")) {
             ai = new AI_Ripley(); //<--- currently does nothing :(
         } else {
