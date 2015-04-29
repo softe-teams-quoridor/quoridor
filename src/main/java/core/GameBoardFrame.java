@@ -362,39 +362,6 @@ public class GameBoardFrame extends JFrame{
     	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
     
-    
-    
-    //*******************************************************************************************
-    
-    
-    private  JPanel makeInfoPane(){    
-    	GridLayout info=new GridLayout(2,9);
-    	JPanel iPane=new JPanel();
-    	iPane.setLayout(info);
-    	JLabel[] infarray=new JLabel[20];
-    	for(int i=0; i<17; i++ ){
-    	    infarray[i]=new JLabel();
-    		if(i<=2){
-    			//infarray[i].setBackground(new Color(0,255,255));
-    		}else if(i/2==1){
-    			//infarray[i].setBorder(BorderFactory.createMatteBorder(6,6,6,0,new Color(225,0,225)));
-    		}else if(i/2==0){
-    			//infarray[i].setBorder(BorderFactory.createMatteBorder(0,6,6,6,new Color(225,0,225)));
-    		}
-    		infarray[i].setBackground(new Color(200,100,100));
-    		infarray[i].setVisible(true);
-    		infarray[i].setOpaque(true);
-    		iPane.add(infarray[i]);
-    	}
-    	
-    	
-    	return iPane;
-    	    
-    	    //int pTurn=gameboard.getPlayerTurn();			//int of which player turn it is
-    	    
-    	    
-    }
-    
     private void findIcons(){
     
     }
