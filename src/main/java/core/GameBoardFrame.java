@@ -65,6 +65,8 @@ public class GameBoardFrame extends JFrame{
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
             //print out win
+            gameboard.getContentPane().removeAll();
+            draw(board);
             JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
             closeWindow();
         } else{
@@ -80,6 +82,7 @@ public class GameBoardFrame extends JFrame{
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
             //print out win
+            draw(board, reachable);
             JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
             closeWindow();
         } else{
