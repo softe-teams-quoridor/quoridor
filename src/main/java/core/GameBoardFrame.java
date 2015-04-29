@@ -1,4 +1,4 @@
-/*   GameBoardFrame.java - CIS405 - teams
+/**   GameBoardFrame.java - CIS405 - teams
  * ____________________________________________________________________________
  *
  *   GameBoardFrame object to construct a GUI for the Quoridor game. 
@@ -40,13 +40,13 @@ public class GameBoardFrame extends JFrame{
     public GameBoardFrame(GameBoard board, Queue<Player> players) {
         numPlayers = players.size();
         this.players = players;
-	  
+
         //initialize JFrame
         gameboard = new JFrame("Quoridor");
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameboard.setSize(1000,700);
         gameboard.setLocationRelativeTo(null);
-        
+
 
         //creates the grid
         GridLayout game = new GridLayout(10,10);
@@ -55,42 +55,42 @@ public class GameBoardFrame extends JFrame{
         //draw the original board
         draw(board);
     }
-    
-    
+
+
     //******************************************************************************************
-    
-    
+
+
     //Removes contents of frame and calls draw in order to update
     public void update(GameBoard board){
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
-	    //print out win
-	    JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
-	    closeWindow();
+            //print out win
+            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+            closeWindow();
         } else{
-	    gameboard.getContentPane().removeAll();
-	    draw(board);
-	}
+            gameboard.getContentPane().removeAll();
+            draw(board);
+        }
     }
-    
+
     /** dan's version: with colours for specific squares!!
      * Removes contents of frame and calls draw in order to update
      */
     public void update(GameBoard board, Square [] reachable){
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
-	    //print out win
-	    JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
-	    closeWindow();
+            //print out win
+            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+            closeWindow();
         } else{
-	    gameboard.getContentPane().removeAll();
-	    draw(board, reachable);
-	}
+            gameboard.getContentPane().removeAll();
+            draw(board, reachable);
+        }
     }
-    
-    
+
+
     //******************************************************************************************
-    
+
 
     //Constructs the gameboard and makes it visible
     private void draw(GameBoard board) {
@@ -106,11 +106,11 @@ public class GameBoardFrame extends JFrame{
         gameboard.setVisible(true);					
         gameboard.setFocusableWindowState(true);	//autofocusing
     }
-    
-    
+
+
     //***********************************************************************************
-    
-    
+
+
     /** dan's version: with colours for specific squares!!
      * Constructs the gameboard and makes it visible
      */
@@ -127,10 +127,10 @@ public class GameBoardFrame extends JFrame{
         gameboard.setVisible(true);					
         gameboard.setFocusableWindowState(true);	//autofocusing
     }
-    
-    
+
+
     //*************************************************************************
-    
+
 
     //creates a row
     private void row(int row, GameBoard board) {
@@ -144,7 +144,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setFont(new Font("Serif",1,30));
         labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
-        
+
         //Fills frame with GREY Squares if unoccupied 
         for (int i = 0; i < 9; i++) {
             JLabel label = new JLabel();
@@ -159,47 +159,46 @@ public class GameBoardFrame extends JFrame{
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
         for (int i = 9; i < 10; i++) {
-        	 Color pColor=Color.BLACK;
-        	 JLabel superLabel=new JLabel("");
-        	 superLabel.setForeground(Color.WHITE);
-         	 JLabel label = new JLabel();
-         	 int playInt=(row-1)/2;
-         	  label.setLayout(new GridLayout(3,1));
-         	  label.setOpaque(true);
-         	  label.setPreferredSize(new Dimension(100, 70));
-         	  
-         	  if(row==0){
-         	      //This should display if it's a player window or server
-         	  }else if(playInt==0){
-                  pColor=Color.YELLOW;
-              }else if(playInt==1){
-                  pColor=Color.BLUE;
-              }else if(playInt==2){
-                  pColor=Color.GREEN;
-              }else if(playInt==3){
-                  pColor=Color.RED;
-              }
-		      
-              if(playInt==board.getCurrPlayerTurn())
-                  wThick=5;
-              
-		      if(row%2==0&&row!=0){
-		          
-		      	  label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
-		      	  superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
-		      }else if(row!=0){
-		      	  superLabel.setText(board.getPlayer(playInt).getName());
-		          label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
-		      }
-		  label.add(superLabel);
-                  label.setBackground(new Color(0, 0, 0));
-                  label.setForeground(Color.WHITE);
-         	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
-         }
+            Color pColor=Color.BLACK;
+            JLabel superLabel=new JLabel("");
+            superLabel.setForeground(Color.WHITE);
+            JLabel label = new JLabel();
+            int playInt=(row-1)/2;
+            label.setLayout(new GridLayout(3,1));
+            label.setOpaque(true);
+            label.setPreferredSize(new Dimension(100, 70));
+
+            if(row==0){
+                //This should display if it's a player window or server
+            }else if(playInt==0){
+                pColor=Color.YELLOW;
+            }else if(playInt==1){
+                pColor=Color.BLUE;
+            }else if(playInt==2){
+                pColor=Color.GREEN;
+            }else if(playInt==3){
+                pColor=Color.RED;
+            }
+
+            if(playInt==board.getCurrPlayerTurn())
+                wThick=5;
+
+            if(row%2==0&&row!=0){
+                label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
+                //superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
+            }else if(row!=0){
+                //superLabel.setText(board.getPlayer(playInt).getName());
+                label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
+            }
+            label.add(superLabel);
+            label.setBackground(new Color(0, 0, 0));
+            label.setForeground(Color.WHITE);
+            gameboard.getContentPane().add(label,BorderLayout.CENTER);
+        }
     }
-    
-    
-    
+
+
+
     //********************************************************************************
 
     /** dan's version: with colours for specific squares!!
@@ -227,7 +226,7 @@ public class GameBoardFrame extends JFrame{
             if (board.isOccupied(i, row)) {
                 printPlayerLabel(board.getPlayer(i, row), label);
             } else if (Arrays.asList(reachable)
-                                .contains(board.getSquare(i, row))) {
+                    .contains(board.getSquare(i, row))) {
                 label.setBackground(Color.WHITE);
             } else {
                 label.setBackground(new Color(140, 130, 130));
@@ -235,16 +234,16 @@ public class GameBoardFrame extends JFrame{
 
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
-         for (int i = 9; i < 10; i++) {
-         	 JLabel label = new JLabel();
-         	  label.setOpaque(true);
-         	  label.setPreferredSize(new Dimension(100, 70));
-         	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
-         }
+        for (int i = 9; i < 10; i++) {
+            JLabel label = new JLabel();
+            label.setOpaque(true);
+            label.setPreferredSize(new Dimension(100, 70));
+            gameboard.getContentPane().add(label,BorderLayout.CENTER);
+        }
     }
-    
-    
-    
+
+
+
     //*********************************************************************************
 
     /** 
@@ -252,31 +251,31 @@ public class GameBoardFrame extends JFrame{
      * No more Text overlay.
      */ 
     private void printPlayerLabel(Player p, JLabel label) { 
-    	    ImageIcon bg=new ImageIcon("./../../images/player_4_scaled.jpg");
-    	    if(p.getPlayerNo()==0){
-    	    	    bg=new ImageIcon("./../../images/player_1_scaled.jpg");
-    	    }else if(p.getPlayerNo()==1){
-    	    	    bg=new ImageIcon("./../../images/player_2_scaled.jpg");
-    	    }else if(p.getPlayerNo()==2){
-    	    	    bg=new ImageIcon("./../../images/player_3_scaled.jpg");
-    	    }else if(p.getPlayerNo()==3){
-    	    	    bg=new ImageIcon("./../../images/player_4_scaled.jpg");
-    	    }
-    	    label.setIcon(bg);
-    	   //label.setIconTextGap(-100);
-    	 label.setLayout(new FlowLayout());
+        ImageIcon bg=new ImageIcon("./../../images/player_4_scaled.jpg");
+        if(p.getPlayerNo()==0){
+            bg=new ImageIcon("./../../images/player_1_scaled.jpg");
+        }else if(p.getPlayerNo()==1){
+            bg=new ImageIcon("./../../images/player_2_scaled.jpg");
+        }else if(p.getPlayerNo()==2){
+            bg=new ImageIcon("./../../images/player_3_scaled.jpg");
+        }else if(p.getPlayerNo()==3){
+            bg=new ImageIcon("./../../images/player_4_scaled.jpg");
+        }
+        label.setIcon(bg);
+        //label.setIconTextGap(-100);
+        label.setLayout(new FlowLayout());
         //label.setBackground(new Color(0, 200, 200)); 
         //label.setText("     " + p.getName());
-        	label.setOpaque(true); 
-        	label.setLayout(null); 
+        label.setOpaque(true); 
+        label.setLayout(null); 
         label.setPreferredSize(new Dimension(100, 70)); 
         gameboard.getContentPane().add(label, BorderLayout.CENTER); 
     } 
 
 
     //*****************************************************************************
-    
-    
+
+
     // prints out I-IX labels
     private void topLayer(GameBoard board) {
         assert (board != null);
@@ -301,56 +300,56 @@ public class GameBoardFrame extends JFrame{
             labels[i].setHorizontalAlignment(SwingConstants.CENTER);
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
-        
+
         for (int i=10; i<11; i++){
-        	labels[i]=new JLabel();
-        	//labels[i].setOpaque(true);
-        		if(i==10){
-        		    labels[i].setOpaque(true);
-        		    labels[i].setVisible(true);
-        		}
-        	labels[i].setBackground(new Color(150, 0, 0));
-        	labels[i].setPreferredSize(new Dimension(100, 70));
-        	gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
+            labels[i]=new JLabel();
+            //labels[i].setOpaque(true);
+            if(i==10){
+                labels[i].setOpaque(true);
+                labels[i].setVisible(true);
+            }
+            labels[i].setBackground(new Color(150, 0, 0));
+            labels[i].setPreferredSize(new Dimension(100, 70));
+            gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
         }
     }
-    
+
     //****************************************************************************************
-    
-    
+
+
     //Sets the border around squares that have walls.
     //makes walls show up as red compound borders.
     private JLabel setBoarder(JLabel someLabel,Square tSquare){
-    	    if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
-    	    	    
-    	    }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 0, 1, Color.BLACK),
-    	    	    	    BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
-    	    	    
-    	    }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 1, 0, Color.BLACK),
-    	    	    	    BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
-    	    	    
-    	    }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-    	    	    someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1,0,0,Color.BLACK),
-    	    	    	    BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
-    	    }
-    	    
-    	    return someLabel;
+        if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+            someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
+
+        }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 0, 1, Color.BLACK),
+                        BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
+
+        }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 1, 0, Color.BLACK),
+                        BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
+
+        }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1,0,0,Color.BLACK),
+                        BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
+        }
+
+        return someLabel;
     }
-    
-    
+
+
     //*******************************************************************************************
-    
-    
-    	//closes the GameBoardFrame. Could also use dispose method.
+
+
+    //closes the GameBoardFrame. Could also use dispose method.
     public void closeWindow(){
         gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    	gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
+        gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
-    
+
     private void findIcons(){
-    
+
     }
 }
