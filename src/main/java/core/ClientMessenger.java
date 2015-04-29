@@ -66,16 +66,20 @@ public class ClientMessenger {
             }
         }
 
+
         // test all connections -- not necessary, just for debugging
         for (int i = 0; i < numPlayers; i++) {
             assert (outStreams[i] != null);
             assert (inStreams[i] != null);
         }
+
     }
 
     public String [] getNames() {
+        Deb.ug.println("S");
         String [] result = new String[inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
+            Deb.ug.println(i+ "is i");
             if (! inStreams[i].hasNextLine()) {
                 // the connection has been closed! we should boot them...
                 result[i] = null;
@@ -89,6 +93,7 @@ public class ClientMessenger {
             }
             result[i] = line.substring(12);
         }
+        Deb.ug.println("Hi");
         return result;
     }
 

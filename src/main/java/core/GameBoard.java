@@ -37,8 +37,8 @@ public class GameBoard {
     public static final int ROWS = 9;    // Y
 
     // Data Members
-    private Square [][] squares;  // The cells of the GameBoard
-    private Square [] playerLocs; // locations of the players on the board
+    protected Square [][] squares;  // The cells of the GameBoard
+    protected Square [] playerLocs; // locations of the players on the board
     private int playerTurn;       // whichever player's turn it is
     private int startNumPlayers; // how many players when start
     
@@ -255,7 +255,13 @@ public class GameBoard {
       *     @throws assertion if the destination is an invalid location
       */
     public void move(Player player, Square newSqr) {
+//        assert (player != null);
+//        if (newSqr != null){
+//            Deb.ug.println("Move sqr is null");
+//            System.exit(40);
+//        }
         assert (validLoc(newSqr.getX(), newSqr.getY()));
+        
         removePlayer(player);
         addPlayer(player, newSqr.getX(), newSqr.getY());
     }
@@ -264,7 +270,7 @@ public class GameBoard {
 
     /**
       * Adds a Player to the given location.
-      *     @param p the Player to be added
+      *     @param player the Player to be added
       *     @param x column
       *     @param y row
       *     @throws assertion if location is invalid
