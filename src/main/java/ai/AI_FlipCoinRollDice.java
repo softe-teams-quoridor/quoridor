@@ -12,18 +12,32 @@ public class AI_FlipCoinRollDice implements QuoridorAI {
 
     public String getMove(GameBoard board, Player player) {
         
-        boolean coin = true /*(rand.nextInt() % 2 == 0) */;
+        boolean coin = (rand.nextInt() % 2 == 0);
         Square [] moveSquares;
+        int move = 0;
         if (coin) {
             // move pawn
             moveSquares = GameEngine.reachableAdjacentSquares(board,
                              board.getPlayerLoc(player));
-            int move = rand.nextInt() % moveSquares.length;
+            move = rand.nextInt(moveSquares.length);
             return (moveSquares[move].toString());
         } else {
             // place wall
+            moveSquares = new Square[2];
+            moveSquares[0] = board.getSquare(rand.nextInt(8),rand.nextInt(8));
+            if(moveSquares[0].hasWallRight() && moveSquares[0].hasWallBottom())
+                moveSquares[0] = board.getSquare(rand.nextInt(8),rand.nextInt(8));
+            move = rand.nextInt(2);
+            if(move == 0) {
+                moveSquares[1] = new Square(moveSquares[0].getX() + 1, moveSquares[0].getY());
+            }
+            else {
+                moveSquares[1] = new Square(moveSquares[0].getX(), moveSquares[0].getY() + 1);
+            }
+            return ( "(" + moveSquares[0].toString() + "," + moveSquares[1].toString() + ")");
+
         }
-        return "FIXME";
+   
     }
 
     public void reset() {
