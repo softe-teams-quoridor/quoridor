@@ -518,8 +518,7 @@ public class GameEngine {
                         squareList.add(adjToPlayer[j]);
                 } 
                 // just add the square to the list
-                //if ( !checkLoc.isOccupied() ) 
-                else
+                else if (i != dontCheckMe)
                     squareList.add(checkLoc);
             }
        }//---END for loop---
