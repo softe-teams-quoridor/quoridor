@@ -66,16 +66,20 @@ public class ClientMessenger {
             }
         }
 
+
         // test all connections -- not necessary, just for debugging
         for (int i = 0; i < numPlayers; i++) {
             assert (outStreams[i] != null);
             assert (inStreams[i] != null);
         }
+
     }
 
     public String [] getNames() {
+        Deb.ug.println("S");
         String [] result = new String[inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
+            Deb.ug.println(i+ "is i");
             if (! inStreams[i].hasNextLine()) {
                 // the connection has been closed! we should boot them...
                 result[i] = null;
@@ -89,6 +93,7 @@ public class ClientMessenger {
             }
             result[i] = line.substring(12);
         }
+        Deb.ug.println("Hi");
         return result;
     }
 
@@ -97,24 +102,33 @@ public class ClientMessenger {
      * MOVE is the message a server sends to indicate that it is ready to play
      * blocks until receiving all messages
      */ 
-    public void ready() {
+//     public void ready() {
+    public boolean [] ready() {
+        boolean [] result = new boolean [inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
+            result [i] = false;
             if (inStreams[i] == null) {
                 Deb.ug.println("why is inStreams[" + i + "] null?");
-                /* FIXME player i should be booted, if they haven't already */
+                /* player i should be booted, if they haven't already */
                 continue;
-            }
-            if (!inStreams[i].hasNextLine()) {
+            } else if (!inStreams[i].hasNextLine()) {
                 Deb.ug.println("inStreams[" + i + "] does not have nextline");
-                /* FIXME player i should be booted, if they haven't already */
+                closeStreams(i);
+                /* player i should be booted, if they haven't already */
                 continue;
             }
-            String clientMessage = inStreams[i].nextLine();
-            if (! clientMessage.equals("MOVE")) {
-                Deb.ug.println("player " + i + " is not ready to play! :(");
-                /* FIXME player i is noncompliant and needs be booted */
+            if (inStreams[i].nextLine().equals("MOVE")) {
+                result[i] = true;
+                Deb.ug.println("received confirmation from player " + i);
             }
+            else {
+                Deb.ug.println("player " + i + " is not ready to play! :(");
+                closeStreams(i);
+            }
+            /* FIXME player i is noncompliant and needs be booted */
+            continue;
         }
+        return result;
     }
 
     /** sends PLAYERS message to all servers to inform them the 
@@ -137,11 +151,12 @@ public class ClientMessenger {
     }
 
     public String requestMove(Player player) {
-        /*
+        
         if (outStreams[player.getPlayerNo()] == null) {
             return "B-O-O-T-M-E"; // no connection to the server!
         }
-        */
+        
+
         outStreams[player.getPlayerNo()].println("GO?");
         if (! inStreams[player.getPlayerNo()].hasNextLine()) {
             return "B-O-O-T-M-E"; // no response from the server!

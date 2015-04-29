@@ -30,15 +30,49 @@ public class GameBoardTest {
     public void instantiateGameBoard() throws Exception {
         board = new GameBoard(players);
         assertNotNull("board should not be null!", board);
-    } 
+    }
+
+    /* Ensures that the correct number of players are remaining */
+    @Test
+    public void testNumPlayersRemaning() throws Exception {
+        for(int i = NUM_PLAYERS - 1; i >= 0; i--) {
+            board.removePlayer(players.peek());
+            assertEquals(board.numPlayersRemaining(), i);
+            board.getNextTurn(players);
+        }
+    }
+
+    /* Ensures that squares are unoccupied/occupied */
+    @Test
+    public void testIsOccupied() throws Exception {
+        // Check players initial cells
+        assertTrue(board.isOccupied(4,0));
+        assertTrue(board.isOccupied(4,8));
+        assertTrue(board.isOccupied(0,4));
+        assertTrue(board.isOccupied(8,4));
+        // Check some unoccupied cells
+        assertFalse(board.isOccupied(0,0));
+        assertFalse(board.isOccupied(8,8));
+        assertFalse(board.isOccupied(0,8));
+        assertFalse(board.isOccupied(8,0));
+        assertFalse(board.isOccupied(4,4));
+    }
+
     
     /* Ensures all squares have been properly assigned coordinates */
     @Test
     public void testGetSquares() throws Exception {
+        String square;
         for ( int i = 0; i < 9; i++ )
             for ( int j = 0; j < 9; j++ ) {
+                // Test using x and y
                 assertEquals(board.getSquare(i,j).getX(), i);
                 assertEquals(board.getSquare(i,j).getY(), j);
+                square = GameEngine.toNumerals(i) + "-" +
+                         GameEngine.toLetters(j);
+                // Test using string representation
+                assertEquals(board.getSquare(square).getX(), i);
+                assertEquals(board.getSquare(square).getY(), j);
             }
     }
     
@@ -73,6 +107,23 @@ public class GameBoardTest {
         players.remove();
         assertEquals(board.getPlayer(players.peek().getPlayerNo()),players.peek());
     }
+
+    /* Ensures that walls have been actually placed */
+    @Test
+    public void testPlaceWall() throws Exception {
+        Square[] wallSquares = {new Square(0,0), new Square(0,1)};
+        board.placeWall(wallSquares);
+        
+    }
+
+    /* Ensures that walls have been properly removed */
+    @Test
+    public void testRemoveWall() throws Exception {
+        Square[] wallSquares = {new Square(0,0), new Square(0,1)};
+        board.placeWall(wallSquares);
+        board.removeWall(wallSquares);
+    }
+
 
     /* Ensure we can remove players from the board */
     @Test
@@ -123,24 +174,4 @@ public class GameBoardTest {
             players = board.getNextTurn(players);
         }
     }
-    
-    /* check that this returns not null when this is called*/
-//     @Test
-//     public void testShortestPath() throws Exception{
-// 	assertNotNull("findShortestPath() should always return a path!", board.findShortestPath(players.peek()));
-//     }
-    
-    /*check that the buildTree methods never return null. There is always a 
-      possible move*/
-//     @Test
-//     public void testBuildTree() throws Exception{
-// 	Square sq = new Square(1,1);
-// 	PathTreeNode p = new PathTreeNode(sq, 0);
-// 	assertNotNull("There should always be a path tree", board.buildTree0(p));
-// 	assertNotNull("There should always be a path tree", board.buildTree1(p));
-// 	assertNotNull("There should always be a path tree", board.buildTree2(p));
-// 	assertNotNull("There should always be a path tree", board.buildTree3(p));
-//     }
-    
-    /*check that the paths returned are actually the ones we want*/
 }

@@ -68,10 +68,6 @@ public class AI_Ripley implements QuoridorAI {
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    /**
-      * return a move string, be it a player move or wall placement
-      */
     public String getMove(GameBoard board, Player p) {
         // -- this will require receiving the previous move(s) from
         //    the other players so we can make an appropriate adjustment,
@@ -245,38 +241,36 @@ public class AI_Ripley implements QuoridorAI {
             // "place vertical walls" on the virtual board
             for (int x = 0; x < GameBoard.COLUMNS-1; x++) {
                 // if a right wall is present
-                if (gameBoard.getSquare(x,y).hasWallRight()) {
-                    int value = 2; // if start, increment by 2
-                    if (gameBoard.getSquare(x,y).getWallRight().isEnd())
-                        value = 4; // if end, increment by 4
+                if (gameBoard.getSquare(x,y).hasWallRight()
+                    && gameBoard.getSquare(x,y).getWallRight().isEnd()) {
+                    
                     if (virtualBoard[x][y] > virtualBoard[x+1][y]) {
                         //rippleLeft(x,y,value);
                         System.out.println("left of wall is greater");
                     }
-                    if (virtualBoard[x][y] < virtualBoard[x+1][y]) {
+                    else if (virtualBoard[x][y] < virtualBoard[x+1][y]) {
                         //rippleRight(x,y,value);
                         System.out.println("right of wall is greater");
                     }
-                    // else, nothing should happen
                     else
+                        //no rippling
                         System.out.println("sides are equal, no rippling");
                 }
             }
-            
 
-                //TODO:
-                // if vertical wall
-                // vertical walls are odd, we need to check starting from
-                // the end piece, and then the start piece
+            //TODO:
+            // if vertical wall
+            // vertical walls are odd, we need to check starting from
+            // the end piece, and then the start piece
 
-                // if the end piece is next to a horizontal wall, increment
-                // it by 4, and the loctions next to the start piece by 2.
-                // this is not necessarily the best value to inc,
-                // but it will make the AI dislike this location very much
-                // ---- skip the next case if this happens ----
+            // if the end piece is next to a horizontal wall, increment
+            // it by 4, and the loctions next to the start piece by 2.
+            // this is not necessarily the best value to inc,
+            // but it will make the AI dislike this location very much
+            // ---- skip the next case if this happens ----
 
-                // if the start piece is next to a horizontal wall, increment
-                // it by 2. same as above, but the AI should dislike it
+            // if the start piece is next to a horizontal wall, increment
+            // it by 2. same as above, but the AI should dislike it
         }
     }
 
@@ -285,7 +279,7 @@ public class AI_Ripley implements QuoridorAI {
         int[] fromRight = countSquaresFromRight(gameBoard,y);
         int[] row = new int[GameBoard.COLUMNS]; // calculated row
         int rightInd = GameBoard.ROWS-1;        // right-most index
-        int leftInd = 0;                        // left-most index
+        int leftInd  = 0;                       // left-most index
         // If there is a wall against the right-most edge of the game board,
         //  get the values from right-to-left
         if ( fromLeft[GameBoard.COLUMNS-1] > 0 )
@@ -387,7 +381,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a wall to the board...");
         Square first = board.getSquare("III-C");
         Square secnd = board.getSquare("IV-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -398,7 +392,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("V-C");
         secnd = board.getSquare("VI-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -409,7 +403,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("VII-C");
         secnd = board.getSquare("VIII-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -420,7 +414,7 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Adding a neighboring wall...");
         first = board.getSquare("I-C");
         secnd = board.getSquare("II-C");
-        board.placeWall(first,secnd);
+        board.placeWall(new Square[] {first,secnd});
 
         System.out.println("Rippling...");
         rip.update(board);
@@ -428,5 +422,40 @@ public class AI_Ripley implements QuoridorAI {
         System.out.println("Board after ripple");
         System.out.println(rip.printVirtualBoard());
 
+        System.out.println("Adding a new row of walls...");
+        first = board.getSquare("VIII-D");
+        secnd = board.getSquare("IX-D");
+        board.placeWall(new Square[] {first,secnd});
+        first = board.getSquare("VI-D");
+        secnd = board.getSquare("VII-D");
+        board.placeWall(new Square[] {first,secnd});
+        first = board.getSquare("IV-D");
+        secnd = board.getSquare("V-D");
+        board.placeWall(new Square[] {first,secnd});
+        first = board.getSquare("II-D");
+        secnd = board.getSquare("III-D");
+        board.placeWall(new Square[] {first,secnd});
+
+        System.out.println("Rippling...");
+        rip.update(board);
+
+        System.out.println("Board after ripple");
+        System.out.println(rip.printVirtualBoard());
+
+        System.out.println();
+        //--------------------
+        System.out.println();
+
+        System.out.println("Vertical Wall Testing");
+        System.out.println("placing a vertical wall...");
+        first = board.getSquare("V-B");
+        secnd = board.getSquare("V-C");
+        board.placeWall(new Square[] {first,secnd});
+
+        System.out.println("Riplling...");
+        rip.update(board);
+
+        System.out.println("Board after ripple");
+        System.out.println(rip.printVirtualBoard());
     }
 }

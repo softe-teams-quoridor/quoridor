@@ -41,7 +41,7 @@ public class ReachableAdjacentSquaresDemo {
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { }
 
-        board.placeWall(board.getSquare("IV-D"), board.getSquare("V-D"));
+        board.placeWall(new Square[] {board.getSquare("IV-D"), board.getSquare("V-D")});
         board.move(p, board.getSquare("VIII-F"));
         squa = board.getPlayerLoc(p);
         sqs = GameEngine.reachableAdjacentSquares(board, squa);
@@ -60,17 +60,17 @@ public class ReachableAdjacentSquaresDemo {
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 
 
-        board.placeWall(board.getSquare("IV-E"), board.getSquare("IV-F"));
+        board.placeWall(new Square[] {board.getSquare("IV-E"), board.getSquare("IV-F")});
         sqs = GameEngine.reachableAdjacentSquares(board, squa);
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 
 
-        board.placeWall(board.getSquare("III-E"), board.getSquare("IV-E"));
+        board.placeWall(new Square[] {board.getSquare("III-E"), board.getSquare("IV-E")});
         sqs = GameEngine.reachableAdjacentSquares(board, squa);
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 
 
-        board.placeWall(board.getSquare("III-D"), board.getSquare("III-E"));
+        board.placeWall(new Square[] {board.getSquare("III-D"), board.getSquare("III-E")});
         sqs = GameEngine.reachableAdjacentSquares(board, squa);
         frame.update(board, sqs);
         try { Thread.sleep(1000); } catch (Exception e) { } 

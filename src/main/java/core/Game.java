@@ -117,7 +117,29 @@ public class Game {
             System.exit(0);
         }
 
-        hermes.ready();
+        /* check that moveservers are ready to go */
+        boolean [] ready = hermes.ready();
+        assert (ready.length == numPlayers);
+        for (int i = 0; i < numPlayers; i++) {
+            if (! ready[i]) {
+                Player notReady = players.remove();
+                hermes.broadcastBoot(notReady);
+                board.removePlayer(notReady);
+            }
+            players.add(players.remove()); // shuffle player queue
+        }
+
+        if (players.size() == 0) {
+            // not a single server survived the MOVE message...
+            System.out.println("you should fix your move-servers.");
+            System.exit(0);
+        } else if (players.size() == 1) {
+            Player survivor = players.remove();
+            hermes.broadcastVictor(survivor);
+            System.out.println("by elimination, the winner is " + survivor); 
+            System.exit(0);
+        }
+
 
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");

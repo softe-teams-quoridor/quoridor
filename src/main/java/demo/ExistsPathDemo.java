@@ -39,25 +39,25 @@ public class ExistsPathDemo {
         System.out.println("round 2: " + ans);
 
         resetAllVisitedSquares();
-        board.placeWall(board.getSquare("IV-E"), board.getSquare("V-E"));
+        board.placeWall(new Square[] {board.getSquare("IV-E"), board.getSquare("V-E")});
         ans = existsPath(p, board);
         System.out.println("round 3: " + ans);
 
         resetAllVisitedSquares();
-        board.placeWall(board.getSquare("I-D"), board.getSquare("II-D"));
+        board.placeWall(new Square[] {board.getSquare("I-D"), board.getSquare("II-D")});
         board.move(p, board.getSquare("I-D"));
         ans = existsPath(p, board);
         System.out.println("round 4: " + ans);
 
         resetAllVisitedSquares(); 
-        board.placeWall(board.getSquare("II-E"), board.getSquare("III-E"));
-        board.placeWall(board.getSquare("I-F"), board.getSquare("II-F"));
-        board.placeWall(board.getSquare("II-F"), board.getSquare("II-G"));
+        board.placeWall(new Square[] {board.getSquare("II-E"), board.getSquare("III-E")});
+        board.placeWall(new Square[] {board.getSquare("I-F"), board.getSquare("II-F")});
+        board.placeWall(new Square[] {board.getSquare("II-F"), board.getSquare("II-G")});
         ans = existsPath(p, board);
         System.out.println("round 5: " + ans);
 
         resetAllVisitedSquares(); 
-        board.placeWall(board.getSquare("IV-D"), board.getSquare("IV-E"));
+        board.placeWall(new Square[] {board.getSquare("IV-D"), board.getSquare("IV-E")});
         ans = existsPath(p, board);
         System.out.println("round 6: " + ans);
 
@@ -70,19 +70,19 @@ public class ExistsPathDemo {
         System.out.println("round 7: " + ans);
 
         resetAllVisitedSquares(); 
-        board.placeWall(board.getSquare("V-F"), board.getSquare("V-G"));
+        board.placeWall(new Square[] {board.getSquare("V-F"), board.getSquare("V-G")});
         ans = existsPath(p, board);
         System.out.println("round 8: " + ans);
 
         resetAllVisitedSquares();
-        board.placeWall(board.getSquare("VI-D"), board.getSquare("VII-D"));
-        board.placeWall(board.getSquare("V-C"), board.getSquare("VI-C"));
+        board.placeWall(new Square[] {board.getSquare("VI-D"), board.getSquare("VII-D")});
+        board.placeWall(new Square[] {board.getSquare("V-C"), board.getSquare("VI-C")});
         ans = existsPath(p, board);
         System.out.println("round 9: " + ans);
 
         resetAllVisitedSquares();
-        board.placeWall(board.getSquare("VII-C"), board.getSquare("VIII-C"));
-        board.placeWall(board.getSquare("VIII-D"), board.getSquare("VIII-E"));
+        board.placeWall(new Square[] {board.getSquare("VII-C"), board.getSquare("VIII-C")});
+        board.placeWall(new Square[] {board.getSquare("VIII-D"), board.getSquare("VIII-E")});
         ans = existsPath(p, board);
         System.out.println("round 10: " + ans);
 
@@ -92,7 +92,7 @@ public class ExistsPathDemo {
         System.out.println("round 11: " + ans);
 
         resetAllVisitedSquares();
-        board.placeWall(board.getSquare("VIII-E"), board.getSquare("IX-E"));
+        board.placeWall(new Square[] {board.getSquare("VIII-E"), board.getSquare("IX-E")});
         ans = existsPath(p, board);
         System.out.println("round 12: " + ans);
 

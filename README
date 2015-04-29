@@ -138,3 +138,6 @@ README file for teams' Quoridor Project
             gb jar
                 does exactly what it says on the tin (uh...)
 
+    6. git shortlog -ns (thanks matt)
+
+            prints a list of each member's name along with their number of commits
