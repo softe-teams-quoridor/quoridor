@@ -141,6 +141,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setPreferredSize(new Dimension(100, 70));
         labelblank.setText("" + GameEngine.toLetters(row));
         labelblank.setForeground(Color.WHITE);
+        labelblank.setFont(new Font("Serif",1,30));
         labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
         
@@ -289,7 +290,9 @@ public class GameBoardFrame extends JFrame{
         gameboard.getContentPane().add(labels[0], BorderLayout.CENTER);
         // Index starts at 1, toNumerals starts at i-1
         for (int i = 1; i < 10; i++) {
-            labels[i] = new JLabel();
+
+            labels[i] = new JLabel();;
+            labels[i].setFont(new Font("Serif", 1, 30));
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(150, 0, 0));
             labels[i].setForeground(Color.WHITE);
