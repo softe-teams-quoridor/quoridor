@@ -529,7 +529,12 @@ public class GameEngine {
     //*************************************************************************
 
     /**
-      * DOCUMENTME
+      * This method will go through each player and make sure that they
+      * all have a vaild path
+      * @param board the gameBoard being looked at
+      * @param wallSquares the wall that will be placed to see if it blocks
+      *                     any player
+      * @return true if all paths exits
       */
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
         // Place the theoritcal wall
