@@ -157,52 +157,58 @@ public class GameBoardFrame extends JFrame{
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
         for (int i = 9; i < 10; i++) {
-            
+        	 Color pColor=Color.BLACK;
+        	 JLabel superLabel=new JLabel("");
+        	 superLabel.setForeground(Color.WHITE);
          	 JLabel label = new JLabel();
+         	  label.setLayout(new GridLayout(3,1));
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
+         	  
+         	  if(row==0){
+         	  	  				//This should display if it's a player window or server
+         	  }
+         	  
          	  if(row==1){
-         	      String tPlayer=board.getPlayer(0).getName();
-         	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.YELLOW));
-         	      label.setText(tPlayer);
+         	      superLabel.setText(board.getPlayer(0).getName());
+         	      pColor=Color.YELLOW;
          	  }
          	  if(row==2){
-         	      String wNum="Walls: "+board.getPlayer(0).getNumWalls();
-         	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.YELLOW));
-         	      label.setText(wNum);
+         	      superLabel.setText("Walls: "+board.getPlayer(0).getNumWalls());
+         	      pColor=Color.YELLOW;
          	  }
          	  if(row==3){
-         	      String tPlayer=board.getPlayer(1).getName();
-         	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.BLUE));
-         	      label.setText(tPlayer);
+         	      superLabel.setText(board.getPlayer(1).getName());
+         	      pColor=Color.BLUE;
          	  }
          	  if(row==4){
-         	      String wNum="Walls: "+board.getPlayer(1).getNumWalls();
-         	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
-         	      label.setText(wNum);
+         	      superLabel.setText("Walls: "+board.getPlayer(1).getNumWalls());
+         	      pColor=Color.BLUE;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
          	  }
          	  if(numPlayers>2){
-                  if(row==5){
-                      String tPlayer=board.getPlayer(2).getName();
-                      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
-                      label.setText(tPlayer);
-                  }
-                  if(row==6){
-                      String wNum="Walls: "+board.getPlayer(2).getNumWalls();
-                      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
-                      label.setText(wNum);
-                  }
-                  if(row==7){
-                      String tPlayer=board.getPlayer(3).getName();
-                      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
-                      label.setText(tPlayer);
-                  }
-                  if(row==8){
-                      String wNum="Walls: "+board.getPlayer(3).getNumWalls();
-                      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
-                      label.setText(wNum);
-                  }
-              }    
+			  if(row==5){
+			      superLabel.setText(board.getPlayer(2).getName());
+			      pColor=Color.GREEN;//label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
+			  }
+			  if(row==6){
+			      superLabel.setText("Walls: "+board.getPlayer(2).getNumWalls());
+			      pColor=Color.GREEN;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
+			  }
+			  if(row==7){
+			      superLabel.setText(board.getPlayer(3).getName());
+			      pColor=Color.RED;//label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
+			  }
+			  if(row==8){
+			      superLabel.setText("Walls: "+board.getPlayer(3).getNumWalls());
+			      pColor=Color.RED;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
+			  }
+		      }
+		      if(row%2==0&&row!=0){
+		      	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,pColor));
+		      }else{
+		      	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,pColor));
+		      }
+		  label.add(superLabel);
                   label.setBackground(new Color(0, 0, 0));
                   label.setForeground(Color.WHITE);
          	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
