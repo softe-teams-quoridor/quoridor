@@ -134,6 +134,7 @@ public class GameBoardFrame extends JFrame{
 
     //creates a row
     private void row(int row, GameBoard board) {
+        int wThick=2;
         JLabel labelblank = new JLabel();
         labelblank.setOpaque(true);
         labelblank.setBackground(new Color(150, 0, 0));
@@ -167,7 +168,7 @@ public class GameBoardFrame extends JFrame{
          	  label.setPreferredSize(new Dimension(100, 70));
          	  
          	  if(row==0){
-         	  	  				//This should display if it's a player window or server
+         	      //This should display if it's a player window or server
          	  }else if(playInt==0){
                   pColor=Color.YELLOW;
               }else if(playInt==1){
@@ -178,12 +179,16 @@ public class GameBoardFrame extends JFrame{
                   pColor=Color.RED;
               }
 		      
+              if(playInt==board.getCurrPlayerTurn())
+                  wThick=5;
+              
 		      if(row%2==0&&row!=0){
-		      	  label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,pColor));
+		          
+		      	  label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
 		      	  superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
 		      }else if(row!=0){
 		      	  superLabel.setText(board.getPlayer(playInt).getName());
-		          label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,pColor));
+		          label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
 		      }
 		  label.add(superLabel);
                   label.setBackground(new Color(0, 0, 0));
