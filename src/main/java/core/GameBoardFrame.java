@@ -7,15 +7,15 @@
  *
  * PUBLIC:
  *
- * GameBoardFrame()                   --> Default Constructor 
- * update()   					    --> Removes contents of board and updates locations 
- * closeWindow()    			    --> Closes the window at the end of a game
+ * GameBoardFrame()             --> Default Constructor 
+ * update()   					--> Removes contents of board and updates locations 
+ * closeWindow()    			--> Closes the window at the end of a game
  *
  * PRIVATE:
- * draw()						        --> Constructs the gameboard and makes it visible
- * row()       						--> creates a single row of the GameBoardFrame
- * printPlayerLabel()			        --> Shows an image of a pawn in player squares
- * topLayer()						--> draws the borders of the gridlayout
+ * draw()						--> Constructs the gameboard and makes it visible
+ * row()       					--> creates a single row of the GameBoardFrame
+ * printPlayerLabel()			--> Shows an image of a pawn in player squares
+ * topLayer()					--> draws the borders of the gridlayout
  * JLabel setBoarder()			--> sets the borders of the  grid
  * makeInfoPane()				--> GOING TO make an info pane on the RHS of grid
  *
@@ -49,7 +49,7 @@ public class GameBoardFrame extends JFrame{
         
 
         //creates the grid
-        GridLayout game = new GridLayout(10,11);
+        GridLayout game = new GridLayout(10,10);
         gameboard.setLayout(game);
 
         //draw the original board
@@ -139,6 +139,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
         labelblank.setText("" + GameEngine.toLetters(row));
+        labelblank.setForeground(Color.WHITE);
         labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
         
@@ -155,11 +156,32 @@ public class GameBoardFrame extends JFrame{
             }
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
-        for (int i = 9; i < 11; i++) {
+        for (int i = 9; i < 10; i++) {
+            
          	 JLabel label = new JLabel();
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
-         	  label.setBackground(new Color(0, 0, 0));
+         	  if(row==1)
+         	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.YELLOW));
+         	      label.setText("Info here");
+         	  if(row==2)
+         	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.YELLOW));
+         	  if(row==3)
+         	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.BLUE));
+         	  if(row==4)
+         	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
+         	  if(numPlayers>2){
+                  if(row==5)
+                      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
+                  if(row==6)
+                      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
+                  if(row==7)
+                      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
+                  if(row==8)
+                      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
+              }    
+                  label.setBackground(new Color(0, 0, 0));
+                  label.setForeground(Color.WHITE);
          	  gameboard.getContentPane().add(label,BorderLayout.CENTER);
          }
     }
@@ -178,6 +200,7 @@ public class GameBoardFrame extends JFrame{
         labelblank.setBackground(new Color(150, 0, 0));
         labelblank.setPreferredSize(new Dimension(100, 70));
         labelblank.setText(""+GameEngine.toLetters(row));
+        labelblank.setForeground(Color.WHITE);
         labelblank.setHorizontalAlignment(SwingConstants.CENTER);
         gameboard.getContentPane().add(labelblank, BorderLayout.CENTER);
 
@@ -200,7 +223,7 @@ public class GameBoardFrame extends JFrame{
 
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
-         for (int i = 9; i < 11; i++) {
+         for (int i = 9; i < 10; i++) {
          	 JLabel label = new JLabel();
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
@@ -273,17 +296,23 @@ public class GameBoardFrame extends JFrame{
             labels[i] = new JLabel();
             labels[i].setOpaque(true);
             labels[i].setBackground(new Color(150, 0, 0));
+            labels[i].setForeground(Color.WHITE);
             labels[i].setPreferredSize(new Dimension(100, 70));
             labels[i].setText(GameEngine.toNumerals(i-1));
             labels[i].setHorizontalAlignment(SwingConstants.CENTER);
             gameboard.getContentPane().add(labels[i], BorderLayout.CENTER);
         }
-        for (int i=10; i<12; i++){
-        labels[i]=new JLabel();
-        labels[i].setOpaque(true);
-        labels[i].setBackground(new Color(150, 0, 0));
-        labels[i].setPreferredSize(new Dimension(100, 70));
-        gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
+        
+        for (int i=10; i<11; i++){
+        	labels[i]=new JLabel();
+        	//labels[i].setOpaque(true);
+        		if(i==10){
+        		    labels[i].setOpaque(true);
+        		    labels[i].setVisible(true);
+        		}
+        	labels[i].setBackground(new Color(150, 0, 0));
+        	labels[i].setPreferredSize(new Dimension(100, 70));
+        	gameboard.getContentPane().add(labels[i],BorderLayout.CENTER);
         }
     }
     
@@ -327,10 +356,35 @@ public class GameBoardFrame extends JFrame{
     //*******************************************************************************************
     
     
-    private  void makeInfoPane(){
-    	    GridLayout info=new GridLayout(1,4);
+    private  JPanel makeInfoPane(){    
+    	GridLayout info=new GridLayout(2,9);
+    	JPanel iPane=new JPanel();
+    	iPane.setLayout(info);
+    	JLabel[] infarray=new JLabel[20];
+    	for(int i=0; i<17; i++ ){
+    	    infarray[i]=new JLabel();
+    		if(i<=2){
+    			//infarray[i].setBackground(new Color(0,255,255));
+    		}else if(i/2==1){
+    			//infarray[i].setBorder(BorderFactory.createMatteBorder(6,6,6,0,new Color(225,0,225)));
+    		}else if(i/2==0){
+    			//infarray[i].setBorder(BorderFactory.createMatteBorder(0,6,6,6,new Color(225,0,225)));
+    		}
+    		infarray[i].setBackground(new Color(200,100,100));
+    		infarray[i].setVisible(true);
+    		infarray[i].setOpaque(true);
+    		iPane.add(infarray[i]);
+    	}
+    	
+    	
+    	return iPane;
+    	    
     	    //int pTurn=gameboard.getPlayerTurn();			//int of which player turn it is
     	    
     	    
+    }
+    
+    private void findIcons(){
+    
     }
 }
