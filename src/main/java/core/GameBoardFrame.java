@@ -161,52 +161,29 @@ public class GameBoardFrame extends JFrame{
         	 JLabel superLabel=new JLabel("");
         	 superLabel.setForeground(Color.WHITE);
          	 JLabel label = new JLabel();
+         	 int playInt=(row-1)/2;
          	  label.setLayout(new GridLayout(3,1));
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
          	  
          	  if(row==0){
          	  	  				//This should display if it's a player window or server
-         	  }
-         	  
-         	  if(row==1){
-         	      superLabel.setText(board.getPlayer(0).getName());
-         	      pColor=Color.YELLOW;
-         	  }
-         	  if(row==2){
-         	      superLabel.setText("Walls: "+board.getPlayer(0).getNumWalls());
-         	      pColor=Color.YELLOW;
-         	  }
-         	  if(row==3){
-         	      superLabel.setText(board.getPlayer(1).getName());
-         	      pColor=Color.BLUE;
-         	  }
-         	  if(row==4){
-         	      superLabel.setText("Walls: "+board.getPlayer(1).getNumWalls());
-         	      pColor=Color.BLUE;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
-         	  }
-         	  if(numPlayers>2){
-			  if(row==5){
-			      superLabel.setText(board.getPlayer(2).getName());
-			      pColor=Color.GREEN;//label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
-			  }
-			  if(row==6){
-			      superLabel.setText("Walls: "+board.getPlayer(2).getNumWalls());
-			      pColor=Color.GREEN;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
-			  }
-			  if(row==7){
-			      superLabel.setText(board.getPlayer(3).getName());
-			      pColor=Color.RED;//label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
-			  }
-			  if(row==8){
-			      superLabel.setText("Walls: "+board.getPlayer(3).getNumWalls());
-			      pColor=Color.RED;//label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
-			  }
-		      }
+         	  }else if(playInt==0){
+                  pColor=Color.YELLOW;
+              }else if(playInt==1){
+                  pColor=Color.BLUE;
+              }else if(playInt==2){
+                  pColor=Color.GREEN;
+              }else if(playInt==3){
+                  pColor=Color.RED;
+              }
+		      
 		      if(row%2==0&&row!=0){
-		      	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,pColor));
-		      }else{
-		      	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,pColor));
+		      	  label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,pColor));
+		      	  superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
+		      }else if(row!=0){
+		      	  superLabel.setText(board.getPlayer(playInt).getName());
+		          label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,pColor));
 		      }
 		  label.add(superLabel);
                   label.setBackground(new Color(0, 0, 0));
