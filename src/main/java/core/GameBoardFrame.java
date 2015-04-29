@@ -166,30 +166,42 @@ public class GameBoardFrame extends JFrame{
          	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.YELLOW));
          	      label.setText(tPlayer);
          	  }
-         	  if(row==2)
+         	  if(row==2){
+         	      String wNum="Walls: "+board.getPlayer(0).getNumWalls();
          	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.YELLOW));
+         	      label.setText(wNum);
+         	  }
          	  if(row==3){
          	      String tPlayer=board.getPlayer(1).getName();
          	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.BLUE));
          	      label.setText(tPlayer);
          	  }
-         	  if(row==4)
+         	  if(row==4){
+         	      String wNum="Walls: "+board.getPlayer(1).getNumWalls();
          	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
+         	      label.setText(wNum);
+         	  }
          	  if(numPlayers>2){
                   if(row==5){
                       String tPlayer=board.getPlayer(2).getName();
                       label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
                       label.setText(tPlayer);
                   }
-                  if(row==6)
+                  if(row==6){
+                      String wNum="Walls: "+board.getPlayer(2).getNumWalls();
                       label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
+                      label.setText(wNum);
+                  }
                   if(row==7){
                       String tPlayer=board.getPlayer(3).getName();
                       label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
                       label.setText(tPlayer);
                   }
-                  if(row==8)
+                  if(row==8){
+                      String wNum="Walls: "+board.getPlayer(3).getNumWalls();
                       label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
+                      label.setText(wNum);
+                  }
               }    
                   label.setBackground(new Color(0, 0, 0));
                   label.setForeground(Color.WHITE);
