@@ -161,22 +161,33 @@ public class GameBoardFrame extends JFrame{
          	 JLabel label = new JLabel();
          	  label.setOpaque(true);
          	  label.setPreferredSize(new Dimension(100, 70));
-         	  if(row==1)
+         	  if(row==1){
+         	      String tPlayer=board.getPlayer(0).getName();
          	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.YELLOW));
-         	      label.setText("Info here");
+         	      label.setText(tPlayer);
+         	  }
          	  if(row==2)
          	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.YELLOW));
-         	  if(row==3)
+         	  if(row==3){
+         	      String tPlayer=board.getPlayer(1).getName();
          	      label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.BLUE));
+         	      label.setText(tPlayer);
+         	  }
          	  if(row==4)
          	      label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.BLUE));
          	  if(numPlayers>2){
-                  if(row==5)
+                  if(row==5){
+                      String tPlayer=board.getPlayer(2).getName();
                       label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.GREEN));
+                      label.setText(tPlayer);
+                  }
                   if(row==6)
                       label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.GREEN));
-                  if(row==7)
+                  if(row==7){
+                      String tPlayer=board.getPlayer(3).getName();
                       label.setBorder(BorderFactory.createMatteBorder(2,2,0,2,Color.RED));
+                      label.setText(tPlayer);
+                  }
                   if(row==8)
                       label.setBorder(BorderFactory.createMatteBorder(0,2,2,2,Color.RED));
               }    
