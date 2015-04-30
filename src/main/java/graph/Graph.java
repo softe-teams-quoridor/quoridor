@@ -59,7 +59,8 @@ public class Graph {
         q.add(start);
 
         // while there are still vertices to check
-        while ( !q.isEmpty() ) {
+        //while ( !q.isEmpty() ) {
+        while ( !goalVertex ) {
 
             // get the vertex and remove it;
             // we don't want to look at it again
@@ -99,7 +100,7 @@ public class Graph {
                     }
                 }
             // reset the goal flag for the next cell check
-            goalVertex = false;
+            //goalVertex = false;
         }
     }
 
