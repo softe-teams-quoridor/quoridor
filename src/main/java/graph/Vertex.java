@@ -1,9 +1,9 @@
-
-// Composite type for graph
+/* Composite type for graph */
 public class Vertex {
-    public int graphLoc;
-    public int dist;
-    public Vertex path;
+
+    public int graphLoc; // location on graph
+    public int dist;     // distance
+    public Vertex path;  // connecting node
 
     public Vertex(int graphLoc, int dist) {
         this.graphLoc = graphLoc;
