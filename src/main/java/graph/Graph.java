@@ -20,30 +20,12 @@ import java.util.LinkedList;
 
 public class Graph {
 
-
-
-    // Composite type for graph
-    public class Vertex {
-        public int graphLoc;
-        public int dist;
-        public Vertex path;
-
-        public Vertex(int graphLoc, int dist) {
-            this.graphLoc = graphLoc;
-            this.dist = dist;
-        }
-    }
-
-
-
     private Vertex[] graph;
 
-
-
     /**
-      * Constructs a new graph with size.
-      *     @param size the size of the graph
-      */
+     * Constructs a new graph with size.
+     *     @param size the size of the graph
+     */
     public Graph(int size) {
         graph = new Vertex[size];
     }
@@ -51,13 +33,13 @@ public class Graph {
 
 
     /**
-      * Implements Dijkstra's Algorithm to calculate the shortest 
-      * path from a Player's current location to its respective 
-      * goal row.
-      *     @param board GameBoard to retrieve adjacencies from
-      *     @param player the Player we want to calculate the 
-      *                   path for
-      */
+     * Implements Dijkstra's Algorithm to calculate the shortest 
+     * path from a Player's current location to its respective 
+     * goal row.
+     *     @param board GameBoard to retrieve adjacencies from
+     *     @param player the Player we want to calculate the 
+     *                   path for
+     */
     public void buildPath(GameBoard board, Player player) {
 
         // Queue of vertices to be checked
@@ -82,11 +64,11 @@ public class Graph {
 
             // retrieve all reachable ajacencies
             Square[] adjacencies = GameEngine.reachableAdjacentSquares
-                                   (board, twoDimXY(v));
+                (board, twoDimXY(v));
 
             // for each adjacency...
             for ( Square s : adjacencies ) {
-
+                System.out.println("Square: " + s);
                 // convert to graph location
                 Vertex adjacent = graph[linearXY(s)];            
 
@@ -103,25 +85,30 @@ public class Graph {
 
 
     /**
-      * Converts the X and Y coordinates of a Square object to a 
-      * linear coordinate.
-      *     @param s Square to convert coordinates from
-      */
-    private int linearXY(Square s) {
-        System.out.println( s.getX() + s.getY() * GameBoard.ROWS );
-        return s.getX() + s.getY() * GameBoard.ROWS;
+     * Converts the X and Y coordinates of a Square object to a 
+     * linear coordinate.
+     *     @param s Square to convert coordinates from
+     */
+    protected int linearXY(Square s) {
+        int coord = s.getX() + s.getY() * GameBoard.ROWS;
+        System.out.println("Coord : "+coord);
+        return coord;
     }
 
 
 
-    private Square twoDimXY(Vertex v) {
-        return new Square(v.graphLoc/GameBoard.COLUMNS,
-                          v.graphLoc%GameBoard.COLUMNS);
+    protected Square twoDimXY(Vertex v) {
+        System.out.println("Vertex: "+v.graphLoc);
+        return new Square(v.graphLoc%GameBoard.COLUMNS,
+                          v.graphLoc/GameBoard.COLUMNS);
     }
 
     public void printGraph() {
         for ( int i = 0; i < graph.length; i++ ) {
-            System.out.print(graph[i].dist+" ");
+            if ( graph[i].dist < 10 && graph[i].dist >= 0 )
+                System.out.print(graph[i].dist+"  ");
+            else
+                System.out.print(graph[i].dist+" ");
             if ( (i+1) % GameBoard.COLUMNS == 0 )
                 System.out.println();
         }
@@ -131,7 +118,7 @@ public class Graph {
 
     public static void main(String[] orgs) {
         Graph graph = new Graph(GameBoard.ROWS * GameBoard.COLUMNS);
-        
+
         Queue<Player> players = new LinkedList<Player>();
         for(int i = 0; i < 2; i++)
             players.add(new Player(i, 10));
@@ -143,5 +130,6 @@ public class Graph {
 
     }
 
- 
+
 }
+
