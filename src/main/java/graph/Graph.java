@@ -10,7 +10,9 @@
  *
  * ---[Bugs]---------------------------------------------------------
  *
- *      April 29 - last row is not calculated correctly
+ *      [FIXED] April 29 - last row is not calculated correctly
+ *      April 30 - redundant locations are being calculated for 
+ *          players 1, 2, and 3. a direction bias is needed
  *
  * ---[Methods]------------------------------------------------------
  *
@@ -114,6 +116,16 @@ public class Graph {
             Square currLoc) {
 
         List<Square> squareList = new LinkedList<Square>();
+        
+        //FIXME: direction should be a param. the number that gets sent
+        // will depend on the player number. this new direction will be
+        // the direction bias.
+
+        // p0 direction = 86
+        // p1 direction =
+        // p2 direction = 
+        // p3 direction =
+
         int direction = 86; // we use bit shifting to get the coordinates
         for ( int i = 0; i < 4; i++ ) {
             // Calculate the x and y offsets
@@ -127,6 +139,10 @@ public class Graph {
 
             //It is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
+                
+                //FIXME: with new biases, i will not necessarily reflect
+                // the appropriate wall-checking-direction
+
                 switch ( i ) {
                     // If we encounter a wall, continue to the next iteration
                     case 0: if ( currLoc.hasWallBottom() ) continue; break;
