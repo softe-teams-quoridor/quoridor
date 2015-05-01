@@ -17,6 +17,7 @@
  * Player getPlayer(int)         --> returns a Player from the board based on
  *                                      the player's unique number
  * Square getPlayerLoc(Player)   --> returns the current location of the Player
+ * Square getPlayerLoc(int)      --> returns the current location of the Player
  * void placeWall(Square,Square) --> places a Wall on the board
  * void removeWall(Square[])     --> removes a Wall from the board
  * void removePlayer(Player)     --> removes a Player from the board
@@ -168,6 +169,10 @@ public class GameBoard {
       */
     public Square getPlayerLoc(Player player) {
         return playerLocs[player.getPlayerNo()];
+    }
+
+    public Square getPlayerLoc(int pno) {
+        return playerLocs[pno];
     }
 
     //*************************************************************************
