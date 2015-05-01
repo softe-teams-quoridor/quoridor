@@ -62,7 +62,8 @@ public class Graph {
             graph[i] = new Vertex(i,-1);
 
         // get the start location, i.e. the player's location
-        Vertex start = squareToVertex(board.getPlayerLoc(player.getPlayerNo()));
+        Vertex start = 
+            squareToVertex(board.getPlayerLoc(player.getPlayerNo()));
         start.dist = 0;
         q.add(start);
 
@@ -73,10 +74,6 @@ public class Graph {
             // get the vertex and remove it;
             // we don't want to look at it again
             Vertex v = q.remove();
-
-            // retrieve all reachable ajacencies
-            Square[] adjacencies = reachableAdjacentSquares
-                (board, vertexToSquare(v), player.getPlayerNo());
 
             // check if this vertex is at a goal row
             switch ( player.getPlayerNo() ) {
@@ -92,8 +89,12 @@ public class Graph {
 
             // if we're at a goal vertex, we don't need to calculate
             // its neighboors
-            if (!goalVertex)
+            if (!goalVertex) {
 
+                // retrieve all reachable ajacencies
+                Square[] adjacencies = reachableAdjacentSquares
+                (board, vertexToSquare(v), player.getPlayerNo());
+                
                 // for each adjacency...
                 for ( Square s : adjacencies ) {
 
@@ -107,12 +108,15 @@ public class Graph {
                         q.add(adjacent);
                     }
                 }
-
-            //FIXME: this may be unnecessary, but keep until wall checking
-            // is successful
+            }
+            //FIXME: this may be unnecessary, but keep until wall 
+            // checking is successful
 
             // reset the goal flag for the next cell check
             //goalVertex = false;
+
+            else 
+                printPath(v);
         }
     }
 
@@ -211,6 +215,13 @@ public class Graph {
             if ( (i+1) % GameBoard.COLUMNS == 0 )
                 System.out.println();
         }
+    }
+
+    public void printPath(Vertex v) {
+        if ( v.dist == 0 )
+            return;
+        printPath(v.path);
+        System.out.print(v.graphLoc+" ");
     }
 
     /* main used for testing algorithm */
