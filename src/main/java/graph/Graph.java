@@ -23,6 +23,7 @@
  *
  *      Graph(int)                   --> constructs the graph 
  *      buildPath(GameBoard, Player) --> builds path for player
+ *      printGraph()                 --> prints vis. rep. of graph
  *
  */
 
@@ -46,8 +47,7 @@ public class Graph {
      * Implements Dijkstra's Algorithm to calculate the distances 
      * from a Player's current location to its respective goal row.
      *     @param board GameBoard to retrieve adjacencies from
-     *     @param player the Player we want to calculate the 
-     *                   path for
+     *     @param player the Player we want to calculate the path for
      */
     public void buildPath(GameBoard board, Player player) {
 
@@ -62,7 +62,7 @@ public class Graph {
             graph[i] = new Vertex(i,-1);
 
         // get the start location, i.e. the player's location
-        Vertex start = graph[linearXY(board.getPlayerLoc(player.getPlayerNo()))];
+        Vertex start = squareToVertex(board.getPlayerLoc(player.getPlayerNo()));
         start.dist = 0;
         q.add(start);
 
@@ -76,7 +76,7 @@ public class Graph {
 
             // retrieve all reachable ajacencies
             Square[] adjacencies = reachableAdjacentSquares
-                (board, twoDimXY(v), player.getPlayerNo());
+                (board, vertexToSquare(v), player.getPlayerNo());
 
             // check if this vertex is at a goal row
             switch ( player.getPlayerNo() ) {
@@ -98,7 +98,7 @@ public class Graph {
                 for ( Square s : adjacencies ) {
 
                     // convert to graph location
-                    Vertex adjacent = graph[linearXY(s)];            
+                    Vertex adjacent = squareToVertex(s);            
 
                     // modify the vertex if it hasn't been modified
                     if ( adjacent.dist < 0 ) {
@@ -176,69 +176,75 @@ public class Graph {
         return squareList.toArray(new Square[squareList.size()]);
     }
 
-    //TODO: change the names of these methods to something less ugly
     /**
-     * Converts the X and Y coordinates of a Square object to a 
-     * linear coordinate.
-     *     @param s Square to convert coordinates from
+     *  Converts a Square to a Vertex.
+     *     @param s Square to convert
+     *     @see Vertex
      */
-    protected int linearXY(Square s) {
-        return s.getX() + s.getY() * GameBoard.ROWS;
+    protected Vertex squareToVertex(Square s) {
+        return graph[s.getX() + s.getY() * GameBoard.ROWS];
     }
 
-    protected Square twoDimXY(Vertex v) {
+    /**
+      * Converts a Vertex to a Square.
+      *     @param v Vertex to convert
+      *     @see Square
+      */
+    protected Square vertexToSquare(Vertex v) {
         return new Square(v.graphLoc%GameBoard.COLUMNS,
-                v.graphLoc/GameBoard.COLUMNS);
+                          v.graphLoc/GameBoard.COLUMNS);
     }
 
+    /**
+      * Prints the graph as if it were a GameBoard.
+      *     @see GameBoard
+      */
     public void printGraph() {
         for ( int i = 0; i < graph.length; i++ ) {
+            // print extra space if a one character number
             if ( graph[i].dist < 10 && graph[i].dist >= 0 )
                 System.out.print(graph[i].dist+"  ");
+            // print single space if a two character number
             else
                 System.out.print(graph[i].dist+" ");
+            // print items to a new row
             if ( (i+1) % GameBoard.COLUMNS == 0 )
                 System.out.println();
         }
     }
 
+    /* main used for testing algorithm */
     public static void main(String[] orgs) {
+        
+        /* initial preparation */
         Graph graph = new Graph(GameBoard.ROWS * GameBoard.COLUMNS);
-
         Queue<Player> players = new LinkedList<Player>();
         for(int i = 0; i < 4; i++)
             players.add(new Player(i, 10));
-
         GameBoard board = new GameBoard(players);
-
-        int direction = (169 >> 1);
-        System.out.println( direction);
 
         // Player 0
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 
-        players.add(players.remove());
-
         // Player 1
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
-
-        players.add(players.remove());
 
         // Player 2
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
-
-        players.add(players.remove());
 
         // Player 3
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
     }
 
-    }
+}
