@@ -10,14 +10,19 @@
  *
  * ---[Bugs]---------------------------------------------------------
  *
- *      [FIXED] April 29 - last row is not calculated correctly
- *      April 30 - redundant locations are being calculated for 
- *          players 1, 2, and 3. a direction bias is needed
+ *      (FIXED) April 29 - last row is not calculated correctly
+ *      (FIXED) April 30 - redundant locations are being calculated
+ *          for players 1, 2, and 3. a direction bias is needed
+ *      April 30 - ensure appropriate wall checking for players
+ *          1, 2, and 3. currently incorrect due to direction bias
+ *      April 30 - a Vertex graph is unnecessary, but helps
+ *          visualize the algorithm. remove this functionality
+ *          once the integrity of the algorithm has been verified
  *
  * ---[Methods]------------------------------------------------------
  *
- *      Graph(int)                --> constructs the graph 
- *      buildPath(GameBoard, int) --> builds path for player
+ *      Graph(int)                   --> constructs the graph 
+ *      buildPath(GameBoard, Player) --> builds path for player
  *
  */
 
@@ -46,6 +51,7 @@ public class Graph {
      */
     public void buildPath(GameBoard board, Player player) {
 
+        // flag to check if we hit a goal location
         boolean goalVertex = false;
 
         // Queue of vertices to be checked
@@ -56,7 +62,7 @@ public class Graph {
             graph[i] = new Vertex(i,-1);
 
         // get the start location, i.e. the player's location
-        Vertex start = graph[linearXY(board.getPlayerLoc(player))];
+        Vertex start = graph[linearXY(board.getPlayerLoc(player.getPlayerNo()))];
         start.dist = 0;
         q.add(start);
 
@@ -70,9 +76,9 @@ public class Graph {
 
             // retrieve all reachable ajacencies
             Square[] adjacencies = reachableAdjacentSquares
-                (board, twoDimXY(v));
+                (board, twoDimXY(v), player.getPlayerNo());
 
-            // if this is a goal row, 
+            // check if this vertex is at a goal row
             switch ( player.getPlayerNo() ) {
                 case 0: if ( v.graphLoc >= 72 ) 
                             goalVertex = true; break;
@@ -87,7 +93,7 @@ public class Graph {
             // if we're at a goal vertex, we don't need to calculate
             // its neighboors
             if (!goalVertex)
-                
+
                 // for each adjacency...
                 for ( Square s : adjacencies ) {
 
@@ -101,59 +107,72 @@ public class Graph {
                         q.add(adjacent);
                     }
                 }
+
+            //FIXME: this may be unnecessary, but keep until wall checking
+            // is successful
+
             // reset the goal flag for the next cell check
             //goalVertex = false;
         }
     }
 
     /**
-     * Retrieves all locations that are reachable from the given location
+     * Retrieves all locations that are reachable from the given location.
      *     @param board GameBoard to retrieve Squares from
      *     @param currLoc the Square we are checking adjacencies from
+     *     @param pno ID number of player to calculate path for
      *     @return an array of Squares adjacent to currLoc
      */
     private static Square[] reachableAdjacentSquares ( GameBoard board, 
-            Square currLoc) {
+            Square currLoc, int pno) {
 
+        // list to store adjacent squares
         List<Square> squareList = new LinkedList<Square>();
-        
-        //FIXME: direction should be a param. the number that gets sent
-        // will depend on the player number. this new direction will be
-        // the direction bias.
 
-        // p0 direction = 86
-        // p1 direction =
-        // p2 direction = 
-        // p3 direction =
-
-        int direction = 86; // we use bit shifting to get the coordinates
+        // calculate direction bias
+        int direction = 0;
+        switch (pno) {
+            case 0: direction = 86;  break;
+            case 1: direction = Integer.rotateRight(163,1); break;
+            case 2: direction = 171;  break;
+            case 3: direction = Integer.rotateRight(345, 1); break;
+        }
+    
+        // check each available adajcency
         for ( int i = 0; i < 4; i++ ) {
-            // Calculate the x and y offsets
+            
+            // calculate the x and y offsets
             int x = ((direction & 8)  >> 3) * Integer.signum(direction);
             int y = ((direction & 16) >> 4) * Integer.signum(direction);
-            // Retrieve an adjacent square to compare
+
+            // retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
-                                              currLoc.getY() + y);
-            // Modify bits for the next iteration
+                    currLoc.getY() + y);
+
+            // modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
 
-            //It is possible to check for a square that is outside of the board
+            // it is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
-                
+
                 //FIXME: with new biases, i will not necessarily reflect
                 // the appropriate wall-checking-direction
 
-                switch ( i ) {
-                    // If we encounter a wall, continue to the next iteration
-                    case 0: if ( currLoc.hasWallBottom() ) continue; break;
-                    case 1: if ( currLoc.hasWallRight()  ) continue; break;
-                    case 2: if ( checkLoc.hasWallBottom()) continue; break;
-                    case 3: if ( checkLoc.hasWallRight() ) continue; break;
-                    default: break; //assertion here maybe?
-                }
+                /*switch ( i ) {
+                // If we encounter a wall, continue to the next iteration
+                case 0: if ( currLoc.hasWallBottom() ) continue; break;
+                case 1: if ( currLoc.hasWallRight()  ) continue; break;
+                case 2: if ( checkLoc.hasWallBottom()) continue; break;
+                case 3: if ( checkLoc.hasWallRight() ) continue; break;
+                default: break; //assertion here maybe?
+                }*/
+               
+                // add this square to the list
                 squareList.add(checkLoc);
             }
         }
+
+        // return the array of adjacent squares
         return squareList.toArray(new Square[squareList.size()]);
     }
 
@@ -192,6 +211,9 @@ public class Graph {
 
         GameBoard board = new GameBoard(players);
 
+        int direction = (169 >> 1);
+        System.out.println( direction);
+
         // Player 0
         graph.buildPath(board, players.peek());
         graph.printGraph();
@@ -219,4 +241,4 @@ public class Graph {
         System.out.println();
     }
 
-}
+    }
