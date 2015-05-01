@@ -155,7 +155,7 @@ public class Graph {
             // it is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
 
-                //FIXME: with new biases, i will not necessarily reflect
+                //FIXME: with new biases, 'i' will not necessarily reflect
                 // the appropriate wall-checking-direction
 
                 /*switch ( i ) {
