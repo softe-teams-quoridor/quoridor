@@ -13,8 +13,9 @@
  *      (FIXED) April 29 - last row is not calculated correctly
  *      (FIXED) April 30 - redundant locations are being calculated
  *          for players 1, 2, and 3. a direction bias is needed
- *      April 30 - ensure appropriate wall checking for players
+ *      (FIXED) April 30 - ensure appropriate wall checking for players
  *          1, 2, and 3. currently incorrect due to direction bias
+ *      May 2 - Player 0 is not detecting walls
  *      April 30 - a Vertex graph is unnecessary, but helps
  *          visualize the algorithm. remove this functionality
  *          once the integrity of the algorithm has been verified
@@ -109,13 +110,7 @@ public class Graph {
                     }
                 }
             }
-            //FIXME: this may be unnecessary, but keep until wall 
-            // checking is successful
-
-            // reset the goal flag for the next cell check
-            //goalVertex = false;
-
-            else 
+            else
                 printPath(v);
         }
     }
@@ -137,8 +132,8 @@ public class Graph {
         int direction = 0;
         switch (pno) {
             case 0: direction = 86;  break;
-            case 1: direction = Integer.rotateRight(163,1); break;
-            case 2: direction = 171;  break;
+            case 1: direction = Integer.rotateRight(163,1);  break;
+            case 2: direction = 171; break;
             case 3: direction = Integer.rotateRight(345, 1); break;
         }
     
@@ -159,17 +154,15 @@ public class Graph {
             // it is possible to check for a square that is outside of the board
             if ( checkLoc != null ) {
 
-                //FIXME: with new biases, 'i' will not necessarily reflect
-                // the appropriate wall-checking-direction
-
-                /*switch ( i ) {
-                // If we encounter a wall, continue to the next iteration
-                case 0: if ( currLoc.hasWallBottom() ) continue; break;
-                case 1: if ( currLoc.hasWallRight()  ) continue; break;
-                case 2: if ( checkLoc.hasWallBottom()) continue; break;
-                case 3: if ( checkLoc.hasWallRight() ) continue; break;
-                default: break; //assertion here maybe?
-                }*/
+                // check for walls
+                if      ( y == 1  && currLoc.hasWallBottom())
+                        continue;
+                else if ( y == -1 && checkLoc.hasWallBottom())
+                        continue;
+                else if ( x == 1  && currLoc.hasWallRight())
+                        continue;
+                else if ( x == -1 && checkLoc.hasWallRight())
+                        continue;
                
                 // add this square to the list
                 squareList.add(checkLoc);
@@ -204,6 +197,7 @@ public class Graph {
       *     @see GameBoard
       */
     public void printGraph() {
+        System.out.println( );
         for ( int i = 0; i < graph.length; i++ ) {
             // print extra space if a one character number
             if ( graph[i].dist < 10 && graph[i].dist >= 0 )
@@ -240,19 +234,28 @@ public class Graph {
         System.out.println();
 
         // Player 1
-        players.add(players.remove());
+/*        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 
         // Player 2
-        players.add(players.remove());
+/*        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 
         // Player 3
         players.add(players.remove());
+        graph.buildPath(board, players.peek());
+        graph.printGraph();
+        System.out.println();
+*/
+        // Test board with walls for player 1
+        System.out.println("---Wall test---\n");
+ //       players.add(players.remove());
+        Square[] walls = {new Square(3,2),new Square(4,2)};
+        board.placeWall(walls);
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
