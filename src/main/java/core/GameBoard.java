@@ -326,7 +326,7 @@ public class GameBoard {
     }
 
     public boolean isPlayerRemaining(int pno) {
-        if(playerLocs.length == 2 && pno > 2)
+        if(playerLocs.length == 2 && pno >= 2)
             return false;
         return (playerLocs[pno] == null ) ? false : true;
     }
