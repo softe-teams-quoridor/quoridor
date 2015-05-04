@@ -28,6 +28,7 @@
  *
  */
 
+import java.util.Stack;
 import java.util.Queue;
 import java.util.List;
 import java.util.LinkedList;
@@ -50,7 +51,7 @@ public class Graph {
      *     @param board GameBoard to retrieve adjacencies from
      *     @param player the Player we want to calculate the path for
      */
-    public void buildPath(GameBoard board, Player player) {
+    public Square[] buildPath(GameBoard board, Player player) {
 
         // flag to check if we hit a goal location
         boolean goalVertex = false;
@@ -95,12 +96,17 @@ public class Graph {
                 // retrieve all reachable ajacencies
                 Square[] adjacencies = reachableAdjacentSquares
                 (board, vertexToSquare(v), player.getPlayerNo());
-                
+               
+
+                System.out.print(v.graphLoc + " [ ");
+
                 // for each adjacency...
                 for ( Square s : adjacencies ) {
 
                     // convert to graph location
                     Vertex adjacent = squareToVertex(s);            
+                    
+                    System.out.print(adjacent.graphLoc + " ");
 
                     // modify the vertex if it hasn't been modified
                     if ( adjacent.dist < 0 ) {
@@ -109,10 +115,16 @@ public class Graph {
                         q.add(adjacent);
                     }
                 }
+
+                System.out.print("]\n");
             }
-            else
+            else {
                 printPath(v);
+                return returnPath(v);
+            }
+        
         }
+        return null;
     }
 
     /**
@@ -151,21 +163,29 @@ public class Graph {
             // modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
 
-            // it is possible to check for a square that is outside of the board
+            // see if check is outside of the board
             if ( checkLoc != null ) {
 
                 // check for walls
-                if      ( y == 1  && currLoc.hasWallBottom())
+                if      ( y == 1  && currLoc.hasWallBottom()) {
+                    //System.out.println("can't move down!");
                         continue;
-                else if ( y == -1 && checkLoc.hasWallBottom())
+                }
+                else if ( y == -1 && checkLoc.hasWallBottom()) {
+                    //System.out.println("can't move up!");
                         continue;
-                else if ( x == 1  && currLoc.hasWallRight())
+                }
+                else if ( x == 1  && currLoc.hasWallRight()) {
+                    //System.out.println("can't move right!");
                         continue;
-                else if ( x == -1 && checkLoc.hasWallRight())
+                }
+                else if ( x == -1 && checkLoc.hasWallRight()) {
+                    //System.out.println("can't move left!");
                         continue;
-               
-                // add this square to the list
-                squareList.add(checkLoc);
+                }
+                else
+                    // add this square to the list
+                    squareList.add(checkLoc);
             }
         }
 
@@ -217,6 +237,20 @@ public class Graph {
         printPath(v.path);
         System.out.print(v.graphLoc+" ");
     }
+    
+    public Square[] returnPath(Vertex v) {
+        Stack<Square> path = new Stack<Square>();
+        while ( v.dist != 0 ) {
+            path.push(vertexToSquare(v));
+            v = v.path;
+        }
+        Square[] road = new Square[path.size()];
+        for ( int s = 0; s < road.length; s++ )
+            road[s] = path.pop();
+
+        return road;
+            
+    }
 
     /* main used for testing algorithm */
     public static void main(String[] orgs) {
@@ -228,34 +262,53 @@ public class Graph {
             players.add(new Player(i, 10));
         GameBoard board = new GameBoard(players);
 
-        // Player 0
+/*       // Player 0
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
-
+/*/
         // Player 1
-/*        players.add(players.remove());
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 
-        // Player 2
-/*        players.add(players.remove());
+/*        // Player 2
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 
+        players.add(players.remove());
+        players.add(players.remove());
         // Player 3
         players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
 */
+
         // Test board with walls for player 1
         System.out.println("---Wall test---\n");
- //       players.add(players.remove());
-        Square[] walls = {new Square(3,2),new Square(4,2)};
-        board.placeWall(walls);
+        
+        Square[] hwalls1 = {new Square(0,3),new Square(1,3)};
+        board.placeWall(hwalls1);
+        Square[] hwalls2 = {new Square(2,3),new Square(3,3)};
+        board.placeWall(hwalls2);
+        Square[] hwalls3 = {new Square(4,3),new Square(5,3)};
+        board.placeWall(hwalls3);
+        Square[] hwalls4 = {new Square(6,3),new Square(7,3)};
+        board.placeWall(hwalls4);
+        
+        Square[] vwalls1 = {new Square(3,0),new Square(3,1)};
+        board.placeWall(vwalls1);
+        Square[] vwalls2 = {new Square(3,2),new Square(3,3)};
+        board.placeWall(vwalls2);
+        Square[] vwalls3 = {new Square(3,4),new Square(3,5)};
+        board.placeWall(vwalls3);
+        Square[] vwalls4 = {new Square(3,6),new Square(3,7)};
+        board.placeWall(vwalls4);
+        
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();

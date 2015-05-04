@@ -44,6 +44,8 @@ public class MoveServer {
             ai = new AI_IDK();
         } else if (args[1].equals("rip")) {
             ai = new AI_Ripley(); //<--- currently does nothing :(
+        } else if (args[1].equals("maybe")) {
+            ai = new AI_Maybe();
         } else {
              usage(3);
         }
