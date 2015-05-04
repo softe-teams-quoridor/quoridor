@@ -132,6 +132,11 @@ public class Graph {
         return null;
     }
 
+    private static Square[] reachableAdjacentSquares
+        (GameBoard board, Square currLoc, int pno) {
+            return reachableAdjacentSquares(board, currLoc, pno, -1, 0,true);
+    }
+
     /**
      * Retrieves all locations that are reachable from the given location.
      *     @param board GameBoard to retrieve Squares from
@@ -139,8 +144,8 @@ public class Graph {
      *     @param pno ID number of player to calculate path for
      *     @return an array of Squares adjacent to currLoc
      */
-    private static Square[] reachableAdjacentSquares ( GameBoard board, 
-            Square currLoc, int pno) {
+    private static Square[] reachableAdjacentSquares
+        (GameBoard board, Square currLoc, int pno, int dontCheckMe, int numJumps, boolean adjacentToPlayer) {
 
         // list to store adjacent squares
         List<Square> squareList = new LinkedList<Square>();
@@ -163,13 +168,10 @@ public class Graph {
 
             // retrieve an adjacent square to compare
             Square checkLoc = board.getSquare(currLoc.getX() + x,
-                    currLoc.getY() + y);
+                                              currLoc.getY() + y);
 
             // modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
-
-            //FIXME: add jump-check only if another player
-            // is directly next to the AI's current position
 
             // see if check is outside of the board
             if ( checkLoc != null ) {
@@ -181,9 +183,21 @@ public class Graph {
                      ( x == 1  && currLoc.hasWallRight()  ) ||
                      ( x == -1 && checkLoc.hasWallRight() )   )
                        continue;
+ 
+                else if ( checkLoc.isOccupied() && i != dontCheckMe && numJumps < 3 ) {
+                    // Get the squares from the adjacent player
+                    Square[] adjToPlayer = reachableAdjacentSquares(board,
+                            checkLoc, pno, (i+2)%4, numJumps++, adjacentToPlayer);
+                    // Add the adjacent player's squares to the list
+                    for ( int j = 0; j < adjToPlayer.length; j++ )
+                        squareList.add(adjToPlayer[j]);
+                } 
+
                 else
                     // add this square to the list
                     squareList.add(checkLoc);
+
+                adjacentToPlayer = false;
             }
         }
 
