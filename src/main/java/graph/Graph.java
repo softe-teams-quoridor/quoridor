@@ -105,7 +105,7 @@ public class Graph {
 
                 // retrieve all reachable ajacencies
                 Square[] adjacencies = reachableAdjacentSquares
-                (board, vertexToSquare(v), player.getPlayerNo());
+                (board, vertexToSquare(v, board), player.getPlayerNo());
 
                 // for each adjacency...
                 for ( Square s : adjacencies ) {
@@ -124,7 +124,7 @@ public class Graph {
             }
             else {
                 printPath(v);
-                return returnPath(v);
+                return returnPath(v,board);
             }
         
         }
@@ -174,27 +174,6 @@ public class Graph {
             // see if check is outside of the board
             if ( checkLoc != null ) {
 
-/*                // check for walls
-                if      ( y == 1  && checkLoc.hasWallBottom()) {
-                    System.out.println("can't move down!");
-                       continue;
-                }
-                if ( y == -1 && currLoc.hasWallBottom()) {
-                    System.out.println("can't move up!");
-                       continue;
-                }
-                if ( x == 1  && checkLoc.hasWallRight()) {
-                    System.out.println("can't move right!");
-                       continue;
-                }
-                if ( x == -1 && currLoc.hasWallRight()) {
-                    System.out.println("can't move left!");
-                       continue;
-                }
-                //else
-                    // add this square to the list
-                    squareList.add(checkLoc);
-                    */
                 // I don't know why I thought rewriting it like this
                 // would solve anything
                 if ( ( y == 1  && currLoc.hasWallBottom() ) ||
@@ -226,9 +205,9 @@ public class Graph {
       *     @param v Vertex to convert
       *     @see Square
       */
-    protected Square vertexToSquare(Vertex v) {
-        return new Square(v.graphLoc%GameBoard.COLUMNS,
-                          v.graphLoc/GameBoard.COLUMNS);
+    protected Square vertexToSquare(Vertex v, GameBoard b) {
+        return b.getSquare(v.graphLoc % GameBoard.COLUMNS,
+                           v.graphLoc / GameBoard.ROWS);
     }
 
     /**
@@ -271,10 +250,10 @@ public class Graph {
         System.out.print("-> " + v.graphLoc+" ");
     }
     
-    public Square[] returnPath(Vertex v) {
+    public Square[] returnPath(Vertex v, GameBoard b) {
         Stack<Square> path = new Stack<Square>();
         while ( v.dist != 0 ) {
-            path.push(vertexToSquare(v));
+            path.push(vertexToSquare(v,b));
             v = v.path;
         }
         Square[] road = new Square[path.size()];
