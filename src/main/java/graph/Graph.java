@@ -35,10 +35,21 @@ import java.util.LinkedList;
 
 public class Graph {
 
+    // TEST FOR NICE OUTPUT COLORS
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
     private Vertex[] graph;
 
     /**
-     * Constructs a new graph with size.
+     * Constructor.
      *     @param size the size of the graph
      */
     public Graph(int size) {
@@ -70,7 +81,6 @@ public class Graph {
         q.add(start);
 
         // while there are still vertices to check
-        //while ( !q.isEmpty() ) {
         while ( !goalVertex ) {
 
             // get the vertex and remove it;
@@ -96,17 +106,12 @@ public class Graph {
                 // retrieve all reachable ajacencies
                 Square[] adjacencies = reachableAdjacentSquares
                 (board, vertexToSquare(v), player.getPlayerNo());
-               
-
-                System.out.print(v.graphLoc + " [ ");
 
                 // for each adjacency...
                 for ( Square s : adjacencies ) {
 
                     // convert to graph location
                     Vertex adjacent = squareToVertex(s);            
-                    
-                    System.out.print(adjacent.graphLoc + " ");
 
                     // modify the vertex if it hasn't been modified
                     if ( adjacent.dist < 0 ) {
@@ -116,7 +121,6 @@ public class Graph {
                     }
                 }
 
-                System.out.print("]\n");
             }
             else {
                 printPath(v);
@@ -124,6 +128,7 @@ public class Graph {
             }
         
         }
+        // should never get here
         return null;
     }
 
@@ -163,26 +168,45 @@ public class Graph {
             // modify bits for the next iteration
             direction = Integer.rotateRight(direction,1);
 
+            //FIXME: add jump-check only if another player
+            // is directly next to the AI's current position
+
             // see if check is outside of the board
             if ( checkLoc != null ) {
 
-                // check for walls
-                if      ( y == 1  && currLoc.hasWallBottom()) {
-                    //System.out.println("can't move down!");
-                        continue;
+/*                // check for walls
+                if      ( y == 1  && checkLoc.hasWallBottom()) {
+                    System.out.println("can't move down!");
+                       continue;
                 }
-                else if ( y == -1 && checkLoc.hasWallBottom()) {
-                    //System.out.println("can't move up!");
-                        continue;
+                if ( y == -1 && currLoc.hasWallBottom()) {
+                    System.out.println("can't move up!");
+                       continue;
                 }
-                else if ( x == 1  && currLoc.hasWallRight()) {
-                    //System.out.println("can't move right!");
-                        continue;
+                if ( x == 1  && checkLoc.hasWallRight()) {
+                    System.out.println("can't move right!");
+                       continue;
                 }
-                else if ( x == -1 && checkLoc.hasWallRight()) {
-                    //System.out.println("can't move left!");
-                        continue;
+                if ( x == -1 && currLoc.hasWallRight()) {
+                    System.out.println("can't move left!");
+                       continue;
                 }
+                //else
+                    // add this square to the list
+                    squareList.add(checkLoc);
+                    */
+                // I don't know why I thought rewriting it like this
+                // would solve anything
+
+                // NOTE: the squares that we're checking for walls
+                // on doesn't really make sense... but it works
+                // for player0...
+                
+                if ( ( y == 1  && currLoc.hasWallBottom() ) ||
+                     ( y == -1 && checkLoc.hasWallBottom()  ) ||
+                     ( x == 1  && currLoc.hasWallRight())   ||
+                     ( x == -1 && checkLoc.hasWallRight()   ) )
+                       continue;
                 else
                     // add this square to the list
                     squareList.add(checkLoc);
@@ -218,16 +242,30 @@ public class Graph {
       */
     public void printGraph() {
         System.out.println( );
+        String cell = "";
+        String dist = "";
         for ( int i = 0; i < graph.length; i++ ) {
-            // print extra space if a one character number
-            if ( graph[i].dist < 10 && graph[i].dist >= 0 )
-                System.out.print(graph[i].dist+"  ");
-            // print single space if a two character number
+
+            // format graph #
+            if ( graph[i].graphLoc < 10 )
+                cell = "0" + graph[i].graphLoc;
             else
-                System.out.print(graph[i].dist+" ");
-            // print items to a new row
+                cell = graph[i].graphLoc + "";
+
+            // format distance
+            if ( graph[i].dist < 10 && graph[i].dist >= 0 )
+                dist = graph[i].dist + " ";
+            else if ( graph[i].dist == -1 )
+                dist = ANSI_RED + graph[i].dist + "" + ANSI_RESET;
+            else
+                dist = graph[i].dist + "";
+
+            // print
+            System.out.print("["+cell+":"+dist+"]");
+
+            // new row
             if ( (i+1) % GameBoard.COLUMNS == 0 )
-                System.out.println();
+                System.out.println("\n");
         }
     }
 
@@ -235,7 +273,7 @@ public class Graph {
         if ( v.dist == 0 )
             return;
         printPath(v.path);
-        System.out.print(v.graphLoc+" ");
+        System.out.print("-> " + v.graphLoc+" ");
     }
     
     public Square[] returnPath(Vertex v) {
@@ -262,11 +300,11 @@ public class Graph {
             players.add(new Player(i, 10));
         GameBoard board = new GameBoard(players);
 
-/*       // Player 0
+//*       // Player 0
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
-/*/
+/*
         // Player 1
         players.add(players.remove());
         graph.buildPath(board, players.peek());
@@ -275,13 +313,14 @@ public class Graph {
 
 /*        // Player 2
         players.add(players.remove());
+        players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
-
-        players.add(players.remove());
-        players.add(players.remove());
+/*
         // Player 3
+        players.add(players.remove());
+        players.add(players.remove());
         players.add(players.remove());
         graph.buildPath(board, players.peek());
         graph.printGraph();
@@ -290,7 +329,8 @@ public class Graph {
 
         // Test board with walls for player 1
         System.out.println("---Wall test---\n");
-        
+//*       
+        // Horizontal Walls 
         Square[] hwalls1 = {new Square(0,3),new Square(1,3)};
         board.placeWall(hwalls1);
         Square[] hwalls2 = {new Square(2,3),new Square(3,3)};
@@ -299,7 +339,8 @@ public class Graph {
         board.placeWall(hwalls3);
         Square[] hwalls4 = {new Square(6,3),new Square(7,3)};
         board.placeWall(hwalls4);
-        
+//*        
+        // Vertical Walls
         Square[] vwalls1 = {new Square(3,0),new Square(3,1)};
         board.placeWall(vwalls1);
         Square[] vwalls2 = {new Square(3,2),new Square(3,3)};
@@ -308,7 +349,7 @@ public class Graph {
         board.placeWall(vwalls3);
         Square[] vwalls4 = {new Square(3,6),new Square(3,7)};
         board.placeWall(vwalls4);
-        
+ // */      
         graph.buildPath(board, players.peek());
         graph.printGraph();
         System.out.println();
