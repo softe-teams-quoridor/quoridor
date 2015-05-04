@@ -1,3 +1,4 @@
+
 /**   GameBoardFrame.java - CIS405 - teams
  * ____________________________________________________________________________
  *
@@ -67,7 +68,7 @@ public class GameBoardFrame extends JFrame{
             //print out win
             gameboard.getContentPane().removeAll();
             draw(board);
-            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!", "We have a winner!", JOptionPane.ERROR_MESSAGE);
             closeWindow();
         } else{
             gameboard.getContentPane().removeAll();
@@ -188,16 +189,16 @@ public class GameBoardFrame extends JFrame{
             //if(playInt<board.numPlayersRemaining()){
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
-                try{
+                if(board.isPlayerRemaining(playInt)){
                     superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
-                }catch(Exception e){
+                }else{
                     superLabel.setText("Player!");
                 }
             }else if(row!=0){
-                try{
+                if(board.isPlayerRemaining(playInt)){
                     String name=board.getPlayer(playInt).getName();
                     superLabel.setText(name.substring(Math.max(0, name.length()-9)));
-                }catch(Exception e){
+                }else{
                     superLabel.setText("No");
                 }
                 label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
