@@ -162,7 +162,7 @@ public class GameBoardFrame extends JFrame{
             }
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
-        for (int i = 9; i < 10; i++) {
+        
             Color pColor=Color.BLACK;
             JLabel superLabel=new JLabel("");
             superLabel.setForeground(Color.WHITE);
@@ -186,10 +186,8 @@ public class GameBoardFrame extends JFrame{
 
             if(playInt==board.getCurrPlayerTurn())
                 wThick=5;
-            //if(playInt<board.numPlayersRemaining()){
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
-                System.out.println( "checking for player "+playInt) ;
                 if(board.isPlayerRemaining(playInt)){
                     superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
                 }else{
@@ -204,14 +202,13 @@ public class GameBoardFrame extends JFrame{
                 }
                 label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
             }
-            //}
             label.add(superLabel);
             label.setBackground(new Color(0, 0, 0));
             label.setForeground(Color.WHITE);
             gameboard.getContentPane().add(label,BorderLayout.CENTER);
             
             
-        }
+        
 
     }
 
