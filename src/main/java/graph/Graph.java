@@ -197,15 +197,10 @@ public class Graph {
                     */
                 // I don't know why I thought rewriting it like this
                 // would solve anything
-
-                // NOTE: the squares that we're checking for walls
-                // on doesn't really make sense... but it works
-                // for player0...
-                
                 if ( ( y == 1  && currLoc.hasWallBottom() ) ||
-                     ( y == -1 && checkLoc.hasWallBottom()  ) ||
-                     ( x == 1  && currLoc.hasWallRight())   ||
-                     ( x == -1 && checkLoc.hasWallRight()   ) )
+                     ( y == -1 && checkLoc.hasWallBottom()) ||
+                     ( x == 1  && currLoc.hasWallRight()  ) ||
+                     ( x == -1 && checkLoc.hasWallRight() )   )
                        continue;
                 else
                     // add this square to the list
