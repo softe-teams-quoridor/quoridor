@@ -324,5 +324,10 @@ public class GameBoard {
             rowInd = rowInd >> 4;
         }
     }
+
+    public boolean isPlayerRemaining(int pno) {
+        return (playerLocs[pno] == null ) ? false : true;
+    }
+
     
 }
