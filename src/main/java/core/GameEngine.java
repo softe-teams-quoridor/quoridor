@@ -538,12 +538,28 @@ public class GameEngine {
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
         // Place the theoritcal wall
         board.placeWall(wallSquares); 
+        /*
         for(int i = 0; i < board.numPlayersRemaining(); i++) {
             if(!GameEngine.existsPath(board.getPlayer(i), board)) {
                 board.removeWall(wallSquares);
                 return false;
             }
         }
+        */
+        int playerCt = 0;
+        int pno = 0;
+        while(playerCt != board.numPlayersRemaining()) {
+            if(board.isPlayerRemaining(pno)) {
+                playerCt++;
+                if(!GameEngine.existsPath(board.getPlayer(pno), board)) {
+                    board.removeWall(wallSquares);
+                    return false;
+                }
+            }
+            pno++;
+        }
+
+
         board.removeWall(wallSquares);
         return true;
         
