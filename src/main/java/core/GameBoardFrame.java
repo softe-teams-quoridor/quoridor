@@ -189,6 +189,7 @@ public class GameBoardFrame extends JFrame{
             //if(playInt<board.numPlayersRemaining()){
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
+                System.out.println( "checking for player "+playInt) ;
                 if(board.isPlayerRemaining(playInt)){
                     superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
                 }else{
