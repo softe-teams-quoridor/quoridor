@@ -68,7 +68,7 @@ public class GameBoardFrame extends JFrame{
             //print out win
             gameboard.getContentPane().removeAll();
             draw(board);
-            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!", "We have a winner!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!", "We have a winner!", JOptionPane.PLAIN_MESSAGE);
             closeWindow();
         } else{
             gameboard.getContentPane().removeAll();
