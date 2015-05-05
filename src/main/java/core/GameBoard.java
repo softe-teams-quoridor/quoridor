@@ -73,10 +73,14 @@ public class GameBoard {
     //*************************************************************************
     
     public int getStartNumPlayers(){
-	return startNumPlayers;
+	    return startNumPlayers;
     }
     //*************************************************************************
-
+    
+    /**
+      * Returns the number of players remaining in the game
+      * @return the number of player left
+      */
     public int numPlayersRemaining() {
         int c = 0;
         for(int i = 0; i < playerLocs.length; i++) {
@@ -117,7 +121,7 @@ public class GameBoard {
     /**
       * Returns the Square on the GameBoard at the given column (numeral) and
       * row (character).
-      *     @param a string representing a Square, e.g. IV-D
+      *     @param square string representing a Square, e.g. IV-D
       *     @return the Square object
       *     @throws assertion if the format of the string is inappropriate
       *     @see Square
@@ -171,6 +175,11 @@ public class GameBoard {
     public Square getPlayerLoc(Player player) {
         return playerLocs[player.getPlayerNo()];
     }
+    /**
+      * Returns the given Player's Number.
+      *     @param pno the players number we want the location from
+      *     @return the player's location
+      */
 
     public Square getPlayerLoc(int pno) {
         return playerLocs[pno];
