@@ -165,7 +165,7 @@ public class GameEngine {
         wallSquares[0] = parseMove(board,commaSep[0]);
         wallSquares[1] = parseMove(board,commaSep[1]);
 
-        if ( wallSquares[0] == null && wallSquares[1] == null )
+        if ( wallSquares[0] == null || wallSquares[1] == null )
             return null;
     
         // Check:
