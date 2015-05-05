@@ -29,8 +29,6 @@ public class AI_Maybe implements QuoridorAI {
             }
         }
         
-        System.out.println("winningNum: " + winningPlayer);
-        
         if(winningPlayer != pno){
             String block = blockPlayer(b, winningPlayer, pathShort);
             if(block != null)
@@ -48,16 +46,24 @@ public class AI_Maybe implements QuoridorAI {
             x++;
             if(x > 8)
               x-=2;
-            wall[1] = b.getSquare(x, path[0].getY());
+            int y = path[0].getY();
+            if(pno == 1)
+		y--;
+	    if(y < 0)
+		y+=2;
+            wall[1] = b.getSquare(x, y);
         } else {
             int y = path[0].getY();
             y++;
             if(y > 8)
               y-=2;
-            wall[1] = b.getSquare(path[0].getX(), y);
+            int x = path[0].getX();
+            if(pno == 3)
+		x--;
+	    if(x < 0)
+		x+=2;
+            wall[1] = b.getSquare( x, y);
         }
-        
-        System.out.println("Calculating block...");
         
         if(GameEngine.validateWall(b, wall))
             return ("(" + path[0].toString() + "," + path[1].toString() + ")");
