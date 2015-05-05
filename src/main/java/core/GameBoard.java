@@ -333,8 +333,16 @@ public class GameBoard {
             rowInd = rowInd >> 4;
         }
     }
-
+    
+    /**
+      * Given a players number will tell if the player 
+      *  is still in the game
+      * @param pno the player number being looked at
+      * @return True if the player is in the game false othereise
+      *
+      */
     public boolean isPlayerRemaining(int pno) {
+        // If only a 2 player game and sent a number larger than 2
         if(playerLocs.length == 2 && pno >= 2)
             return false;
         return (playerLocs[pno] == null ) ? false : true;
