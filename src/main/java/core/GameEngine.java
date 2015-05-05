@@ -110,6 +110,9 @@ public class GameEngine {
         // Parse the string into the respective x and y coordinates
         int x = fromNumerals(strs[0]);
         int y = fromLetters(strs[1].charAt(0));
+        if(strs[1].length() != 1) {
+            return null;   
+        }
         // Reject any coordinate that is not within the game board
         if (x == -1 || y == -1) {
             return null;  
