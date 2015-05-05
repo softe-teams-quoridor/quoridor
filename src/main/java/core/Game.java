@@ -1,5 +1,4 @@
 /* Game.java (aka Quoridor) - CIS 405 - teams
- * Last Edit: March 29, 2015
  * ____________________________________________________________________________
  * 
  * implements the GameEngine and Messenger to create and run the game Quoridor

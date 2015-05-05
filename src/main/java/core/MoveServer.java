@@ -1,3 +1,15 @@
+/** MoveServer.java
+  * ________________________________________________________
+  * 
+  *  This is the top level class which is used for all moveServers, AI and User
+  *    each 
+  *
+  *
+  */
+
+
+
+
 import java.io.IOException;
 import java.io.PrintStream;
 

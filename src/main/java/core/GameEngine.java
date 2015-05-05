@@ -1,5 +1,4 @@
 /* GameEngine.java - CIS405 - teams
- * Last Edit: April 3, 2015
  * ____________________________________________________________________________
  *
  * used for game rules and validation. capable of converting numeral/character

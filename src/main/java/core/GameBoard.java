@@ -1,5 +1,4 @@
 /* GameBoard.java - CIS405 - teams
- * Last Edit: April 19, 2015
  * ____________________________________________________________________________
  *
  * GameBoard object to represent a 9x9 grid for the Quoridor game. This handles
