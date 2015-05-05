@@ -1,5 +1,4 @@
 /* Wall.java - CIS405 - teams
- * Last Edit: April 10, 2015
  * ____________________________________________________________________________
  *
  * Serves as the Wall obstacle that is placed on a Square. Walls block a Player

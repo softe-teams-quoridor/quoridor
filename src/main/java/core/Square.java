@@ -1,5 +1,4 @@
 /* Square.java - CIS 405 - teams 
- * Last Edit: April 10, 2015
  * ____________________________________________________________________________
  *
  * Represents a single cell of a GameBoard grid. It contains a column and row
@@ -30,6 +29,7 @@
  * Wall getWallRight()        --> returns the right Wall object
  * Wall getWallBottom()       --> returns the bottom Wall object
  * void removeWallRight()     --> removes the right Wall object
+ * void removeWallBotttom()   --> removes the bottom wall object
  * boolean equals(Square)     --> returns the equality of this and another Square
  * String toString()          --> returns the string rep. of this Square
  */

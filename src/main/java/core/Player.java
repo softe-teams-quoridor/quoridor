@@ -1,5 +1,4 @@
 /* Player.java - CIS405 - teams
- * Last Edit: April 10, 2015
  * ____________________________________________________________________________
  *
  * Symbolizes a Player of the game Quoridor. Includes fields such as the 
