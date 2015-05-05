@@ -153,7 +153,8 @@ public class GameBoard {
       *     @see Player
       */
     public Player getPlayer(int pno) {
-        assert (pno >= 0 && pno < playerLocs.length);
+        assert (pno >= 0); 
+        assert (pno < playerLocs.length);
         if (playerLocs[pno] == null) {
             return null; // this player has been booted
         }
@@ -323,5 +324,12 @@ public class GameBoard {
             rowInd = rowInd >> 4;
         }
     }
+
+    public boolean isPlayerRemaining(int pno) {
+        if(playerLocs.length == 2 && pno >= 2)
+            return false;
+        return (playerLocs[pno] == null ) ? false : true;
+    }
+
     
 }

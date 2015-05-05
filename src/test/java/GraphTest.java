@@ -42,7 +42,7 @@ public class GraphTest {
             for ( int x = 0; x < GameBoard.COLUMNS; x++ ) {
                 Vertex v = new Vertex(count, -1);
                 Square boardSquare = b.getSquare(x,y);
-                Square graphSquare = g.vertexToSquare(v);
+                Square graphSquare = g.vertexToSquare(v,b);
                 //System.out.println(boardSquare.getX() + " == " + graphSquare.getX() + "?");
                 //System.out.println(boardSquare.getY() + " == " + graphSquare.getY() + "?");
                 assertEquals(boardSquare.getX(),graphSquare.getX());

@@ -1,3 +1,4 @@
+
 /**   GameBoardFrame.java - CIS405 - teams
  * ____________________________________________________________________________
  *
@@ -17,7 +18,7 @@
  * printPlayerLabel()			--> Shows an image of a pawn in player squares
  * topLayer()					--> draws the borders of the gridlayout
  * JLabel setBoarder()			--> sets the borders of the  grid
- * makeInfoPane()				--> GOING TO make an info pane on the RHS of grid
+ * makeInfoPane()				--> HOPING TO make an info pane on the RHS of grid
  *
  */
 
@@ -67,7 +68,7 @@ public class GameBoardFrame extends JFrame{
             //print out win
             gameboard.getContentPane().removeAll();
             draw(board);
-            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!", "We have a winner!", JOptionPane.PLAIN_MESSAGE);
             closeWindow();
         } else{
             gameboard.getContentPane().removeAll();
@@ -161,7 +162,7 @@ public class GameBoardFrame extends JFrame{
             }
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
-        for (int i = 9; i < 10; i++) {
+        
             Color pColor=Color.BLACK;
             JLabel superLabel=new JLabel("");
             superLabel.setForeground(Color.WHITE);
@@ -185,19 +186,30 @@ public class GameBoardFrame extends JFrame{
 
             if(playInt==board.getCurrPlayerTurn())
                 wThick=5;
-
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
-                //superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
+                if(board.isPlayerRemaining(playInt)){
+                    superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
+                }else{
+                    superLabel.setText("Player!");
+                }
             }else if(row!=0){
-                //superLabel.setText(board.getPlayer(playInt).getName());
+                if(board.isPlayerRemaining(playInt)){
+                    String name=board.getPlayer(playInt).getName();
+                    superLabel.setText(name.substring(Math.max(0, name.length()-9)));
+                }else{
+                    superLabel.setText("No");
+                }
                 label.setBorder(BorderFactory.createMatteBorder(wThick,wThick,0,wThick,pColor));
             }
             label.add(superLabel);
             label.setBackground(new Color(0, 0, 0));
             label.setForeground(Color.WHITE);
             gameboard.getContentPane().add(label,BorderLayout.CENTER);
-        }
+            
+            
+        
+
     }
 
 
