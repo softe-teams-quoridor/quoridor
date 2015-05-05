@@ -13,7 +13,56 @@ public class AI_Maybe implements QuoridorAI {
     public String getMove(GameBoard b, Player p) {
         Graph virtualBoard = new Graph(b.COLUMNS * b.ROWS);
         Square[] path = virtualBoard.buildPath(b,p);
+        
+        int pno = p.getPlayerNo();
+        
+        Square[] pathShort = path;
+        int winningPlayer = pno;
+        
+        for(int i = 0; i < b.getStartNumPlayers(); i++){
+            Square [] temp = null;
+            if(i != pno)
+                temp = virtualBoard.buildPath(b,p);
+            if(temp != null && temp.length < (pathShort.length-1)){
+                pathShort = temp;
+                winningPlayer = i;
+            }
+        }
+        
+        System.out.println("winningNum: " + winningPlayer);
+        
+        if(winningPlayer != pno){
+            String block = blockPlayer(b, winningPlayer, pathShort);
+            if(block != null)
+                return block;
+        }
+        
         return path[0].toString();
+    }
+    
+    public String blockPlayer(GameBoard b, int pno, Square[] path){
+        Square[] wall = new Square [2];
+        wall[0] = path [0];
+        if(pno == 0 || pno == 1){
+            int x = path[0].getX();
+            x++;
+            if(x > 8)
+              x-=2;
+            wall[1] = b.getSquare(x, path[0].getY());
+        } else {
+            int y = path[0].getY();
+            y++;
+            if(y > 8)
+              y-=2;
+            wall[1] = b.getSquare(path[0].getX(), y);
+        }
+        
+        System.out.println("Calculating block...");
+        
+        if(GameEngine.validateWall(b, wall))
+            return ("(" + path[0].toString() + "," + path[1].toString() + ")");
+        
+        return null;
     }
 
     /**
