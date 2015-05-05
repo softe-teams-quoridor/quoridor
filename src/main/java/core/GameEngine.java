@@ -19,7 +19,15 @@
  * boolean validate(GameBoard, Player, String)  
  *                           --> returns if string represents a legal move
  * Player getWinner(GameBoard,Players[])
- *                           --> checks if a player has won the game 
+ *                           --> checks if a player has won the game
+ * void playTurn(String move, Player player, GameBoard board)
+ *                           --> abstracts the functionality of moving pawns and placing walls
+ * boolean existsPath(Player player, GameBoard board)
+ *                           --> returns true if the players path to objective is possible
+ * Square [] reachableAdjacentSquares(GameBoard b, Square sq)
+ *                           --> returns an array of adjacent squares
+ * boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares)
+ *                           --> returns true if a wall placement will not block any player 
  * PROTECTED:
  * 
  * Square parseMove(GameBoard, String) 
@@ -34,7 +42,6 @@
  */
 
 import java.util.Queue;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -541,16 +548,10 @@ public class GameEngine {
     private static boolean checkAllPlayersPaths(GameBoard board, Square [] wallSquares) { 
         // Place the theoritcal wall
         board.placeWall(wallSquares); 
-        /*
-        for(int i = 0; i < board.numPlayersRemaining(); i++) {
-            if(!GameEngine.existsPath(board.getPlayer(i), board)) {
-                board.removeWall(wallSquares);
-                return false;
-            }
-        }
-        */
+
         int playerCt = 0;
         int pno = 0;
+        // Go through and check all playes remaining paths
         while(playerCt != board.numPlayersRemaining()) {
             if(board.isPlayerRemaining(pno)) {
                 playerCt++;
@@ -562,7 +563,7 @@ public class GameEngine {
             pno++;
         }
 
-
+        // Remove the theorical wall
         board.removeWall(wallSquares);
         return true;
         
