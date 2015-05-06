@@ -163,17 +163,20 @@ public class GameBoardFrame extends JFrame{
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
         
+        	//makes the infopane section black
             Color pColor=Color.BLACK;
             JLabel superLabel=new JLabel("");
             superLabel.setForeground(Color.WHITE);
             JLabel label = new JLabel();
+            
+            //makes it so each player has two separate squares
             int playInt=(row-1)/2;
             label.setLayout(new GridLayout(3,1));
             label.setOpaque(true);
             label.setPreferredSize(new Dimension(100, 70));
-
+            
+            //determine what color the player squares should be
             if(row==0){
-                //This should display if it's a player window or server
             }else if(playInt==0){
                 pColor=Color.YELLOW;
             }else if(playInt==1){
@@ -184,10 +187,14 @@ public class GameBoardFrame extends JFrame{
                 pColor=Color.RED;
             }
 
+            //if it is a players turn, print it's infopane walls thicker 
             if(playInt==board.getCurrPlayerTurn())
                 wThick=5;
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
+                
+                //if the player is still in the game, display the number of walls they have
+                //if not, display "No player!"
                 if(board.isPlayerRemaining(playInt)){
                     superLabel.setText("Walls: "+board.getPlayer(playInt).getNumWalls());
                 }else{
