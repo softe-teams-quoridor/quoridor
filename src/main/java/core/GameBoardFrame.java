@@ -275,13 +275,13 @@ public class GameBoardFrame extends JFrame{
     private void printPlayerLabel(Player p, JLabel label) { 
         ImageIcon bg=new ImageIcon("./../../images/player_4_scaled.jpg");
         if(p.getPlayerNo()==0){
-            bg=new ImageIcon("./../../images/player_1_scaled.jpg");
+            bg=new ImageIcon("./../..images/player_1_scaled.jpg");
         }else if(p.getPlayerNo()==1){
-            bg=new ImageIcon("./../../images/player_2_scaled.jpg");
+            bg=new ImageIcon("./../..images/player_2_scaled.jpg");
         }else if(p.getPlayerNo()==2){
-            bg=new ImageIcon("./../../images/player_3_scaled.jpg");
+            bg=new ImageIcon("./../..images/player_3_scaled.jpg");
         }else if(p.getPlayerNo()==3){
-            bg=new ImageIcon("./../../images/player_4_scaled.jpg");
+            bg=new ImageIcon("./../..images/player_4_scaled.jpg");
         }
         label.setIcon(bg);
         //label.setIconTextGap(-100);
