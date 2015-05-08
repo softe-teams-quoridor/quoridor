@@ -163,7 +163,11 @@ public class ClientMessenger {
         if (! response.startsWith("GO ")) {
             return "B-O-O-T-M-E"; // response must begin with GO
         }
-        return response.substring(3).trim();
+        response = response.substring(3).trim();
+        if (response.isEmpty()) { 
+            return "B-O-O-T-M-E";
+        }
+        return response;
     }
 
     public void broadcastWent(Player player, String move) {
