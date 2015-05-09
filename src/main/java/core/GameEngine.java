@@ -442,9 +442,9 @@ public class GameEngine {
         for (Square sq : squares) {
             x = sq.getX();
             y = sq.getY();
-            System.out.println("checking square: (" + x + ", " + y + ")");
+//            System.out.println("checking square: (" + x + ", " + y + ")");
             if (visited[x][y]) {
-                System.out.println("been here!");
+//                System.out.println("been here!");
                 continue;
             }
             if (pno == 0 && y == 8) {

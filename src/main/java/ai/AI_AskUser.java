@@ -14,7 +14,7 @@ public class AI_AskUser implements QuoridorAI {
         Square[] squares = GameEngine.validate(board, player, move);
         if(squares != null) {
             return move;
-        }
+        } 
         System.out.println("that looks illegal; are you sure?");
         String confirm = keyboard.nextLine();
         if (confirm.equals("y")) {

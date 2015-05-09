@@ -5,8 +5,7 @@ public class AI_Maybe implements QuoridorAI {
       * Constructor.
       */
     public AI_Maybe() { }
-    
-    //DOCUMENTME
+
     /**
       * Returns a move.
       *     @param b GameBoard to play on
@@ -58,8 +57,13 @@ public class AI_Maybe implements QuoridorAI {
         Square[] wallSquares = new Square [2];
         
         Random rand = new Random(System.currentTimeMillis());
-        int r = (rand.nextInt(path.length) - 1) % 1;
-        r = -1;
+        //int r = (rand.nextInt(2) - 1);
+        int r = -1;
+        
+
+        // If the path is one ONLY go one ahead
+        if(path.length == 1)
+            r = -1;
     
         int blockTwoX, blockTwoY;
         Square blockOne;
