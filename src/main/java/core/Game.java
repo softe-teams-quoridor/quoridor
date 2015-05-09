@@ -19,8 +19,8 @@ public class Game {
      * @param an int to return to the OS
      */
     public static void usage(int error) {
-        System.err.println("usage: java Game <host> <port> <host> <port> " + 
-                           "[<host> <port> <host> <port>]");
+        System.err.println("usage: java Game host:port host:port" + 
+                           "[host:port host:port]");
         System.exit(error);
     }
 
@@ -57,12 +57,12 @@ public class Game {
         // quit if bad arguments
         Deb.ug.println("args provided: " + Arrays.toString(args));
         
-        if (args.length !=  4 && args.length != 8) {
+        if (args.length != 2 && args.length != 4) {
             usage(1);
         }
 
         // Set the number of players
-        numPlayers = args.length/2;
+        numPlayers = args.length;
         Deb.ug.println("number of players: " + numPlayers);
 
         // Connect to players
@@ -188,7 +188,7 @@ public class Game {
         hermes.closeAllStreams(players);
 
         // pause board for two seconds before ending
-        sleep(2000);
+//         sleep(2000);
         System.exit(0);
     }
 }

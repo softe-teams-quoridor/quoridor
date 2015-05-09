@@ -25,17 +25,19 @@ public class ClientMessenger {
      * populates the hosts, ports, inStreams, outStreams arrays
      */
     public ClientMessenger(String [] args) {
-        int numPlayers = args.length/2;
+        int numPlayers = args.length;
         this.ports = new int[numPlayers];
         this.hosts = new String[numPlayers];
         Deb.ug.println("args: " + Arrays.toString(args));
 
-        //reconsider
         for (int i = 0; i < args.length; i++) { 
-            hosts[i/2] = args[i];
-            i++;
+            String [] parts = args[i].split(":");
+            if (parts.length != 2) {
+                Game.usage(84);
+            }
+            hosts[i] = parts[0];
             try {
-                ports[i/2] = Integer.parseInt(args[i]);
+                ports[i] = Integer.parseInt(parts[1]);
             } catch (Exception e) {
                 Game.usage(2);
             }
