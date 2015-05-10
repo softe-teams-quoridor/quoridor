@@ -273,37 +273,36 @@ public class GameBoardFrame extends JFrame{
      * No more Text overlay.
      */ 
     private void printPlayerLabel(Player p, JLabel label) { 
-    	    findIcons();
-    	//File f= new File("./../../images/player_4_scaled.jpg");
+    	    String fileLoc=findIcons();
     	int pawnFail=-1;
     	//if(f.exists()){
-        ImageIcon bg=new ImageIcon("./../../images/player_4_scaled.jpg");
+        ImageIcon bg=new ImageIcon(fileLoc+"/player_4_scaled.jpg");
         Color pC=new Color(0,0,0);
         if(p.getPlayerNo()==0){
         	pC=Color.YELLOW;
         	pawnFail=1;
-            bg=new ImageIcon("./../..images/player_1_scaled.jpg");
+            bg=new ImageIcon(fileLoc+"/player_1_scaled.jpg");
         }else if(p.getPlayerNo()==1){
         	pC=Color.BLUE;
         	pawnFail=2;
-            bg=new ImageIcon("./../..images/player_2_scaled.jpg");
+            bg=new ImageIcon(fileLoc+"/player_2_scaled.jpg");
         }else if(p.getPlayerNo()==2){
         	pC=Color.GREEN;
         	pawnFail=3;
-            bg=new ImageIcon("./../..images/player_3_scaled.jpg");
+            bg=new ImageIcon(fileLoc+"/player_3_scaled.jpg");
         }else if(p.getPlayerNo()==3){
         	pC=Color.RED;
         	pawnFail=4;
-            bg=new ImageIcon("./../..images/player_4_scaled.jpg");
+            bg=new ImageIcon(fileLoc+"/player_4_scaled.jpg");
         }
-	//if(f.exists()){        
+	if(!fileLoc.equals("Didn't work")){        
         label.setIcon(bg);
-        //}else{
+        }else{
         label.setBackground(pC);
         label.setText(""+pawnFail);
         label.setFont(new Font("Serif",1,30));
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        //}
+        }
         
         label.setLayout(new FlowLayout());
         //label.setBackground(new Color(0, 200, 200)); 
@@ -391,7 +390,17 @@ public class GameBoardFrame extends JFrame{
         gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
 
-    private void findIcons(){
-    
+    private String findIcons(){
+    	    String filePath="./images";
+
+    	    for(int x=0; x<5; x++){
+    	    	    if(new File(filePath).exists()){
+    	    	    	    return filePath;
+    	    		
+    	    	    }else{
+    	    		filePath="../"+filePath;
+    	    	    }
+    }
+    return "Didn't work";
     }
 }
