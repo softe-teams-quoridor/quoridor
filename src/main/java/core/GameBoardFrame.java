@@ -30,6 +30,8 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
+import java.net.URL;
+
 //Handles the construction of the GUI
 public class GameBoardFrame extends JFrame{
 
@@ -297,7 +299,7 @@ public class GameBoardFrame extends JFrame{
      * Shows an image of a pawn in the player squares. 
      * No more Text overlay.
      */ 
-    private void printPlayerLabel(Player p, JLabel label) { 
+/*    private void printPlayerLabel(Player p, JLabel label) { 
     	    String fileLoc=findIcons();
     	int pawnFail=-1;
     	//if(f.exists()){
@@ -329,6 +331,30 @@ public class GameBoardFrame extends JFrame{
         label.setHorizontalAlignment(SwingConstants.CENTER);
         }
         
+        label.setLayout(new FlowLayout());
+        label.setOpaque(true); 
+        label.setLayout(null); 
+        label.setPreferredSize(new Dimension(100, 70)); 
+        gameboard.getContentPane().add(label, BorderLayout.CENTER); 
+    } 
+*/
+    /** 
+     * Shows an image of a pawn in the player squares. 
+     * No more Text overlay.
+     */ 
+    private void printPlayerLabel(Player p, JLabel label) { 
+        ImageIcon bg = null;
+        switch(p.getPlayerNo()) {
+            case 0: bg = new ImageIcon
+                    (GameBoardFrame.class.getResource("/player_1_scaled.jpg")); break;
+            case 1: bg = new ImageIcon
+                    (GameBoardFrame.class.getResource("/player_2_scaled.jpg")); break;
+            case 2: bg = new ImageIcon
+                    (GameBoardFrame.class.getResource("/player_3_scaled.jpg")); break;
+            case 3: bg = new ImageIcon
+                    (GameBoardFrame.class.getResource("/player_4_scaled.jpg")); break;
+        } 
+        label.setIcon(bg);
         label.setLayout(new FlowLayout());
         label.setOpaque(true); 
         label.setLayout(null); 
