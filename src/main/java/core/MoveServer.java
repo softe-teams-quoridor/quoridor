@@ -118,7 +118,9 @@ public class MoveServer {
         System.out.println("Connection from " + currClient);
         Deb.ug.println("Connection from " + currClient);
 
-        hermes.identify("teams_" + portNumber + ai.toString());
+        String playerName = ai.toString();
+
+        hermes.identify("teams_" + portNumber + playerName);
 
         String [] playerNames = hermes.players();
         if (playerNames == null) {
@@ -137,7 +139,7 @@ public class MoveServer {
         Player currentPlayer = players.peek();
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
-            frame = new GameBoardFrame(board, players, ai.toString());
+            frame = new GameBoardFrame(board, players, playerName);
         }
 
         String clientMessage;
@@ -182,7 +184,8 @@ public class MoveServer {
                 GameEngine.playTurn(move, currentPlayer, board);
 
                 // shuffle players
-                players.add(players.remove());
+                //players.add(players.remove());
+                players = board.getNextTurn(players);
                 currentPlayer = players.peek();
 
             // BOOT --> current player is no longer player or has been kicked
