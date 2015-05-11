@@ -143,7 +143,7 @@ public class ClientMessenger {
             }
             outStreams[i].print("PLAYERS ");
             for (Player playa : players) {
-                outStreams[i].print(playa.getName() + " ");
+                outStreams[i].print(playa + " ");
             }
             outStreams[i].println();
         }
@@ -175,16 +175,16 @@ public class ClientMessenger {
     public void broadcastWent(Player player, String move) {
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
-                outStreams[i].println("WENT " + player.getName() + " " + move);
+                outStreams[i].println("WENT " + player + " " + move);
             }
         }
     }
 
     public void broadcastBoot(Player player) {
-        Deb.ug.println("booting player: " + player.getName());
+        Deb.ug.println("booting player: " + player);
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
-                outStreams[i].println("BOOT " + player.getName());
+                outStreams[i].println("BOOT " + player);
             }
         }
         closeStreams(player.getPlayerNo());
@@ -193,8 +193,7 @@ public class ClientMessenger {
     public void broadcastVictor(Player player) {
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
-                outStreams[player.getPlayerNo()].println("VICTOR " 
-                                                         + player.getName());
+                outStreams[player.getPlayerNo()].println("VICTOR " + player);
             }
         }
     }

@@ -96,7 +96,7 @@ public class Game {
         for (int i = 0; i < numPlayers; i++) {
             if (! isValidName(names[i])) {
                 Player badlyNamed = players.remove();
-                Deb.ug.println("badly named: " + badlyNamed.getName());
+                Deb.ug.println("badly named: " + badlyNamed);
                 board.removePlayer(badlyNamed);
                 hermes.broadcastBoot(badlyNamed);
             } else {
@@ -151,8 +151,7 @@ public class Game {
             Player currentPlayer = players.peek();
 
             // Get move from player
-            Deb.ug.println("requesting move from player: " + 
-                           currentPlayer.getName());
+            Deb.ug.println("requesting move from player: " + currentPlayer);
             String response = hermes.requestMove(currentPlayer);
             Deb.ug.println("received: " + response);
 

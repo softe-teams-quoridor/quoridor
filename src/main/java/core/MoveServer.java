@@ -146,7 +146,7 @@ public class MoveServer {
         hermes.ready();
         /* handle different types of messages the client might send */
         while (hermes.hasNextLine()) {
-            System.out.println("currentPlayer: " + currentPlayer.getName());
+            System.out.println("currentPlayer: " + currentPlayer);
             clientMessage = hermes.nextLine().trim();
             System.out.println("received: " + clientMessage);
             Deb.ug.println("received: " + clientMessage);
@@ -173,7 +173,7 @@ public class MoveServer {
                 // you know, like a name that has `fuck' in it or something.
                 // in other cases this assertion should hold...
                 // can we keep it somehow?
-//                 assert (currentPlayer.getName().equals(words[1]));
+//                 assert (currentPlayer.toString().equals(words[1]));
 
                 // move is a string like "V-A" or "(V-A, V-B)"
                 // add 6 to the player's name's length to compensate for
@@ -187,14 +187,14 @@ public class MoveServer {
 
             // BOOT --> current player is no longer player or has been kicked
             } else if (clientMessage.startsWith("BOOT")) {
-                Deb.ug.println("currPlayer name " + currentPlayer.getName());
+                Deb.ug.println("currPlayer name " + currentPlayer);
                 Deb.ug.println("currPlayer no " + currentPlayer.getPlayerNo());
                 // this assertion fails when the display client boots
                 // players at the beginning of the game for a bad name.
                 // you know, like a name that has `fuck' in it or something.
                 // in other cases this assertion should hold...
                 // can we keep it somehow?
-//                 assert words[1].equals(currentPlayer.getName());
+//                 assert words[1].equals(currentPlayer);
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();
