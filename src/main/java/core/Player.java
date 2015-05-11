@@ -11,7 +11,7 @@
  * Player(int,int)        --> constructs player with an ID and wall count
  * Player(int,string,int) --> constructs player with ID, name, and wall count
  * int getPlayerNo()      --> returns the Player's number
- * String getName()       --> returns the Player's name
+ * String toString()       --> returns the Player's name
  * int getNumWalls()      --> returns number of walls remaining
  * boolean mayPlaceWall() --> returns if a player has walls that they may place
  * void useWall()         --> decrements numWalls
@@ -71,10 +71,6 @@ public class Player {
       * Returns the name of the Player
       *     @return the name of the Player
       */
-    public String getName() {
-        return playerName;
-    }
-
     public String toString() {
         return playerName;
     }

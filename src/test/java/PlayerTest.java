@@ -36,10 +36,10 @@ public class PlayerTest {
     }
 
     @Test
-    public void getNameTest() throws Exception {
+    public void toStringTest() throws Exception {
         // Check all names of players 
         for(int i = 0; i < NUM_PLAYERS; i++) {
-            assertEquals(players.peek().getName(), "player_" + i);
+            assertEquals(players.peek().toString(), "player_" + i);
             players.add(players.remove());
         }
     
