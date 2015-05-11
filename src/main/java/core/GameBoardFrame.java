@@ -187,6 +187,23 @@ public class GameBoardFrame extends JFrame{
             if (board.isOccupied(i, row)) {
                 printPlayerLabel(board.getPlayer(i, row), label);
             } else {
+            	    if(row==0&&i!=0&&i!=8)
+            	    	    label.setBackground(new Color(140,130,170));
+            	    else if(row==8&&i!=0&&i!=8)
+            	    	    label.setBackground(new Color(180,150,130));
+            	    else if(i==0&&row!=0&&row!=8)
+            	    	    label.setBackground(new Color(180,130,130));
+            	    else if(i==8&&row!=0&&row!=8)
+            	    	    label.setBackground(new Color(140,170,130));
+            	    else if(row==0&&i==0)
+            	    	    label.setBackground(new Color(180,130,170));
+            	    else if(row==0&&i==8)
+            	    	    label.setBackground(new Color(160,140,160));
+            	    else if(row==8&&i==0)
+            	    	    label.setBackground(new Color(200,150,130));
+            	    else if(row==8&&i==8)
+            	    	    label.setBackground(new Color(170,170,130));
+            	    else
                 label.setBackground(new Color(140, 130, 130));
             }
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
