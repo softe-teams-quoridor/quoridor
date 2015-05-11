@@ -58,6 +58,9 @@ public class AI_Maybe implements QuoridorAI {
         int blockTwoX = path[0].getX();
         int blockTwoY = path[0].getY();
         Square blockOne = b.getPlayerLoc(opponentNo);
+        boolean outOfBounds = false;
+        Square blockZero;
+        Random rand = new Random(System.currentTimeMillis());
 
         // if the opponent wants to move vertically (assume UP)
         if ( blockTwoX == blockOne.getX() ) {
@@ -78,11 +81,15 @@ public class AI_Maybe implements QuoridorAI {
                 blockOne = path[0];
         }
 
+
+
         // assign second wall piece
         Square blockTwo = b.getSquare(blockTwoX,blockTwoY);
 
         // validate the bounds of the second wall piece
         if ( blockTwo == null ) {
+            outOfBounds = true;
+            
             // if blockTwoX exceeds the right boundary
             if ( blockTwoX >= b.COLUMNS ) {
                 blockTwo = blockOne;
@@ -103,11 +110,39 @@ public class AI_Maybe implements QuoridorAI {
             }
         } 
 
-        //String wallString = "(" + wallSquares[0].toString() + "," + wallSquares[1].toString() + ")";
-        String wallString = "(" + blockOne + "," + blockTwo + ")";
+
+        if(blockOne.getY() == blockTwo.getY()) {
+            blockZero = b.getSquare(blockOne.getX() - 1,blockOne.getY());
+        }
+        else {
+            blockZero = b.getSquare(blockOne.getX(), blockOne.getY() - 1);
+        }
+
+
+        String wallString12 = "(" + blockOne + "," + blockTwo + ")";
+        String wallString01 = "(" + blockZero + "," + blockOne + ")";
+
+
+        if(rand.nextInt(2) == 0 && !outOfBounds) {
+            if(GameEngine.validate(b,b.getPlayer(aiNo), wallString01) != null) {
+                return wallString01;
+            }
+            if(GameEngine.validate(b,b.getPlayer(aiNo), wallString12) != null) {
+                return wallString12;
+            }
+        }
+        else {
+            if(GameEngine.validate(b,b.getPlayer(aiNo), wallString12) != null) {
+                return wallString12;
+            }
+//            if(GameEngine.validate(b,b.getPlayer(aiNo), wallString01) != null) {
+//                return wallString01;
+//            }
+
+        }
 
         // return the wall string if it is a valid wall placement on the GameBoard
-        return (GameEngine.validate(b,b.getPlayer(aiNo), wallString) != null) ? wallString : null;
+        return null;
     }
 
     /**
@@ -122,4 +157,6 @@ public class AI_Maybe implements QuoridorAI {
     public String toString() {
         return "Maybe?";
     }
+
+
 }
