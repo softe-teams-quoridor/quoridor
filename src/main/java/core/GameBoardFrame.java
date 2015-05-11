@@ -387,18 +387,18 @@ public class GameBoardFrame extends JFrame{
     //makes walls show up as red compound borders.
     private JLabel setBoarder(JLabel someLabel,Square tSquare){
         if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createMatteBorder(1,1, 1, 1, Color.BLACK));
+            someLabel.setBorder(BorderFactory.createBevelBorder(0));
 
         }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 0, 1, Color.BLACK),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
                         BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
 
         }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1, 1, 0, Color.BLACK),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
                         BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
 
         }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1,1,0,0,Color.BLACK),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
                         BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
         }
 
