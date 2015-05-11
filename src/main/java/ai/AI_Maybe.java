@@ -128,17 +128,6 @@ public class AI_Maybe implements QuoridorAI {
         } 
 
         String wallString = "(" + wallSquares[0].toString() + "," + wallSquares[1].toString() + ")";
-        Square[] tstSquares = GameEngine.validate(b,b.getPlayer(us), wallString);
-        if(tstSquares == null) {
-            System.out.println(wallString + "is null");    
-        }
-        else if(tstSquares.length == 1) {
-            System.out.println("The tstSquares is length 1");
-            System.out.println("tstSquares[0] = " + tstSquares[0]);
-        }
-        else {
-            System.out.println("WallString is " + wallString + "and validate returned " + tstSquares);
-        }
 
         // return the wall string if it is a valid wall placement on the GameBoard
         return (GameEngine.validate(b,b.getPlayer(us), wallString) != null) ? wallString : null;
