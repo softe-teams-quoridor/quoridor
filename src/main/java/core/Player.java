@@ -75,6 +75,10 @@ public class Player {
         return playerName;
     }
 
+    public String toString() {
+        return playerName;
+    }
+
     //*************************************************************************
 
     /** 
