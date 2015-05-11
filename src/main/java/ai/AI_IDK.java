@@ -1,3 +1,9 @@
+
+/* message to author: getStartNumPlayers has been replaced
+   with numPlayersRemaining. it returns an int of the number
+   of players still playing the game. */
+
+
 public class AI_IDK implements QuoridorAI{
 
     /* constructor:
@@ -109,15 +115,16 @@ public class AI_IDK implements QuoridorAI{
 
         //save players distances. Start with them at -1, if 
         //player exists the number will become positive.
-        int [] distances = new int [b.getStartNumPlayers()];
-        for(int i = 0; i < b.getStartNumPlayers(); i++){
+        //int [] distances = new int [b.getStartNumPlayers()];
+        int [] distances = new int [b.numPlayersRemaining()];
+        for(int i = 0; i < b.numPlayersRemaining(); i++){
             distances[i] = -1;
         }
 
         //for each player calculate distance to win.
         //(this is arbitrary, doesnt account for walls 
         // in the way of a players win.)
-        for(int i = 0; i < b.getStartNumPlayers(); i++){
+        for(int i = 0; i < b.numPlayersRemaining(); i++){
     
             //get the player
             Player tempP = b.getPlayer(i);
@@ -148,7 +155,7 @@ public class AI_IDK implements QuoridorAI{
         int leastDist = 0;
 
         //now, based on earlier calculations. figure out which player it is
-        for (int i = 1; i < b.getStartNumPlayers(); i++){
+        for (int i = 1; i < b.numPlayersRemaining(); i++){
             if( distances[leastDist] > distances[i] )
                 leastDist = i;
         }

@@ -40,7 +40,6 @@ public class GameBoard {
     protected Square [][] squares;  // The cells of the GameBoard
     protected Square [] playerLocs; // locations of the players on the board
     private int playerTurn;       // whichever player's turn it is
-    private int startNumPlayers; // how many players when start
     
     //*************************************************************************
 
@@ -52,9 +51,6 @@ public class GameBoard {
     public GameBoard(Queue<Player> players) {
         assert (players.size() == 2 || players.size() == 4);
         // Instantiate squares array, setting X and Y to i and j respectively
-        
-        startNumPlayers = players.size();
-        
         squares = new Square[COLUMNS][ROWS];
         for (int i = 0; i < COLUMNS; i++) {
             for (int j = 0; j < ROWS; j++){
@@ -69,11 +65,6 @@ public class GameBoard {
         setupInitialPositions(players);
     }
 
-    //*************************************************************************
-    
-    public int getStartNumPlayers(){
-	    return startNumPlayers;
-    }
     //*************************************************************************
     
     /**
