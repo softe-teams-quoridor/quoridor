@@ -47,90 +47,67 @@ public class AI_Maybe implements QuoridorAI {
 
 
     /**
-      * Attempts to block an opposing player's path.
-      *     @param b GameBoard to retrieve locations from
-      *     @param opponentNo the ID number of the Player we wish to block
-      *     @param us the AI's Player number
-      *     @param path the path of the opposing player
-      */
-    public String blockPlayer(GameBoard b, int opponentNo,int us, Square[] path){
-        Square[] wallSquares = new Square [2];
-        
-        Random rand = new Random(System.currentTimeMillis());
-        //int r = (rand.nextInt(2) - 1);
-        int r = -1;
-        
+     * Attempts to block an opposing player's path.
+     *     @param b GameBoard to retrieve locations from
+     *     @param opponentNo the ID number of the Player we wish to block
+     *     @param aiNO this AI's Player number
+     *     @param path the path of the opposing player
+     */
+    public String blockPlayer(GameBoard b, int opponentNo, int aiNo, Square[] path){
 
-        // If the path is one ONLY go one ahead
-        if(path.length == 1)
-            r = -1;
-    
-        int blockTwoX, blockTwoY;
-        Square blockOne;
+        int blockTwoX = path[0].getX();
+        int blockTwoY = path[0].getY();
+        Square blockOne = b.getPlayerLoc(opponentNo);
 
-        // if random is negative, block around opponent's square
-        if ( r == -1 ) {
-            blockTwoX = path[0].getX();
-            blockTwoY = path[0].getY();
-            wallSquares[0] = path[0];
-            blockOne = b.getPlayerLoc(opponentNo);
-        }
-        // else, block further along opponent's path
-        else {
-            blockTwoX = path[r+1].getX();
-            blockTwoY = path[r+1 ].getY();
-            wallSquares[0] = path[r];
-            blockOne = path[r];
-        }
-
-        // if the opponent wants to move verticallblockTwoY
+        // if the opponent wants to move vertically (assume UP)
         if ( blockTwoX == blockOne.getX() ) {
             blockTwoX++;
-            // if the opponent wants to move DOWN
-            if ( blockTwoY > blockOne.getY() ) {
-                wallSquares[0] = blockOne;
+            // check if the opponent wants to move DOWN
+            if ( blockTwoY > blockOne.getY() ) 
                 blockTwoY--;
-            }
+            else
+                blockOne = path[0];
         }
-        // if the opponent wants to move horizontallblockTwoY
+        // if the opponent wants to move horizontally (assume LEFT)
         else {
             blockTwoY++;
-            // if the opponent wants to move right
-            if ( blockTwoX > blockOne.getX() ) {
-                wallSquares[0] = blockOne;
+            // check if the opponent wants to move RIGHT
+            if ( blockTwoX > blockOne.getX() ) 
                 blockTwoX--;
-            }
+            else
+                blockOne = path[0];
         }
 
         // assign second wall piece
-        wallSquares[1] = b.getSquare(blockTwoX,blockTwoY);
+        Square blockTwo = b.getSquare(blockTwoX,blockTwoY);
 
         // validate the bounds of the second wall piece
-        if(wallSquares[1] == null) {
+        if ( blockTwo == null ) {
             // if blockTwoX exceeds the right boundary
             if ( blockTwoX >= b.COLUMNS ) {
-                wallSquares[1] = wallSquares[0];
-                wallSquares[0] = b.getSquare(blockTwoX-2,blockTwoY);
+                blockTwo = blockOne;
+                blockOne = b.getSquare(blockTwoX-2,blockTwoY);
             }
             // if blockTwoX exceeds the left boundary
             else if ( blockTwoX < 0 ) { 
-                wallSquares[1] = b.getSquare(blockTwoX+2,blockTwoY);
+                blockTwo = b.getSquare(blockTwoX+2,blockTwoY);
             }
             // if blockTwoY exceeds the bottom boundary
             else if ( blockTwoY >= b.ROWS ) {
-                wallSquares[1] = wallSquares[0];
-                wallSquares[0] = b.getSquare(blockTwoX,blockTwoY-2);          
+                blockTwo = blockOne;
+                blockOne = b.getSquare(blockTwoX,blockTwoY-2);
             }
             // if blockTwoY exceeds the top boundary
             else {
-                wallSquares[1] = b.getSquare(blockTwoX,blockTwoY+2);
+                blockTwo = b.getSquare(blockTwoX,blockTwoY+2);
             }
         } 
 
-        String wallString = "(" + wallSquares[0].toString() + "," + wallSquares[1].toString() + ")";
+        //String wallString = "(" + wallSquares[0].toString() + "," + wallSquares[1].toString() + ")";
+        String wallString = "(" + blockOne + "," + blockTwo + ")";
 
         // return the wall string if it is a valid wall placement on the GameBoard
-        return (GameEngine.validate(b,b.getPlayer(us), wallString) != null) ? wallString : null;
+        return (GameEngine.validate(b,b.getPlayer(aiNo), wallString) != null) ? wallString : null;
     }
 
     /**
