@@ -262,7 +262,7 @@ public class Graph {
                     // add this square to the list
                     squareList.add(checkLoc);
 
-                adjacentToPlayer = false;
+                adjacentToPlayer = true;
             }
         }
 
