@@ -1,12 +1,11 @@
 README file for teams' Quoridor Project
 
     Contributors:
-        Eric Cavanagh
-        Montana Earle
-        Scott Forbes
-        Tylor Lehman
-        Dan Soucy
-        Collin Walling
+        Eric Cavanagh   - Misspell Caster
+        Montana Earle   - Queen of Laughs-a-Lot
+        Tylor Lehman    - Board Master
+        Dan Soucy       - Golden Canadian
+        Collin Walling  - Does things
 
     Contents:
         01: How to run the game
@@ -17,15 +16,19 @@ README file for teams' Quoridor Project
 
 [01] How to run the game:
 
-    1. After running gradle to build the class files, navigate from within
-         the teams.git root to:
+    0. Build all class files with ./gradlew build
 
-                ./build/classes/main
+
+    1. Navigate to ./build/libs
+
 
     2. Start up at least two MoveServers (in different terminals), give
          them unique port numbers and a user type
 
-                java MoveServer 1234 user
+            java -cp quoridorscmoridor-3.3.jar MoveServer 1234 user
+
+        *note: you may have permission issues with this file. run
+               chmod +x quoridorschmoridor-3.3.jar and voila!
 
          ========================================================
          =                   VALID USER TYPES                   =
@@ -34,25 +37,24 @@ README file for teams' Quoridor Project
          = lr           --> simple AI that moves left and right =
          = rd           --> simple AI that makes random moves   =
          = fcrd         --> flip coin roll dice                 =
-         = ai           --> Montana's AI                        =
-         = rip          --> Ripley                              =
+         = maybe        --> teams' awesome ai                   =
          ======================================================== 
 
 
-    3. Run Game in another terminal. Give it the port-host of at least two 
-         other UserServers
+    3. Run Game in another terminal. Give it the port-host of the
+         participating MoveServers
                 
-                java Game localhost 1234 localhost 5678
-
+            java -cp quoridorscmoridor-3.3.jar Game localhost:1234 \
+                localhost:5678
 
          You can also start a 4-player game using a similar setup
 
-                java Game localhost 1234 Whiteface 5678 \
-                          Gothics 9012 Redfield 3456
-
+                ... localhost 1234 Whiteface 5678 Gothics 9012 \
+                    Redfield 3456
 
          Note that the \ just means to continue the command onto the
          next line. You do not need to do this.
+
 
     4. Play the game! You have to input moves via the terminal that is
          running the respective MoveServer
@@ -84,6 +86,7 @@ README file for teams' Quoridor Project
          The first builds the whole project (including running any tests),
          the second removes the build.
 
+
     3. After you have built the code, run the following:
 
                 java -cp build/libs/quoridorschmoridor.jar Main
@@ -111,12 +114,14 @@ README file for teams' Quoridor Project
         you can now type gb from any directory to build the project!
           also you can pass arguments to gb like this: gb clean
 
+
     2. Run class files from anywhere
 
         this will allow you to run any of your class files for our project
           regardless of what directory you are currently in
 
                 export CLASSPATH="$HOME/teams/build/classes/main$CLASSPATH"
+
 
     3. better git log
         
@@ -128,7 +133,9 @@ README file for teams' Quoridor Project
 
             git lg
 
+
     4. gitk
+
 
     5. other gradle build options
 
@@ -137,6 +144,7 @@ README file for teams' Quoridor Project
 
             gb jar
                 does exactly what it says on the tin (uh...)
+
 
     6. git shortlog -ns (thanks matt)
 
