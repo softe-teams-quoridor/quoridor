@@ -36,14 +36,39 @@ public class GameBoardFrame extends JFrame{
     private JFrame gameboard;
     private int numPlayers;
     private Queue<Player> players;
+    private String playName;
 
     //constructs JFrame
     public GameBoardFrame(GameBoard board, Queue<Player> players) {
         numPlayers = players.size();
         this.players = players;
+        playName = null;
 
         //initialize JFrame
-        gameboard = new JFrame("Quoridor");
+        gameboard = new JFrame("Quoridor: "+"Server window. :)");
+        gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameboard.setSize(1000,700);
+        gameboard.setLocationRelativeTo(null);
+
+
+        //creates the grid
+        GridLayout game = new GridLayout(10,10);
+        gameboard.setLayout(game);
+
+        //draw the original board
+        draw(board);
+    }
+    
+     //******************************************************************************************
+    
+     //constructs JFrame
+    public GameBoardFrame(GameBoard board, Queue<Player> players, String playName) {
+        numPlayers = players.size();
+        this.players = players;
+        this.playName = playName;
+
+        //initialize JFrame
+        gameboard = new JFrame("Quoridor:" +playName+"'s Window. :)");
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameboard.setSize(1000,700);
         gameboard.setLocationRelativeTo(null);
