@@ -8,7 +8,7 @@
  *
  * PUBLIC:
  *
- * GameBoardFrame()             --> Default Constructor 
+ * GameBoardFrame()               --> Default Constructor 
  * update()   					--> Removes contents of board and updates locations 
  * closeWindow()    			--> Closes the window at the end of a game
  *
@@ -17,9 +17,9 @@
  * row()       					--> creates a single row of the GameBoardFrame
  * printPlayerLabel()			--> Shows an image of a pawn in player squares
  * topLayer()					--> draws the borders of the gridlayout
- * JLabel setBoarder()			--> sets the borders of the  grid
- * makeInfoPane()				--> HOPING TO make an info pane on the RHS of grid
- *
+ * JLabel setBoarder()		--> sets the borders of the  grid
+ * makeInfoPane()			--> make an info pane on the RHS of grid
+ * findIcons()					--> searches directorys for file. Depreciated now.
  */
 
 
@@ -40,7 +40,12 @@ public class GameBoardFrame extends JFrame{
     private Queue<Player> players;
     private String playName;
 
-    //constructs JFrame
+    
+    
+     //******************************************************************************************
+     
+     
+    //constructs JFrame. Used for Server Display.
     public GameBoardFrame(GameBoard board, Queue<Player> players) {
         numPlayers = players.size();
         this.players = players;
@@ -63,7 +68,7 @@ public class GameBoardFrame extends JFrame{
     
      //******************************************************************************************
     
-     //constructs JFrame
+     //constructs JFrame. takes a playerName to display at top of window.
     public GameBoardFrame(GameBoard board, Queue<Player> players, String playName) {
         numPlayers = players.size();
         this.players = players;
@@ -438,7 +443,10 @@ public class GameBoardFrame extends JFrame{
         gameboard.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gameboard.dispatchEvent(new WindowEvent(gameboard, WindowEvent.WINDOW_CLOSING));
     }
+    
+     //*******************************************************************************************
 
+     //probably deprecated now, since Collin found out how to Jarify the image Files. 
     private String findIcons(){
     	    String filePath="./images";
 
