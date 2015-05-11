@@ -11,7 +11,11 @@ public class AI_AskUser implements QuoridorAI {
     public String getMove(GameBoard board, Player player) {
         System.out.print(">> ");
         String move = keyboard.nextLine().trim();
-        Square[] squares = GameEngine.validate(board, player, move);
+        Square [] squares = null;
+        System.out.println( move );
+        if(move == "") {
+            squares = GameEngine.validate(board, player, move);
+        }
         if(squares != null) {
             return move;
         } 
