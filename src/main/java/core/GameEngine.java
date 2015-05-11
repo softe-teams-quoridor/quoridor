@@ -231,9 +231,10 @@ public class GameEngine {
                 return null;
             }
             // Check to see if the wall placement is valid
-            if(GameEngine.validateWall(board, validSquares) 
-                    && checkAllPlayersPaths(board, validSquares))
-                return validSquares;
+            if(GameEngine.validateWall(board, validSquares)) { 
+                    if(checkAllPlayersPaths(board, validSquares))
+                            return validSquares;
+            }
         }
 
         // (Should never happen) unexpected string
@@ -322,7 +323,8 @@ public class GameEngine {
             else if(wallSquares[0].getWallRight() != null) {
                 // Check for intersect
                 if(!wallSquares[0].getWallRight().isStart() && 
-                    wallSquares[1].getWallBottom() == null) {
+                    wallSquares[1].getWallBottom() == null && 
+                    wallSquares[0].getWallBottom() == null) {
                     return true;
                 }
             }
@@ -341,7 +343,7 @@ public class GameEngine {
             else if(wallSquares[0].getWallBottom() != null) {
                 // Check for intersect
                 if(!wallSquares[0].getWallBottom().isStart() &&
-                    wallSquares[1].getWallRight() == null) {
+                    wallSquares[1].getWallRight() == null && wallSquares[0].getWallRight() == null) {
                     return true;
                 }
             }
