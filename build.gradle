@@ -22,3 +22,12 @@ jar {
                    "Implementation-Version": version)
     }
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/assets/images"]
+                includes = ["*.jpg"]
+        }
+    }
+}
