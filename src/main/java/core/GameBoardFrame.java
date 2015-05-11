@@ -68,7 +68,7 @@ public class GameBoardFrame extends JFrame{
         this.playName = playName;
 
         //initialize JFrame
-        gameboard = new JFrame("Quoridor:" +playName+"'s Window. :)");
+        gameboard = new JFrame("Quoridor: " +playName+"'s Window. :)");
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameboard.setSize(1000,700);
         gameboard.setLocationRelativeTo(null);
