@@ -123,11 +123,8 @@ public class Graph {
                 }
 
             }
-            else {
-                printPath(v);
-                System.out.println();
+            else
                 return returnPath(v,board);
-            }
         
         }
         // should never get here
@@ -139,6 +136,7 @@ public class Graph {
       *     @see GameBoard
       */
     public void printGraph() {
+        System.out.println(   );
         // the cell number corresponding to a location on a GameBoard
         String cell = ""; 
         // the distance a cell is from the starting location
@@ -307,7 +305,12 @@ public class Graph {
             v = v.path;
         }
 
-        return path.toArray(new Square[path.size()]);
+        // place the locations in the proper order
+        Square[] road = new Square[path.size()];
+        for ( int i = 0; i < path.size(); i++ )
+            road[i] = path.pop();
+
+        return road;
     }
 
     /* main used for testing algorithm */
