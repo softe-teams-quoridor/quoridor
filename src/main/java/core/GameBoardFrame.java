@@ -93,7 +93,7 @@ public class GameBoardFrame extends JFrame{
             //print out win
             gameboard.getContentPane().removeAll();
             draw(board);
-            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!", "We have a winner!", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(gameboard, p + " HAS WON!", "We have a winner!", JOptionPane.PLAIN_MESSAGE);
             closeWindow();
         } else{
             gameboard.getContentPane().removeAll();
@@ -109,7 +109,7 @@ public class GameBoardFrame extends JFrame{
         if(p != null){
             //print out win
             draw(board, reachable);
-            JOptionPane.showMessageDialog(gameboard, p.getName() + " HAS WON!!!");
+            JOptionPane.showMessageDialog(gameboard, p + " HAS WON!!!");
             closeWindow();
         } else{
             gameboard.getContentPane().removeAll();
@@ -227,7 +227,7 @@ public class GameBoardFrame extends JFrame{
                 }
             }else if(row!=0){
                 if(board.isPlayerRemaining(playInt)){
-                    String name=board.getPlayer(playInt).getName();
+                    String name=board.getPlayer(playInt).toString();
                     superLabel.setText(name.substring(Math.max(0, name.length()-9)));
                 }else{
                     superLabel.setText("No");
@@ -330,8 +330,6 @@ public class GameBoardFrame extends JFrame{
         }
         
         label.setLayout(new FlowLayout());
-        //label.setBackground(new Color(0, 200, 200)); 
-        //label.setText("     " + p.getName());
         label.setOpaque(true); 
         label.setLayout(null); 
         label.setPreferredSize(new Dimension(100, 70)); 
