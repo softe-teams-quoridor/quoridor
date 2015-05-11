@@ -1,4 +1,4 @@
-/* Graph.java - teams - CIS405 - April 29, 2015
+/* Graph.java - teams - CIS405 - May 10, 2015
  * ---[Contributors]-------------------------------------------------
  *
  *      Collin Walling
@@ -15,7 +15,7 @@
  *          for players 1, 2, and 3. a direction bias is needed
  *      (FIXED) April 30 - ensure appropriate wall checking for players
  *          1, 2, and 3. currently incorrect due to direction bias
- *      May 2 - Player 0 is not detecting walls
+ *      (FIXED) May 2 - Player 0 is not detecting walls
  *      April 30 - a Vertex graph is unnecessary, but helps
  *          visualize the algorithm. remove this functionality
  *          once the integrity of the algorithm has been verified
@@ -25,6 +25,7 @@
  *      Graph(int)                   --> constructs the graph 
  *      buildPath(GameBoard, Player) --> builds path for player
  *      printGraph()                 --> prints vis. rep. of graph
+ *      printPath(Vertex)            --> prints the path
  *
  */
 
@@ -35,7 +36,7 @@ import java.util.LinkedList;
 
 public class Graph {
 
-    // TEST FOR NICE OUTPUT COLORS
+    // FOR NICE OUTPUT COLORS
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -93,15 +94,15 @@ public class Graph {
                             goalVertex = true; break;
                 case 1: if ( v.graphLoc <= 8  ) 
                             goalVertex = true; break;
-                case 2: if ( (v.graphLoc+1) % GameBoard.COLUMNS == 0)
+                case 2: if ( (v.graphLoc+1) % GameBoard.COLUMNS == 0 )
                             goalVertex = true; break;
-                case 3: if ( v.graphLoc % GameBoard.COLUMNS == 0)
+                case 3: if ( v.graphLoc % GameBoard.COLUMNS == 0 )
                             goalVertex = true; break;
             }
 
             // if we're at a goal vertex, we don't need to calculate
             // its neighboors
-            if (!goalVertex) {
+            if ( !goalVertex ) {
 
                 // retrieve all reachable ajacencies
                 Square[] adjacencies = reachableAdjacentSquares
@@ -124,6 +125,7 @@ public class Graph {
             }
             else {
                 printPath(v);
+                System.out.println();
                 return returnPath(v,board);
             }
         
@@ -132,20 +134,84 @@ public class Graph {
         return null;
     }
 
+    /**
+      * Prints the graph as if it were a GameBoard.
+      *     @see GameBoard
+      */
+    public void printGraph() {
+        // the cell number corresponding to a location on a GameBoard
+        String cell = ""; 
+        // the distance a cell is from the starting location
+        String dist = "";  
+
+        // for every cell in the graph
+        for ( int i = 0; i < graph.length; i++ ) {
+
+            // format graph by prefixing a 0 if the number is less
+            //  than 10. this will ensure output is uniform
+            if ( graph[i].graphLoc < 10 )
+                cell = "0" + graph[i].graphLoc;
+            else
+                cell = graph[i].graphLoc + "";
+
+            // format distance by prefixing a space if the number
+            //  is between 0 and 9 inclusive
+            if ( graph[i].dist < 10 && graph[i].dist >= 0 )
+                dist = graph[i].dist + " ";
+            // give red color if the cell was never checked
+            else if ( graph[i].dist == -1 )
+                dist = ANSI_RED + graph[i].dist + "" + ANSI_RESET;
+            else
+                dist = graph[i].dist + "";
+
+            // print the cell and distance
+            //  an example output is [13: 5]
+            System.out.print("["+cell+":"+dist+"]");
+
+            // create a new line for the next row
+            if ( (i+1) % GameBoard.COLUMNS == 0 )
+                System.out.println("\n");
+        }
+    }
+
+    /**
+      * Prints the shortest path
+      *     @param v the Vertex to start at
+      */
+    public void printPath(Vertex v) {
+        if ( v.dist == 0 )
+            return;
+        printPath(v.path);
+        System.out.print("-> " + v.graphLoc+" ");
+    }
+
+    /**
+      * Returns an array of adjacent Squares from a Player's current
+      * location.
+      *     @param board GameBoard to read Squares from
+      *     @param currLoc the location to start at
+      *     @param pno the Player ID
+      */
     private static Square[] reachableAdjacentSquares
         (GameBoard board, Square currLoc, int pno) {
             return reachableAdjacentSquares(board, currLoc, pno, -1, 0,true);
     }
 
     /**
-     * Retrieves all locations that are reachable from the given location.
+     * Retrieves all locations that are reachable from the given
+     * location.
      *     @param board GameBoard to retrieve Squares from
-     *     @param currLoc the Square we are checking adjacencies from
+     *     @param currLoc where we are checking adjacencies from
      *     @param pno ID number of player to calculate path for
+     *     @param dontCheckMe flag to prevent checking same location
+     *     @param numJumps prevents checking more than 3 adjacencies
+     *     @param adjacentToPlayer consider opponent adjacencies iff 
+     *                             directly next to current player
      *     @return an array of Squares adjacent to currLoc
      */
     private static Square[] reachableAdjacentSquares
-        (GameBoard board, Square currLoc, int pno, int dontCheckMe, int numJumps, boolean adjacentToPlayer) {
+        (GameBoard board, Square currLoc, int pno, 
+         int dontCheckMe, int numJumps, boolean adjacentToPlayer) {
 
         // list to store adjacent squares
         List<Square> squareList = new LinkedList<Square>();
@@ -184,7 +250,8 @@ public class Graph {
                      ( x == -1 && checkLoc.hasWallRight() )   )
                        continue;
  
-                else if ( checkLoc.isOccupied() && i != dontCheckMe && numJumps < 3 ) {
+                else if ( adjacentToPlayer && checkLoc.isOccupied() 
+                          && i != dontCheckMe && numJumps < 3 ) {
                     // Get the squares from the adjacent player
                     Square[] adjToPlayer = reachableAdjacentSquares(board,
                             checkLoc, pno, (i+2)%4, numJumps++, adjacentToPlayer);
@@ -225,57 +292,22 @@ public class Graph {
     }
 
     /**
-      * Prints the graph as if it were a GameBoard.
-      *     @see GameBoard
+      * Returns the shortest path
+      *     @param v the Vertex to build the path from
+      *     @param b the GameBoard to retrieve Squares from
       */
-    public void printGraph() {
-        System.out.println( );
-        String cell = "";
-        String dist = "";
-        for ( int i = 0; i < graph.length; i++ ) {
-
-            // format graph #
-            if ( graph[i].graphLoc < 10 )
-                cell = "0" + graph[i].graphLoc;
-            else
-                cell = graph[i].graphLoc + "";
-
-            // format distance
-            if ( graph[i].dist < 10 && graph[i].dist >= 0 )
-                dist = graph[i].dist + " ";
-            else if ( graph[i].dist == -1 )
-                dist = ANSI_RED + graph[i].dist + "" + ANSI_RESET;
-            else
-                dist = graph[i].dist + "";
-
-            // print
-            System.out.print("["+cell+":"+dist+"]");
-
-            // new row
-            if ( (i+1) % GameBoard.COLUMNS == 0 )
-                System.out.println("\n");
-        }
-    }
-
-    public void printPath(Vertex v) {
-        if ( v.dist == 0 )
-            return;
-        printPath(v.path);
-        System.out.print("-> " + v.graphLoc+" ");
-    }
-    
-    public Square[] returnPath(Vertex v, GameBoard b) {
+    private Square[] returnPath(Vertex v, GameBoard b) {
+        // because we're starting at the end point,
+        // we need build the path in reverse
         Stack<Square> path = new Stack<Square>();
+
+        // while we're not at the start point
         while ( v.dist != 0 ) {
             path.push(vertexToSquare(v,b));
             v = v.path;
         }
-        Square[] road = new Square[path.size()];
-        for ( int s = 0; s < road.length; s++ )
-            road[s] = path.pop();
 
-        return road;
-            
+        return path.toArray(new Square[path.size()]);
     }
 
     /* main used for testing algorithm */
