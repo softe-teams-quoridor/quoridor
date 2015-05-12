@@ -61,7 +61,7 @@ public class MoveServer {
         } else if (args[1].equals("idk")) {
             ai = new AI_IDK();
         } else if (args[1].equals("rip")) {
-            ai = new AI_Ripley(); //<--- currently does nothing :(
+            ai = new AI_Ripley();
         } else if (args[1].equals("maybe")) {
             ai = new AI_Maybe();
         } else {
@@ -121,6 +121,18 @@ public class MoveServer {
         }
     }
 
+    /**
+     * sleepy time
+     * @param length duration for thread to pause
+     */
+    private static void sleep(int length) {
+        try {
+            Thread.sleep(length);
+        } catch (InterruptedException e) {
+            // ignore it
+        }
+    }
+
     private static void playGame(Socket currClient) {
         ServerMessenger hermes = new ServerMessenger(currClient);
         System.out.println("Connection from " + currClient);
@@ -148,6 +160,7 @@ public class MoveServer {
         GameBoardFrame frame = null;
         if (SERVER_DISPLAY) {
             frame = new GameBoardFrame(board, players, playerName);
+            sleep(250);
         }
 
         String clientMessage;

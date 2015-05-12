@@ -143,7 +143,8 @@ public class Game {
 
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");
-        GameBoardFrame frame = new GameBoardFrame(board, players,"Client Display");
+        GameBoardFrame frame = new GameBoardFrame(board, players);
+        sleep(250);
 
         // loop will need to check for a victory condition
         Deb.ug.println("beginning main loop");
