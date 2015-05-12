@@ -44,12 +44,12 @@ public class GameBoardFrame extends JFrame{
      
     //constructs JFrame. Used for Server Display.
     public GameBoardFrame(GameBoard board, Queue<Player> players) {
-        numPlayers = players.size();
+        numPlayers = players.size();                        
         this.players = players;
         playName = null;
 
         //initialize JFrame
-        gameboard = new JFrame("Quoridor: "+"Server window. :)");
+        gameboard = new JFrame("Quoridor: Client window. :)");
         gameboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameboard.setSize(1000,700);
         gameboard.setLocationRelativeTo(null);
@@ -219,6 +219,9 @@ public class GameBoardFrame extends JFrame{
             //if it is a players turn, print it's infopane walls thicker 
             if(playInt==board.getCurrPlayerTurn())
                 wThick=5;
+        
+            if(row==0&&playName!=null)
+            	    label.setText();
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
                 
