@@ -82,6 +82,7 @@ public class Game {
                 players.add(new Player(i, WALL_POOL / numPlayers));
             }
         }
+        assert (players.size() == numPlayers);
 
         // Instantiate GameBoard
         Deb.ug.println("instantiating GameBoard...");
@@ -119,7 +120,7 @@ public class Game {
         /* check that moveservers are ready to go */
         boolean [] ready = hermes.ready();
         assert (ready.length == numPlayers);
-        for (int i = 0; i < numPlayers; i++) {
+        for (int i = 0; i < board.numPlayersRemaining(); i++) {
             if (! ready[i]) {
                 Player notReady = players.remove();
                 hermes.broadcastBoot(notReady);

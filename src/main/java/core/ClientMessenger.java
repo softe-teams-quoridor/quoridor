@@ -77,6 +77,9 @@ public class ClientMessenger {
 
     }
 
+    /** this method returns a list of names
+       if a move server cannot comply with the protocol, this method 
+       will return null for its slot. */
     public String [] getNames() {
         String [] result = new String[inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
@@ -187,7 +190,9 @@ public class ClientMessenger {
                 outStreams[i].println("BOOT " + player);
             }
         }
-        closeStreams(player.getPlayerNo());
+        if (outStreams[player.getPlayerNo()] != null) {
+            closeStreams(player.getPlayerNo());
+        }
     }
 
     public void broadcastVictor(Player player) {
