@@ -180,7 +180,7 @@ public class Game {
                 break;
             }
 
-            sleep(200); // sleepy time
+            sleep(100); // sleepy time
 
         }//-----END OF LOOP-----
 
