@@ -21,10 +21,16 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 
+import java.lang.Runtime;
+
 public class MoveServer {
     private static boolean SERVER_DISPLAY = false;
     private static QuoridorAI ai = null;
     private static int portNumber;
+
+    // statistics
+    protected static int WIN_RECORD = 0;
+    protected static int LOSE_RECORD = 0;
 
     public static void usage(int error) {
         // display usage information then exit and return failure
@@ -95,6 +101,8 @@ public class MoveServer {
         }
         assert (server != null); 
         assert (currClient != null); 
+
+        Runtime.getRuntime().addShutdownHook(new PrintStats());
 
         while (true) {
             playGame(currClient);
@@ -218,7 +226,13 @@ public class MoveServer {
             // VICTOR --> a player has won the game
             } else if (clientMessage.startsWith("VICTOR")) {
                 System.out.println(words[1] + " won!");
-
+                if (words[1].equals(playerName)) {
+                    Deb.ug.println("i won");
+                    WIN_RECORD++;
+                } else {
+                    Deb.ug.println("i lost :(");
+                    LOSE_RECORD++;
+                }
             // ??? --> who the heck knows what happend?
             } else {
                 System.out.println("unknown message from client");
@@ -236,5 +250,17 @@ public class MoveServer {
             Deb.ug.println("closing display");
         	frame.closeWindow();
         }
+    }
+}
+
+/* this class exists to print win/loss stats when the server terminates */
+class PrintStats extends Thread {
+    public void run() {
+        int wins = MoveServer.WIN_RECORD;
+        int losses = MoveServer.LOSE_RECORD;
+
+        System.out.println("Games won: " + wins); 
+        System.out.println("Games lost: " + losses); 
+        System.out.println("Total games played: " + (wins+losses));
     }
 }
