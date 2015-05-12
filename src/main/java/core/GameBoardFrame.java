@@ -20,6 +20,7 @@
  * JLabel setBoarder()		--> sets the borders of the  grid
  * makeInfoPane()			--> make an info pane on the RHS of grid
  * findIcons()					--> searches directorys for file. Depreciated now.
+ * getbColor()				--> determines which color each square on gbf should be.
  */
 
 import javax.swing.*;
@@ -94,6 +95,7 @@ public class GameBoardFrame extends JFrame{
     public void update(GameBoard board){
         Player p = GameEngine.getWinner(board, players);
         if(p != null){
+        	
             //print out win
             gameboard.getContentPane().removeAll();
             draw(board);
@@ -220,8 +222,7 @@ public class GameBoardFrame extends JFrame{
             if(playInt==board.getCurrPlayerTurn())
                 wThick=5;
         
-            if(row==0&&playName!=null)
-            	    label.setText();
+
             if(row%2==0&&row!=0){
                 label.setBorder(BorderFactory.createMatteBorder(0,wThick,wThick,wThick,pColor));
                 
@@ -235,6 +236,8 @@ public class GameBoardFrame extends JFrame{
             }else if(row!=0){
                 if(board.isPlayerRemaining(playInt)){
                     String name=board.getPlayer(playInt).toString();
+                    
+                    //sets the text of the label to the last 9 characters of the player's name string.
                     superLabel.setText(name.substring(Math.max(0, name.length()-9)));
                 }else{
                     superLabel.setText("No");
@@ -253,7 +256,10 @@ public class GameBoardFrame extends JFrame{
 
      //********************************************************************************
     
+     //determines which color each square on gbf should be.
     private Color getbColor(int i, int row){
+    	    
+    	    //standard color
     	    Color bColor=new Color(140,130,130);
     	    
     	     if(row==0)
@@ -330,61 +336,18 @@ public class GameBoardFrame extends JFrame{
      * Shows an image of a pawn in the player squares. 
      * No more Text overlay.
      */ 
-/*    private void printPlayerLabel(Player p, JLabel label) { 
-    	    String fileLoc=findIcons();
-    	int pawnFail=-1;
-    	//if(f.exists()){
-        ImageIcon bg=new ImageIcon(fileLoc+"/player_4_scaled.jpg");
-        Color pC=new Color(0,0,0);
-        if(p.getPlayerNo()==0){
-        	pC=Color.YELLOW;
-        	pawnFail=1;
-            bg=new ImageIcon(fileLoc+"/player_1_scaled.jpg");
-        }else if(p.getPlayerNo()==1){
-        	pC=Color.BLUE;
-        	pawnFail=2;
-            bg=new ImageIcon(fileLoc+"/player_2_scaled.jpg");
-        }else if(p.getPlayerNo()==2){
-        	pC=Color.GREEN;
-        	pawnFail=3;
-            bg=new ImageIcon(fileLoc+"/player_3_scaled.jpg");
-        }else if(p.getPlayerNo()==3){
-        	pC=Color.RED;
-        	pawnFail=4;
-            bg=new ImageIcon(fileLoc+"/player_4_scaled.jpg");
-        }
-	if(!fileLoc.equals("Didn't work")){        
-        label.setIcon(bg);
-        }else{
-        label.setBackground(pC);
-        label.setText(""+pawnFail);
-        label.setFont(new Font("Serif",1,30));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        }
-        
-        label.setLayout(new FlowLayout());
-        label.setOpaque(true); 
-        label.setLayout(null); 
-        label.setPreferredSize(new Dimension(100, 70)); 
-        gameboard.getContentPane().add(label, BorderLayout.CENTER); 
-    } 
-*/
-    /** 
-     * Shows an image of a pawn in the player squares. 
-     * No more Text overlay.
-     */ 
-    private void printPlayerLabel(Player p, JLabel label) { 
-        ImageIcon bg = null;
-        switch(p.getPlayerNo()) {
-            case 0: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_1.png")); break;
-            case 1: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_2.png")); break;
-            case 2: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_3.png")); break;
-            case 3: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_4.png")); break;
-        } 
+    private void printPlayerLabel(Player p, JLabel label) {  
+        ImageIcon bg = null; 
+        switch(p.getPlayerNo()) { 
+            case 0: bg = new ImageIcon  
+                    (GameBoardFrame.class.getResource("/player_1.png")); break; 
+            case 1: bg = new ImageIcon 
+                    (GameBoardFrame.class.getResource("/player_2.png")); break;  
+            case 2: bg = new ImageIcon 
+                    (GameBoardFrame.class.getResource("/player_3.png")); break; 
+            case 3: bg = new ImageIcon 
+                    (GameBoardFrame.class.getResource("/player_4.png")); break; 
+        }  
         label.setIcon(bg);
         label.setLayout(new FlowLayout());
         label.setOpaque(true); 
@@ -445,15 +408,15 @@ public class GameBoardFrame extends JFrame{
             someLabel.setBorder(BorderFactory.createBevelBorder(0));
 
         }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
 
         }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
 
         }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
-            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0),
+            someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
         }
 
