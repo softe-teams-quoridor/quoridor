@@ -184,9 +184,9 @@ public class GameBoardFrame extends JFrame{
             label.setOpaque(true);
             label.setPreferredSize(new Dimension(100, 70));
             label=setBoarder(label,board.getSquare(i, row));
-            if (board.isOccupied(i, row)) {
+            if (board.isOccupied(i, row)) 
                 printPlayerLabel(board.getPlayer(i, row), label);
-            } else {
+
             	    if(row==0&&i!=0&&i!=8)
             	    	    label.setBackground(new Color(140,130,170));
             	    else if(row==8&&i!=0&&i!=8)
@@ -205,7 +205,7 @@ public class GameBoardFrame extends JFrame{
             	    	    label.setBackground(new Color(170,170,130));
             	    else
                 label.setBackground(new Color(140, 130, 130));
-            }
+            
             gameboard.getContentPane().add(label, BorderLayout.CENTER);
         }
         
@@ -365,13 +365,13 @@ public class GameBoardFrame extends JFrame{
         ImageIcon bg = null;
         switch(p.getPlayerNo()) {
             case 0: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_1_scaled.jpg")); break;
+                    (GameBoardFrame.class.getResource("/player_1.png")); break;
             case 1: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_2_scaled.jpg")); break;
+                    (GameBoardFrame.class.getResource("/player_2.png")); break;
             case 2: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_3_scaled.jpg")); break;
+                    (GameBoardFrame.class.getResource("/player_3.png")); break;
             case 3: bg = new ImageIcon
-                    (GameBoardFrame.class.getResource("/player_4_scaled.jpg")); break;
+                    (GameBoardFrame.class.getResource("/player_4.png")); break;
         } 
         label.setIcon(bg);
         label.setLayout(new FlowLayout());
