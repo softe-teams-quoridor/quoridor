@@ -122,7 +122,7 @@ public class GameEngineTest {
             for(int y = 0; y < 8; y++) {
                 wallSquares[0] = board.getSquare(x,y);
                 wallSquares[1] = board.getSquare(x,y+1);
-                assertEquals(GameEngine.parseWall(board,
+                assertArrayEquals(GameEngine.parseWall(board,
                             "(" + GameEngine.toNumerals(x)  + "-" 
                                 + GameEngine.toLetters(y)   + ","
                                 + GameEngine.toNumerals(x)  + "-" 
@@ -136,7 +136,7 @@ public class GameEngineTest {
             for(int y = 0; y < 8; y++) {
                 wallSquares[0] = board.getSquare(x,y);
                 wallSquares[1] = board.getSquare(x+1,y);
-                assertEquals(GameEngine.parseWall(board,
+                assertArrayEquals(GameEngine.parseWall(board,
                             "(" + GameEngine.toNumerals(x)   + "-"
                                 + GameEngine.toLetters(y)    + ","
                                 + GameEngine.toNumerals(x+1) + "-" 
@@ -327,34 +327,34 @@ public class GameEngineTest {
         result[1] = board.getSquare(6,5);
         result[2] = board.getSquare(5,4);
         result[3] = board.getSquare(4,5);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,5)));
         result[0] = board.getSquare(1,6);
         result[1] = board.getSquare(2,5);
         result[2] = board.getSquare(1,4);
         result[3] = board.getSquare(0,5);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(1,5)));
         result = new Square[3];
         result[0] = board.getSquare(0,6);
         result[1] = board.getSquare(1,5);
         result[2] = board.getSquare(0,4);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(0,5)));
         result[0] = board.getSquare(8,6);
         result[1] = board.getSquare(8,4);
         result[2] = board.getSquare(7,5);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(8,5)));
         result[0] = board.getSquare(5,8);
         result[1] = board.getSquare(4,7);
         result[2] = board.getSquare(3,8);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,8)));
         result[0] = board.getSquare(4,1);
         result[1] = board.getSquare(5,0);
         result[2] = board.getSquare(3,0);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,0)));
         
         // walls
@@ -364,7 +364,7 @@ public class GameEngineTest {
         result = new Square[2];
         result[0] = board.getSquare(4,1);
         result[1] = board.getSquare(3,0);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,0)));
 
         board.placeWall(new Square[] {board.getSquare(4,4), 
@@ -374,7 +374,7 @@ public class GameEngineTest {
         result[0] = board.getSquare(5,4);
         result[1] = board.getSquare(4,3);
         result[2] = board.getSquare(3,4);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,4)));
 
         // and the opposite way...
@@ -382,7 +382,7 @@ public class GameEngineTest {
         result[0] = board.getSquare(4,6);
         result[1] = board.getSquare(5,5);
         result[2] = board.getSquare(3,5);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(4,5)));
 
         board.placeWall(new Square[] {board.getSquare(5,4), 
@@ -390,21 +390,21 @@ public class GameEngineTest {
         result = new Square[2];
         result[0] = board.getSquare(5,3);
         result[1] = board.getSquare(4,4);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,4)));
 
         board.placeWall(new Square[] {board.getSquare(5,3), 
                                       board.getSquare(6,3)});
         result = new Square[1];
         result[0] = board.getSquare(4,4);
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,4)));
 
         board.placeWall(new Square[] {board.getSquare(4,3), 
                                       board.getSquare(4,4)});
         // now the square 5,4 is boxed in!
         result = new Square[0];
-        assertEquals(result, GameEngine.reachableAdjacentSquares(board,
+        assertArrayEquals(result, GameEngine.reachableAdjacentSquares(board,
                                                 board.getSquare(5,4)));
     }
 }
