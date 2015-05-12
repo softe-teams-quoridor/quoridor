@@ -1,3 +1,12 @@
+/** AI_Maybe.java
+  * ___________________________________________________________
+  *
+  *     This is our best AI! 
+  *       - Maybe will check to see who has the shortest path
+  *           and then try to block them, unless of course
+  *           maybe has the shortest path then will move in that direction
+  */
+
 import java.util.*;
 public class AI_Maybe implements QuoridorAI {
 
@@ -118,27 +127,26 @@ public class AI_Maybe implements QuoridorAI {
             blockZero = b.getSquare(blockOne.getX(), blockOne.getY() - 1);
         }
 
-
+        // Set up the strings for the walls
         String wallString12 = "(" + blockOne + "," + blockTwo + ")";
         String wallString01 = "(" + blockZero + "," + blockOne + ")";
 
 
+        // randomly decide on which side to put the wall
         if(rand.nextInt(2) == 0 && !outOfBounds) {
             if(GameEngine.validate(b,b.getPlayer(aiNo), wallString01) != null) {
                 return wallString01;
             }
+            // If the first wall fails try the second one
             if(GameEngine.validate(b,b.getPlayer(aiNo), wallString12) != null) {
                 return wallString12;
             }
         }
+        // Else just use the first wall
         else {
             if(GameEngine.validate(b,b.getPlayer(aiNo), wallString12) != null) {
                 return wallString12;
             }
-//            if(GameEngine.validate(b,b.getPlayer(aiNo), wallString01) != null) {
-//                return wallString01;
-//            }
-
         }
 
         // return the wall string if it is a valid wall placement on the GameBoard
