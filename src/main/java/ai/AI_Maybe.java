@@ -20,7 +20,7 @@ public class AI_Maybe implements QuoridorAI {
         int winningPlayer = pno;
        
         // find which player has the shortest path 
-        for(int i = 0; i < b.numPlayersRemaining(); i++){
+        for(int i = 0; i < 4; i++){
             Square [] temp = null;
             if(i != pno && b.isPlayerRemaining(i))
                 temp = virtualBoard.buildPath(b,b.getPlayer(i));
