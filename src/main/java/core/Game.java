@@ -101,7 +101,7 @@ public class Game {
                 board.removePlayer(badlyNamed);
                 hermes.broadcastBoot(badlyNamed);
             } else {
-                players.add(players.remove()); // shuffle queue, next in line..
+                board.getNextTurn(players); // shuffle queue, next in line..
             }
             // this loop basically plays russian roulette, hahAHAH!
         }
@@ -120,13 +120,21 @@ public class Game {
         /* check that moveservers are ready to go */
         boolean [] ready = hermes.ready();
         assert (ready.length == numPlayers);
-        for (int i = 0; i < board.numPlayersRemaining(); i++) {
+        for (int i = 0; i < numPlayers; i++) {
+            if (! board.isPlayerRemaining(i)) {
+                // if this player is already gone, fine!
+                continue;
+            }
             if (! ready[i]) {
+                assert (board.isPlayerRemaining(i));
+                while (players.peek().getPlayerNo() != i) {
+                    // advance the list until we find the player we wanna boot
+                    board.getNextTurn(players); // shuffle player queue
+                }
                 Player notReady = players.remove();
                 hermes.broadcastBoot(notReady);
                 board.removePlayer(notReady);
             }
-            players.add(players.remove()); // shuffle player queue
         }
 
         if (players.size() == 0) {
@@ -148,6 +156,7 @@ public class Game {
 
         // loop will need to check for a victory condition
         Deb.ug.println("beginning main loop");
+        Deb.ug.println("first player is: " + players.peek().getPlayerNo());
         while (true) {
             // Get current player
             Player currentPlayer = players.peek();
