@@ -73,9 +73,12 @@ public class ClientMessenger {
         }
     }
 
-    /** this method returns a list of names
+    /** this method returns a list of names. 
        if a move server cannot comply with the protocol, this method 
-       will return null for its slot. */
+       will return a dummy name for its slot. 
+       it will also close their streams, ensuring that when the client
+       later calls requestMove, they will be booted.
+     */
     public String [] getNames() {
         String [] result = new String[inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
@@ -108,7 +111,6 @@ public class ClientMessenger {
     public static boolean isValidName(String name) {
         return (! (name == null || name.contains(" ") || name.length() > 20));
     }
-
 
     /** gets MOVE message from all move servers
      * MOVE is the message a server sends to indicate that it is ready to play
@@ -155,6 +157,7 @@ public class ClientMessenger {
             outStreams[i].println(); }
     }
 
+    /** gets a move from the given player. */
     public String requestMove(Player player) {
         if (outStreams[player.getPlayerNo()] == null) {
             return "B-O-O-T-M-E"; // no connection to the server!
@@ -176,6 +179,7 @@ public class ClientMessenger {
         return response;
     }
 
+    /** tells all players the move a player made. */
     public void broadcastWent(Player player, String move) {
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
@@ -184,6 +188,7 @@ public class ClientMessenger {
         }
     }
 
+    /** tells all players that a player has been booted. */
     public void broadcastBoot(Player player) {
         Deb.ug.println("booting player: " + player);
         for (int i = 0; i < outStreams.length; i++) {
@@ -196,6 +201,7 @@ public class ClientMessenger {
         }
     }
 
+    /** tells all players that a player has won. */
     public void broadcastVictor(Player player) {
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
@@ -204,6 +210,7 @@ public class ClientMessenger {
         }
     }
 
+    /** closes the input and output streams for a player. */
     private void closeStreams(int playerNo) {
         assert (outStreams[playerNo] != null);
         assert (inStreams [playerNo] != null);
@@ -213,6 +220,7 @@ public class ClientMessenger {
         inStreams[playerNo] = null;
     }
 
+    /** closes the input and output streams for all players. */
     public void closeAllStreams(Queue<Player> players) {
         for (Player p = players.remove(); 
              ! players.isEmpty(); p = players.remove()) {
