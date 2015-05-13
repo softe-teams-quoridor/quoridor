@@ -192,7 +192,7 @@ public class ClientMessenger {
     public void broadcastVictor(Player player) {
         for (int i = 0; i < outStreams.length; i++) {
             if (outStreams[i] != null) {
-                outStreams[player.getPlayerNo()].println("VICTOR " + player);
+                outStreams[i].println("VICTOR " + player);
             }
         }
     }
