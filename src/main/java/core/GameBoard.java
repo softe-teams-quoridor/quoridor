@@ -337,6 +337,4 @@ public class GameBoard {
             return false;
         return (playerLocs[pno] == null ) ? false : true;
     }
-
-    
 }
