@@ -85,16 +85,24 @@ public class ClientMessenger {
         for (int i = 0; i < inStreams.length; i++) {
             if (! inStreams[i].hasNextLine()) {
                 // the connection has been closed! we should boot them...
-                result[i] = null;
+                result[i] = "dumbplayer_" + i;
+                closeStreams(i);
                 continue;
             } 
             String line = inStreams[i].nextLine();
             if (! line.startsWith("MOVE-SERVER ")) {
                 // non conformant, again, we should boot them...
-                result[i] = null;
+                result[i] = "badplayer_" + i;
+                closeStreams(i);
                 continue;
             }
             result[i] = line.substring(12);
+            if (! Game.isValidName(result[i])) {
+                // their name is too long or something. booting!
+                result[i] = "dummy_" + i;
+                closeStreams(i);
+                continue;
+            }
         }
         return result;
     }
@@ -104,11 +112,11 @@ public class ClientMessenger {
      * MOVE is the message a server sends to indicate that it is ready to play
      * blocks until receiving all messages
      */ 
-//     public void ready() {
-    public boolean [] ready() {
-        boolean [] result = new boolean [inStreams.length];
+    public void ready() {
+//     public boolean [] ready() {
+//         boolean [] result = new boolean [inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
-            result [i] = false;
+//             result [i] = false;
             if (inStreams[i] == null) {
                 Deb.ug.println("why is inStreams[" + i + "] null?");
                 /* player i should be booted, if they haven't already */
@@ -120,7 +128,7 @@ public class ClientMessenger {
                 continue;
             }
             if (inStreams[i].nextLine().equals("MOVE")) {
-                result[i] = true;
+//                 result[i] = true;
                 Deb.ug.println("received confirmation from player " + i);
             }
             else {
@@ -130,7 +138,7 @@ public class ClientMessenger {
             /* FIXME player i is noncompliant and needs be booted */
             continue;
         }
-        return result;
+//         return result;
     }
 
     /** sends PLAYERS message to all servers to inform them the 

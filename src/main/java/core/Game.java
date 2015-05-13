@@ -46,7 +46,7 @@ public class Game {
         return count;
     }
 
-    protected static boolean isValidName(String name) {
+    public static boolean isValidName(String name) {
         return (! (name == null || name.contains(" ") || name.length() > 20));
     }
 
@@ -75,12 +75,11 @@ public class Game {
         // Instantiate Players
         Deb.ug.println("instantiating Players...");
         for (int i = 0; i < numPlayers; i++) {
-            if (isValidName(names[i])) {
+//             if (names[i] != null) {
                 players.add(new Player(i, names[i], WALL_POOL / numPlayers));
-            } else {
-                // this move server couldn't tell us its name! 
-                players.add(new Player(i, WALL_POOL / numPlayers));
-            }
+//             } else {
+//                 players.add(new Player(i, WALL_POOL / numPlayers));
+//             }
         }
         assert (players.size() == numPlayers);
 
@@ -94,6 +93,7 @@ public class Game {
 
         // can we boot players for giving us the wrong name before first turn?
         // 'cause that's we're going to do
+        /*
         for (int i = 0; i < numPlayers; i++) {
             if (! isValidName(names[i])) {
                 Player badlyNamed = players.remove();
@@ -105,7 +105,8 @@ public class Game {
             }
             // this loop basically plays russian roulette, hahAHAH!
         }
-
+        */
+/*
         if (players.size() == 0) {
             // not a single server survived the first message...
             System.out.println("you should fix your move-servers.");
@@ -116,26 +117,10 @@ public class Game {
             System.out.println("by elimination, the winner is " + survivor); 
             System.exit(0);
         }
+*/
 
         /* check that moveservers are ready to go */
-        boolean [] ready = hermes.ready();
-        assert (ready.length == numPlayers);
-        for (int i = 0; i < numPlayers; i++) {
-            if (! board.isPlayerRemaining(i)) {
-                // if this player is already gone, fine!
-                continue;
-            }
-            if (! ready[i]) {
-                assert (board.isPlayerRemaining(i));
-                while (players.peek().getPlayerNo() != i) {
-                    // advance the list until we find the player we wanna boot
-                    board.getNextTurn(players); // shuffle player queue
-                }
-                Player notReady = players.remove();
-                hermes.broadcastBoot(notReady);
-                board.removePlayer(notReady);
-            }
-        }
+        hermes.ready();
 
         if (players.size() == 0) {
             // not a single server survived the MOVE message...

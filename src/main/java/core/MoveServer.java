@@ -143,6 +143,7 @@ public class MoveServer {
         hermes.identify("teams_" + portNumber + playerName);
 
         String [] playerNames = hermes.players();
+        System.out.println(Arrays.toString(playerNames));
         if (playerNames == null) {
             System.out.println("expected PLAYERS from client");
             return;
@@ -219,6 +220,9 @@ public class MoveServer {
                 // in other cases this assertion should hold...
                 // can we keep it somehow?
 //                 assert words[1].equals(currentPlayer);
+//                 while (currentPlayer.toString() != words[1]) {
+//                     players.add(players.remove()); // shuffle queue
+//                 }
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();
