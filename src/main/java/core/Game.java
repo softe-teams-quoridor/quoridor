@@ -75,49 +75,17 @@ public class Game {
         // Instantiate Players
         Deb.ug.println("instantiating Players...");
         for (int i = 0; i < numPlayers; i++) {
-//             if (names[i] != null) {
-                players.add(new Player(i, names[i], WALL_POOL / numPlayers));
-//             } else {
-//                 players.add(new Player(i, WALL_POOL / numPlayers));
-//             }
+            players.add(new Player(i, names[i], WALL_POOL / numPlayers));
         }
         assert (players.size() == numPlayers);
+
+        // tell all move servers who the players are
+        hermes.broadcastPlayers(players);
 
         // Instantiate GameBoard
         Deb.ug.println("instantiating GameBoard...");
         GameBoard board = new GameBoard(players);
         Deb.ug.println("players queue: " + players.toString());
-
-        // tell all move servers who the players are
-        hermes.broadcastPlayers(players);
-
-        // can we boot players for giving us the wrong name before first turn?
-        // 'cause that's we're going to do
-        /*
-        for (int i = 0; i < numPlayers; i++) {
-            if (! isValidName(names[i])) {
-                Player badlyNamed = players.remove();
-                Deb.ug.println("badly named: " + badlyNamed);
-                board.removePlayer(badlyNamed);
-                hermes.broadcastBoot(badlyNamed);
-            } else {
-                board.getNextTurn(players); // shuffle queue, next in line..
-            }
-            // this loop basically plays russian roulette, hahAHAH!
-        }
-        */
-/*
-        if (players.size() == 0) {
-            // not a single server survived the first message...
-            System.out.println("you should fix your move-servers.");
-            System.exit(0);
-        } else if (players.size() == 1) {
-            Player survivor = players.remove();
-            hermes.broadcastVictor(survivor);
-            System.out.println("by elimination, the winner is " + survivor); 
-            System.exit(0);
-        }
-*/
 
         /* check that moveservers are ready to go */
         hermes.ready();
@@ -132,7 +100,6 @@ public class Game {
             System.out.println("by elimination, the winner is " + survivor); 
             System.exit(0);
         }
-
 
         // Start up the display
         Deb.ug.println("starting GameBoardFrame...");
@@ -163,8 +130,7 @@ public class Game {
             } else { // legal move 
                 GameEngine.playTurn(response, currentPlayer, board); 
                 hermes.broadcastWent(currentPlayer, response);
-                //players.add(players.remove()); // Shuffle queue
-                players = board.getNextTurn(players);
+                players = board.getNextTurn(players); // Shuffle queue
             }
             // Update the graphical board
             frame.update(board);
@@ -177,13 +143,9 @@ public class Game {
             }
 
             sleep(100); // sleepy time
-
         }//-----END OF LOOP-----
 
         hermes.closeAllStreams(players);
-
-        // pause board for two seconds before ending
-//         sleep(2000);
         System.exit(0);
     }
 }

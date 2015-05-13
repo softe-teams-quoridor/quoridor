@@ -55,7 +55,6 @@ public class ClientMessenger {
                 inStreams[i] = new Scanner(socket.getInputStream());
             } catch (UnknownHostException uhe) {
                 // the host name provided could not be resolved
-//                 uhe.printStackTrace();
                 System.err.println("unknown host: " + hosts[i]);
                 System.exit(1);
             } catch (IOException ioe) {
@@ -63,18 +62,15 @@ public class ClientMessenger {
                 // probably due to no moveserver waiting on this host/port pair
                 System.err.println("no MoveServer found on " + hosts[i] + 
                                    " on port " + ports[i]);
-//                 ioe.printStackTrace();
                 System.exit(1);
             }
         }
-
 
         // test all connections -- not necessary, just for debugging
         for (int i = 0; i < numPlayers; i++) {
             assert (outStreams[i] != null);
             assert (inStreams[i] != null);
         }
-
     }
 
     /** this method returns a list of names
@@ -107,38 +103,31 @@ public class ClientMessenger {
         return result;
     }
 
-
     /** gets MOVE message from all move servers
      * MOVE is the message a server sends to indicate that it is ready to play
      * blocks until receiving all messages
      */ 
     public void ready() {
-//     public boolean [] ready() {
-//         boolean [] result = new boolean [inStreams.length];
         for (int i = 0; i < inStreams.length; i++) {
-//             result [i] = false;
             if (inStreams[i] == null) {
-                Deb.ug.println("why is inStreams[" + i + "] null?");
                 /* player i should be booted, if they haven't already */
+                Deb.ug.println("why is inStreams[" + i + "] null?");
                 continue;
             } else if (!inStreams[i].hasNextLine()) {
+                /* player i should be booted, if they haven't already */
                 Deb.ug.println("inStreams[" + i + "] does not have nextline");
                 closeStreams(i);
-                /* player i should be booted, if they haven't already */
                 continue;
             }
             if (inStreams[i].nextLine().equals("MOVE")) {
-//                 result[i] = true;
                 Deb.ug.println("received confirmation from player " + i);
             }
             else {
                 Deb.ug.println("player " + i + " is not ready to play! :(");
                 closeStreams(i);
             }
-            /* FIXME player i is noncompliant and needs be booted */
             continue;
         }
-//         return result;
     }
 
     /** sends PLAYERS message to all servers to inform them the 
@@ -156,17 +145,14 @@ public class ClientMessenger {
             for (Player playa : players) {
                 outStreams[i].print(playa + " ");
             }
-            outStreams[i].println();
-        }
+            outStreams[i].println(); }
     }
 
     public String requestMove(Player player) {
-        
         if (outStreams[player.getPlayerNo()] == null) {
             return "B-O-O-T-M-E"; // no connection to the server!
         }
         
-
         outStreams[player.getPlayerNo()].println("GO?");
         if (! inStreams[player.getPlayerNo()].hasNextLine()) {
             return "B-O-O-T-M-E"; // no response from the server!

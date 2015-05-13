@@ -197,7 +197,7 @@ public class MoveServer {
                 // you know, like a name that has `fuck' in it or something.
                 // in other cases this assertion should hold...
                 // can we keep it somehow?
-//                 assert (currentPlayer.toString().equals(words[1]));
+                assert (currentPlayer.toString().equals(words[1]));
 
                 // move is a string like "V-A" or "(V-A, V-B)"
                 // add 6 to the player's name's length to compensate for
@@ -206,7 +206,6 @@ public class MoveServer {
                 GameEngine.playTurn(move, currentPlayer, board);
 
                 // shuffle players
-                //players.add(players.remove());
                 players = board.getNextTurn(players);
                 currentPlayer = players.peek();
 
@@ -219,10 +218,7 @@ public class MoveServer {
                 // you know, like a name that has `fuck' in it or something.
                 // in other cases this assertion should hold...
                 // can we keep it somehow?
-//                 assert words[1].equals(currentPlayer);
-//                 while (currentPlayer.toString() != words[1]) {
-//                     players.add(players.remove()); // shuffle queue
-//                 }
+                assert words[1].equals(currentPlayer.toString());
                 board.removePlayer(currentPlayer);
                 players.remove();
                 currentPlayer = players.peek();
