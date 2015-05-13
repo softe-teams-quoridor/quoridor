@@ -93,7 +93,7 @@ public class ClientMessenger {
                 continue;
             }
             result[i] = line.substring(12);
-            if (! Game.isValidName(result[i])) {
+            if (! isValidName(result[i])) {
                 // their name is too long or something. booting!
                 result[i] = "dummy_" + i;
                 closeStreams(i);
@@ -102,6 +102,13 @@ public class ClientMessenger {
         }
         return result;
     }
+
+    /** returns true if the string passed in meets the protocol's requirements
+      */
+    public static boolean isValidName(String name) {
+        return (! (name == null || name.contains(" ") || name.length() > 20));
+    }
+
 
     /** gets MOVE message from all move servers
      * MOVE is the message a server sends to indicate that it is ready to play

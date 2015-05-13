@@ -36,20 +36,6 @@ public class Game {
         }
     }
 
-    protected static int countValidNames(String [] names) {
-        int count = 0;
-        for (int i = 0; i < names.length; i++) {
-            if (isValidName(names[i])) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public static boolean isValidName(String name) {
-        return (! (name == null || name.contains(" ") || name.length() > 20));
-    }
-
     public static void main (String[] args) {
         // initialize debug stream
         Deb.initialize("game");
