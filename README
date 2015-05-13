@@ -1,22 +1,18 @@
-README file for teams' Quoridor Project
+Contributors
+============
 
-    Contributors:
-        Eric Cavanagh   - Misspell Caster
-        Montana Earle   - Queen of Laughs-a-Lot
-        Tylor Lehman    - Board Master
-        Dan Soucy       - Golden Canadian
-        Collin Walling  - Does things
+* Eric Cavanagh            - Testing & AI
+* Montana Earle            - Graphics & AI
+* Tylor Lehman             - Graphics
+* Dan Soucy (ninedotnine)  - Back end & Networking
+* Collin Walling (fuzzn8r) - Back end & AI
 
-    Contents:
-        01: How to run the game
-        02: Gradle Help
-        03: Tips
+How to run the game
+===================
 
---------------------------------------------------------------------------
+    1. Build all class files with `./gradlew build`
 
-[01] How to run the game:
-
-    0. Build all class files with ./gradlew build
+        *note: see TIPS for gradle help
 
 
     1. Navigate to ./build/libs
@@ -37,7 +33,7 @@ README file for teams' Quoridor Project
          = lr           --> simple AI that moves left and right =
          = rd           --> simple AI that makes random moves   =
          = fcrd         --> flip coin roll dice                 =
-         = maybe        --> teams' awesome ai                   =
+         = hal          --> 'intelligent' AI                    =
          ======================================================== 
 
 
@@ -52,8 +48,8 @@ README file for teams' Quoridor Project
                 ... localhost 1234 Whiteface 5678 Gothics 9012 \
                     Redfield 3456
 
-         Note that the \ just means to continue the command onto the
-         next line. You do not need to do this.
+         *note: the \ just means to continue the command onto the
+                next line. You do not need to do this.
 
 
     4. Play the game! You have to input moves via the terminal that is
@@ -66,6 +62,3 @@ README file for teams' Quoridor Project
 
          Use the labels printed on the graphic display to guide your
          movements
-
---------------------------------------------------------------------------
-

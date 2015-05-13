@@ -1,7 +1,7 @@
 Quoridor Project Help and Tips
---------------------------------------------------------------------------
 
-[01] Gradle Help:
+Gradle Help
+===========
 
     1. If you have never run gradle, you might have to install it. run:
 
@@ -26,9 +26,8 @@ Quoridor Project Help and Tips
 
          for an example of running a program.
 
---------------------------------------------------------------------------
-
-[02] Tips
+Tips
+====
 
     1. Easy gradle build function
 
