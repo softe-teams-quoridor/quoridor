@@ -1,19 +1,19 @@
-/** AI_Maybe.java
+/** AI_HAL.java
   * ___________________________________________________________
   *
   *     This is our best AI! 
-  *       - Maybe will check to see who has the shortest path
+  *       - HAL will check to see who has the shortest path
   *           and then try to block them, unless of course
-  *           maybe has the shortest path then will move in that direction
+  *           HAL has the shortest path then will move in that direction
   */
 
 import java.util.*;
-public class AI_Maybe implements QuoridorAI {
+public class AI_HAL implements QuoridorAI {
 
     /**
       * Constructor.
       */
-    public AI_Maybe() { }
+    public AI_HAL() { }
 
     /**
       * Returns a move.
@@ -163,7 +163,7 @@ public class AI_Maybe implements QuoridorAI {
       * Returns name of AI.
       */
     public String toString() {
-        return "Maybe?";
+        return "HAL";
     }
 
 

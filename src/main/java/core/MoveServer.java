@@ -7,9 +7,6 @@
   *
   */
 
-
-
-
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -62,8 +59,8 @@ public class MoveServer {
             ai = new AI_IDK();
         } else if (args[1].equals("rip")) {
             ai = new AI_Ripley();
-        } else if (args[1].equals("maybe")) {
-            ai = new AI_Maybe();
+        } else if (args[1].equals("hal")) {
+            ai = new AI_HAL();
         } else {
              usage(3);
         }
@@ -140,7 +137,7 @@ public class MoveServer {
 
         String playerName = ai.toString();
 
-        hermes.identify("teams_" + portNumber + playerName);
+        hermes.identify(playerName + portNumber);
 
         String [] playerNames = hermes.players();
         System.out.println(Arrays.toString(playerNames));
