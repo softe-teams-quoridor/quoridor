@@ -223,11 +223,11 @@ public class MoveServer {
             // VICTOR --> a player has won the game
             } else if (clientMessage.startsWith("VICTOR")) {
                 System.out.println(words[1] + " won!");
-                if (words[1].equals(playerName)) {
-                    Deb.ug.println("i won");
+                if (words[1].equals(playerName + portNumber)) {
+                    Deb.ug.println("WHERE U @"); // gloat
                     WIN_RECORD++;
                 } else {
-                    Deb.ug.println("i lost :(");
+                    Deb.ug.println("aww :(");
                     LOSE_RECORD++;
                 }
             // ??? --> who the heck knows what happend?
