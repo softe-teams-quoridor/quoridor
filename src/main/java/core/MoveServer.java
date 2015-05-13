@@ -140,7 +140,7 @@ public class MoveServer {
         hermes.identify(playerName + portNumber);
 
         String [] playerNames = hermes.players();
-        System.out.println(Arrays.toString(playerNames));
+        Deb.ug.println("player names: " + Arrays.toString(playerNames));
         if (playerNames == null) {
             System.out.println("expected PLAYERS from client");
             return;
@@ -167,9 +167,7 @@ public class MoveServer {
         hermes.ready();
         /* handle different types of messages the client might send */
         while (hermes.hasNextLine()) {
-            System.out.println("currentPlayer: " + currentPlayer);
             clientMessage = hermes.nextLine().trim();
-            System.out.println("received: " + clientMessage);
             Deb.ug.println("received: " + clientMessage);
 
             words = clientMessage.split(" ");
