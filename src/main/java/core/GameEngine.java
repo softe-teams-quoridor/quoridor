@@ -162,8 +162,8 @@ public class GameEngine {
             return null;
 
         // Remove parentheses
-        commaSep[0] = commaSep[0].replace ( "(", "" );
-        commaSep[1] = commaSep[1].replace ( ")", "" );
+        commaSep[0] = commaSep[0].replace ( "(", "" ).trim();
+        commaSep[1] = commaSep[1].replace ( ")", "" ).trim();
         // [0] == V-A
         // [1] == V-B
 

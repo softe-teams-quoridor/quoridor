@@ -169,6 +169,7 @@ public class MoveServer {
         while (hermes.hasNextLine()) {
             clientMessage = hermes.nextLine().trim();
             Deb.ug.println("received: " + clientMessage);
+            System.out.println("received: " + clientMessage);
 
             words = clientMessage.split(" ");
             Deb.ug.println("words: " + Arrays.toString(words));
