@@ -60,6 +60,6 @@ public class AI_FlipCoinRollDice implements QuoridorAI {
     }
 
     public String toString() {
-        return "FC,RD";
+        return "FCRD";
     }
 }
