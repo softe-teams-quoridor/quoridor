@@ -57,8 +57,6 @@ public class MoveServer {
             ai = new AI_FlipCoinRollDice();
         } else if (args[1].equals("idk")) {
             ai = new AI_IDK();
-        } else if (args[1].equals("rip")) {
-            ai = new AI_Ripley();
         } else if (args[1].equals("hal")) {
             ai = new AI_HAL();
         } else {

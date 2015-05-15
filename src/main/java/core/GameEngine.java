@@ -278,10 +278,10 @@ public class GameEngine {
             if ( checkLoc != null ) {
                 switch ( i ) {
                     // If we encounter a wall, continue to the next iteration
-                    case 0: if ( currLoc.hasWallBottom() ) continue; break;
-                    case 1: if ( currLoc.hasWallRight()  ) continue; break;
-                    case 2: if ( checkLoc.hasWallBottom()) continue; break;
-                    case 3: if ( checkLoc.hasWallRight() ) continue; break;
+                    case 0: if ( currLoc.getWallBottom() != null) continue; break;
+                    case 1: if ( currLoc.getWallRight() != null ) continue; break;
+                    case 2: if ( checkLoc.getWallBottom() != null) continue; break;
+                    case 3: if ( checkLoc.getWallRight() != null) continue; break;
                     default: break; //assertion here maybe?
                 }
                 // If checkLoc is adjacent and where we want to go...
@@ -322,7 +322,8 @@ public class GameEngine {
             // the square has a wall but its vertical 
             else if(wallSquares[0].getWallRight() != null) {
                 // Check for intersect
-                if(!wallSquares[0].getWallRight().isStart() && 
+                //if(!wallSquares[0].getWallRight().start && 
+                if (!wallSquares[0].getWallRight() &&
                     wallSquares[1].getWallBottom() == null && 
                     wallSquares[0].getWallBottom() == null) {
                     return true;
@@ -342,8 +343,10 @@ public class GameEngine {
             // the square has a wall but its horziontal
             else if(wallSquares[0].getWallBottom() != null) {
                 // Check for intersect
-                if(!wallSquares[0].getWallBottom().isStart() &&
-                    wallSquares[1].getWallRight() == null && wallSquares[0].getWallRight() == null) {
+        //        if(!wallSquares[0].getWallBottom().start &&
+                  if (!wallSquares[0].getWallBottom() &&
+                      wallSquares[1].getWallRight() == null && 
+                      wallSquares[0].getWallRight() == null) {
                     return true;
                 }
             }
@@ -510,10 +513,10 @@ public class GameEngine {
             if ( checkLoc != null ) {
                 switch ( i ) {
                     // If we encounter a wall, continue to the next iteration
-                    case 0: if ( currLoc.hasWallBottom() ) continue; break;
-                    case 1: if ( currLoc.hasWallRight()  ) continue; break;
-                    case 2: if ( checkLoc.hasWallBottom()) continue; break;
-                    case 3: if ( checkLoc.hasWallRight() ) continue; break;
+                    case 0: if ( currLoc.getWallBottom() != null) continue; break;
+                    case 1: if ( currLoc.getWallRight() != null ) continue; break;
+                    case 2: if ( checkLoc.getWallBottom() != null) continue; break;
+                    case 3: if ( checkLoc.getWallRight() != null ) continue; break;
                     default: break; //assertion here maybe?
                 }
                 // If the spot is occupied, this isn't our third jump, and the

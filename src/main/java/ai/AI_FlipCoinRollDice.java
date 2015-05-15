@@ -36,7 +36,7 @@ public class AI_FlipCoinRollDice implements QuoridorAI {
             moveSquares = new Square[2];
             do {
                 moveSquares[0] = board.getSquare(rand.nextInt(8),rand.nextInt(8));
-                if(moveSquares[0].hasWallRight() && moveSquares[0].hasWallBottom())
+                if(moveSquares[0].getWallRight() != null && moveSquares[0].getWallBottom() != null)
                     moveSquares[0] = board.getSquare(rand.nextInt(8),rand.nextInt(8));
                 move = rand.nextInt(2);
                 if(move == 0) {

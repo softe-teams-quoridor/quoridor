@@ -63,19 +63,19 @@ public class SquareTest {
     @Test
     public void testSquarePlaceVertWall() throws Exception {
         square.placeWallBottom(true);
-	assertTrue(square.hasWallBottom());
+	assertTrue(square.getWallBottom());
 
 	square.placeWallBottom(false);
-	assertTrue(square.hasWallBottom());
+	assertTrue(square.getWallBottom());
     }   
 
     @Test
     public void testSquarePlaceHorizWall() throws Exception {
 	square.placeWallRight(true);
-	assertTrue(square.hasWallRight());
+	assertTrue(square.getWallRight());
 
 	square.placeWallRight(false);
-	assertTrue(square.hasWallRight());
+	assertTrue(square.getWallRight());
     }
 
     @Test

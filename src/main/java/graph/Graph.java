@@ -241,10 +241,10 @@ public class Graph {
             if ( checkLoc != null ) {
 
                 // skip this check if there is a wall in the way
-                if ( ( y == 1  && currLoc.hasWallBottom() ) ||
-                     ( y == -1 && checkLoc.hasWallBottom()) ||
-                     ( x == 1  && currLoc.hasWallRight()  ) ||
-                     ( x == -1 && checkLoc.hasWallRight() )   )
+                if ( ( y == 1  && currLoc.getWallBottom() != null) ||
+                     ( y == -1 && checkLoc.getWallBottom() != null) ||
+                     ( x == 1  && currLoc.getWallRight() != null ) ||
+                     ( x == -1 && checkLoc.getWallRight() != null)   )
                        continue;
  
                 // check if there is a player adjacent to where we are

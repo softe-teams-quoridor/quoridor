@@ -404,18 +404,22 @@ public class GameBoardFrame extends JFrame{
     //Sets the border around squares that have walls.
     //makes walls show up as red compound borders.
     private JLabel setBoarder(JLabel someLabel,Square tSquare){
-        if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+       // if(!tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+        if ( tSquare.getWallRight() == null && tSquare.getWallBottom() == null ) {
             someLabel.setBorder(BorderFactory.createBevelBorder(0));
 
-        }else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+        //}else if(!tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+        }else if ( tSquare.getWallRight() == null && tSquare.getWallBottom() != null ) {
             someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0,6,0,new Color(150, 0, 0))));
 
-        }else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+        //}else if(tSquare.hasWallRight()&&!tSquare.hasWallBottom()){
+        }else if ( tSquare.getWallRight() != null && tSquare.getWallBottom() == null ) {
             someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0, 0, 6, new Color(150, 0, 0))));
 
-        }else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+        //}else if(tSquare.hasWallRight()&&tSquare.hasWallBottom()){
+        }else if ( tSquare.getWallRight() != null && tSquare.getWallBottom() != null ) {
             someLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(0), 
                         BorderFactory.createMatteBorder(0,0, 6, 6, new Color(150, 0, 0))));
         }

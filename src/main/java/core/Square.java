@@ -20,7 +20,7 @@
  * @author      Dan Soucy
  * @author      Collin Walling
  */
- 
+
 /* --------------------------------- METHODS ----------------------------------
  *
  * Square(int,int)            --> constructor; assigns column and row
@@ -61,8 +61,8 @@ public class Square {
     private int col;          // X coordinate of this Square
     private int row;          // Y coordinate of this Square
     private Player occupant;  // Player occupying this Square
-    private Wall rightWall;   // right Wall
-    private Wall bottomWall;  // bottom Wall
+    private Boolean rightWall;   // right Wall
+    private Boolean bottomWall;  // bottom Wall
 
     /** 
      * Instantiates a Square object by assigning the column and row values to
@@ -159,8 +159,8 @@ public class Square {
      */
 
     public void placeWallRight(boolean isStart) {
-        if (!hasWallRight())
-            rightWall = new Wall(isStart);
+        if (getWallRight() == null)
+            rightWall = new Boolean(isStart);
     }
 
     /** 
@@ -173,32 +173,10 @@ public class Square {
      *
      * @see Wall
      */
-    
+
     public void placeWallBottom(boolean isStart) {
-        if (!hasWallBottom())
-            bottomWall = new Wall(isStart);
-    }
-
-    /**
-     * Returns if there is a right Wall placed on the Square.
-     *
-     * @return if there is a right Wall
-     *
-     * @see Wall
-     */
-
-    public boolean hasWallRight() {
-        return (rightWall != null);
-    }
-
-    /**
-     * Returns if there is a bottom Wall placed on the Square.
-     *
-     * @return if there is a bottom Wall
-     */
-
-    public boolean hasWallBottom() {
-        return (bottomWall != null);
+        if (getWallBottom() == null)
+            bottomWall = new Boolean(isStart);
     }
 
     /**
@@ -207,7 +185,7 @@ public class Square {
      * @see Wall
      */
 
-    public Wall getWallRight() {
+    public Boolean getWallRight() {
         return rightWall;
     }
 
@@ -217,7 +195,7 @@ public class Square {
      * @see Wall
      */
 
-    public Wall getWallBottom() {
+    public Boolean getWallBottom() {
         return bottomWall;
     }
 
@@ -253,4 +231,5 @@ public class Square {
     public String toString() {
         return GameEngine.toNumerals(col) + "-" + GameEngine.toLetters(row);
     }
+
 }
