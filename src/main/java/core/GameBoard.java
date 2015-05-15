@@ -16,7 +16,9 @@
  * @author      Collin Walling
  */
 
+
 /* --------------------------------- METHODS ----------------------------------
+ *
  * GameBoard()                   --> constructor 
  *
  * boolean isOccupied(int,int)   --> returns if Player is at the given x 

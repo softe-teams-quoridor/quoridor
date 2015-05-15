@@ -61,14 +61,6 @@ public class SquareTest {
     }
 
     @Test
-    public void testEquals() throws Exception {
-        Square square2 = new Square(3,5);
-        assertTrue(square.equals(square2));
-        square2 = new Square(7,5);
-        assertFalse(square.equals(square2));
-    }
-
-    @Test
     public void testSquarePlaceVertWall() throws Exception {
         square.placeWallBottom(true);
 	assertTrue(square.hasWallBottom());
