@@ -237,13 +237,13 @@ public class GameBoard {
     public void placeWall (Square[] wallSquares) {
         // Horiz
         if(wallSquares[0].getY() == wallSquares[1].getY()) {
-            wallSquares[0].placeWallBottom(true);
-            wallSquares[1].placeWallBottom(false); 
+            wallSquares[0].placeWall("bottom",true);
+            wallSquares[1].placeWall("bottom",false); 
         }
         // Vert
         else {
-            wallSquares[0].placeWallRight(true);
-            wallSquares[1].placeWallRight(false); 
+            wallSquares[0].placeWall("right",true);
+            wallSquares[1].placeWall("right",false); 
         }
         squares[wallSquares[0].getX()][wallSquares[0].getY()] = wallSquares[0];
         squares[wallSquares[1].getX()][wallSquares[1].getY()] = wallSquares[1];

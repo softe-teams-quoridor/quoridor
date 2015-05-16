@@ -3,7 +3,7 @@
 /**
  * Represents a single cell of a GameBoard grid. It contains a column and row
  * (or X and Y coordinate pair), a Player object that is occupying the Square,
- * and the presence of a right and a bottom Wall object.
+ * and the presence of a right and a bottom wall.
  *
  * Note: "column and x" and "row and y" are synonymous, as is "player and 
  *        occupant"
@@ -37,30 +37,26 @@
  *
  * boolean isOccupied()       --> returns if a Player is occupying this Square
  *
- * void placeWallRight(bool)  --> assigns the right Wall object
+ * void placeWallRight(bool)  --> assigns the right wall
  *
- * void placeWallBottom(bool) --> assigns the bottom Wall object
+ * void placeWallBottom(bool) --> assigns the bottom wall 
  *
- * boolean hasWallRight()     --> returns if the right Wall is present or null
+ * Wall getWallRight()        --> returns the status of the right wall
  *
- * boolean hasWallBottom()    --> returns if the bottom Wall is present or null
+ * Wall getWallBottom()       --> returns the status of the bottom wall
  *
- * Wall getWallRight()        --> returns the right Wall object
+ * void removeWallRight()     --> removes the right wall
  *
- * Wall getWallBottom()       --> returns the bottom Wall object
- *
- * void removeWallRight()     --> removes the right Wall object
- *
- * void removeWallBotttom()   --> removes the bottom wall object
+ * void removeWallBotttom()   --> removes the bottom wall
  *
  * String toString()          --> returns the string rep. of this Square
  */
 
 public class Square {
 
-    private int col;          // X coordinate of this Square
-    private int row;          // Y coordinate of this Square
-    private Player occupant;  // Player occupying this Square
+    private int col;             // X coordinate of this Square
+    private int row;             // Y coordinate of this Square
+    private Player occupant;     // Player occupying this Square
     private Boolean rightWall;   // right Wall
     private Boolean bottomWall;  // bottom Wall
 
@@ -148,14 +144,11 @@ public class Square {
     }
 
     /** 
-     * Assigns a Wall object to the right of this Square. This Wall object is
-     * oriented vertically and parameter isStart denotes whether the Wall
-     * object is considered to be the "starting/top" or "ending/bottom"
-     * half of the two-piece Wall object.
+     * Assigns a wall to the right of this Square. This wall is oriented
+     * vertically and parameter isStart denotes whether the wall is considered
+     * to be the "starting/top" or "ending/bottom" half of the two-piece wall.
      *
-     * @param start    is this the top (true) or bottom (false) half of a Wall?
-     *
-     * @see Wall
+     * @param start    is this the top (true) or bottom (false) half of a wall?
      */
 
     public void placeWallRight(boolean isStart) {
@@ -163,15 +156,14 @@ public class Square {
             rightWall = new Boolean(isStart);
     }
 
+
     /** 
-     * Assigns a Wall object to the bottom of this Square. This Wall object is
-     * oriented horizontally and parameter isStart denotes whether the Wall
-     * object is considered to be the "starting/left" or "ending/right"
-     * half of the two-piece Wall object.
+     * Assigns a wall to the bottom of this Square. This wall is oriented
+     * horizontally and parameter isStart denotes whether the wall is 
+     * considered to be the "starting/left" or "ending/right" half of the
+     * two-piece wall.
      *
-     * @param start    is this the left (true) or right (false) half of a Wall?
-     *
-     * @see Wall
+     * @param start    is this the left (true) or right (false) half of a wall?
      */
 
     public void placeWallBottom(boolean isStart) {
@@ -179,10 +171,16 @@ public class Square {
             bottomWall = new Boolean(isStart);
     }
 
+    public void placeWall(String orientation, boolean isStart) {
+        assert(!orientation.equals("right") || !orientation.equals("bottom"));
+        if (orientation.equals("right") && getWallStatus("right") == null)
+            rightWall = new Boolean(isStart);
+        if (orientation.equals("bottom") && getWallStatus("bottom") == null)
+            bottomWall = new Boolean(isStart);
+    }
+
     /**
-     * Returns the right Wall object or null if there is no Wall assigned.
-     *
-     * @see Wall
+     * Returns the status of a right wall.
      */
 
     public Boolean getWallRight() {
@@ -190,19 +188,24 @@ public class Square {
     }
 
     /**
-     * Returns the bottom Wall object or null if there is no Wall assigned.
-     *
-     * @see Wall
+     * Returns the status of a bottom wall.
      */
 
     public Boolean getWallBottom() {
         return bottomWall;
     }
 
+    public Boolean getWallStatus(String orientation) {
+        assert(!orientation.equals("right") || !orientation.equals("bottom"));
+        if (orientation.equals("right"))
+            return rightWall;
+        if (orientation.equals("bottom"))
+            return bottomWall;
+        return null; // the assertion shouldn't allow the code to reach this
+    }
+
     /**
-     * Removes the right Wall object.
-     *
-     * @see Wall
+     * Removes the right wall.
      */
 
     public void removeWallRight() {
@@ -210,9 +213,7 @@ public class Square {
     }
 
     /**
-     * Removes the bottom Wall object.
-     *
-     * @see Wall
+     * Removes the bottom wall.
      */
 
     public void removeWallBottom() {
